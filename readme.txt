@@ -1,0 +1,1 @@
+This is the source repository for the gpsxar project.  All project docs are under the docs directory.
