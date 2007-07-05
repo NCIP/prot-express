@@ -1,0 +1,184 @@
+<!--
+urn:lsid:AuthorityID:NamespaceID:ObjectID:RevisionID
+
+The variable portions of the LSID are set as follows:
+
+    * AuthorityID: An Internet domain name
+    * NamespaceID: A namespace identifier, unique within the authority
+    * ObjectID: An object identifier, unique within the namespace
+    * RevisionID: An optional version string
+
+-->
+
+<ExperimentCollection>
+	<ProtocolDefinitions>
+		<Protocol id="urn:nci.nih.gov:Protocol:Test_1_pooling_fractionation">
+			<Name>Test 1 (pooling, fractionation)</Name>
+			<Description>Protocol description of Test 1 protocol</Description>
+			<Type>ExperimentRun</Type>
+			<ProtocolAttributes>
+				<Attribute>
+					<Name>run protocol property</Name>
+					<Value>run protocol for cabig</Value>
+					<ValueType>String</ValueType>
+					<OntologyEntryUri>http://vocabulary.myorg.org/approvedProtocols/protocolTypes#runprotocol</OntologyEntryUri>
+				</Attribute>
+			</ProtocolAttributes>
+		</Protocol>
+		<Protocol id="urn:nci.nih.gov:Protocol:Label_with_LabelA">
+			<Name>Label with LabelA</Name>
+			<Description>Tag the sample with some treatment called LabelA</Description>
+			<Type/>
+			<ProtocolAttributes>
+				<Attribute>
+					<Name>Label property on protocol step</Name>
+					<Value>Try this...</Value>
+					<ValueType>String</ValueType>
+					<OntologyEntryUri>http://vocabulary.myorg.org/approvedProtocols/protocolTypes#labelstep</OntologyEntryUri>
+				</Attribute>
+			</ProtocolAttributes>
+		</Protocol>
+		<Protocol id="urn:nci.nih.gov:Protocol:Label_with_LabelB">
+			<Name>Label with LabelB</Name>
+			<Description>Tag the sample with some treatment called LabelB</Description>
+			<Type/>
+		</Protocol>
+		<Protocol id="urn:nci.nih.gov:Protocol:PoolingStep">
+			<Name>Combine samples (protocol used twice)</Name>
+			<Description/>
+			<Type/>
+		</Protocol>
+	</ProtocolDefinitions>
+	<Experiment id="urn:nci.nih.gov:Experiment:caBIG_Test_Data">
+		<Name>caBIG Test Data</Name>
+		<Description/>
+		<Comments>This experiment contains examples of all the associations in the cabig UML model</Comments>
+		<Hypothesis />
+		<Url />
+		<Contacts>   <!-- Pride has this in mzData section. Xar has only one contact -->
+			<Contact>
+				<FirstName>Peter</FirstName>
+				<MiddleName />
+				<LastName>Hussey</LastName>
+				<Email>peter@labkey.com</Email>
+				<Phone />
+				<Fax/>
+				<Url/>
+				<Addresses>
+					<Address type="Home">
+						<Line1>Home Line1</Line1>
+						<Line2>Home Line2</Line2>
+						<City>Home City</City>
+						<State>Home State</State>
+						<Zipcode>Home Zip</Zipcode>
+						<Country>Home Country</Country>
+					</Address>
+				</Addresses>
+				<Organizations>
+					<Organization name="Org1">
+						<Addresses>
+							<Address type="Head Quarters">
+								<Line1>HQ Line1</Line1>
+								<Line2>HQ Line2</Line2>
+								<City>HQ City</City>
+								<State>HQ State</State>
+								<Zipcode>HQ Zip</Zipcode>
+								<Country>HQ Country</Country>
+							</Address>
+						</Addresses>
+					</Organization>
+				</Organizations>
+				<ContactAttributes>
+					<Attribute>
+						<Name>Nested property on contact?</Name>
+						<Value>Contractor</Value>
+						<ValueType>String</ValueType>
+						<OntologyEntryUri>http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType</OntologyEntryUri>
+					</Attribute>
+				</ContactAttributes>
+			</Contact>
+		</Contacts>
+		<ExperimentAttributes>
+			<Attribute>
+				<Name>experiment property</Name>
+				<Value>Some property of an experiment</Value>
+				<ValueType>String</ValueType>
+				<OntologyEntryUri>http://vocabulary.myorg.org/approvedProtocols/protocolTypes#rexperiment</OntologyEntryUri>
+			</Attribute>
+		</ExperimentAttributes>
+		<ExperimentRuns>
+			<ExperimentRun id="urn:nci.nih.gov:ExperimentRun:caBig_Test1_Run1">
+				<Name>caBig Test1 Run1</Name>
+				<ProtocolId>urn:nci.nih.gov:Protocol:Test_1_pooling_fractionation</ProtocolId>
+				<ProtocolApplications>
+					<ProtocolApplication id="urn:nci.nih.gov:ProtocolApplication.GelSlice_Lane0">
+						<Name>GelSlice.Lane0</Name>
+						<SequenceNumber>1</SequenceNumber>
+						<NextSequenceNumber>2</NextSequenceNumber>
+						<PredecessorSequenceNumber />
+						<ActivityDate>11/16/2006</ActivityDate>
+						<Comments />
+						<ProtocolInputs >
+							<ProtocolInput id="urn:nci.nih.gov:ProtocolApplication.GelSlice_Lane0:ProtocolInput.Input1">
+								<SequenceNumber>1</SequenceNumber>
+								<Name>ProtocolInput 1</Name>
+								<Description />
+								<InputType>SAMPLE</InputType>
+								<DataFileUrl />
+								<ProtocolInputAttributes>
+									<Attribute>
+										<Name>Some random property description</Name>
+										<Value>32 dishes of lung adenocarcinoma A549 cells, 80% confluent; approximately 3x10^8 cells</Value>
+										<ValueType>String</ValueType>
+										<OntologyEntryUri>terms.proteomics.fhcrc.org#Description</OntologyEntryUri>
+									</Attribute>
+								</ProtocolInputAttributes>
+							</ProtocolInput>
+						</ProtocolInputs>
+						<ProtocolOutputs>
+							<ProtocolOutput id="urn:nci.nih.gov:ProtocolApplication.GelSlice_Lane0:ProtocolOutput.Output1">
+								<SequenceNumber>1</SequenceNumber>
+								<Name>Protocol output 1</Name>
+								<Description />
+								<OutputType>SAMPLE</OutputType>
+								<DataFileUrl />
+								<ProtocolOutputAttributes>
+									<Attribute>
+										<Name>Some random property description</Name>
+										<Value>Cells were scraped in 1mL of extraction buffer; cell suspension kept at -80&#194;&#186;C until processing</Value>
+										<ValueType>String</ValueType>
+										<OntologyEntryUri />
+									</Attribute>
+								</ProtocolOutputAttributes>
+							</ProtocolOutput>
+							<ProtocolOutput id="urn:nci.nih.gov:ProtocolApplication.GelSlice_Lane0:ProtocolOutput.Output2">
+								<SequenceNumber>2</SequenceNumber>
+								<Name>Protocol output 2</Name>
+								<Description />
+								<OutputType>SAMPLE</OutputType>
+								<DataFileUrl />
+								<ProtocolOutputAttributes>
+									<Attribute>
+										<Name>Some random property description</Name>
+										<Value>Cells were scraped in 1mL of extraction buffer; cell suspension kept at -80&#194;&#186;C until processing</Value>
+										<ValueType>String</ValueType>
+										<OntologyEntryUri />
+									</Attribute>
+								</ProtocolOutputAttributes>
+							</ProtocolOutput>
+							<ProtocolOutput id="urn:nci.nih.gov:ProtocolApplication.GelSlice_Lane0:ProtocolOutput.Output3">
+								<SequenceNumber>3</SequenceNumber>
+								<Name>Protocol output 3</Name>
+								<Description />
+								<OutputType>DATA</OutputType>
+								<DataFileUrl>\gelimage\CPAS_PAPER_GEL_IMAGE.jpg</DataFileUrl>
+								<ProtocolOutputAttributes />
+							</ProtocolOutput>
+						</ProtocolOutputs>
+					</ProtocolApplication>
+				</ProtocolApplications>
+			</ExperimentRun>
+		</ExperimentRuns>
+	</Experiment>
+
+</ExperimentCollection>
