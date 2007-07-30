@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="gov.nih.nci.protexpress.domain.protocol.Protocol" table="SCHEMA_PROTOCOL.PROTOCOL" polymorphism="implicit">
+        <id name="id" column="ID" type="long">
+            <generator class="assigned"/>
+        </id>
+        <property name="name" column="NAME" type="string" />
+        <property name="description" column="DESCRIPTION" type="string" />
+        <property name="type" column="TYPE" type="string" />
+        <property name="software" column="SOFTWARE" type="string" />
+        <property name="instrument" column="INSTRUMENT" type="string" />
+    </class>
+</hibernate-mapping>
+
+
