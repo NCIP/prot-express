@@ -87,12 +87,25 @@ package gov.nih.nci.protexpress.data.persistent;
  *
  */
 public enum ProtocolType {
+    /**
+     * The ExperimentRun type.
+     */
     ExperimentRun("Experiment Run"),
+    /**
+     * The ExperimentRunOutput type.
+     */
     ExperimentRunOutput("Experiment Run Output"),
+    /**
+     * The simplePrep type.
+     */
     SamplePrep("Sample Prep");
 
     private String displayName;
 
+    /**
+     * Constructor for ProtocolType.
+     * @param displayname the display name
+     */
     private ProtocolType(String displayname) {
         this.displayName = displayname;
     }

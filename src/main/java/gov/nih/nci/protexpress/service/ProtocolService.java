@@ -87,15 +87,15 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import java.util.List;
 
 /**
- * Service to handle the manipulation of protocols
+ * Service to handle the manipulation of protocols.
  * @author Scott Miller
  */
 public interface ProtocolService {
 
     /**
-     * Method to get all protocol's in the application
+     * Method to get all protocol's in the application.
      * @return the list of protocols
      */
-    public List<Protocol> getAllProtocols();
+    List<Protocol> getAllProtocols();
 
 }

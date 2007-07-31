@@ -89,8 +89,8 @@ package gov.nih.nci.protexpress.service;
 public interface ProtExpressService {
 
     /**
-     * Saves or updates the given hibernate object
+     * Saves or updates the given hibernate object.
      * @param object the object to save
      */
-    public void saveOrUpdate(Object object);
+    void saveOrUpdate(Object object);
 }

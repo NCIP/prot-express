@@ -117,21 +117,26 @@ public class Protocol implements Serializable {
     private ProtocolType type;
 
     /**
-     * protected default constructor for hibernate only
+     * protected default constructor for hibernate only.
      */
     protected Protocol() {
     }
 
     /**
-     * Constructor to create the object and populate all required fields
+     * Constructor to create the object and populate all required fields.
      *
      * @param name the name of the protocol
+     * @param type the type
      */
     public Protocol(String name, ProtocolType type) {
         setName(name);
         setType(type);
     }
 
+    /**
+     * The id of the object.
+     * @return the id, null for new objects
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
