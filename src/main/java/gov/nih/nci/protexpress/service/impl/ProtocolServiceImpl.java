@@ -92,8 +92,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Default hibernate backed implementation of the protocol service
  * @author Scott Miller
- *
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class ProtocolServiceImpl extends HibernateDaoSupport implements ProtocolService {

@@ -262,6 +262,9 @@ public class Protocol implements Serializable {
         return new EqualsBuilder().append(getName(), p.getName()).isEquals();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).toHashCode();
