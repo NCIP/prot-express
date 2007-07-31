@@ -89,7 +89,7 @@ import gov.nih.nci.protexpress.service.ProtocolService;
  * This class is used to access all of the spring managed beans in a static manner.
  * @author Scott Miller
  */
-public class ProtExpressRegistry {
+public final class ProtExpressRegistry {
     private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
 
     private ProtocolService protocolService;
