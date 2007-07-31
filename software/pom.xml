@@ -32,6 +32,7 @@
         <tomcat.home>C:/dev/app_servers/tomcat5.5</tomcat.home>
         <source.level>1.5</source.level>
         <target.level>1.5</target.level>
+        <test.hibernate.dialect>org.hibernate.dialect.HSQLDialect</test.hibernate.dialect>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -45,32 +46,32 @@
                     <target>${target.level}</target>
                 </configuration>
             </plugin>
-<!--  Uncomment to include compile jsps in the deployed pacakge
-            <plugin>
+            <!--  Uncomment to include compile jsps in the deployed pacakge
+                <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jspc-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>jspc</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
+                <execution>
+                <id>jspc</id>
+                <goals>
+                <goal>testCompile</goal>
+                </goals>
+                </execution>
                 </executions>
                 <configuration>
-                    <source>${source.level}</source>
-                    <target>${target.level}</target>
+                <source>${source.level}</source>
+                <target>${target.level}</target>
                 </configuration>
-            </plugin>
--->
+                </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-<!--  Uncomment to include compile jsps in the deployed pacakge
-                <configuration>
+                <!--  Uncomment to include compile jsps in the deployed pacakge
+                    <configuration>
                     <webXml>${basedir}/target/jspweb.xml</webXml>
-                </configuration>
--->
+                    </configuration>
+                -->
                 <executions>
                     <execution>
                         <goals>
@@ -136,7 +137,22 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF/spring/</directory>
+                <includes>
+                    <include>applicationContext-main.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
+
+
 
     <!-- Reporting configuration -->
     <reporting>
@@ -148,6 +164,9 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.0</version>
+                <configuration>
+                    <datafile>${basedir}/target/cobertura.ser</datafile>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -200,12 +219,6 @@
             <version>2.0.6</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.2</version>
@@ -214,6 +227,24 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
             <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <version>2.0.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.7</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
