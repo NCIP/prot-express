@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Project Information -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.nih.nci</groupId>
     <artifactId>ProtExpress</artifactId>
     <packaging>war</packaging>
     <name>Prot Express</name>
     <version>1.0-SNAPSHOT</version>
+
+    <!-- Maven repo's to use -->
+    <repositories>
+        <repository>
+            <id>repo1.maven.org</id>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <!-- Project properties -->
+    <properties>
+        <jdbc.url>jdbc:postgresql://localhost/protexpress</jdbc.url>
+        <jdbc.username>postgres</jdbc.username>
+        <jdbc.version>8.1-407.jdbc3</jdbc.version>
+        <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
+        <jdbc.password>postgres</jdbc.password>
+        <jdbc.groupId>postgresql</jdbc.groupId>
+        <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
+        <jdbc.artifactId>postgresql</jdbc.artifactId>
+        <log.dir>${basedir}/target/</log.dir>
+    </properties>
+
+    <!-- Build process Configuration  -->
     <build>
-        <resources>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
         <finalName>protExpress</finalName>
         <plugins>
             <plugin>
@@ -48,13 +67,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>hibernate3-maven-plugin</artifactId>
                 <version>2.0-alpha-1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                    </dependency>
-                </dependencies>
                 <configuration>
                     <components>
                         <component>
@@ -64,12 +76,19 @@
                     </components>
                     <componentProperties>
                         <drop>true</drop>
-                        <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
-                        <outputfilename>schema.sql</outputfilename>
                         <jdk5>true</jdk5>
+                        <outputfilename>schema.sql</outputfilename>
+                        <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
                     </componentProperties>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbc.groupId}</groupId>
+                        <artifactId>${jdbc.artifactId}</artifactId>
+                        <version>${jdbc.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
@@ -86,13 +105,43 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
-    <repositories>
-        <repository>
-            <id>repo1.maven.org</id>
-            <url>http://repo1.maven.org/maven2/</url>
-        </repository>
-    </repositories>
+
+    <!-- Reporting configuration -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <linkXref>true</linkXref>
+                    <targetJdk>1.5</targetJdk>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+
+    <!-- Dependencies -->
     <dependencies>
         <dependency>
             <groupId>log4j</groupId>
@@ -142,41 +191,5 @@
             <version>1.1</version>
         </dependency>
     </dependencies>
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.0</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <linkXref>true</linkXref>
-                    <targetJdk>1.5</targetJdk>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
-    <properties>
-        <jdbc.url>jdbc:postgresql://localhost/protexpress</jdbc.url>
-        <jdbc.username>postgres</jdbc.username>
-        <jdbc.version>8.1-407.jdbc3</jdbc.version>
-        <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
-        <jdbc.password>postgres</jdbc.password>
-        <jdbc.groupId>postgresql</jdbc.groupId>
-        <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
-        <jdbc.artifactId>postgresql</jdbc.artifactId>
-        <log.dir>${basedir}/target/</log.dir>
-    </properties>
 </project>
 

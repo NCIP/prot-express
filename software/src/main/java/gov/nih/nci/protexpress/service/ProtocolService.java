@@ -87,8 +87,8 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import java.util.List;
 
 /**
+ * Service to handle the manipulation of protocols
  * @author Scott Miller
- *
  */
 public interface ProtocolService {
 
