@@ -8,7 +8,7 @@
         </layout>
     </appender>
     <appender name="file1" class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="${log.dir}protExpress.log" />
+        <param name="file" value="${log.dir}/protExpress.log" />
         <param name="MaxFileSize" value="10MB" />
         <param name="MaxBackupIndex" value="5" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -17,12 +17,11 @@
     </appender>
 
     <logger name="gov.nih.nci.protexpress">
-        <level value="debug" />
+        <level value="DEBUG" />
     </logger>
 
     <root>
         <priority value="WARN" />
-        <appender-ref ref="stdout" />
         <appender-ref ref="file1" />
     </root>
 </log4j:configuration>
