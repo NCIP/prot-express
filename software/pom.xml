@@ -22,17 +22,16 @@
     <properties>
         <jdbc.url>jdbc:postgresql://localhost/protexpress</jdbc.url>
         <jdbc.username>postgres</jdbc.username>
-        <jdbc.version>8.1-407.jdbc3</jdbc.version>
-        <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
         <jdbc.password>postgres</jdbc.password>
         <jdbc.groupId>postgresql</jdbc.groupId>
         <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
         <jdbc.artifactId>postgresql</jdbc.artifactId>
+        <jdbc.version>8.1-407.jdbc3</jdbc.version>
+        <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
         <log.dir>logs/</log.dir>
         <tomcat.home>C:/dev/app_servers/tomcat5.5</tomcat.home>
         <source.level>1.5</source.level>
         <target.level>1.5</target.level>
-        <test.hibernate.dialect>org.hibernate.dialect.HSQLDialect</test.hibernate.dialect>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -174,7 +173,7 @@
             </testResource>
             <testResource>
                 <directory>src/test/resources</directory>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </testResource>
         </testResources>
     </build>
