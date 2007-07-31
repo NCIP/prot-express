@@ -52,11 +52,8 @@
                         <configuration>
                             <webResources>
                                 <resource>
-                                    <directory>${basedir}/src/main/webapp</directory>
+                                    <directory>${basedir}/src/main/webResources</directory>
                                     <filtering>true</filtering>
-                                    <includes>
-                                        <include>**/*.xml</include>
-                                    </includes>
                                 </resource>
                             </webResources>
                         </configuration>
