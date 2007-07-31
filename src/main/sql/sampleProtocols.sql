@@ -1,0 +1,3 @@
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 1', 'This is a test protocol', 'ExperimentRun');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 2', 'This is a test protocol', 'ExperimentRunOutput');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 3', 'This is a test protocol', 'SamplePrep');

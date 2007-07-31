@@ -102,6 +102,7 @@
                     <componentProperties>
                         <drop>true</drop>
                         <jdk5>true</jdk5>
+                        <export>false</export>
                         <outputfilename>schema.sql</outputfilename>
                         <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
@@ -114,6 +115,32 @@
                         <version>${jdbc.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbc.groupId}</groupId>
+                        <artifactId>${jdbc.artifactId}</artifactId>
+                        <version>${jdbc.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <components>
+                        <component>
+                            <name>execute</name>
+                        </component>
+                    </components>
+                    <driver>${jdbc.driverClassName}</driver>
+                    <url>${jdbc.url}</url>
+                    <username>${jdbc.username}</username>
+                    <password>${jdbc.password}</password>
+                    <srcFiles>
+                        <srcFile>target/hibernate3/sql/schema.sql</srcFile>
+                        <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
+                    </srcFiles>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
