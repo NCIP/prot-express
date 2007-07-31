@@ -5,7 +5,12 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
-    <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ProtExpressDb" />
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+        <property name="username" value="sa" />
+        <property name="password" value="" />
+        <property name="url" value="jdbc:hsqldb:mem:protExpressTests" />
+    </bean>
 
     <!-- Hibernate SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -18,7 +23,7 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.dialect">${test.hibernate.dialect}</prop>
                 <!-- If you need to get the sql log from hibernate use the corresponding log4j configuration -->
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>

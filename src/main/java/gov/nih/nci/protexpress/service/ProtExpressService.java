@@ -80,59 +80,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
  * @author Scott Miller
  */
-public class ProtExpressRegistry {
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
-
-    private ProtocolService protocolService;
-    private ProtExpressService protExpressService;
-
-
-    private ProtExpressRegistry() {
-    }
+public interface ProtExpressService {
 
     /**
-     * @return the singleton
+     * Saves or updates the given hibernate object
+     * @param object the object to save
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
-    }
-
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-
+    public void saveOrUpdate(Object object);
 }

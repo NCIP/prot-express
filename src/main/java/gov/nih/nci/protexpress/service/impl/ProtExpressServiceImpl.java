@@ -80,59 +80,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.service.impl;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
  * @author Scott Miller
+ *
  */
-public class ProtExpressRegistry {
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
-
-    private ProtocolService protocolService;
-    private ProtExpressService protExpressService;
-
-
-    private ProtExpressRegistry() {
-    }
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtExpressService {
 
     /**
-     * @return the singleton
+     * {@inheritDoc}
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveOrUpdate(Object object) {
+        getHibernateTemplate().saveOrUpdate(object);
     }
-
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
 
 }

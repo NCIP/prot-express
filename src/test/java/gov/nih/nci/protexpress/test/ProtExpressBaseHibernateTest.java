@@ -1,3 +1,18 @@
+package gov.nih.nci.protexpress.test;
+
+import java.net.URL;
+
+import org.apache.log4j.PropertyConfigurator;
+import org.hibernate.EntityMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.metadata.ClassMetadata;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The ProtExpress
@@ -80,59 +95,64 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
-
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Base test case for the spring tests
+ *
  * @author Scott Miller
  */
-public class ProtExpressRegistry {
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInjectionSpringContextTests {
 
-    private ProtocolService protocolService;
-    private ProtExpressService protExpressService;
+    protected SessionFactory theSessionFactory;
+    protected Session theSession;
 
-
-    private ProtExpressRegistry() {
+    /**
+     * Constructor to initialize the configuration
+     */
+    public ProtExpressBaseHibernateTest() {
+        URL log4jConfig = getClass().getClassLoader().getResource("log4j.xml");
+        if (log4jConfig == null)
+            throw new Error("resource log4j.xml not found");
+        PropertyConfigurator.configure(log4jConfig);
+        setPopulateProtectedVariables(true);
     }
 
     /**
-     * @return the singleton
+     * {@inheritDoc}
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        LocalSessionFactoryBean theSessionFactoryBean = (LocalSessionFactoryBean) getApplicationContext().getBean(
+                "&sessionFactory");
+        theSessionFactoryBean.dropDatabaseSchema();
+        theSessionFactoryBean.createDatabaseSchema();
+        theSessionFactory = (SessionFactory) theSessionFactoryBean.getObject();
+        theSessionFactory.evictQueries();
+        for (Object o : theSessionFactory.getAllClassMetadata().values()) {
+            ClassMetadata cm = (ClassMetadata) o;
+            theSessionFactory.evict(cm.getMappedClass(EntityMode.POJO));
+        }
+
+        theSession = theSessionFactory.openSession();
+        TransactionSynchronizationManager.bindResource(theSessionFactory, new SessionHolder(theSession));
     }
 
     /**
-     * @return the protocolService
+     * {@inheritDoc}
      */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
+    @Override
+    protected void onTearDown() throws Exception {
+        TransactionSynchronizationManager.unbindResource(theSessionFactory);
+        SessionFactoryUtils.closeSession(theSession);
+        super.onTearDown();
     }
 
     /**
-     * @param protocolService the protocolService to set
+     * {@inheritDoc}
      */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
+    @Override
+    protected String[] getConfigLocations() {
+        return new String[] { "applicationContext-test.xml", "applicationContext-main.xml" };
     }
-
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-
 }

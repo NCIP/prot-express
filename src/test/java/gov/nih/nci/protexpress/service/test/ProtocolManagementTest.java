@@ -1,3 +1,11 @@
+package gov.nih.nci.protexpress.service.test;
+import java.util.List;
+
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The ProtExpress
@@ -80,59 +88,50 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
-
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
  * @author Scott Miller
  */
-public class ProtExpressRegistry {
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+public class ProtocolManagementTest extends ProtExpressBaseHibernateTest {
 
-    private ProtocolService protocolService;
-    private ProtExpressService protExpressService;
+    public void testSaveProtocol() throws Exception {
+        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        p.setInstrument("foo");
+        p.setDescription("bar");
+        p.setSoftware("baz");
 
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-    private ProtExpressRegistry() {
+        theSession.flush();
+        theSession.clear();
+
+        Protocol p2 = (Protocol) theSession.load(Protocol.class, p.getId());
+        assertEquals(p, p2);
     }
 
-    /**
-     * @return the singleton
-     */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    public void testGetAllProtocolsTest() throws Exception {
+        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        p.setInstrument("foo");
+        p.setDescription("bar");
+        p.setSoftware("baz");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
+
+        List<Protocol> protocolList = ProtExpressRegistry.getProtocolService().getAllProtocols();
+        assertEquals(1, protocolList.size());
+        assertEquals(p, protocolList.get(0));
+        assertEquals(p.getType().getDisplayName(), protocolList.get(0).getType().getDisplayName());
     }
 
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
+    public void testEqualsAndHashCode() {
+        assertFalse(new Protocol("test", ProtocolType.ExperimentRun).equals(new Protocol("test", ProtocolType.ExperimentRun)));
+        Protocol p1 = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        p1.setInstrument("foo");
+        p1.setDescription("bar");
+        p1.setSoftware("baz");
+
+        assertFalse(p1.equals(null));
+        assertFalse(p1.equals(new String("Foo")));
+        assertTrue(p1.equals(p1));
+        assertEquals(p1.hashCode(), new Protocol("test protocol 1", ProtocolType.ExperimentRun).hashCode());
     }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-
 }
