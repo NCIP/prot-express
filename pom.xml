@@ -135,6 +135,7 @@
                     <url>${jdbc.url}</url>
                     <username>${jdbc.username}</username>
                     <password>${jdbc.password}</password>
+                    <onError>continue</onError>
                     <srcFiles>
                         <srcFile>target/hibernate3/sql/schema.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
