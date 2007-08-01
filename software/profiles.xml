@@ -1,0 +1,13 @@
+<profilesXml>
+  <profiles>
+    <profile>
+      <id>local</id>
+      <properties>
+        <tomcat.home>C:/dev/app_servers/tomcat/apache-tomcat-5.5.23</tomcat.home>
+      </properties>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>local</activeProfile>
+  </activeProfiles>
+</profilesXml>
