@@ -6,7 +6,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <tomcat.home>C:/dev/app_servers/tomcat/apache-tomcat-5.5.23</tomcat.home>
+                 <jdbc.password>postgres</jdbc.password>
             </properties>
         </profile>
     </profiles>

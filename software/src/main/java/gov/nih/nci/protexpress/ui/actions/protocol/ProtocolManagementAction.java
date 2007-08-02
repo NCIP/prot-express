@@ -80,34 +80,99 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.protocol;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
 import java.util.List;
 
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+
 /**
- * Service to handle the manipulation of protocols.
+ * Action for managing protocols
+ *
  * @author Scott Miller
  */
-public interface ProtocolService {
+public class ProtocolManagementAction extends ActionSupport implements Preparable {
+    private static final long serialVersionUID = 1l;
+
+    private List<Protocol> protocols;
+
+    private Protocol protocol = new Protocol("", ProtocolType.ExperimentRun);
 
     /**
-     * Method to get all protocol's in the application.
-     * @return the list of protocols
+     * {@inheritDoc}
      */
-    List<Protocol> getAllProtocols();
+    public void prepare() throws Exception {
+        if (getProtocol() != null && getProtocol().getId() != null) {
+            setProtocol(ProtExpressRegistry.getProtocolService().getProtocolById(getProtocol().getId()));
+        }
+    }
 
     /**
-     * Retrieve the protocol ith the given identifier
-     * @param id the id of the protocol to retrive
-     * @return the protocol to retrieve
+     * Lists all protocols
+     *
+     * @return the return condition
      */
-    Protocol getProtocolById(Long id);
+    public String list() {
+        setProtocols(ProtExpressRegistry.getProtocolService().getAllProtocols());
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * delete the given protocol
-     * @param protocol the protocol to delete
+     * loads the protocols
+     * @return
      */
-    void deleteProtocol(Protocol protocol);
+    public String load() {
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Saves or updates the protocols
+     * @return
+     */
+    public String saveOrUpdate() {
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * delete the protocols
+     * @return
+     */
+    public String delete() {
+        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * @return the protocols
+     */
+    public List<Protocol> getProtocols() {
+        return this.protocols;
+    }
+
+    /**
+     * @param protocols the protocols to set
+     */
+    private void setProtocols(List<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    /**
+     * @return the protocol
+     */
+    public Protocol getProtocol() {
+        return this.protocol;
+    }
+
+    /**
+     * @param protocol the protocol to set
+     */
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
+    }
 }
