@@ -105,4 +105,19 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     public List<Protocol> getAllProtocols() {
         return (List<Protocol>) getHibernateTemplate().loadAll(Protocol.class);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Protocol getProtocolById(Long id) {
+        return (Protocol) getHibernateTemplate().load(Protocol.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteProtocol(Protocol protocol) {
+        getHibernateTemplate().delete(protocol);
+    }
 }
