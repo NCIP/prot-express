@@ -96,7 +96,7 @@ import com.opensymphony.xwork2.Preparable;
  *
  * @author Scott Miller
  */
-public class ProtocolManagementAction extends ActionSupport implements Preparable {
+public class ProtocolManagementAction implements Preparable {
     private static final long serialVersionUID = 1l;
 
     private List<Protocol> protocols;
