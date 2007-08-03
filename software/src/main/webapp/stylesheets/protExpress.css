@@ -48,6 +48,7 @@ th.sorted a,th.sortable a {
     background-position: right;
     background-repeat: no-repeat;
     display: block;
+    width: 100%;
 }
 
 th.sortable a {
