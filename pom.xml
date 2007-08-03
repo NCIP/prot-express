@@ -31,6 +31,7 @@
         <log.dir>logs/</log.dir>
         <source.level>1.5</source.level>
         <target.level>1.5</target.level>
+        <tomcat.manager.url>http://localhost:8080/manager</tomcat.manager.url>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -149,6 +150,7 @@
                     <contextFile>
                         ${project.build.directory}/${project.build.finalName}/META-INF/context.xml
                     </contextFile>
+                    <url>${tomcat.manager.url}</url>
                 </configuration>
             </plugin>
         </plugins>

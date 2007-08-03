@@ -6,7 +6,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                 <jdbc.password>postgres</jdbc.password>
+                 <tomcat.manager.url>http://localhost:8081/manager</tomcat.manager.url>
             </properties>
         </profile>
     </profiles>
