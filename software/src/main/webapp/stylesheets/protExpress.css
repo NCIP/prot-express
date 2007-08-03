@@ -3,7 +3,6 @@
     padding: 2px;
     border: 1px solid black;
     background-color: rgb(221, 221, 221);
-    color: rgb(68, 119, 170);
 }
 
 #menu {
@@ -18,4 +17,63 @@
 #bodyContent {
   padding: 2px;
   margin-left: 200px;
+}
+
+
+table {
+}
+
+th,td {
+    text-align: left;
+}
+
+thead tr {
+    background-color: rgb(221, 221, 221);
+}
+
+th.sorted {
+    background-color: rgb(180, 180, 180);
+}
+
+th a,th a:visited {
+    color: black;
+}
+
+th a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+th.sorted a,th.sortable a {
+    background-position: right;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+th.sortable a {
+    background-image: url(../images/arrow_off.png);
+}
+
+th.order1 a {
+    background-image: url(../images/arrow_down.png);
+}
+
+th.order2 a {
+    background-image: url(../images/arrow_up.png);
+}
+
+tr.odd {
+    background-color: rgb(255, 255, 255)
+}
+
+tr.tableRowEven,tr.even {
+    background-color: rgb(221, 221, 221)
+}
+
+span.pagebanner {
+    display: block;
+}
+
+span.pagelinks {
+    display: block;
 }

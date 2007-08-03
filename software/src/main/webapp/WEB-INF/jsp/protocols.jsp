@@ -1,29 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="s" uri="/struts-tags"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <h2>Protcols</h2>
 
-<table border="1">
-    <tr>
-        <th><s:text name="label.protocol.name" /></th>
-        <th><s:text name="label.protocol.description" /></th>
-        <th><s:text name="label.protocol.type" /></th>
-        <th><s:url id="url" action="protocol/save!load"/><a href="${url}"><s:text name="label.add"/></a></th>
-    </tr>
-    <c:forEach items="${protocols}" var="protocol">
-        <tr>
-            <td>${protocol.name}</td>
-            <td>${protocol.description}</td>
-            <td>${protocol.type.displayName}</td>
-            <td>
-                <s:url id="url" action="protocol/save!load">
-                    <s:param name="protocol.id" value="${protocol.id}" />
-                </s:url>
-                <a href="${url}"><s:text name="label.edit" /></a>
-                <s:url id="url" action="protocol/save!delete">
-                    <s:param name="protocol.id" value="${protocol.id}" />
-                </s:url>
-                <a href="${url}"><s:text name="label.delete" /></a></td>
-        </tr>
-    </c:forEach>
-</table>
+<s:url id="sortUrl" action="protocol/list" />
+<s:url id="addUrl" action="protocol/save!load" />
+<fmt:message key="label.add" var="addLink" />
+<display:table defaultsort="1" list="${protocols}" pagesize="10" requestURI="${sortUrl}" id="row" sort="list">
+    <display:setProperty name="paging.banner.placement" value="bottom" />
+    <display:column property="name" titleKey="label.protocol.name" sortable="true" />
+    <display:column property="description" titleKey="label.protocol.description" sortable="true" />
+    <display:column property="type.displayName" titleKey="label.protocol.type" sortable="true" />
+    <display:column title="<a href='${addUrl}'>${addLink}</a>">
+        <s:url id="loadUrl" action="protocol/save!load.action">
+            <s:param name="protocol.id" value="${row.id}" />
+        </s:url>
+        <a href="${loadUrl}"><s:text name="label.edit" /></a>
+        <s:url id="deleteUrl" action="protocol/save!delete">
+            <s:param name="protocol.id" value="${row.id}" />
+        </s:url>
+        <a href="${deleteUrl}"><s:text name="label.delete" /></a>
+    </display:column>
+</display:table>
