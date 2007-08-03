@@ -135,6 +135,7 @@ public class Protocol implements Serializable {
 
     /**
      * The id of the object.
+     *
      * @return the id, null for new objects
      */
     @Id

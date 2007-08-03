@@ -11,9 +11,12 @@
 
 
 <s:form action="protocol/save" method="post">
-    <s:textfield name="protocol.name" label="%{getText('label.protocol.name')}" size="40"/>
-    <s:textfield name="protocol.description" label="%{getText('label.protocol.description')}" size="40"/>
-    <s:hidden name="protocol.Id"/>
-    <s:submit value="%{getText('label.save')}"/>
-    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/list"/>
+    <s:textfield name="protocol.name" label="%{getText('label.protocol.name')}" size="40" />
+    <s:textfield name="protocol.description" label="%{getText('label.protocol.description')}" size="40" />
+    <s:select name="protocol.type" label="%{getText('label.protocol.type')}"
+        list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
+        headerKey="" headerValue="%{getText('label.protocol.type.select')}"/>
+    <s:hidden name="protocol.Id" />
+    <s:submit value="%{getText('label.save')}" />
+    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/list" />
 </s:form>

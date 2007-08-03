@@ -84,7 +84,6 @@ package gov.nih.nci.protexpress.ui.actions.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
 import java.util.List;
 
@@ -101,7 +100,7 @@ public class ProtocolManagementAction implements Preparable {
 
     private List<Protocol> protocols;
 
-    private Protocol protocol = new Protocol("", ProtocolType.ExperimentRun);
+    private Protocol protocol = new Protocol(null, null);
 
     /**
      * {@inheritDoc}
@@ -124,6 +123,7 @@ public class ProtocolManagementAction implements Preparable {
 
     /**
      * loads the protocols
+     *
      * @return
      */
     public String load() {
@@ -132,6 +132,7 @@ public class ProtocolManagementAction implements Preparable {
 
     /**
      * Saves or updates the protocols
+     *
      * @return
      */
     public String saveOrUpdate() {
@@ -141,6 +142,7 @@ public class ProtocolManagementAction implements Preparable {
 
     /**
      * delete the protocols
+     *
      * @return
      */
     public String delete() {
