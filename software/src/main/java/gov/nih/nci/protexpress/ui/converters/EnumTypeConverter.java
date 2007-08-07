@@ -80,98 +80,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.ui.converters;
 
-import java.util.Collection;
-
-import org.apache.log4j.Logger;
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
- *
  * @author Scott Miller
+ *
  */
-public class HibernateValidator extends FieldValidatorSupport {
-
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-
-    private boolean appendPrefix = true;
-
-    /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
-     */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
-    }
-
-    /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
-     */
-    public boolean isAppendPrefix() {
-        return appendPrefix;
-    }
+public class EnumTypeConverter extends com.opensymphony.xwork2.util.EnumTypeConverter {
 
     /**
      * {@inheritDoc}
      */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        if (value == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
+    @Override
+    public Enum convertFromString(String value, Class toClass) {
+        if (StringUtils.isBlank(value)) {
+            return null;
         }
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
+        return super.convertFromString(value, toClass);
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) throws ValidationException {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
-    }
 
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) throws ValidationException {
-        ClassValidator classValidator = new ClassValidator(o.getClass());
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
 
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (appendPrefix) {
-                propertyPrefix = fieldName + ".";
-            }
-
-            for (int i = 0; i < validationMessages.length; i++) {
-                InvalidValue message = validationMessages[i];
-                getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), message.getMessage());
-            }
-        }
-    }
 }
