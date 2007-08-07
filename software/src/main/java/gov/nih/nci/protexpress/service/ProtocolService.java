@@ -99,14 +99,14 @@ public interface ProtocolService {
     List<Protocol> getAllProtocols();
 
     /**
-     * Retrieve the protocol ith the given identifier
+     * Retrieve the protocol ith the given identifier.
      * @param id the id of the protocol to retrive
      * @return the protocol to retrieve
      */
     Protocol getProtocolById(Long id);
 
     /**
-     * delete the given protocol
+     * delete the given protocol.
      * @param protocol the protocol to delete
      */
     void deleteProtocol(Protocol protocol);
