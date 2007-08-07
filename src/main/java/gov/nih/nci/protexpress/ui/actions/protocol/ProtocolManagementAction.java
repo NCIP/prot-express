@@ -84,20 +84,23 @@ package gov.nih.nci.protexpress.ui.actions.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.ui.actions.DisplayTagFilterAction;
 
 import java.util.List;
 
+import org.apache.struts2.interceptor.validation.SkipValidation;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.interceptor.ParameterNameAware;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
  * Action for managing protocols.
  *
  * @author Scott Miller
  */
-public class ProtocolManagementAction extends DisplayTagFilterAction implements Preparable, ParameterNameAware {
+@Validation
+public class ProtocolManagementAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private List<Protocol> protocols;
@@ -118,6 +121,7 @@ public class ProtocolManagementAction extends DisplayTagFilterAction implements 
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String list() {
         setProtocols(ProtExpressRegistry.getProtocolService().getAllProtocols());
         return ActionSupport.SUCCESS;
@@ -128,6 +132,7 @@ public class ProtocolManagementAction extends DisplayTagFilterAction implements 
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String load() {
         return ActionSupport.INPUT;
     }
@@ -147,6 +152,7 @@ public class ProtocolManagementAction extends DisplayTagFilterAction implements 
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String delete() {
         ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
         return ActionSupport.SUCCESS;
@@ -169,6 +175,7 @@ public class ProtocolManagementAction extends DisplayTagFilterAction implements 
     /**
      * @return the protocol
      */
+    @CustomValidator(type = "hibernate")
     public Protocol getProtocol() {
         return this.protocol;
     }

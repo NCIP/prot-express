@@ -80,214 +80,46 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.ui.interceptors;
 
-import java.io.Serializable;
+import org.apache.commons.lang.CharUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotNull;
+import com.opensymphony.xwork2.interceptor.ParametersInterceptor;
 
 /**
- * @author Scott Miller
+ * Extension of the standard parameters interceptor to remove display tag parameters.
  *
+ * @author Scott Miller
  */
-@Entity
-@Table(name = "protocol")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable {
-
+public class DisplayTagParametersInterceptor extends ParametersInterceptor {
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
-    private static final int TYPE_LENGTH = 20;
-
-    private Long id;
-    private String name;
-    private String description;
-    private String software;
-    private String instrument;
-    private ProtocolType type;
-
-    /**
-     * protected default constructor for hibernate only.
-     */
-    protected Protocol() {
-    }
-
-    /**
-     * Constructor to create the object and populate all required fields.
-     *
-     * @param name the name of the protocol
-     * @param type the type
-     */
-    public Protocol(String name, ProtocolType type) {
-        setName(name);
-        setType(type);
-    }
-
-    /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the description.
-     *
-     * @return the description
-     */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the description.
-     *
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Gets the instrument.
-     *
-     * @return the instrument
-     */
-    @Column(name = "instrument")
-    @Length(max = INSTRUMENT_LENGTH)
-    public String getInstrument() {
-        return instrument;
-    }
-
-    /**
-     * Sets the instrument.
-     *
-     * @param instrument the instrument to set
-     */
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name", unique = true)
-    @NotNull
-    @Length(min = 1, max = NAME_LENGTH)
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the software.
-     *
-     * @return the software
-     */
-    @Column(name = "software")
-    @Length(max = SOFTWARE_LENGTH)
-    public String getSoftware() {
-        return software;
-    }
-
-    /**
-     *
-     * @param software the software to set
-     */
-    public void setSoftware(String software) {
-        this.software = software;
-    }
-
-    /**
-     * @return the type
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    public ProtocolType getType() {
-        return this.type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(ProtocolType type) {
-        this.type = type;
-    }
+    private static final String DISPLAY_TAG_PARAM_PREFIX = "d-";
+    private static final int DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX = 2;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof Protocol)) {
-            return false;
-        }
-
-        Protocol p = (Protocol) o;
-
-        if (id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getName(), p.getName()).isEquals();
+    protected boolean isExcluded(String paramName) {
+        return DisplayTagParametersInterceptor.isDisplayTagParam(paramName) || super.isExcluded(paramName);
     }
 
     /**
-     * {@inheritDoc}
+     * determines if the given param is a display tag param.
+     *
+     * @param parameterName the name of the param
+     * @return true if the param is a display tag param
      */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+    public static boolean isDisplayTagParam(String parameterName) {
+        boolean retVal = false;
+        if (parameterName != null && parameterName.startsWith(DISPLAY_TAG_PARAM_PREFIX)) {
+            if (parameterName.length() > DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX) {
+                if (CharUtils.isAsciiNumeric(parameterName.charAt(DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX))) {
+                    retVal = true;
+                }
+            }
+        }
+        return retVal;
     }
-
 }
