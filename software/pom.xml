@@ -179,6 +179,19 @@
                     <url>${tomcat.manager.url}</url>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -220,7 +233,9 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.0</version>
                 <configuration>
-                    <datafile>${basedir}/target/cobertura.ser</datafile>
+                    <haltOnFailure>true</haltOnFailure>
+                    <totalBranchRate>70</totalBranchRate>
+                    <totalLineRate>80</totalLineRate>
                 </configuration>
             </plugin>
             <plugin>
