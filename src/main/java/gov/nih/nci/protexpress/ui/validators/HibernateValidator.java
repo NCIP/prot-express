@@ -83,6 +83,8 @@
 package gov.nih.nci.protexpress.ui.validators;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.hibernate.validator.ClassValidator;
@@ -100,7 +102,9 @@ import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
  */
 public class HibernateValidator extends FieldValidatorSupport {
 
+    private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
     private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
+    private static final HashMap<Class, ClassValidator> CLASS_VALIDATOR_MAP = new HashMap<Class, ClassValidator>();
 
     private boolean appendPrefix = true;
 
@@ -159,7 +163,11 @@ public class HibernateValidator extends FieldValidatorSupport {
 
     @SuppressWarnings("unchecked")
     private void validateObject(String fieldName, Object o) throws ValidationException {
-        ClassValidator classValidator = new ClassValidator(o.getClass());
+        ClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
+        if (classValidator == null) {
+            classValidator = new ClassValidator(o.getClass(), ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE));
+            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
+        }
         InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
 
         if (validationMessages.length > 0) {

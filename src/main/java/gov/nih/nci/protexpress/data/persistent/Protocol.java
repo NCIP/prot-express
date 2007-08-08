@@ -98,11 +98,12 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 
 /**
+ * Class representing a protocol.
  * @author Scott Miller
- *
  */
 @Entity
 @Table(name = "protocol")
@@ -205,8 +206,8 @@ public class Protocol implements Serializable {
      * @return the name
      */
     @Column(name = "name", unique = true)
-    @NotNull
-    @Length(min = 1, max = NAME_LENGTH)
+    @NotEmpty
+    @Length(max = NAME_LENGTH)
     public String getName() {
         return name;
     }
