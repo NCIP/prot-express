@@ -86,10 +86,15 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.ActionValidatorManager;
 import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
 
 /**
  * This class tests the struts hibernate validator
@@ -97,7 +102,7 @@ import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
  * @author Scott Miller
  */
 public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    private HibernateValidatorTestAction action;
+    private TestAction action;
 
     /**
      * {@inheritDoc}
@@ -105,7 +110,7 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        action = new HibernateValidatorTestAction();
+        action = new TestAction();
         action.setProtocol(new Protocol("test name 1", ProtocolType.ExperimentRun));
         action.setProtocol2(new Protocol("test name 2", ProtocolType.ExperimentRun));
     }
@@ -158,12 +163,8 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     }
 
     public void testHibernateValidatorArrayProcessing() throws Exception {
-        action.setProtocolArray(new Protocol[] {
-                new Protocol("test name 3", ProtocolType.ExperimentRun),
-                new Protocol(null, null),
-                null,
-                new Protocol("test name 4", ProtocolType.ExperimentRun)
-        });
+        action.setProtocolArray(new Protocol[] { new Protocol("test name 3", ProtocolType.ExperimentRun),
+                new Protocol(null, null), null, new Protocol("test name 4", ProtocolType.ExperimentRun) });
 
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
         avm.validate(action, null);
@@ -185,5 +186,86 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
         assertEquals(2, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("name"));
         assertTrue(fieldErrors.containsKey("type"));
+    }
+
+    /**
+     * The action for this test case.
+     */
+    class TestAction extends ActionSupport {
+        private static final long serialVersionUID = 1L;
+
+        private Protocol protocol = new Protocol(null, null);
+        private Protocol protocol2 = new Protocol(null, null);
+        private Protocol[] protocolArray = null;
+        private List<Protocol> protocolList = new ArrayList<Protocol>();
+
+        /**
+         * Test action does nothing
+         *
+         * @return the directive for the next action / page to be directed to
+         */
+        public String execute() {
+            return ActionSupport.SUCCESS;
+        }
+
+        /**
+         * @return the protocol
+         */
+        @CustomValidator(type = "hibernate")
+        public Protocol getProtocol() {
+            return this.protocol;
+        }
+
+        /**
+         * @param protocol the protocol to set
+         */
+        public void setProtocol(Protocol protocol) {
+            this.protocol = protocol;
+        }
+
+        /**
+         * @return the protocol2
+         */
+        @CustomValidator(type = "hibernate", parameters = { @ValidationParameter(name = "appendPrefix", value = "false") })
+        public Protocol getProtocol2() {
+            return this.protocol2;
+        }
+
+        /**
+         * @param protocol2 the protocol2 to set
+         */
+        public void setProtocol2(Protocol protocol2) {
+            this.protocol2 = protocol2;
+        }
+
+        /**
+         * @return the protocolArray
+         */
+        @CustomValidator(type = "hibernate")
+        public Protocol[] getProtocolArray() {
+            return this.protocolArray;
+        }
+
+        /**
+         * @param protocolArray the protocolArray to set
+         */
+        public void setProtocolArray(Protocol[] protocolArray) {
+            this.protocolArray = protocolArray;
+        }
+
+        /**
+         * @return the protocolList
+         */
+        @CustomValidator(type = "hibernate")
+        public List<Protocol> getProtocolList() {
+            return this.protocolList;
+        }
+
+        /**
+         * @param protocolList the protocolList to set
+         */
+        public void setProtocolList(List<Protocol> protocolList) {
+            this.protocolList = protocolList;
+        }
     }
 }

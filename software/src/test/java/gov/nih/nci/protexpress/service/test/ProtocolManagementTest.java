@@ -94,7 +94,7 @@ import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
  */
 public class ProtocolManagementTest extends ProtExpressBaseHibernateTest {
 
-    public void testSaveProtocol() throws Exception {
+    public void testSaveRetrieveDeleteProtocol() throws Exception {
         Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
         p.setInstrument("foo");
         p.setDescription("bar");
@@ -105,8 +105,16 @@ public class ProtocolManagementTest extends ProtExpressBaseHibernateTest {
         theSession.flush();
         theSession.clear();
 
-        Protocol p2 = (Protocol) theSession.load(Protocol.class, p.getId());
+        Protocol p2 = (Protocol) ProtExpressRegistry.getProtocolService().getProtocolById(p.getId());
         assertEquals(p, p2);
+
+        ProtExpressRegistry.getProtocolService().deleteProtocol(p2);
+
+        theSession.flush();
+        theSession.clear();
+
+        List<Protocol> protocolList = ProtExpressRegistry.getProtocolService().getAllProtocols();
+        assertEquals(0, protocolList.size());
     }
 
     public void testGetAllProtocolsTest() throws Exception {

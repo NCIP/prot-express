@@ -82,11 +82,15 @@
  */
 package gov.nih.nci.protexpress.test;
 
+import java.util.Map;
+
+import org.apache.struts2.dispatcher.Dispatcher;
+import org.apache.struts2.util.StrutsTestCaseHelper;
+
 import com.opensymphony.xwork2.ActionProxyFactory;
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.ConfigurationManager;
 import com.opensymphony.xwork2.config.ConfigurationProvider;
-import com.opensymphony.xwork2.config.impl.MockConfiguration;
 import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.util.XWorkTestCaseHelper;
 
@@ -105,9 +109,7 @@ public abstract class ProtExpressBaseHibernateAndStrutsTestCase extends ProtExpr
 
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        configurationManager = XWorkTestCaseHelper.setUp();
-        configuration = new MockConfiguration();
-        container = configuration.getContainer();
+        initDispatcher(null);
         actionProxyFactory = container.getInstance(ActionProxyFactory.class);
     }
 
@@ -117,13 +119,15 @@ public abstract class ProtExpressBaseHibernateAndStrutsTestCase extends ProtExpr
         configuration = null;
         container = null;
         actionProxyFactory = null;
+        StrutsTestCaseHelper.tearDown();
         super.onTearDown();
     }
 
-    protected void loadConfigurationProviders(ConfigurationProvider... providers) {
-        configurationManager = XWorkTestCaseHelper.loadConfigurationProviders(configurationManager, providers);
+    protected Dispatcher initDispatcher(Map<String,String> params) {
+        Dispatcher du = StrutsTestCaseHelper.initDispatcher(params);
+        configurationManager = du.getConfigurationManager();
         configuration = configurationManager.getConfiguration();
         container = configuration.getContainer();
-        actionProxyFactory = container.getInstance(ActionProxyFactory.class);
+        return du;
     }
 }

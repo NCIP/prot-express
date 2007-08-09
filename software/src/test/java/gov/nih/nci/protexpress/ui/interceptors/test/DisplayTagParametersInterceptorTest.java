@@ -80,95 +80,61 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators.test;
+package gov.nih.nci.protexpress.ui.interceptors.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.protexpress.ui.interceptors.DisplayTagParametersInterceptor;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import junit.framework.TestCase;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
+import com.opensymphony.xwork2.interceptor.ParametersInterceptor;
+import com.opensymphony.xwork2.util.OgnlValueStack;
+import com.opensymphony.xwork2.util.ValueStack;
 
 /**
  * @author Scott Miller
  *
  */
-public class HibernateValidatorTestAction extends ActionSupport {
-    private static final long serialVersionUID = 1L;
+public class DisplayTagParametersInterceptorTest extends TestCase {
+    public void testParameterNameAware() throws Exception {
+        DisplayTagParametersInterceptor interceptor = new DisplayTagParametersInterceptor();
+        TestAction action = new TestAction();
+        MapBackedValueStack stack = new MapBackedValueStack();
 
-    private Protocol protocol = new Protocol(null, null);
-    private Protocol protocol2 = new Protocol(null, null);
-    private Protocol[] protocolArray = null;
-    private List<Protocol> protocolList = new ArrayList<Protocol>();
+        final Map<String, Object> expected = new HashMap<String, Object>();
+        expected.put("fooKey", "fooValue");
+        expected.put("barKey", "barValue");
+        expected.put("d-", "d-value2");
+        expected.put("d-key", "d-value");
 
-    /**
-     * Test action does nothing
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String execute() {
-        return ActionSupport.SUCCESS;
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("fooKey", "fooValue");
+        parameters.put("barKey", "barValue");
+        parameters.put("d-1", "error");
+        parameters.put("d-", "d-value2");
+        parameters.put("d-key", "d-value");
+
+        Method setParamMethod = ParametersInterceptor.class.
+            getDeclaredMethod("setParameters", Object.class, ValueStack.class, Map.class);
+        setParamMethod.setAccessible(true);
+        setParamMethod.invoke(interceptor, action, stack, parameters);
+        assertEquals(expected, stack.actual);
     }
 
-    /**
-     * @return the protocol
-     */
-    @CustomValidator(type = "hibernate")
-    public Protocol getProtocol() {
-        return this.protocol;
+    class TestAction extends ActionSupport {
+        private static final long serialVersionUID = 1L;
     }
 
-    /**
-     * @param protocol the protocol to set
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
+    class MapBackedValueStack extends OgnlValueStack {
+        private static final long serialVersionUID = 1L;
+        final Map<String, Object> actual = new HashMap<String, Object>();
 
-    /**
-     * @return the protocol2
-     */
-    @CustomValidator(type = "hibernate", parameters = { @ValidationParameter(name = "appendPrefix", value = "false") })
-    public Protocol getProtocol2() {
-        return this.protocol2;
-    }
-
-    /**
-     * @param protocol2 the protocol2 to set
-     */
-    public void setProtocol2(Protocol protocol2) {
-        this.protocol2 = protocol2;
-    }
-
-    /**
-     * @return the protocolArray
-     */
-    @CustomValidator(type = "hibernate")
-    public Protocol[] getProtocolArray() {
-        return this.protocolArray;
-    }
-
-    /**
-     * @param protocolArray the protocolArray to set
-     */
-    public void setProtocolArray(Protocol[] protocolArray) {
-        this.protocolArray = protocolArray;
-    }
-
-    /**
-     * @return the protocolList
-     */
-    @CustomValidator(type = "hibernate")
-    public List<Protocol> getProtocolList() {
-        return this.protocolList;
-    }
-
-    /**
-     * @param protocolList the protocolList to set
-     */
-    public void setProtocolList(List<Protocol> protocolList) {
-        this.protocolList = protocolList;
+        public void setValue(String expr, Object value) {
+            actual.put(expr, value);
+        }
     }
 }
