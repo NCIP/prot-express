@@ -113,12 +113,10 @@ public class DisplayTagParametersInterceptor extends ParametersInterceptor {
      */
     public static boolean isDisplayTagParam(String parameterName) {
         boolean retVal = false;
-        if (parameterName != null && parameterName.startsWith(DISPLAY_TAG_PARAM_PREFIX)) {
-            if (parameterName.length() > DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX) {
-                if (CharUtils.isAsciiNumeric(parameterName.charAt(DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX))) {
-                    retVal = true;
-                }
-            }
+        if (parameterName != null && parameterName.startsWith(DISPLAY_TAG_PARAM_PREFIX)
+                && parameterName.length() > DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX
+                && CharUtils.isAsciiNumeric(parameterName.charAt(DISPLAY_TAG_PARAM_FIRST_NUMBER_INDEX))) {
+            retVal = true;
         }
         return retVal;
     }
