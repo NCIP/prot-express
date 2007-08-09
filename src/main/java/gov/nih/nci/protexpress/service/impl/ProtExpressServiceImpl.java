@@ -102,5 +102,4 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
     public void saveOrUpdate(Object object) {
         getHibernateTemplate().saveOrUpdate(object);
     }
-
 }

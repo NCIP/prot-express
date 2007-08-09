@@ -100,7 +100,4 @@ public class EnumTypeConverter extends com.opensymphony.xwork2.util.EnumTypeConv
         }
         return super.convertFromString(value, toClass);
     }
-
-
-
 }
