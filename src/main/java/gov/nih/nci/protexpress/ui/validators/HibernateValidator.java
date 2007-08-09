@@ -149,7 +149,7 @@ public class HibernateValidator extends FieldValidatorSupport {
         stack.pop();
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) throws ValidationException {
+    private void validateArrayElements(Object[] array, String fieldName) {
         for (int i = 0; i < array.length; i++) {
             Object o = array[i];
             validateObject(fieldName + "[" + i + "]", o);
@@ -157,7 +157,7 @@ public class HibernateValidator extends FieldValidatorSupport {
     }
 
     @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) throws ValidationException {
+    private void validateObject(String fieldName, Object o) {
         if (o == null) {
             LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
                     + "Please make sure the visited object is not null for VisitorValidator to function properly");

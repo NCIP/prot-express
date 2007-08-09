@@ -239,6 +239,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
                     <configLocation>protExpressCheckstyle.xml</configLocation>
+                    <enableRulesSummary>false</enableRulesSummary>
                 </configuration>
             </plugin>
             <plugin>
