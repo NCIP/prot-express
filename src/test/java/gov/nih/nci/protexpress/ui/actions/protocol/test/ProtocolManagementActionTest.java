@@ -82,21 +82,21 @@
  */
 package gov.nih.nci.protexpress.ui.actions.protocol.test;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import com.opensymphony.xwork2.ActionSupport;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * This class tests the ProtocolManagementAction.
  * @author Scott Miller
  */
-public class ProtocolManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
+public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
 
     ProtocolManagementAction action;
     Protocol protocol;
