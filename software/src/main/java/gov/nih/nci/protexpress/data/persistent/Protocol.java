@@ -290,5 +290,4 @@ public class Protocol implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).toHashCode();
     }
-
 }
