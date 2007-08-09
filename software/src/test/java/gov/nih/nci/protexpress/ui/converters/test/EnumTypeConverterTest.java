@@ -80,53 +80,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.test;
+package gov.nih.nci.protexpress.ui.converters.test;
 
-import java.util.Map;
-
-import org.apache.struts2.dispatcher.Dispatcher;
-import org.apache.struts2.util.StrutsTestCaseHelper;
-
-import com.opensymphony.xwork2.ActionProxyFactory;
-import com.opensymphony.xwork2.config.Configuration;
-import com.opensymphony.xwork2.config.ConfigurationManager;
-import com.opensymphony.xwork2.inject.Container;
-import com.opensymphony.xwork2.util.XWorkTestCaseHelper;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.ui.converters.EnumTypeConverter;
+import junit.framework.TestCase;
 
 /**
+ * Test case for the enum type converter
  * @author Scott Miller
  */
-public abstract class ProtExpressBaseHibernateAndStrutsTestCase extends ProtExpressBaseHibernateTest {
-    protected ConfigurationManager configurationManager;
-    protected Configuration configuration;
-    protected Container container;
-    protected ActionProxyFactory actionProxyFactory;
+public class EnumTypeConverterTest extends TestCase {
 
-    public ProtExpressBaseHibernateAndStrutsTestCase() {
-        super();
-    }
+    public void testConversion() throws Exception {
+        EnumTypeConverter converter = new EnumTypeConverter();
+        Enum convertedValue = converter.convertFromString(null, ProtocolType.class);
+        assertEquals(null, convertedValue);
 
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        initDispatcher(null);
-        actionProxyFactory = container.getInstance(ActionProxyFactory.class);
-    }
-
-    protected void onTearDown() throws Exception {
-        XWorkTestCaseHelper.tearDown(configurationManager);
-        configurationManager = null;
-        configuration = null;
-        container = null;
-        actionProxyFactory = null;
-        StrutsTestCaseHelper.tearDown();
-        super.onTearDown();
-    }
-
-    protected Dispatcher initDispatcher(Map<String,String> params) {
-        Dispatcher du = StrutsTestCaseHelper.initDispatcher(params);
-        configurationManager = du.getConfigurationManager();
-        configuration = configurationManager.getConfiguration();
-        container = configuration.getContainer();
-        return du;
+        convertedValue = converter.convertFromString(ProtocolType.ExperimentRun.name(), ProtocolType.class);
+        assertEquals(ProtocolType.ExperimentRun, convertedValue);
     }
 }
