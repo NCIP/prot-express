@@ -80,107 +80,110 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.ui.validators.test;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 
-import org.apache.log4j.Logger;
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
+import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import com.opensymphony.xwork2.validator.ActionValidatorManager;
+import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
+ * This class tests the struts hibernate validator
  *
  * @author Scott Miller
  */
-public class HibernateValidator extends FieldValidatorSupport {
-
-    private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ClassValidator> CLASS_VALIDATOR_MAP = new HashMap<Class, ClassValidator>();
-
-    private boolean appendPrefix = true;
-
-    /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
-     */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
-    }
-
-    /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
-     */
-    public boolean isAppendPrefix() {
-        return appendPrefix;
-    }
+public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTestCase {
+    private HibernateValidatorTestAction action;
 
     /**
      * {@inheritDoc}
      */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        action = new HibernateValidatorTestAction();
+        action.setProtocol(new Protocol("test name 1", ProtocolType.ExperimentRun));
+        action.setProtocol2(new Protocol("test name 2", ProtocolType.ExperimentRun));
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) throws ValidationException {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
+    public void testHibernateValidatorWithNullObject() throws Exception {
+        action.setProtocol(null);
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
+
+        assertFalse(action.hasErrors());
+        assertEquals(0, fieldErrors.size());
     }
 
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) throws ValidationException {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
+    public void testHibernateValidatorWithInvalidObject() throws Exception {
+        action.setProtocol(new Protocol(null, null));
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
 
-        ClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ClassValidator(o.getClass(), ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE));
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
+        assertTrue(action.hasErrors());
+        assertEquals(2, fieldErrors.size());
+        assertTrue(fieldErrors.containsKey("protocol.name"));
+        assertTrue(fieldErrors.containsKey("protocol.type"));
+    }
 
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
+    public void testHibernateValidatorWithValidObject() throws Exception {
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
 
-            for (int i = 0; i < validationMessages.length; i++) {
-                InvalidValue message = validationMessages[i];
-                getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), message.getMessage());
-            }
-        }
+        assertFalse(action.hasErrors());
+        assertEquals(0, fieldErrors.size());
+    }
+
+    public void testHibernateValidatorListProcessing() throws Exception {
+        action.getProtocolList().add(new Protocol("test name 3", ProtocolType.ExperimentRun));
+        action.getProtocolList().add(new Protocol(null, null));
+        action.getProtocolList().add(null);
+        action.getProtocolList().add(new Protocol("test name 4", ProtocolType.ExperimentRun));
+
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
+
+        assertTrue(action.hasErrors());
+        assertEquals(2, fieldErrors.size());
+        assertTrue(fieldErrors.containsKey("protocolList[1].name"));
+        assertTrue(fieldErrors.containsKey("protocolList[1].type"));
+    }
+
+    public void testHibernateValidatorArrayProcessing() throws Exception {
+        action.setProtocolArray(new Protocol[] {
+                new Protocol("test name 3", ProtocolType.ExperimentRun),
+                new Protocol(null, null),
+                null,
+                new Protocol("test name 4", ProtocolType.ExperimentRun)
+        });
+
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
+
+        assertTrue(action.hasErrors());
+        assertEquals(2, fieldErrors.size());
+        assertTrue(fieldErrors.containsKey("protocolArray[1].name"));
+        assertTrue(fieldErrors.containsKey("protocolArray[1].type"));
+    }
+
+    public void testHibernateValidatorWithNoPrefix() throws Exception {
+        action.setProtocol2(new Protocol(null, null));
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(action, null);
+        Map fieldErrors = action.getFieldErrors();
+
+        assertTrue(action.hasErrors());
+        assertEquals(2, fieldErrors.size());
+        assertTrue(fieldErrors.containsKey("name"));
+        assertTrue(fieldErrors.containsKey("type"));
     }
 }

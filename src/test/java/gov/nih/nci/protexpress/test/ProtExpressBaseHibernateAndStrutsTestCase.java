@@ -80,107 +80,50 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.test;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ResourceBundle;
-
-import org.apache.log4j.Logger;
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import com.opensymphony.xwork2.ActionProxyFactory;
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.ConfigurationManager;
+import com.opensymphony.xwork2.config.ConfigurationProvider;
+import com.opensymphony.xwork2.config.impl.MockConfiguration;
+import com.opensymphony.xwork2.inject.Container;
+import com.opensymphony.xwork2.util.XWorkTestCaseHelper;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
- *
  * @author Scott Miller
  */
-public class HibernateValidator extends FieldValidatorSupport {
+public abstract class ProtExpressBaseHibernateAndStrutsTestCase extends ProtExpressBaseHibernateTest {
+    protected ConfigurationManager configurationManager;
+    protected Configuration configuration;
+    protected Container container;
+    protected ActionProxyFactory actionProxyFactory;
 
-    private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ClassValidator> CLASS_VALIDATOR_MAP = new HashMap<Class, ClassValidator>();
-
-    private boolean appendPrefix = true;
-
-    /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
-     */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
+    public ProtExpressBaseHibernateAndStrutsTestCase() {
+        super();
     }
 
-    /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
-     */
-    public boolean isAppendPrefix() {
-        return appendPrefix;
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        configurationManager = XWorkTestCaseHelper.setUp();
+        configuration = new MockConfiguration();
+        container = configuration.getContainer();
+        actionProxyFactory = container.getInstance(ActionProxyFactory.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
+    protected void onTearDown() throws Exception {
+        XWorkTestCaseHelper.tearDown(configurationManager);
+        configurationManager = null;
+        configuration = null;
+        container = null;
+        actionProxyFactory = null;
+        super.onTearDown();
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) throws ValidationException {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) throws ValidationException {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
-
-        ClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ClassValidator(o.getClass(), ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE));
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
-
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
-
-            for (int i = 0; i < validationMessages.length; i++) {
-                InvalidValue message = validationMessages[i];
-                getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), message.getMessage());
-            }
-        }
+    protected void loadConfigurationProviders(ConfigurationProvider... providers) {
+        configurationManager = XWorkTestCaseHelper.loadConfigurationProviders(configurationManager, providers);
+        configuration = configurationManager.getConfiguration();
+        container = configuration.getContainer();
+        actionProxyFactory = container.getInstance(ActionProxyFactory.class);
     }
 }
