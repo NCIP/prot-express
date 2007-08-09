@@ -80,107 +80,95 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.ui.validators.test;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
- *
  * @author Scott Miller
+ *
  */
-public class HibernateValidator extends FieldValidatorSupport {
+public class HibernateValidatorTestAction extends ActionSupport {
+    private static final long serialVersionUID = 1L;
 
-    private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ClassValidator> CLASS_VALIDATOR_MAP = new HashMap<Class, ClassValidator>();
-
-    private boolean appendPrefix = true;
+    private Protocol protocol = new Protocol(null, null);
+    private Protocol protocol2 = new Protocol(null, null);
+    private Protocol[] protocolArray = null;
+    private List<Protocol> protocolList = new ArrayList<Protocol>();
 
     /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
+     * Test action does nothing
      *
-     * @param appendPrefix the value to set
+     * @return the directive for the next action / page to be directed to
      */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
+    public String execute() {
+        return ActionSupport.SUCCESS;
     }
 
     /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
+     * @return the protocol
      */
-    public boolean isAppendPrefix() {
-        return appendPrefix;
+    @CustomValidator(type = "hibernate")
+    public Protocol getProtocol() {
+        return this.protocol;
     }
 
     /**
-     * {@inheritDoc}
+     * @param protocol the protocol to set
      */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) throws ValidationException {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
+    /**
+     * @return the protocol2
+     */
+    @CustomValidator(type = "hibernate", parameters = { @ValidationParameter(name = "appendPrefix", value = "false") })
+    public Protocol getProtocol2() {
+        return this.protocol2;
     }
 
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) throws ValidationException {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
+    /**
+     * @param protocol2 the protocol2 to set
+     */
+    public void setProtocol2(Protocol protocol2) {
+        this.protocol2 = protocol2;
+    }
 
-        ClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ClassValidator(o.getClass(), ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE));
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
+    /**
+     * @return the protocolArray
+     */
+    @CustomValidator(type = "hibernate")
+    public Protocol[] getProtocolArray() {
+        return this.protocolArray;
+    }
 
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
+    /**
+     * @param protocolArray the protocolArray to set
+     */
+    public void setProtocolArray(Protocol[] protocolArray) {
+        this.protocolArray = protocolArray;
+    }
 
-            for (int i = 0; i < validationMessages.length; i++) {
-                InvalidValue message = validationMessages[i];
-                getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), message.getMessage());
-            }
-        }
+    /**
+     * @return the protocolList
+     */
+    @CustomValidator(type = "hibernate")
+    public List<Protocol> getProtocolList() {
+        return this.protocolList;
+    }
+
+    /**
+     * @param protocolList the protocolList to set
+     */
+    public void setProtocolList(List<Protocol> protocolList) {
+        this.protocolList = protocolList;
     }
 }
