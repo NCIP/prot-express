@@ -115,7 +115,6 @@ public class ProtocolManagementTest extends ProtExpressBaseHibernateTest {
 
         List<Protocol> protocolList = ProtExpressRegistry.getProtocolService().getAllProtocols();
         assertEquals(0, protocolList.size());
-        fail();
     }
 
     public void testGetAllProtocolsTest() throws Exception {
