@@ -11,7 +11,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <ciManagement>
-        <system>continuum</system>
+        <system>CruiseControl</system>
         <url>http://2115-millers-d1.nci.nih.gov:8080/continuum</url>
         <notifiers>
             <notifier>
