@@ -115,7 +115,7 @@ public class Protocol implements Serializable {
     private static final int NAME_LENGTH = 100;
     private static final int DESCRIPTION_LENGTH = 255;
     private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH =255;
+    private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
 
     private Long id;
