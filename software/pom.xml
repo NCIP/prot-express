@@ -58,8 +58,8 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/</connection>
-        <url>http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</connection>
+        <url>http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</url>
     </scm>
 
     <!-- Maven repo's to use -->
