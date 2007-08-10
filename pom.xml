@@ -16,9 +16,11 @@
         <notifiers>
             <notifier>
                 <type>mail</type>
-                <address>NCINCICBGpsXarDevTeam@mail.nih.gov</address>
-                <sendOnError>true</sendOnError>
-                <sendOnFailure>true</sendOnFailure>
+                <configuration>
+                    <address>NCINCICBGpsXarDevTeam@mail.nih.gov</address>
+                    <sendOnError>true</sendOnError>
+                    <sendOnFailure>true</sendOnFailure>
+                </configuration>
             </notifier>
         </notifiers>
     </ciManagement>
