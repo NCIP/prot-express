@@ -10,6 +10,58 @@
     <name>Prot Express</name>
     <version>1.0-SNAPSHOT</version>
 
+    <ciManagement>
+        <system>continuum</system>
+        <url>http://2115-millers-d1.nci.nih.gov:8080/continuum</url>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <address>NCINCICBGpsXarDevTeam@mail.nih.gov</address>
+                <sendOnError>true</sendOnError>
+                <sendOnFailure>true</sendOnFailure>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+
+    <inceptionYear>2007</inceptionYear>
+
+    <mailingLists>
+        <mailingList>
+            <name>GPS XAR Dev Team List</name>
+            <post>NCINCICBGpsXarDevTeam@mail.nih.gov</post>
+        </mailingList>
+        <mailingList>
+            <name>GPS XAR QA Team List</name>
+            <post>NCINCICBGpsXarQATeam@mail.nih.gov</post>
+        </mailingList>
+        <mailingList>
+            <name>GPS XAR Management Team List</name>
+            <post>NCINCICBGpsXarManagementTeam@mail.nih.gov</post>
+        </mailingList>
+        <mailingList>
+            <name>GPS XAR Team List</name>
+            <post>NCINCICBGpsXarTeam@mail.nih.gov</post>
+        </mailingList>
+    </mailingLists>
+
+    <developers>
+        <developer>
+            <email>smiller@5amsolutions.com</email>
+            <id>smiller</id>
+            <name>Scott Miller</name>
+        </developer>
+        <developer>
+            <email>kkanchinadam@5amsolutions.com</email>
+            <id>kanchink</id>
+            <name>Krishna M. Kanchinadam</name>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/</connection>
+        <url>http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/</url>
+    </scm>
+
     <!-- Maven repo's to use -->
     <repositories>
         <repository>
