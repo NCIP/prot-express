@@ -84,6 +84,9 @@
         <source.level>1.5</source.level>
         <target.level>1.5</target.level>
         <tomcat.manager.url>http://localhost:8080/manager</tomcat.manager.url>
+        <hibernate.create>true</hibernate.create>
+        <hibernate.drop>true</hibernate.drop>
+        <hibernate.export>false</hibernate.export>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -128,9 +131,10 @@
                         </component>
                     </components>
                     <componentProperties>
-                        <drop>true</drop>
+                        <drop>${hibernate.drop}</drop>
+                        <create>${hibernate.create}</create>
                         <jdk5>true</jdk5>
-                        <export>false</export>
+                        <export>${hibernate.export}</export>
                         <outputfilename>schema.sql</outputfilename>
                         <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
@@ -191,6 +195,7 @@
                     <username>${jdbc.username}</username>
                     <password>${jdbc.password}</password>
                     <onError>continue</onError>
+                    <autocommit>true</autocommit>
                     <srcFiles>
                         <srcFile>target/hibernate3/sql/schema.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
@@ -379,6 +384,29 @@
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>devServer</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <jdbc.url>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/postgres</jdbc.url>
+                <jdbc.username>gpsxar</jdbc.username>
+                <jdbc.password>gpsxar456</jdbc.password>
+                <tomcat.manager.url>http://protexpress-dev.nci.nih.gov:18080/manager</tomcat.manager.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>dropDb</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <hibernate.create>false</hibernate.create>
+                <hibernate.drop>true</hibernate.drop>
+                <hibernate.export>true</hibernate.export>
+            </properties>
         </profile>
     </profiles>
 
