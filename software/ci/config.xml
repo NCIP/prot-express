@@ -1,0 +1,90 @@
+<cruisecontrol>
+    <project name="protExpress">
+        <listeners>
+            <currentbuildstatuslistener file="logs/${project.name}/status.txt" />
+        </listeners>
+
+        <bootstrappers>
+            <svnbootstrapper localWorkingCopy="projects/${project.name}" />
+        </bootstrappers>
+
+        <modificationset quietperiod="60">
+            <svn localWorkingCopy="projects/${project.name}" />
+        </modificationset>
+
+        <schedule interval="300">
+            <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/${project.name}/pom.xml"
+                goal="clean site verify hibernate3:hbm2ddl" activateprofiles="jspCompile" />
+        </schedule>
+
+        <publishers>
+            <artifactspublisher dest="artifacts/${project.name}" file="projects/${project.name}/target/protExpressTest.log" />
+            <artifactspublisher dest="artifacts/${project.name}" file="projects/${project.name}/target/hibernate3/schema.sql" />
+            <artifactspublisher dest="artifacts/${project.name}" dir="projects/${project.name}/target/site/" subdirectory="site" />
+            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8080/buildresults/${project.name}"
+                mailhost="mailfwd.nih.gov"
+                mailport="25"
+                returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
+                subjectprefix="[${project.name} CI Notice]"
+                skipusers="true">
+                <failure address="NCINCICBGpsXarDevTeam@mail.nih.gov" reportWhenFixed="true" />
+            </email>
+        </publishers>
+    </project>
+
+    <project name="protExpressDevUnDeploy">
+        <listeners>
+            <currentbuildstatuslistener file="logs/${project.name}/status.txt" />
+        </listeners>
+
+        <modificationset>
+            <compound>
+                <triggers>
+                    <timebuild time="2350" />
+                </triggers>
+                <targets>
+                    <svn localWorkingCopy="projects/protExpressDevDeploy" />
+                </targets>
+            </compound>
+        </modificationset>
+
+        <schedule interval="300">
+            <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/protExpressDevDeploy/pom.xml"
+                goal="clean compile hibernate3:hbm2ddl" activateprofiles="devServer,dropDb" />
+        </schedule>
+    </project>
+
+    <project name="protExpressDevDeploy">
+        <listeners>
+            <currentbuildstatuslistener file="logs/${project.name}/status.txt" />
+        </listeners>
+
+        <bootstrappers>
+            <svnbootstrapper localWorkingCopy="projects/${project.name}" />
+        </bootstrappers>
+
+        <modificationset>
+            <compound>
+                <triggers>
+                    <timebuild time="2355" />
+                </triggers>
+                <targets>
+                    <svn localWorkingCopy="projects/${project.name}" />
+                </targets>
+            </compound>
+        </modificationset>
+
+        <schedule interval="300">
+            <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/${project.name}/pom.xml"
+                goal="clean compile hibernate3:hbm2ddl sql:execute" activateprofiles="devServer" />
+        </schedule>
+
+        <publishers>
+            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8080/buildresults/${project.name}"
+                mailhost="mailfwd.nih.gov" mailport="25" returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
+                subjectprefix="[${project.name} CI Notice]" skipusers="true">
+                <always address="smiller@5amsolutions.com" />
+            </email>
+        </publishers>
+    </project>
+</cruisecontrol>
