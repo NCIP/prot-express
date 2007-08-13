@@ -7,13 +7,18 @@
 <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css">
 </head>
 
+ <c:if test="${empty menuPage}">
+  <c:set var="menuPage" value="/WEB-INF/decorators/mainMenu.jsp"/>
+</c:if>
+
+
 <body>
 <!--  HEADER -->
 <div id="header"><%@ include file="/WEB-INF/decorators/mainHeader.jsp"%></div>
 <!--  END OF HEADER -->
 
 <!--  MENU -->
-<div id="menu"><%@ include file="/WEB-INF/decorators/mainMenu.jsp"%></div>
+<div id="menu"><c:import url="${menuPage}" /></div>
 <!--  END OF MENU -->
 
 <!--  BODY -->
