@@ -1,0 +1,3 @@
+insert into experiment (id, name, description, hypothesis, url) values (nextval('hibernate_sequence'), 'Experiment 1', 'This is test experiment 1', 'hypothesis 1', 'http://www.url1.edu');
+insert into experiment (id, name, description, hypothesis, url) values (nextval('hibernate_sequence'), 'Experiment 2', 'This is test experiment 2', 'hypothesis 2', 'http://www.url2.edu');
+insert into experiment (id, name, description, hypothesis, url) values (nextval('hibernate_sequence'), 'Experiment 3', 'This is test experiment 3', 'hypothesis 3', 'http://www.url3.edu');
