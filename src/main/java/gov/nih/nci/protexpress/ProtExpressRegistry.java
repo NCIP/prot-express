@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress;
 
 import gov.nih.nci.protexpress.service.ProtExpressService;
 import gov.nih.nci.protexpress.service.ProtocolService;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
 /**
  * This class is used to access all of the spring managed beans in a static manner.
@@ -93,6 +94,7 @@ public final class ProtExpressRegistry {
     private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
 
     private ProtocolService protocolService;
+    private ExperimentService experimentService;
     private ProtExpressService protExpressService;
 
 
@@ -120,6 +122,19 @@ public final class ProtExpressRegistry {
         this.protocolService = protocolService;
     }
 
+    /**
+     * @return the experimentService
+     */
+    public static ExperimentService getExperimentService() {
+        return ProtExpressRegistry.getInstance().experimentService;
+    }
+
+    /**
+     * @param experimentService the experimentService to set
+     */
+    public void setExperimentService(ExperimentService experimentService) {
+        this.experimentService = experimentService;
+    }
     /**
      * @return the protExpressService
      */
