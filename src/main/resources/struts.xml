@@ -70,5 +70,17 @@
             <result name="input">/WEB-INF/jsp/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+        
+        <action name="experiment/list" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
+            method="list">
+            <result name="success">/WEB-INF/jsp/experiments.jsp</result>
+        </action>
+
+        <action name="experiment/save" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
+            method="saveOrUpdate">
+            <result name="success" type="redirect-action">experiment/list</result>
+            <result name="input">/WEB-INF/jsp/experimentForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
     </package>
 </struts>
