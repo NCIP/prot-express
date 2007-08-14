@@ -17,6 +17,12 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
+    
+    <bean id="experimentService" class="gov.nih.nci.protexpress.service.impl.ExperimentServiceImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
 
     <bean id="protExpressService" class="gov.nih.nci.protexpress.service.impl.ProtExpressServiceImpl">
         <property name="sessionFactory">
@@ -28,6 +34,9 @@
         factory-method="getInstance">
         <property name="protocolService">
             <ref bean="protocolService" />
+        </property>
+        <property name="experimentService">
+            <ref bean="experimentService" />
         </property>
         <property name="protExpressService">
             <ref bean="protExpressService" />
