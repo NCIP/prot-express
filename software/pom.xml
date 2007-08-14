@@ -199,6 +199,7 @@
                     <srcFiles>
                         <srcFile>target/hibernate3/sql/schema.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
+                        <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                     </srcFiles>
                 </configuration>
             </plugin>
