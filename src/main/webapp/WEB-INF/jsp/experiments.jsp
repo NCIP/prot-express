@@ -5,8 +5,6 @@
 <h2>Experiments</h2>
 
 <c:url var="sortUrl" value="/experiment/list.action" />
-<s:url id="editExperiment" action="experiment/list"/>
-<s:url id="addExperiment" action="experiment/save!load"/>
 
 <display:table defaultsort="1" list="${experiments}" pagesize="10" requestURI="${sortUrl}" id="row" sort="list">
     <display:setProperty name="paging.banner.placement" value="bottom" />
@@ -25,6 +23,8 @@
     </display:column>
 </display:table>
 
+<s:url id="editExperiment" action="experiment/list"/>
+<s:url id="addExperiment" action="experiment/save!load"/>
 <a href="${searchExperiment}"><s:property value="%{getText('label.menu.experiment.search')}" /></a>
 &nbsp;&nbsp;
 <a href="${addExperiment}"><s:property value="%{getText('label.menu.experiment.add')}" /></a>

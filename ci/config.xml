@@ -50,7 +50,7 @@
 
         <schedule interval="300">
             <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/protExpressDevDeploy/pom.xml"
-                goal="clean compile hibernate3:hbm2ddl" activateprofiles="devServer,dropDb" />
+                goal="tomcat:undeploy clean compile hibernate3:hbm2ddl" activateprofiles="devServer,dropDb" />
         </schedule>
     </project>
 
@@ -64,19 +64,12 @@
         </bootstrappers>
 
         <modificationset>
-            <compound>
-                <triggers>
-                    <timebuild time="2355" />
-                </triggers>
-                <targets>
-                    <svn localWorkingCopy="projects/${project.name}" />
-                </targets>
-            </compound>
+            <buildstatus logdir="logs/protExpressDevUnDeploy/"/>
         </modificationset>
 
         <schedule interval="300">
             <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/${project.name}/pom.xml"
-                goal="clean compile hibernate3:hbm2ddl sql:execute" activateprofiles="devServer" />
+                goal="clean compile hibernate3:hbm2ddl sql:execute package tomcat:deploy" activateprofiles="devServer" />
         </schedule>
 
         <publishers>

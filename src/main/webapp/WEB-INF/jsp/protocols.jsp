@@ -5,11 +5,6 @@
 <h2>Protcols</h2>
 
 <c:url var="sortUrl" value="/protocol/list.action" />
-<s:url id="addProtocol" action="protocol/save!load"/>
-<s:url id="searchProtocol" action="protocol/list"/>
-
-<fmt:message key="label.add" var="addLink" />
-<fmt:message key="label.add" var="addLink" />
 
 <display:table defaultsort="1" list="${protocols}" pagesize="10" requestURI="${sortUrl}" id="row" sort="list">
     <display:setProperty name="paging.banner.placement" value="bottom" />
@@ -29,6 +24,8 @@
     </display:column>
 </display:table>
 
+<s:url id="addProtocol" action="protocol/save!load"/>
+<s:url id="searchProtocol" action="protocol/list"/>
 <a href="${searchProtocol}"><s:property value="%{getText('label.menu.protocol.search')}" /></a>
 &nbsp;&nbsp;
 <a href="${addProtocol}"><s:property value="%{getText('label.menu.protocol.add')}" /></a>
