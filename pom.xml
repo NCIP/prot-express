@@ -16,9 +16,7 @@
         <notifiers>
             <notifier>
                 <type>mail</type>
-                <configuration>
-                    <address>NCINCICBGpsXarDevTeam@mail.nih.gov</address>
-                </configuration>
+                <address>NCINCICBGpsXarDevTeam@mail.nih.gov</address>
             </notifier>
         </notifiers>
     </ciManagement>
