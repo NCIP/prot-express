@@ -12,7 +12,7 @@
 
     <ciManagement>
         <system>CruiseControl</system>
-        <url>http://2115-millers-d1.nci.nih.gov:8080/continuum</url>
+        <url>http://2115-millers-d1.nci.nih.gov:8001/</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
