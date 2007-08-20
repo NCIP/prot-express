@@ -21,7 +21,7 @@
             <artifactspublisher dest="artifacts/${project.name}" file="projects/${project.name}/target/protExpressTest.log" />
             <artifactspublisher dest="artifacts/${project.name}" file="projects/${project.name}/target/hibernate3/sql/schema.sql" />
             <artifactspublisher dest="artifacts/${project.name}" dir="projects/${project.name}/target/site/" subdirectory="site" />
-            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8080/buildresults/${project.name}"
+            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8001/buildresults/${project.name}"
                 mailhost="mailfwd.nih.gov"
                 mailport="25"
                 returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
@@ -73,7 +73,7 @@
         </schedule>
 
         <publishers>
-            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8080/buildresults/${project.name}"
+            <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8001/buildresults/${project.name}"
                 mailhost="mailfwd.nih.gov" mailport="25" returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
                 subjectprefix="[${project.name} CI Notice]" skipusers="true">
                 <always address="NCINCICBGpsXarDevTeam@mail.nih.gov" />
