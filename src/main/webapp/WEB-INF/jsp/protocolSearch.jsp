@@ -4,11 +4,6 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <h2>Search Protcols</h2>
 
-<c:url var="sortUrl" value="/protocol/list.action" />
-<s:url id="addProtocol" action="protocol/save!load"/>
-<s:url id="searchProtocol" action="protocol/list"/>
-
-<fmt:message key="label.add" var="addLink" />
 <fmt:message key="label.add" var="addLink" />
 
 <s:form action="protocol/list" method="post">
