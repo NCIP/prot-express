@@ -84,7 +84,9 @@ package gov.nih.nci.protexpress.ui.actions.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -103,9 +105,16 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public class ProtocolManagementAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private List<Protocol> protocols;
+    /**
+     * The string that indicates moving to the search page.
+     */
+    private static final String SEARCH = "search";
 
+    private Iterator<Protocol> protocols;
     private Protocol protocol = new Protocol(null, null);
+    private String searchName;
+    private String searchDescription;
+    private List<ProtocolType> searchProtocolTypes;
 
     /**
      * {@inheritDoc}
@@ -117,14 +126,25 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     }
 
     /**
-     * Lists all protocols.
+     * load the protocol search page.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String list() {
-        setProtocols(ProtExpressRegistry.getProtocolService().getAllProtocols());
-        return ActionSupport.SUCCESS;
+    public String loadSearch() {
+        return SEARCH;
+    }
+
+    /**
+     * search for protocols.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String doSearch() {
+        setProtocols(ProtExpressRegistry.getProtocolService().searchForProtocols(getSearchName(),
+                getSearchDescription(), getSearchProtocolTypes()));
+        return SEARCH;
     }
 
     /**
@@ -142,9 +162,10 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      *
      * @return the directive for the next action / page to be directed to
      */
-    public String saveOrUpdate() {
+    public String save() {
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return ActionSupport.SUCCESS;
+        setSearchName(getProtocol().getName());
+        return doSearch();
     }
 
     /**
@@ -155,20 +176,20 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     @SkipValidation
     public String delete() {
         ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return ActionSupport.SUCCESS;
+        return SEARCH;
     }
 
     /**
      * @return the protocols
      */
-    public List<Protocol> getProtocols() {
+    public Iterator<Protocol> getProtocols() {
         return this.protocols;
     }
 
     /**
      * @param protocols the protocols to set
      */
-    private void setProtocols(List<Protocol> protocols) {
+    private void setProtocols(Iterator<Protocol> protocols) {
         this.protocols = protocols;
     }
 
@@ -185,5 +206,47 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
+    }
+
+    /**
+     * @return the searchName
+     */
+    public String getSearchName() {
+        return this.searchName;
+    }
+
+    /**
+     * @param searchName the searchName to set
+     */
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
+
+    /**
+     * @return the searchDescription
+     */
+    public String getSearchDescription() {
+        return this.searchDescription;
+    }
+
+    /**
+     * @param searchDescription the searchDescription to set
+     */
+    public void setSearchDescription(String searchDescription) {
+        this.searchDescription = searchDescription;
+    }
+
+    /**
+     * @return the searchProtocolTypes
+     */
+    public List<ProtocolType> getSearchProtocolTypes() {
+        return this.searchProtocolTypes;
+    }
+
+    /**
+     * @param searchProtocolTypes the searchProtocolTypes to set
+     */
+    public void setSearchProtocolTypes(List<ProtocolType> searchProtocolTypes) {
+        this.searchProtocolTypes = searchProtocolTypes;
     }
 }

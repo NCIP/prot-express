@@ -17,5 +17,5 @@
         headerValue="%{getText('label.protocol.type.select')}" />
     <s:hidden name="protocol.Id" />
     <s:submit value="%{getText('label.save')}" />
-    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/list" />
+    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/loadSearch" />
 </s:form>
