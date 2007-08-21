@@ -59,18 +59,13 @@
 
         <default-interceptor-ref name="protExpressDefaultStack" />
 
-        <action name="protocol/list" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
-            method="list">
-            <result name="success">/WEB-INF/jsp/protocols.jsp</result>
-        </action>
-
-        <action name="protocol/save" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
-            method="saveOrUpdate">
-            <result name="success" type="redirect-action">protocol/list</result>
+        <action name="protocol/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
+            method="{1}">
+            <result name="search">/WEB-INF/jsp/protocolSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
-        
+
         <action name="experiment/list" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
             method="list">
             <result name="success">/WEB-INF/jsp/experiments.jsp</result>

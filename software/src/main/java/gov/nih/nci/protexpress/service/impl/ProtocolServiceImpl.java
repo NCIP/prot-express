@@ -83,10 +83,14 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.ProtocolService;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,8 +106,35 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public List<Protocol> getAllProtocols() {
-        return (List<Protocol>) getHibernateTemplate().loadAll(Protocol.class);
+    public Iterator<Protocol> searchForProtocols(String name, String description, List<ProtocolType> types) {
+        StringBuffer hqlQuery = new StringBuffer("from " + Protocol.class.getName() + " where 1 = 1 ");
+        if (StringUtils.isNotEmpty(name)) {
+            hqlQuery.append(" and name like :searchName||'%' ");
+        }
+
+        if (StringUtils.isNotEmpty(description)) {
+            hqlQuery.append(" and description like :searchDescription||'%' ");
+        }
+
+        if (types != null && types.size() > 0) {
+            hqlQuery.append(" and type in (:searchTypes) ");
+        }
+
+        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hqlQuery.toString());
+
+        if (StringUtils.isNotEmpty(name)) {
+            query.setString("searchName", name);
+        }
+
+        if (StringUtils.isNotEmpty(description)) {
+            query.setString("searchDescription", description);
+        }
+
+        if (types != null && types.size() > 0) {
+            query.setParameterList("searchTypes", types);
+        }
+
+        return query.iterate();
     }
 
     /**

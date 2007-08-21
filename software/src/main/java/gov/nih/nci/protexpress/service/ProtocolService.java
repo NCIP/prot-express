@@ -83,23 +83,32 @@
 package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Service to handle the manipulation of protocols.
+ *
  * @author Scott Miller
  */
 public interface ProtocolService {
 
     /**
-     * Method to get all protocol's in the application.
-     * @return the list of protocols
+     * Searches for protocols that match the given criteria.
+     *
+     * @param name the value that the name must start with, or null to not search on name
+     * @param description the value that the description must start with, or null to not search on description
+     * @param types the list of valid types for the protocol, null or empty lists will indicate that the search should
+     *            not restrict results based on types
+     * @return the protocols that match the search
      */
-    List<Protocol> getAllProtocols();
+    Iterator<Protocol> searchForProtocols(String name, String description, List<ProtocolType> types);
 
     /**
      * Retrieve the protocol ith the given identifier.
+     *
      * @param id the id of the protocol to retrive
      * @return the protocol to retrieve
      */
@@ -107,6 +116,7 @@ public interface ProtocolService {
 
     /**
      * delete the given protocol.
+     *
      * @param protocol the protocol to delete
      */
     void deleteProtocol(Protocol protocol);
