@@ -97,6 +97,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
@@ -167,6 +168,7 @@ public class Protocol implements Serializable {
      */
     @Column(name = "description")
     @Length(max = DESCRIPTION_LENGTH)
+    @Index(name = "description_index")
     public String getDescription() {
         return description;
     }
@@ -208,6 +210,7 @@ public class Protocol implements Serializable {
     @Column(name = "name", unique = true)
     @NotEmpty
     @Length(max = NAME_LENGTH)
+    @Index(name = "name_index")
     public String getName() {
         return name;
     }
@@ -246,6 +249,7 @@ public class Protocol implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = TYPE_LENGTH)
     @NotNull
+    @Index(name = "type_index")
     public ProtocolType getType() {
         return this.type;
     }
