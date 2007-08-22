@@ -142,14 +142,12 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
             }
         }
 
-        if (!onlyCount && sortDir != null) {
-            if ("name".equals(sortProperty) || "description".equals(sortProperty)) {
-                hqlQuery.append(" order by " + sortProperty + " ");
-                if (SortOrderEnum.ASCENDING.equals(sortDir)) {
-                    hqlQuery.append("asc");
-                } else {
-                    hqlQuery.append("desc");
-                }
+        if (!onlyCount && sortDir != null && ("name".equals(sortProperty) || "description".equals(sortProperty))) {
+            hqlQuery.append(" order by " + sortProperty + " ");
+            if (SortOrderEnum.ASCENDING.equals(sortDir)) {
+                hqlQuery.append("asc");
+            } else {
+                hqlQuery.append("desc");
             }
         }
 
