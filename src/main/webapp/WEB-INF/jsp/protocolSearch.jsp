@@ -25,7 +25,7 @@
         <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
         <display:column property="name" titleKey="label.protocol.name" sortable="true" />
         <display:column property="description" titleKey="label.protocol.description" sortable="true" />
-        <display:column property="type.displayName" titleKey="label.protocol.type" sortable="false" />
+        <display:column property="type.displayName" titleKey="label.protocol.type" sortable="true" sortProperty="type" />
 
         <display:column titleKey="label.actions" sortable="false">
             <c:url var="loadUrl" value="/protocol/management/load.action">
