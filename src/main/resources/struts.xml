@@ -59,9 +59,15 @@
 
         <default-interceptor-ref name="protExpressDefaultStack" />
 
-        <action name="protocol/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
+        <action name="protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
             method="{1}">
-            <result name="search">/WEB-INF/jsp/protocolSearch.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocolSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/protocolSearch.jsp</result>
+        </action>
+
+        <action name="protocol/management/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
+            method="{1}">
+            <result name="success">/WEB-INF/jsp/protocolSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>

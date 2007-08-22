@@ -83,13 +83,13 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.service.ProtocolService;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.displaytag.properties.SortOrderEnum;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
@@ -97,6 +97,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default hibernate backed implementation of the protocol service.
+ *
  * @author Scott Miller
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -105,36 +106,70 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     /**
      * {@inheritDoc}
      */
+    public long countMatchingProtocols(ProtocolSearchParameters params) {
+        return (Long) getProtocolSearchQuery(params, true, null, null).uniqueResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
-    public Iterator<Protocol> searchForProtocols(String name, String description, List<ProtocolType> types) {
-        StringBuffer hqlQuery = new StringBuffer("from " + Protocol.class.getName() + " where 1 = 1 ");
-        if (StringUtils.isNotEmpty(name)) {
-            hqlQuery.append(" and name like :searchName||'%' ");
+    public Iterator<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
+            String sortProperty, SortOrderEnum sortDir) {
+        return getProtocolSearchQuery(params, false, sortProperty, sortDir).setMaxResults(maxResults).setFirstResult(
+                firstResult).iterate();
+    }
+
+    private Query getProtocolSearchQuery(ProtocolSearchParameters params, boolean onlyCount, String sortProperty,
+            SortOrderEnum sortDir) {
+        StringBuffer hqlQuery = new StringBuffer();
+        if (onlyCount) {
+            hqlQuery.append("select count(*) ");
         }
 
-        if (StringUtils.isNotEmpty(description)) {
-            hqlQuery.append(" and description like :searchDescription||'%' ");
+        hqlQuery.append("from " + Protocol.class.getName() + " where 1 = 1 ");
+        if (params != null) {
+            if (StringUtils.isNotEmpty(params.getName())) {
+                hqlQuery.append(" and name like :searchName||'%' ");
+            }
+
+            if (StringUtils.isNotEmpty(params.getDescription())) {
+                hqlQuery.append(" and description like :searchDescription||'%' ");
+            }
+
+            if (params.getTypes() != null && params.getTypes().size() > 0) {
+                hqlQuery.append(" and type in (:searchTypes) ");
+            }
         }
 
-        if (types != null && types.size() > 0) {
-            hqlQuery.append(" and type in (:searchTypes) ");
+        if (!onlyCount && sortDir != null) {
+            if ("name".equals(sortProperty) || "description".equals(sortProperty)) {
+                hqlQuery.append(" order by " + sortProperty + " ");
+                if (SortOrderEnum.ASCENDING.equals(sortDir)) {
+                    hqlQuery.append("asc");
+                } else {
+                    hqlQuery.append("desc");
+                }
+            }
         }
 
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hqlQuery.toString());
 
-        if (StringUtils.isNotEmpty(name)) {
-            query.setString("searchName", name);
+        if (params != null) {
+            if (StringUtils.isNotEmpty(params.getName())) {
+                query.setString("searchName", params.getName());
+            }
+
+            if (StringUtils.isNotEmpty(params.getDescription())) {
+                query.setString("searchDescription", params.getDescription());
+            }
+
+            if (params.getTypes() != null && params.getTypes().size() > 0) {
+                query.setParameterList("searchTypes", params.getTypes());
+            }
         }
 
-        if (StringUtils.isNotEmpty(description)) {
-            query.setString("searchDescription", description);
-        }
-
-        if (types != null && types.size() > 0) {
-            query.setParameterList("searchTypes", types);
-        }
-
-        return query.iterate();
+        return query;
     }
 
     /**

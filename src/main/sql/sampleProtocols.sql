@@ -1,3 +1,15 @@
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol q', 'Description for a', 'ExperimentRun');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qw', 'Description for as', 'ExperimentRunOutput');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwe', 'Description for asd', 'SamplePrep');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwer', 'Description for asdf', 'ExperimentRun');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwert', 'Description for asdfg', 'ExperimentRunOutput');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwerty', 'Description for asdfgh', 'SamplePrep');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyu', 'Description for asdfghj', 'ExperimentRun');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyui', 'Description for asdfghjk', 'ExperimentRunOutput');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyuio', 'Description for asdfghjkl', 'SamplePrep');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyuiop', 'Description for asdfghjklc', 'ExperimentRun');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyuiopz', 'Description for asdfghjklcv', 'ExperimentRunOutput');
+insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol qwertyuiopzx', 'Description for asdfghjklcvb', 'SamplePrep');
 insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 1', 'This is a test protocol', 'ExperimentRun');
 insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 2', 'This is a test protocol', 'ExperimentRunOutput');
 insert into protocol (id, name, description, type) values (nextval('hibernate_sequence'), 'Protocol 3', 'This is a test protocol', 'SamplePrep');
