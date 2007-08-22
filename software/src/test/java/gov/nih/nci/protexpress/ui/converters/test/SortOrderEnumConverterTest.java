@@ -80,81 +80,30 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocol;
+package gov.nih.nci.protexpress.ui.converters.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import org.displaytag.properties.SortOrderEnum;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+import gov.nih.nci.protexpress.ui.converters.SortOrderEnumConverter;
+import junit.framework.TestCase;
 
 /**
- * Action for managing protocols.
- *
  * @author Scott Miller
+ *
  */
-@Validation
-public class ProtocolManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public class SortOrderEnumConverterTest extends TestCase {
 
-    private Protocol protocol = new Protocol(null, null);
+    public void testConversion() {
+        SortOrderEnumConverter converter = new SortOrderEnumConverter();
+        assertEquals("ascending", converter.convertToString(null, SortOrderEnum.ASCENDING));
+        assertEquals("descending", converter.convertToString(null, SortOrderEnum.DESCENDING));
+        assertEquals(null, converter.convertToString(null, null));
 
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() throws Exception {
-        if (getProtocol() != null && getProtocol().getId() != null) {
-            setProtocol(ProtExpressRegistry.getProtocolService().getProtocolById(getProtocol().getId()));
-        }
+        assertEquals(SortOrderEnum.ASCENDING, converter.convertValue(null, new String[] { "ascending" },
+                SortOrderEnum.class));
+        assertEquals(SortOrderEnum.DESCENDING, converter.convertValue(null, new String[] { "descending" },
+                SortOrderEnum.class));
+        assertEquals(null, converter.convertValue(null, new String[] {}, SortOrderEnum.class));
     }
 
-    /**
-     * loads the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
-    }
-
-    /**
-     * Saves or updates the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * delete the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String delete() {
-        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * @return the protocol
-     */
-    @CustomValidator(type = "hibernate")
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * @param protocol the protocol to set
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
 }

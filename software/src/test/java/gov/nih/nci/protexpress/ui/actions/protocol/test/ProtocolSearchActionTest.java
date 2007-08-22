@@ -80,81 +80,91 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocol;
+package gov.nih.nci.protexpress.ui.actions.protocol.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import java.util.List;
+
+import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Action for managing protocols.
- *
  * @author Scott Miller
+ *
  */
-@Validation
-public class ProtocolManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public class ProtocolSearchActionTest extends ProtExpressBaseHibernateTest {
 
-    private Protocol protocol = new Protocol(null, null);
+    ProtocolSearchAction action;
 
     /**
      * {@inheritDoc}
      */
-    public void prepare() throws Exception {
-        if (getProtocol() != null && getProtocol().getId() != null) {
-            setProtocol(ProtExpressRegistry.getProtocolService().getProtocolById(getProtocol().getId()));
-        }
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        action = new ProtocolSearchAction();
+
+        Protocol protocol = new Protocol("a test protocol", ProtocolType.SamplePrep);
+        protocol.setInstrument("foo");
+        protocol.setDescription("z bar");
+        protocol.setSoftware("baz");
+
+        theSession.saveOrUpdate(protocol);
+
+        protocol = new Protocol("b test protocol", ProtocolType.ExperimentRun);
+        protocol.setInstrument("foo");
+        protocol.setDescription("x bar");
+        protocol.setSoftware("baz");
+
+        theSession.saveOrUpdate(protocol);
+
+        protocol = new Protocol("c test protocol", ProtocolType.ExperimentRunOutput);
+        protocol.setInstrument("foo");
+        protocol.setDescription("y bar");
+        protocol.setSoftware("baz");
+
+        theSession.saveOrUpdate(protocol);
+        theSession.flush();
+        theSession.clear();
     }
 
-    /**
-     * loads the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public void testSearch() throws Exception {
+        assertEquals(ActionSupport.INPUT, action.loadSearch());
+        assertEquals(null, action.getProtocols().getList());
+        action.getProtocols().setSortDirection(SortOrderEnum.DESCENDING);
+        action.getProtocols().setSortCriterion("name");
+        action.getProtocols().setPageNumber(1);
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        List<Protocol> protocols = action.getProtocols().getList();
+        assertEquals(3, protocols.size());
+        assertEquals(3, action.getProtocols().getFullListSize());
+        assertEquals("c test protocol", protocols.get(0).getName());
+
+        action.getSearchParameters().setName("a");
+        action.getProtocols().setSortDirection(SortOrderEnum.ASCENDING);
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        protocols = action.getProtocols().getList();
+        assertEquals(1, protocols.size());
+        assertEquals("a test protocol", protocols.get(0).getName());
+
+        action.setSearchParameters(new ProtocolSearchParameters());
+        action.getProtocols().setSortDirection(null);
+        action.getProtocols().setObjectsPerPage(1);
+        action.getProtocols().setSearchId("test");
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        protocols = action.getProtocols().getList();
+        assertEquals(1, protocols.size());
+        assertEquals(3, action.getProtocols().getFullListSize());
+        assertEquals("a test protocol", protocols.get(0).getName());
+        assertEquals("test", action.getProtocols().getSearchId());
+
+        action.setProtocols(null);
     }
 
-    /**
-     * Saves or updates the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * delete the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String delete() {
-        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * @return the protocol
-     */
-    @CustomValidator(type = "hibernate")
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * @param protocol the protocol to set
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
 }

@@ -1,10 +1,3 @@
-package gov.nih.nci.protexpress.service.test;
-import java.util.List;
-
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The ProtExpress
@@ -87,63 +80,85 @@ import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package gov.nih.nci.protexpress.ui.actions.protocol;
+
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
+import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
+
+import java.util.Iterator;
+
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.displaytag.properties.SortOrderEnum;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * @author Krishna Kanchinadam
+ * @author Scott Miller
  */
-public class ExperimentManagementTest extends ProtExpressBaseHibernateTest {
+public class ProtocolSearchAction {
 
-    public void testSaveRetrieveDeleteExperiment() throws Exception {
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
-        exp1.setHypothesis("Hypothesis - Test Experiment 1");
-        exp1.setUrl("URL - Test Experiment 1");
+    private static final int MAX_PAGE_SIZE = 10;
 
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp1);
+    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(0, null, MAX_PAGE_SIZE, 1, null,
+            "name", SortOrderEnum.ASCENDING);
+    private ProtocolSearchParameters searchParameters = new ProtocolSearchParameters();
 
-        theSession.flush();
-        theSession.clear();
-
-        Experiment exp2 = (Experiment) ProtExpressRegistry.getExperimentService().getExperimentById(exp1.getId());
-        assertEquals(exp1, exp2);
-
-        ProtExpressRegistry.getExperimentService().deleteExperiment(exp2);
-
-        theSession.flush();
-        theSession.clear();
-
-        List<Experiment> experimentList = ProtExpressRegistry.getExperimentService().getAllExperiments();
-        assertEquals(0, experimentList.size());
+    /**
+     * load the protocol search page.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String loadSearch() {
+        return ActionSupport.INPUT;
     }
 
-    public void testGetAllExperimentsTest() throws Exception {
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
-        exp1.setHypothesis("Hypothesis - Test Experiment 1");
-        exp1.setUrl("URL - Test Experiment 1");
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp1);
-
-        List<Experiment> experimentList = ProtExpressRegistry.getExperimentService().getAllExperiments();
-        assertEquals(1, experimentList.size());
-        assertEquals(exp1, experimentList.get(0));
-        assertEquals(exp1.getId(), experimentList.get(0).getId());
-        assertEquals(exp1.getName(), experimentList.get(0).getName());
-        assertEquals(exp1.getDescription(), experimentList.get(0).getDescription());
-        assertEquals(exp1.getHypothesis(), experimentList.get(0).getHypothesis());
-        assertEquals(exp1.getUrl(), experimentList.get(0).getUrl());
+    /**
+     * search for protocols.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    @SuppressWarnings("unchecked")
+    public String doSearch() {
+        Iterator protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(getSearchParameters(),
+                getProtocols().getObjectsPerPage(),
+                getProtocols().getObjectsPerPage() * (getProtocols().getPageNumber() - 1),
+                getProtocols().getSortCriterion(), getProtocols().getSortDirection());
+        int count = (int) ProtExpressRegistry.getProtocolService().countMatchingProtocols(getSearchParameters());
+        getProtocols().setFullListSize(count);
+        getProtocols().setList(IteratorUtils.toList(protocolIt));
+        return ActionSupport.SUCCESS;
     }
 
-    public void testEqualsAndHashCode() {
-        assertFalse(new Experiment("TestExperiment1").equals(new Experiment("TestExperiment1")));
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
-        exp1.setHypothesis("Hypothesis - Test Experiment 1");
-        exp1.setUrl("URL - Test Experiment 1");
+    /**
+     * @return the protocols
+     */
+    public PaginatedListImpl<Protocol> getProtocols() {
+        return this.protocols;
+    }
 
-        assertFalse(exp1.equals(null));
-        assertFalse(exp1.equals(new String("Foo")));
-        assertTrue(exp1.equals(exp1));
-        assertEquals(exp1.hashCode(), new Experiment("Name - Test Experiment 1").hashCode());
+    /**
+     * @param protocols the protocols to set
+     */
+    public void setProtocols(PaginatedListImpl<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    /**
+     * @return the searchParameters
+     */
+    public ProtocolSearchParameters getSearchParameters() {
+        return this.searchParameters;
+    }
+
+    /**
+     * @param searchParameters the searchParameters to set
+     */
+    public void setSearchParameters(ProtocolSearchParameters searchParameters) {
+        this.searchParameters = searchParameters;
     }
 }

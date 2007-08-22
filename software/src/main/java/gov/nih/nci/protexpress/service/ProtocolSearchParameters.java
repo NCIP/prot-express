@@ -80,81 +80,62 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocol;
+package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+import java.util.List;
 
 /**
- * Action for managing protocols.
+ * The parameters for protocol searches.
  *
  * @author Scott Miller
  */
-@Validation
-public class ProtocolManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public class ProtocolSearchParameters {
 
-    private Protocol protocol = new Protocol(null, null);
+    private String name;
+    private String description;
+    private List<ProtocolType> types;
 
     /**
-     * {@inheritDoc}
+     * @return the description
      */
-    public void prepare() throws Exception {
-        if (getProtocol() != null && getProtocol().getId() != null) {
-            setProtocol(ProtExpressRegistry.getProtocolService().getProtocolById(getProtocol().getId()));
-        }
+    public String getDescription() {
+        return this.description;
     }
 
     /**
-     * loads the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
+     * @param description the description to set
      */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Saves or updates the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
+     * @return the name
      */
-    public String save() {
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return ActionSupport.SUCCESS;
+    public String getName() {
+        return this.name;
     }
 
     /**
-     * delete the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
+     * @param name the name to set
      */
-    @SkipValidation
-    public String delete() {
-        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return ActionSupport.SUCCESS;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the protocol
+     * @return the types
      */
-    @CustomValidator(type = "hibernate")
-    public Protocol getProtocol() {
-        return this.protocol;
+    public List<ProtocolType> getTypes() {
+        return this.types;
     }
 
     /**
-     * @param protocol the protocol to set
+     * @param types the types to set
      */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
+    public void setTypes(List<ProtocolType> types) {
+        this.types = types;
     }
 }

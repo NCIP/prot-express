@@ -87,16 +87,13 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * This class tests the ProtocolManagementAction.
+ *
  * @author Scott Miller
  */
 public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
@@ -135,28 +132,8 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         action.getProtocol().setId(protocol.getId());
         action.prepare();
         assertEquals(theSession.get(Protocol.class, protocol.getId()), action.getProtocol());
-        assertTrue(EqualsBuilder.reflectionEquals(theSession.get(Protocol.class, protocol.getId()), action.getProtocol()));
-    }
-
-    @SuppressWarnings("unchecked")
-    public void testSearch() throws Exception {
-        assertEquals("search", action.loadSearch());
-        assertEquals(null, action.getProtocols());
-        assertEquals("search", action.doSearch());
-        List<Protocol> protocols = (List<Protocol>)IteratorUtils.toList(action.getProtocols());
-        assertEquals(1, protocols.size());
-        assertEquals(theSession.get(Protocol.class, protocol.getId()), protocols.get(0));
-
-        action.setSearchName(protocol.getName());
-        action.setSearchDescription(protocol.getDescription());
-        List<ProtocolType> types = new ArrayList<ProtocolType>();
-        types.add(protocol.getType());
-        action.setSearchProtocolTypes(types);
-
-        assertEquals("search", action.doSearch());
-        protocols = (List<Protocol>)IteratorUtils.toList(action.getProtocols());
-        assertEquals(1, protocols.size());
-        assertEquals(theSession.get(Protocol.class, protocol.getId()), protocols.get(0));
+        assertTrue(EqualsBuilder.reflectionEquals(theSession.get(Protocol.class, protocol.getId()), action
+                .getProtocol()));
     }
 
     public void testLoad() throws Exception {
@@ -165,15 +142,13 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
 
     public void testSaveOrUpdate() throws Exception {
         action.setProtocol(new Protocol("zzz", ProtocolType.SamplePrep));
-        assertEquals("search", action.save());
+        assertEquals(ActionSupport.SUCCESS, action.save());
         assertEquals(theSession.get(Protocol.class, action.getProtocol().getId()), action.getProtocol());
-        List<Protocol> protocols = (List<Protocol>)IteratorUtils.toList(action.getProtocols());
-        assertEquals(1, protocols.size());
     }
 
     public void testDelete() throws Exception {
         action.setProtocol((Protocol) theSession.get(Protocol.class, protocol.getId()));
-        assertEquals("search", action.delete());
+        assertEquals(ActionSupport.SUCCESS, action.delete());
         theSession.flush();
         theSession.clear();
         assertEquals(0, theSession.createQuery("from " + Protocol.class.getName()).list().size());

@@ -7,7 +7,6 @@
 <c:url var="sortUrl" value="/experiment/list.action" />
 
 <display:table defaultsort="1" list="${experiments}" pagesize="10" requestURI="${sortUrl}" id="row" sort="list">
-    <display:setProperty name="paging.banner.placement" value="bottom" />
     <display:column property="name" titleKey="label.experiment.name" sortable="true" />
     <display:column property="description" titleKey="label.experiment.description" sortable="true" />
     <display:column property="url" titleKey="label.experiment.url" sortable="true" />

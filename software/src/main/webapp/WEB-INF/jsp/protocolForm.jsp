@@ -9,7 +9,7 @@
 </s:else>
 
 
-<s:form action="protocol/save" method="post">
+<s:form action="protocol/management/save" method="post">
     <s:textfield name="protocol.name" label="%{getText('label.protocol.name')}" size="40" />
     <s:textfield name="protocol.description" label="%{getText('label.protocol.description')}" size="40" />
     <s:select name="protocol.type" label="%{getText('label.protocol.type')}"
@@ -17,5 +17,5 @@
         headerValue="%{getText('label.protocol.type.select')}" />
     <s:hidden name="protocol.Id" />
     <s:submit value="%{getText('label.save')}" />
-    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/loadSearch" />
+    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/search/loadSearch" />
 </s:form>

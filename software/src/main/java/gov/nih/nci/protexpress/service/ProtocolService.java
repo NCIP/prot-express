@@ -83,10 +83,10 @@
 package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 
 import java.util.Iterator;
-import java.util.List;
+
+import org.displaytag.properties.SortOrderEnum;
 
 /**
  * Service to handle the manipulation of protocols.
@@ -98,13 +98,23 @@ public interface ProtocolService {
     /**
      * Searches for protocols that match the given criteria.
      *
-     * @param name the value that the name must start with, or null to not search on name
-     * @param description the value that the description must start with, or null to not search on description
-     * @param types the list of valid types for the protocol, null or empty lists will indicate that the search should
-     *            not restrict results based on types
+     * @param params the params for the search
+     * @return the number of protocols that match the search
+     */
+    long countMatchingProtocols(ProtocolSearchParameters params);
+
+    /**
+     * Searches for protocols that match the given criteria.
+     *
+     * @param params the params for the search
+     * @param maxResults the max number of results to return
+     * @param firstResult the first result to return
+     * @param sortProperty the name of the property to sort on
+     * @param sortDir the direction of the sort
      * @return the protocols that match the search
      */
-    Iterator<Protocol> searchForProtocols(String name, String description, List<ProtocolType> types);
+    Iterator<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
+            String sortProperty, SortOrderEnum sortDir);
 
     /**
      * Retrieve the protocol ith the given identifier.

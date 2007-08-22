@@ -1,15 +1,3 @@
-package gov.nih.nci.protexpress.service.test;
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.collections.IteratorUtils;
-
 /**
  * The software subject to this notice and license includes both human readable
  * source code form and machine readable, binary, object code form. The ProtExpress
@@ -92,103 +80,145 @@ import org.apache.commons.collections.IteratorUtils;
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package gov.nih.nci.protexpress.ui.pagination;
+
+import java.util.List;
+
+import org.displaytag.pagination.PaginatedList;
+import org.displaytag.properties.SortOrderEnum;
 
 /**
+ * @param <T> the type of the object stored in the embedded list
  * @author Scott Miller
  */
-public class ProtocolManagementTest extends ProtExpressBaseHibernateTest {
+public class PaginatedListImpl<T> implements PaginatedList {
 
-    @SuppressWarnings("unchecked")
-    public void testSaveRetrieveDeleteProtocol() throws Exception {
-        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
-        p.setInstrument("foo");
-        p.setDescription("bar");
-        p.setSoftware("baz");
+    private int fullListSize;
+    private List<T> list;
+    private int objectsPerPage;
+    private int pageNumber;
+    private String searchId;
+    private String sortCriterion;
+    private SortOrderEnum sortDirection;
 
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
-
-        theSession.flush();
-        theSession.clear();
-
-        Protocol p2 = (Protocol) ProtExpressRegistry.getProtocolService().getProtocolById(p.getId());
-        assertEquals(p, p2);
-
-        ProtExpressRegistry.getProtocolService().deleteProtocol(p2);
-
-        theSession.flush();
-        theSession.clear();
-
-        List<Protocol> protocolList = theSession.createQuery("from " + Protocol.class.getName()).list();
-        assertEquals(0, protocolList.size());
+    /**
+     * Constructs a paginated list.
+     *
+     * @param fullListSize the full list size
+     * @param list the data in the current page of items
+     * @param objectsPerPage the number of objects per page
+     * @param pageNumber the current page number
+     * @param searchId the search id
+     * @param sortCriterion the sort criterion
+     * @param sortDirection the sort direction
+     */
+    public PaginatedListImpl(int fullListSize, List<T> list, int objectsPerPage, int pageNumber, String searchId,
+            String sortCriterion, SortOrderEnum sortDirection) {
+        super();
+        this.fullListSize = fullListSize;
+        this.list = list;
+        this.objectsPerPage = objectsPerPage;
+        this.pageNumber = pageNumber;
+        this.searchId = searchId;
+        this.sortCriterion = sortCriterion;
+        this.sortDirection = sortDirection;
     }
 
-    @SuppressWarnings("unchecked")
-    public void testSearchProtocols() throws Exception {
-        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
-        p.setDescription("bar 123");
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
-
-        p = new Protocol("test protocol 12", ProtocolType.ExperimentRunOutput);
-        p.setDescription("bar 12");
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
-
-        p = new Protocol("test protocol 123", ProtocolType.SamplePrep);
-        p.setDescription("bar 1");
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
-
-        theSession.flush();
-        theSession.clear();
-
-        Iterator<Protocol> protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, null, null);
-        assertEquals(3, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, null, new ArrayList<ProtocolType>());
-        assertEquals(3, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test prot", null, null);
-        assertEquals(3, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test prot", "bar ", null);
-        assertEquals(3, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("a", null, null);
-        assertEquals(0, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, "a", null);
-        assertEquals(0, IteratorUtils.toList(protocolIt).size());
-
-        List<ProtocolType> types = new ArrayList<ProtocolType>();
-        types.add(ProtocolType.ExperimentRun);
-        types.add(ProtocolType.ExperimentRunOutput);
-        types.add(ProtocolType.SamplePrep);
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test prot", "bar ", types);
-        assertEquals(3, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test protocol 12", "bar ", types);
-        assertEquals(2, IteratorUtils.toList(protocolIt).size());
-
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test protocol 12", "bar 12", types);
-        List<Protocol> protocolList = IteratorUtils.toList(protocolIt);
-        assertEquals(1, protocolList.size());
-        assertEquals(ProtocolType.ExperimentRunOutput.getDisplayName(), protocolList.get(0).getType().getDisplayName());
-
-        types = new ArrayList<ProtocolType>();
-        types.add(ProtocolType.ExperimentRun);
-        types.add(ProtocolType.SamplePrep);
-        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols("test protocol 12", "bar 12", types);
-        assertEquals(0, IteratorUtils.toList(protocolIt).size());
+    /**
+     * {@inheritDoc}
+     */
+    public int getFullListSize() {
+        return this.fullListSize;
     }
 
-    public void testEqualsAndHashCode() {
-        assertFalse(new Protocol("test", ProtocolType.ExperimentRun).equals(new Protocol("test", ProtocolType.ExperimentRun)));
-        Protocol p1 = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
-        p1.setInstrument("foo");
-        p1.setDescription("bar");
-        p1.setSoftware("baz");
+    /**
+     * @param fullListSize the fullListSize to set
+     */
+    public void setFullListSize(int fullListSize) {
+        this.fullListSize = fullListSize;
+    }
 
-        assertFalse(p1.equals(null));
-        assertFalse(p1.equals(new String("Foo")));
-        assertTrue(p1.equals(p1));
-        assertEquals(p1.hashCode(), new Protocol("test protocol 1", ProtocolType.ExperimentRun).hashCode());
+    /**
+     * @return the list
+     */
+    public List<T> getList() {
+        return this.list;
+    }
+
+    /**
+     * @param list the list to set
+     */
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    /**
+     * @return the objectsPerPage
+     */
+    public int getObjectsPerPage() {
+        return this.objectsPerPage;
+    }
+
+    /**
+     * @param objectsPerPage the objectsPerPage to set
+     */
+    public void setObjectsPerPage(int objectsPerPage) {
+        this.objectsPerPage = objectsPerPage;
+    }
+
+    /**
+     * @return the pageNumber
+     */
+    public int getPageNumber() {
+        return this.pageNumber;
+    }
+
+    /**
+     * @param pageNumber the pageNumber to set
+     */
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    /**
+     * @return the searchId
+     */
+    public String getSearchId() {
+        return this.searchId;
+    }
+
+    /**
+     * @param searchId the searchId to set
+     */
+    public void setSearchId(String searchId) {
+        this.searchId = searchId;
+    }
+
+    /**
+     * @return the sortCriterion
+     */
+    public String getSortCriterion() {
+        return this.sortCriterion;
+    }
+
+    /**
+     * @param sortCriterion the sortCriterion to set
+     */
+    public void setSortCriterion(String sortCriterion) {
+        this.sortCriterion = sortCriterion;
+    }
+
+    /**
+     * @return the sortDirection
+     */
+    public SortOrderEnum getSortDirection() {
+        return this.sortDirection;
+    }
+
+    /**
+     * @param sortDirection the sortDirection to set
+     */
+    public void setSortDirection(SortOrderEnum sortDirection) {
+        this.sortDirection = sortDirection;
     }
 }

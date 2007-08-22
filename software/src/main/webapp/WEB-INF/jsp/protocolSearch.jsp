@@ -4,31 +4,35 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <h2>Search Protcols</h2>
 
-<s:form action="protocol/doSearch" method="post">
-    <s:textfield name="searchName" label="%{getText('label.protocol.name')}" size="40" />
-    <s:textfield name="searchDescription" label="%{getText('label.protocol.description')}" size="40" />
-    <s:select name="searchProtocolTypes" label="%{getText('label.protocol.type')}"
+<s:form action="protocol/search/doSearch" method="post">
+    <s:hidden name="protocols.sortDirection" />
+    <s:hidden name="protocols.sortCriterion" />
+    <s:textfield name="searchParameters.name" label="%{getText('label.protocol.name')}" size="40" />
+    <s:textfield name="searchParameters.description" label="%{getText('label.protocol.description')}" size="40" />
+    <s:select name="searchParameters.types" label="%{getText('label.protocol.type')}"
         list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName" headerKey=""
         multiple="true" />
     <s:submit value="%{getText('label.menu.protocol.search')}" />
-    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/loadSearch" />
+    <s:submit value="%{getText('label.cancel')}" name="redirect-action:protocol/search/loadSearch" />
 </s:form>
 
-<c:if test="${protocols != null}">
-    <c:url var="sortUrl" value="/protocol/doSearch.action" />
+<c:if test="${protocols.list != null}">
+    <c:url var="sortUrl" value="/protocol/search/doSearch.action" />
 
-    <display:table defaultsort="1" list="${protocols}" pagesize="10" requestURI="${sortUrl}" id="row" sort="list">
-        <display:setProperty name="paging.banner.placement" value="bottom" />
+    <display:table list="${protocols}" requestURI="${sortUrl}" id="row">
+        <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
+        <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
+        <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
         <display:column property="name" titleKey="label.protocol.name" sortable="true" />
         <display:column property="description" titleKey="label.protocol.description" sortable="true" />
-        <display:column property="type.displayName" titleKey="label.protocol.type" sortable="true" />
+        <display:column property="type.displayName" titleKey="label.protocol.type" sortable="false" />
 
         <display:column titleKey="label.actions" sortable="false">
-            <c:url var="loadUrl" value="/protocol/load.action">
+            <c:url var="loadUrl" value="/protocol/management/load.action">
                 <c:param name="protocol.id" value="${row.id}" />
             </c:url>
             <a href="${loadUrl}"><s:text name="label.edit" /></a>
-            <c:url var="deleteUrl" value="/protocol/delete.action">
+            <c:url var="deleteUrl" value="/protocol/management/delete.action">
                 <c:param name="protocol.id" value="${row.id}" />
             </c:url>
             <a href="${deleteUrl}"><s:text name="label.delete" /></a>
