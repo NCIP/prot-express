@@ -26,7 +26,8 @@
                 mailport="25"
                 returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
                 subjectprefix="[${project.name} CI Notice]"
-                skipusers="true">
+                skipusers="true"
+                spamwhilebroken="false">
                 <failure address="NCINCICBGpsXarDevTeam@mail.nih.gov" reportWhenFixed="true" />
             </email>
         </publishers>
@@ -75,7 +76,7 @@
         <publishers>
             <email buildresultsurl="http://2115-millers-d1.nci.nih.gov:8001/buildresults/${project.name}"
                 mailhost="mailfwd.nih.gov" mailport="25" returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
-                subjectprefix="[${project.name} CI Notice]" skipusers="true">
+                subjectprefix="[${project.name} CI Notice]" skipusers="true" spamwhilebroken="false">
                 <always address="NCINCICBGpsXarDevTeam@mail.nih.gov" />
             </email>
         </publishers>
