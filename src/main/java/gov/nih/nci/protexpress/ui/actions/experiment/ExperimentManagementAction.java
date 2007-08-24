@@ -85,8 +85,6 @@ package gov.nih.nci.protexpress.ui.actions.experiment;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 
-import java.util.List;
-
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -103,8 +101,6 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public class ExperimentManagementAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private List<Experiment> experiments;
-
     private Experiment experiment = new Experiment(null);
 
     /**
@@ -114,17 +110,6 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
         if (getExperiment() != null && getExperiment().getId() != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
         }
-    }
-
-    /**
-     * Lists all experiments.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String list() {
-        setExperiments(ProtExpressRegistry.getExperimentService().getAllExperiments());
-        return ActionSupport.SUCCESS;
     }
 
     /**
@@ -138,11 +123,11 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
     }
 
     /**
-     * Saves or updates the experiments.
+     * Saves the experiment.
      *
      * @return the directive for the next action / page to be directed to
      */
-    public String saveOrUpdate() {
+    public String save() {
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         return ActionSupport.SUCCESS;
     }
@@ -156,20 +141,6 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
     public String delete() {
         ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
         return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * @return the experiments
-     */
-    public List<Experiment> getExperiments() {
-        return this.experiments;
-    }
-
-    /**
-     * @param experiments the experiments to set
-     */
-    private void setExperiments(List<Experiment> experiments) {
-        this.experiments = experiments;
     }
 
     /**

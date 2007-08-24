@@ -82,50 +82,41 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-
-import java.util.Iterator;
-
-import org.displaytag.properties.SortOrderEnum;
-
 /**
- * Service to handle the manipulation of experiments.
+ * The parameters for experiment searches.
+ *
  * @author Krishna Kanchinadam
  */
-public interface ExperimentService {
+public class ExperimentSearchParameters {
+
+    private String name;
+    private String description;
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of experiments that match the search
+     * @return the description
      */
-    long countMatchingExperiments(ExperimentSearchParameters params);
+    public String getDescription() {
+        return this.description;
+    }
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the experiments that match the search
+     * @param description the description to set
      */
-    Iterator<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
-
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
-     * Retrieve the experiment ith the given identifier.
-     * @param id the id of the experiment to retrive
-     * @return the experiment to retrieve
+     * @return the name
      */
-    Experiment getExperimentById(Long id);
+    public String getName() {
+        return this.name;
+    }
 
     /**
-     * delete the given experiment.
-     * @param experiment the experiment to delete
+     * @param name the name to set
      */
-    void deleteExperiment(Experiment experiment);
+    public void setName(String name) {
+        this.name = name;
+    }
 }

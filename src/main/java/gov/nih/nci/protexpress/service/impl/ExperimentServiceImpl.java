@@ -84,26 +84,90 @@ package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.service.ExperimentService;
+import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 
-import java.util.List;
+import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
+import org.displaytag.properties.SortOrderEnum;
+import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default hibernate backed implementation of the experiment service.
+ *
  * @author Krishna Kanchinadam
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-public class ExperimentServiceImpl extends HibernateDaoSupport implements ExperimentService {
+public class ExperimentServiceImpl extends HibernateDaoSupport implements
+        ExperimentService {
+
+    /**
+     * {@inheritDoc}
+     */
+    public long countMatchingExperiments(ExperimentSearchParameters params) {
+        return (Long) getExperimentSearchQuery(params, true, null, null)
+                .uniqueResult();
+    }
 
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public List<Experiment> getAllExperiments() {
-        return (List<Experiment>) getHibernateTemplate().loadAll(Experiment.class);
+    public Iterator<Experiment> searchForExperiments(
+            ExperimentSearchParameters params, int maxResults, int firstResult,
+            String sortProperty, SortOrderEnum sortDir) {
+        return getExperimentSearchQuery(params, false, sortProperty, sortDir)
+                .setMaxResults(maxResults).setFirstResult(firstResult)
+                .iterate();
+    }
+
+    private Query getExperimentSearchQuery(ExperimentSearchParameters params,
+            boolean onlyCount, String sortProperty, SortOrderEnum sortDir) {
+        StringBuffer hqlQuery = new StringBuffer();
+        if (onlyCount) {
+            hqlQuery.append("select count(*) ");
+        }
+
+        hqlQuery.append("from " + Experiment.class.getName() + " where 1 = 1 ");
+        if (params != null) {
+            if (StringUtils.isNotEmpty(params.getName())) {
+                hqlQuery.append(" and name like :searchName||'%' ");
+            }
+
+            if (StringUtils.isNotEmpty(params.getDescription())) {
+                hqlQuery
+                        .append(" and description like :searchDescription||'%' ");
+            }
+        }
+
+        if (!onlyCount
+                && (sortDir != null)
+                && (("name".equals(sortProperty)) || ("description"
+                        .equals(sortProperty)))) {
+            hqlQuery.append(" order by " + sortProperty + " ");
+            if (SortOrderEnum.ASCENDING.equals(sortDir)) {
+                hqlQuery.append("asc");
+            } else {
+                hqlQuery.append("desc");
+            }
+        }
+
+        Query query = getHibernateTemplate().getSessionFactory()
+                .getCurrentSession().createQuery(hqlQuery.toString());
+
+        if (params != null) {
+            if (StringUtils.isNotEmpty(params.getDescription())) {
+                query.setString("searchDescription", params.getDescription());
+            }
+            if (StringUtils.isNotEmpty(params.getName())) {
+                query.setString("searchName", params.getName());
+            }
+       }
+
+        return query;
     }
 
     /**
