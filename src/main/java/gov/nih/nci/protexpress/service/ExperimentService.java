@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.displaytag.properties.SortOrderEnum;
 
@@ -100,7 +100,7 @@ public interface ExperimentService {
      * @param params the params for the search
      * @return the number of experiments that match the search
      */
-    long countMatchingExperiments(ExperimentSearchParameters params);
+    int countMatchingExperiments(ExperimentSearchParameters params);
 
     /**
      * Searches for experiments that match the given criteria.
@@ -112,7 +112,7 @@ public interface ExperimentService {
      * @param sortDir the direction of the sort
      * @return the experiments that match the search
      */
-    Iterator<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
+    List<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir);
 
 
