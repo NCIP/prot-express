@@ -82,7 +82,6 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction;

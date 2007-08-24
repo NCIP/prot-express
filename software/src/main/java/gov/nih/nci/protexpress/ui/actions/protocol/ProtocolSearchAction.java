@@ -87,9 +87,6 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 
-import java.util.Iterator;
-
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
 
@@ -99,11 +96,8 @@ import com.opensymphony.xwork2.ActionSupport;
  * @author Scott Miller
  */
 public class ProtocolSearchAction {
-
-    private static final int MAX_PAGE_SIZE = 10;
-
-    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(0, null, MAX_PAGE_SIZE, 1, null,
-            "name", SortOrderEnum.ASCENDING);
+    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(0, null,
+            ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
     private ProtocolSearchParameters searchParameters = new ProtocolSearchParameters();
 
     /**
@@ -122,15 +116,14 @@ public class ProtocolSearchAction {
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    @SuppressWarnings("unchecked")
     public String doSearch() {
-        Iterator protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(getSearchParameters(),
-                getProtocols().getObjectsPerPage(),
-                getProtocols().getObjectsPerPage() * (getProtocols().getPageNumber() - 1),
-                getProtocols().getSortCriterion(), getProtocols().getSortDirection());
-        int count = (int) ProtExpressRegistry.getProtocolService().countMatchingProtocols(getSearchParameters());
+        int count = ProtExpressRegistry.getProtocolService().countMatchingProtocols(getSearchParameters());
         getProtocols().setFullListSize(count);
-        getProtocols().setList(IteratorUtils.toList(protocolIt));
+        getProtocols().setList(
+                ProtExpressRegistry.getProtocolService().searchForProtocols(getSearchParameters(),
+                        getProtocols().getObjectsPerPage(),
+                        getProtocols().getObjectsPerPage() * (getProtocols().getPageNumber() - 1),
+                        getProtocols().getSortCriterion(), getProtocols().getSortDirection()));
         return ActionSupport.SUCCESS;
     }
 

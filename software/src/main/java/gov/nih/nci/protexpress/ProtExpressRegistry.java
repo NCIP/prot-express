@@ -91,6 +91,10 @@ import gov.nih.nci.protexpress.service.ExperimentService;
  * @author Scott Miller
  */
 public final class ProtExpressRegistry {
+    /**
+     * The max number of results per page in paged search results.
+     */
+    public static final int MAX_RESULTS_PER_PAGE = 10;
     private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
 
     private ProtocolService protocolService;

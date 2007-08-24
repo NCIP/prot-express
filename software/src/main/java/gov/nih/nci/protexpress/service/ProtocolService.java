@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.displaytag.properties.SortOrderEnum;
 
@@ -101,7 +101,7 @@ public interface ProtocolService {
      * @param params the params for the search
      * @return the number of protocols that match the search
      */
-    long countMatchingProtocols(ProtocolSearchParameters params);
+    int countMatchingProtocols(ProtocolSearchParameters params);
 
     /**
      * Searches for protocols that match the given criteria.
@@ -113,7 +113,7 @@ public interface ProtocolService {
      * @param sortDir the direction of the sort
      * @return the protocols that match the search
      */
-    Iterator<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
+    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir);
 
     /**
