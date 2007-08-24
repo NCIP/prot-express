@@ -1,8 +1,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 
-<s:url id="searchExperiment" action="experiment/list"/>
-<s:url id="addExperiment" action="experiment/save!load.action"/>
-
+<s:url id="searchExperiment" action="experiment/search/loadSearch"/>
+<s:url id="addExperiment" action="experiment/management/load.action"/>
 
 <a href="${searchExperiment}"><s:property value="%{getText('label.menu.experiment.search')}" /></a>
 <br />

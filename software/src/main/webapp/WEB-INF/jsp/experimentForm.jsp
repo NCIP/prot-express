@@ -9,7 +9,7 @@
 </s:else>
 
 
-<s:form action="experiment/save" method="post">
+<s:form action="experiment/management/save" method="post">
     <s:textfield name="experiment.name" label="%{getText('label.experiment.name')}" size="40" />
     <s:textfield name="experiment.description" label="%{getText('label.experiment.description')}" size="40" />
     <s:textfield name="experiment.hypothesis" label="%{getText('label.experiment.hypothesis')}" size="40" />
@@ -17,5 +17,6 @@
 
     <s:hidden name="experiment.Id" />
     <s:submit value="%{getText('label.save')}" />
-    <s:submit value="%{getText('label.cancel')}" name="redirect-experiment/list" />
+    <s:submit value="%{getText('label.cancel')}" name="redirect-action:experiment/search/loadSearch" />
 </s:form>
+
