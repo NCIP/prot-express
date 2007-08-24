@@ -80,52 +80,92 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.experiment;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
+import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 
 import java.util.Iterator;
 
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
 
+import com.opensymphony.xwork2.ActionSupport;
+
 /**
- * Service to handle the manipulation of experiments.
  * @author Krishna Kanchinadam
  */
-public interface ExperimentService {
+public class ExperimentSearchAction {
+
+    private static final int MAX_PAGE_SIZE = 10;
+
+    private PaginatedListImpl<Experiment> experiments = new PaginatedListImpl<Experiment>(
+            0, null, MAX_PAGE_SIZE, 1, null, "name", SortOrderEnum.ASCENDING);
+    private ExperimentSearchParameters searchParameters = new ExperimentSearchParameters();
 
     /**
-     * Searches for experiments that match the given criteria.
+     * load the experiment search page.
      *
-     * @param params the params for the search
-     * @return the number of experiments that match the search
+     * @return the directive for the next action / page to be directed to
      */
-    long countMatchingExperiments(ExperimentSearchParameters params);
+    @SkipValidation
+    public String loadSearch() {
+        return ActionSupport.INPUT;
+    }
 
     /**
-     * Searches for experiments that match the given criteria.
+     * search for experiments.
      *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the experiments that match the search
+     * @return the directive for the next action / page to be directed to
      */
-    Iterator<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
-
+    @SkipValidation
+    @SuppressWarnings("unchecked")
+    public String doSearch() {
+        Iterator experimentIt = ProtExpressRegistry.getExperimentService()
+                .searchForExperiments(
+                        getSearchParameters(),
+                        getExperiments().getObjectsPerPage(),
+                        getExperiments().getObjectsPerPage()
+                                * (getExperiments().getPageNumber() - 1),
+                        getExperiments().getSortCriterion(),
+                        getExperiments().getSortDirection());
+        int count = (int) ProtExpressRegistry.getExperimentService()
+                .countMatchingExperiments(getSearchParameters());
+        getExperiments().setFullListSize(count);
+        getExperiments().setList(IteratorUtils.toList(experimentIt));
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * Retrieve the experiment ith the given identifier.
-     * @param id the id of the experiment to retrive
-     * @return the experiment to retrieve
+     * @return the experiments
      */
-    Experiment getExperimentById(Long id);
+    public PaginatedListImpl<Experiment> getExperiments() {
+        return this.experiments;
+    }
 
     /**
-     * delete the given experiment.
-     * @param experiment the experiment to delete
+     * @param experiments
+     *            the experiments to set
      */
-    void deleteExperiment(Experiment experiment);
+    public void setExperiments(PaginatedListImpl<Experiment> experiments) {
+        this.experiments = experiments;
+    }
+
+    /**
+     * @return the searchParameters
+     */
+    public ExperimentSearchParameters getSearchParameters() {
+        return this.searchParameters;
+    }
+
+    /**
+     * @param searchParameters
+     *            the searchParameters to set
+     */
+    public void setSearchParameters(ExperimentSearchParameters searchParameters) {
+        this.searchParameters = searchParameters;
+    }
 }
