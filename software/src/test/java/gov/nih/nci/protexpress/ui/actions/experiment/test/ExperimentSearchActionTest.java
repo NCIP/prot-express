@@ -82,81 +82,89 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction;
+import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import java.util.List;
+
+import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * This class tests the ExperimentManagementAction.
- *
  * @author Krishna Kanchinadam
+ *
  */
-public class ExperimentManagementActionTest extends
-        ProtExpressBaseHibernateTest {
+public class ExperimentSearchActionTest extends ProtExpressBaseHibernateTest {
 
-    ExperimentManagementAction action;
-    Experiment experiment;
+    ExperimentSearchAction action;
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void onSetUp() throws Exception {
+   @Override
+   protected void onSetUp() throws Exception {
         super.onSetUp();
-        action = new ExperimentManagementAction();
+       action = new ExperimentSearchAction();
 
-        experiment = new Experiment("Name - Test Experiment 1");
+        Experiment experiment = new Experiment("a Name - Test Experiment 1");
         experiment.setDescription("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
         theSession.saveOrUpdate(experiment);
+
+        experiment = new Experiment("b Name - Test Experiment 1");
+        experiment.setDescription("Description - Test Experiment 2");
+        experiment.setHypothesis("Hypothesis - Test Experiment 2");
+        experiment.setUrl("URL - Test Experiment 2");
+
+        theSession.saveOrUpdate(experiment);
+
+        experiment = new Experiment("c Name - Test Experiment 3");
+        experiment.setDescription("Description - Test Experiment 4");
+        experiment.setHypothesis("Hypothesis - Test Experiment 4");
+        experiment.setUrl("URL - Test Experiment 4");
+
+        theSession.saveOrUpdate(experiment);
         theSession.flush();
         theSession.clear();
-
     }
 
-    public void testPrepare() throws Exception {
-        action.setExperiment(null);
-        action.prepare();
-        assertEquals(null, action.getExperiment());
+    public void testSearch() throws Exception {
+        assertEquals(ActionSupport.INPUT, action.loadSearch());
+        assertEquals(null, action.getExperiments().getList());
+        action.getExperiments().setSortDirection(SortOrderEnum.DESCENDING);
+        action.getExperiments().setSortCriterion("name");
+        action.getExperiments().setPageNumber(1);
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        List<Experiment> experiments = action.getExperiments().getList();
+        assertEquals(3, experiments.size());
+        assertEquals(3, action.getExperiments().getFullListSize());
+        assertEquals("c Name - Test Experiment 3", experiments.get(0).getName());
+        assertEquals("a Name - Test Experiment 1", experiments.get(2).getName());
 
-        Experiment p = new Experiment(null);
-        action.setExperiment(p);
-        action.prepare();
-        assertEquals(p, action.getExperiment());
+        action.getSearchParameters().setName("a");
+        action.getExperiments().setSortDirection(SortOrderEnum.ASCENDING);
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        experiments = action.getExperiments().getList();
+        assertEquals(1, experiments.size());
+        assertEquals("a Name - Test Experiment 1", experiments.get(0).getName());
 
-        action.getExperiment().setId(experiment.getId());
-        action.prepare();
-        assertEquals(theSession.get(Experiment.class, experiment.getId()),
-                action.getExperiment());
-        assertTrue(EqualsBuilder.reflectionEquals(theSession.get(
-                Experiment.class, experiment.getId()), action.getExperiment()));
+        action.setSearchParameters(new ExperimentSearchParameters());
+        action.getExperiments().setSortDirection(null);
+        action.getExperiments().setObjectsPerPage(1);
+        action.getExperiments().setSearchId("test");
+        assertEquals(ActionSupport.SUCCESS, action.doSearch());
+        experiments = action.getExperiments().getList();
+        assertEquals(1, experiments.size());
+        assertEquals(3, action.getExperiments().getFullListSize());
+        assertEquals("a Name - Test Experiment 1", experiments.get(0).getName());
+        assertEquals("test", action.getExperiments().getSearchId());
+
+        action.setExperiments(null);
     }
 
-    public void testLoad() throws Exception {
-        assertEquals(ActionSupport.INPUT, action.load());
-    }
-
-    public void testSaveOrUpdate() throws Exception {
-        action.setExperiment(new Experiment("Test Experiment"));
-        assertEquals(ActionSupport.SUCCESS, action.save());
-        assertEquals(theSession.get(Experiment.class, action.getExperiment()
-                .getId()), action.getExperiment());
-    }
-
-    public void testDelete() throws Exception {
-        action.setExperiment((Experiment) theSession.get(Experiment.class,
-                experiment.getId()));
-        assertEquals(ActionSupport.SUCCESS, action.delete());
-        theSession.flush();
-        theSession.clear();
-        assertEquals(0, theSession.createQuery(
-                "from " + Experiment.class.getName()).list().size());
-    }
 }
