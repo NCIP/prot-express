@@ -72,14 +72,15 @@
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="experiment/list" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
-            method="list">
-            <result name="success">/WEB-INF/jsp/experiments.jsp</result>
+        <action name="experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
+            method="{1}">
+            <result name="success">/WEB-INF/jsp/experimentSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/experimentSearch.jsp</result>
         </action>
 
-        <action name="experiment/save" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
-            method="saveOrUpdate">
-            <result name="success" type="redirect-action">experiment/list</result>
+        <action name="experiment/management/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
+            method="{1}">
+            <result name="success">/WEB-INF/jsp/experimentSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/experimentForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
