@@ -5,7 +5,7 @@
 <s:property value="%{getText('label.header.welcomeMsg')}" />
 
 <s:url id="protocolUrl" action="protocol/search/loadSearch"/>
-<s:url id="experimentUrl" action="experiment/list"/>
+<s:url id="experimentUrl" action="experiment/search/loadSearch"/>
 
 
 <a href="${protocolUrl}"><s:property value="%{getText('label.header.protocol')}" /></a>
