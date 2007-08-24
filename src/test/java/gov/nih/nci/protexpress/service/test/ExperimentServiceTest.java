@@ -1,8 +1,16 @@
 package gov.nih.nci.protexpress.service.test;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.collections.IteratorUtils;
+import org.displaytag.properties.SortOrderEnum;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 
 /**
@@ -112,26 +120,129 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         theSession.flush();
         theSession.clear();
 
-        List<Experiment> experimentList = ProtExpressRegistry.getExperimentService().getAllExperiments();
+        List<Experiment> experimentList = theSession.createQuery("from " + Experiment.class.getName()).list();
         assertEquals(0, experimentList.size());
     }
 
-    public void testGetAllExperimentsTest() throws Exception {
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
-        exp1.setHypothesis("Hypothesis - Test Experiment 1");
-        exp1.setUrl("URL - Test Experiment 1");
+    @SuppressWarnings("unchecked")
+    public void testSearchProtocols() throws Exception {
+    	/*
+        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        p.setDescription("bar 123");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp1);
+        p = new Protocol("test protocol 12", ProtocolType.ExperimentRunOutput);
+        p.setDescription("bar 12");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        List<Experiment> experimentList = ProtExpressRegistry.getExperimentService().getAllExperiments();
-        assertEquals(1, experimentList.size());
-        assertEquals(exp1, experimentList.get(0));
-        assertEquals(exp1.getId(), experimentList.get(0).getId());
-        assertEquals(exp1.getName(), experimentList.get(0).getName());
-        assertEquals(exp1.getDescription(), experimentList.get(0).getDescription());
-        assertEquals(exp1.getHypothesis(), experimentList.get(0).getHypothesis());
-        assertEquals(exp1.getUrl(), experimentList.get(0).getUrl());
+        p = new Protocol("test protocol 123", ProtocolType.SamplePrep);
+        p.setDescription("bar 1");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
+
+        theSession.flush();
+        theSession.clear();
+
+        Iterator<Protocol> protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, null,
+                null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+        assertEquals(3, ProtExpressRegistry.getProtocolService().countMatchingProtocols(null));
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "name",
+                SortOrderEnum.ASCENDING);
+        String lastVal = null;
+        while (protocolIt.hasNext()) {
+            p = protocolIt.next();
+            if (lastVal != null) {
+                assertTrue(p.getName().compareTo(lastVal) >= 0);
+            }
+        }
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "name",
+                SortOrderEnum.DESCENDING);
+        lastVal = null;
+        while (protocolIt.hasNext()) {
+            p = protocolIt.next();
+            if (lastVal != null) {
+                assertTrue(p.getName().compareTo(lastVal) <= 0);
+            }
+        }
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
+                SortOrderEnum.ASCENDING);
+        lastVal = null;
+        while (protocolIt.hasNext()) {
+            p = protocolIt.next();
+            if (lastVal != null) {
+                assertTrue(p.getDescription().compareTo(lastVal) >= 0);
+            }
+        }
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
+                SortOrderEnum.DESCENDING);
+        lastVal = null;
+        while (protocolIt.hasNext()) {
+            p = protocolIt.next();
+            if (lastVal != null) {
+                assertTrue(p.getDescription().compareTo(lastVal) <= 0);
+            }
+        }
+
+        ProtocolSearchParameters params = new ProtocolSearchParameters();
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+        assertEquals(3, ProtExpressRegistry.getProtocolService().countMatchingProtocols(params));
+
+        params.setTypes(new ArrayList<ProtocolType>());
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 2, 0, null, null);
+        assertEquals(2, IteratorUtils.toList(protocolIt).size());
+        assertEquals(3, ProtExpressRegistry.getProtocolService().countMatchingProtocols(params));
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 2, 1, null, null);
+        assertEquals(2, IteratorUtils.toList(protocolIt).size());
+
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 2, null, null);
+        assertEquals(1, IteratorUtils.toList(protocolIt).size());
+
+        params.setName("a");
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(0, IteratorUtils.toList(protocolIt).size());
+
+        params.setName("test prot");
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+
+        params.setDescription("bar ");
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+
+        List<ProtocolType> types = new ArrayList<ProtocolType>();
+        types.add(ProtocolType.ExperimentRun);
+        types.add(ProtocolType.ExperimentRunOutput);
+        types.add(ProtocolType.SamplePrep);
+        params.setTypes(types);
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(3, IteratorUtils.toList(protocolIt).size());
+
+        params.setName("test protocol 12");
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(2, IteratorUtils.toList(protocolIt).size());
+
+        params.setDescription("bar 12");
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        List<Protocol> protocolList = IteratorUtils.toList(protocolIt);
+        assertEquals(1, protocolList.size());
+        assertEquals(ProtocolType.ExperimentRunOutput.getDisplayName(), protocolList.get(0).getType().getDisplayName());
+
+        types = new ArrayList<ProtocolType>();
+        types.add(ProtocolType.ExperimentRun);
+        types.add(ProtocolType.SamplePrep);
+        params.setTypes(types);
+        protocolIt = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
+        assertEquals(0, IteratorUtils.toList(protocolIt).size());
+        */
     }
 
     public void testEqualsAndHashCode() {
