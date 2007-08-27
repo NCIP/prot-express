@@ -152,6 +152,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
             if (lastVal != null) {
                 assertTrue(prot.getName().compareTo(lastVal) >= 0);
             }
+            lastVal = prot.getName();
         }
 
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "name",
@@ -159,8 +160,9 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         lastVal = null;
         for (Protocol prot: protocolList) {
             if (lastVal != null) {
-                assertTrue(prot.getName().compareTo(lastVal) >= 0);
+                assertTrue(prot.getName().compareTo(lastVal) <= 0);
             }
+            lastVal = prot.getName();
         }
 
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
@@ -168,8 +170,9 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         lastVal = null;
         for (Protocol prot: protocolList) {
             if (lastVal != null) {
-                assertTrue(prot.getName().compareTo(lastVal) >= 0);
+                assertTrue(prot.getDescription().compareTo(lastVal) >= 0);
             }
+            lastVal = prot.getDescription();
         }
 
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
@@ -177,8 +180,9 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         lastVal = null;
         for (Protocol prot: protocolList) {
             if (lastVal != null) {
-                assertTrue(prot.getName().compareTo(lastVal) >= 0);
+                assertTrue(prot.getDescription().compareTo(lastVal) <= 0);
             }
+            lastVal = prot.getDescription();
         }
 
         ProtocolSearchParameters params = new ProtocolSearchParameters();
