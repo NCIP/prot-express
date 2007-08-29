@@ -66,7 +66,24 @@
             <id>repo1.maven.org</id>
             <url>http://repo1.maven.org/maven2/</url>
         </repository>
+        <repository>
+            <id>java.net</id>
+            <name>java.net Maven Repository</name>
+            <url>http://download.java.net/maven/1</url>
+            <layout>legacy</layout>
+        </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo1.maven.org</id>
+            <url>http://repo1.maven.org/maven2/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <url>https://maven2-repository.dev.java.net/nonav/repository</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <!-- Project properties -->
     <properties>
@@ -85,6 +102,14 @@
         <hibernate.create>true</hibernate.create>
         <hibernate.drop>true</hibernate.drop>
         <hibernate.export>false</hibernate.export>
+        <hibernate.version>3.2.4.ga</hibernate.version>
+        <hibernate.validator.version>3.0.0.ga</hibernate.validator.version>
+        <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
+        <hibernate.commons.annotations.version>3.3.0.ga</hibernate.commons.annotations.version>
+        <schema.file>schema.sql</schema.file>
+        <jaxb.api.version>2.1</jaxb.api.version>
+        <jaxb.impl.version>2.1.4</jaxb.impl.version>
+        <jaxb.xjc.version>2.1.4</jaxb.xjc.version>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -133,7 +158,7 @@
                         <create>${hibernate.create}</create>
                         <jdk5>true</jdk5>
                         <export>${hibernate.export}</export>
-                        <outputfilename>schema.sql</outputfilename>
+                        <outputfilename>${schema.file}</outputfilename>
                         <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
                     </componentProperties>
@@ -147,7 +172,7 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate</artifactId>
-                        <version>3.2.4.ga</version>
+                        <version>${hibernate.version}</version>
                         <exclusions>
                             <exclusion>
                                 <artifactId>jta</artifactId>
@@ -158,17 +183,17 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-annotations</artifactId>
-                        <version>3.3.0.ga</version>
+                        <version>${hibernate.annotations.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-commons-annotations</artifactId>
-                        <version>3.3.0.ga</version>
+                        <version>${hibernate.commons.annotations.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-validator</artifactId>
-                        <version>3.0.0.ga</version>
+                        <version>${hibernate.validator.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -195,7 +220,7 @@
                     <onError>continue</onError>
                     <autocommit>true</autocommit>
                     <srcFiles>
-                        <srcFile>target/hibernate3/sql/schema.sql</srcFile>
+                        <srcFile>target/hibernate3/sql/${schema.file}</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
                         <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                     </srcFiles>
@@ -253,6 +278,42 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generatePackage>gov.nih.nci.protexpress.xml.xar2_2</generatePackage>
+                    <schemaDirectory>src/main/xsd</schemaDirectory>
+                    <schemaIncludes>
+                        <value>xar2.2/expTypes.xsd</value>
+                    </schemaIncludes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-xjc</artifactId>
+                        <version>${jaxb.xjc.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                        <version>${jaxb.api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                        <version>${jaxb.impl.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -295,6 +356,7 @@
                     <configLocation>protExpressCheckstyle.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
                     <excludes>jsp/**</excludes>
+                    <exclude>**/xar2_2/**</exclude>
                 </configuration>
             </plugin>
             <plugin>
@@ -304,12 +366,13 @@
                 <configuration>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>70</totalBranchRate>
-                        <totalLineRate>80</totalLineRate>
+                        <totalBranchRate>80</totalBranchRate>
+                        <totalLineRate>90</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>
                             <exclude>jsp/**</exclude>
+                            <exclude>**/xar2_2/**</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>
@@ -327,6 +390,7 @@
                     <targetJdk>1.5</targetJdk>
                     <excludes>
                         <exclude>jsp/**</exclude>
+                        <exclude>**/xar2_2/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -454,10 +518,11 @@
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
-            <version>3.2.4.ga</version>
+            <version>${hibernate.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jta</artifactId>
@@ -468,17 +533,17 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
-            <version>3.3.0.ga</version>
+            <version>${hibernate.annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
-            <version>3.3.0.ga</version>
+            <version>${hibernate.commons.annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>3.0.0.ga</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -519,6 +584,16 @@
             <groupId>displaytag</groupId>
             <artifactId>displaytag</artifactId>
             <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.impl.version}</version>
         </dependency>
 
         <!-- Dependencies provided by the container -->

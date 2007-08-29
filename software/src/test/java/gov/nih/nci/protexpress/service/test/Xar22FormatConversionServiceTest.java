@@ -80,100 +80,101 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.service.test;
 
-import javax.xml.bind.JAXBException;
-
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import junit.framework.TestCase;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Class to test the xar 22 conversion service
+ *
  * @author Scott Miller
  */
-public final class ProtExpressRegistry {
+public class Xar22FormatConversionServiceTest extends TestCase {
+
+    private List<Experiment> experiments;
+    private FormatConversionService fcs;
+
     /**
-     * The max number of results per page in paged search results.
+     * {@inheritDoc}
      */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        fcs = ProtExpressRegistry.getXar22FormatConversionService();
 
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
+        experiments = new ArrayList<Experiment>();
 
+        Experiment currentExperiment = new Experiment("test name 1");
+        currentExperiment.setDescription("test description 1");
+        currentExperiment.setHypothesis("test hypothesis 1");
+        currentExperiment.setUrl("http://testUrl1:8080/index.html");
 
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
+        experiments.add(currentExperiment);
+
+        currentExperiment = new Experiment("test name 2");
+        currentExperiment.setDescription("test description 2");
+        currentExperiment.setHypothesis("test hypothesis 2");
+        currentExperiment.setUrl("http://testUrl2:8080/index.html");
+
+        experiments.add(currentExperiment);
+    }
+
+    public void testMarshallAndUmarshallFile() throws Exception {
+        File file1 = new File("target/" + this.getClass().getSimpleName() + "-testMarshallAndUmarshallFile1.xml");
+        fcs.marshallExperiments(experiments, file1);
+
+        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(file1);
+
+        assertEquals(2, unmarshalledExperiments.size());
+        assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
+        assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
+    }
+
+    public void testMarshallAndUmarshallStream() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        fcs.marshallExperiments(experiments, os);
+
+        List<Experiment> unmarshalledExperiments = fcs
+                .unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
+
+        assertEquals(2, unmarshalledExperiments.size());
+        assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
+        assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testLoadExampleFiles() throws Exception {
+        String[] srcFiles = new String[] { "src/test/inputFiles/xarEmapleFile1.xar.xml",
+                "src/test/inputFiles/xarEmapleFile2.xar.xml", "src/test/inputFiles/xarEmapleFile3.xar.xml",
+                "src/test/inputFiles/xarEmapleFile4.xar.xml", };
+
+        String[] names = new String[] { "Lung Adenocarcinoma Study",
+                "Peroxisome membrane protein analysis, Marcello Marelli et al.", "Default Experiment",
+                "caBIG Test Data" };
+
+        for (int i = 0; i < srcFiles.length; i++) {
+            List<Experiment> experiments = fcs.unmarshallExperiments(new File(srcFiles[i]));
+            assertEquals(1, experiments.size());
+            assertEquals(names[i], experiments.get(0).getName());
         }
-    }
-
-    /**
-     * @return the singleton
-     */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
-    }
-
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the experimentService
-     */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
     }
 }

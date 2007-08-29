@@ -80,100 +80,56 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.service;
+
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Implementations of this service will provide the ability to convert experiment data from a specific file format to
+ * the internal data model and vice versa.
+ *
  * @author Scott Miller
  */
-public final class ProtExpressRegistry {
-    /**
-     * The max number of results per page in paged search results.
-     */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
-
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
-
-
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
-    }
+public interface FormatConversionService {
 
     /**
-     * @return the singleton
+     * Take the experiments and write them to the file, converting them to the correct format.
+     * @param experiments the list of the experiments
+     * @param output the file.
+     * @throws JAXBException on marshalling error
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
-    }
+    void marshallExperiments(List<Experiment> experiments, File output) throws JAXBException;
 
     /**
-     * @return the protocolService
+     * Take the experiments and write them to the stream, converting them to the correct format.
+     * @param experiments the list of the experiments
+     * @param output the output stream.
+     * @throws JAXBException on marshalling error
      */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
+    void marshallExperiments(List<Experiment> experiments, OutputStream output) throws JAXBException;
 
     /**
-     * @param protocolService the protocolService to set
+     * Take the file and convert it to a list of experiments.
+     *
+     * @param input the file to convert.
+     * @return the list of experiments.
+     * @throws JAXBException on unmarshalling error
      */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
+    List<Experiment> unmarshallExperiments(File input) throws JAXBException;
 
     /**
-     * @return the experimentService
+     * Take the input stream and convert it to a list of experiments.
+     *
+     * @param input the input stream.
+     * @return the list of experiments.
+     * @throws JAXBException on unmarshalling error
      */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
-    }
+    List<Experiment> unmarshallExperiments(InputStream input) throws JAXBException;
 }

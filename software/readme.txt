@@ -12,5 +12,6 @@ mvn tomcat:deploy  -- deploys the context.xml file to tomcat (which tells tomcat
         as the docBase directory)
 mvn tomcat:undeploy  -- undeploys the application from tomcat
 mvn tomcat:redeploy   -- redploys the application to tomcat (does not seem to be as reliable as tomcat:undeploy tomcat:deploy)
+mvn verify -- checks that all required metrics are met
 
 All commands can be chained as is visible in the project batch files.

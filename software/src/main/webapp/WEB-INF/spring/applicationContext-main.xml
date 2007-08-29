@@ -17,7 +17,7 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    
+
     <bean id="experimentService" class="gov.nih.nci.protexpress.service.impl.ExperimentServiceImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
