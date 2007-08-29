@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:ExperimentArchive xsi:schemaLocation="http://cpas.fhcrc.org/exp/xml http://cpas.fhcrc.org/download/XarSchema/V1.7/expTypes.xsd" xmlns:ns="http://cpas.fhcrc.org/exp/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns:Experiment rdf:about="${FolderLSIDBase}:Marelli_et_al" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <ns:Name>Peroxisome membrane protein analysis, Marcello Marelli et al.</ns:Name>
+    <ns:ExperimentDescriptionURL>http://www.jcb.org/cgi/content/abstract/167/6/1099</ns:ExperimentDescriptionURL>
+    <ns:Comments>We have combined classical subcellular fractionation with large-scale quantitative mass spectrometry to identify proteins that enrich specifically with peroxisomes of Saccharomyces cerevisiae. In two complementary experiments, isotope-coded affinity tags and tandem mass spectrometry were used to quantify the relative enrichment of proteins during the purification of peroxisomes. Mathematical modeling of the data from 306 quantified proteins led to a prioritized list of 70 candidates whose enrichment scores indicated a high likelihood of them being peroxisomal. Among these proteins, eight novel peroxisome-associated proteins were identified. The top novel peroxisomal candidate was the small GTPase Rho1p. Although Rho1p has been shown to be tethered to membranes of the secretory pathway, we show that it is specifically recruited to peroxisomes upon their induction in a process dependent on its interaction with the peroxisome membrane protein Pex25p. Rho1p regulates the assembly state of actin on the peroxisome membrane, thereby controlling peroxisome membrane dynamics and biogenesis.</ns:Comments>
+  </ns:Experiment>
+  <ns:ProtocolDefinitions>
+    <ns:Protocol rdf:about="${FolderLSIDBase}:MS2.PreSearch.Marelli_protocol" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>Marelli_protocol (LCMS2)</ns:Name>
+      <ns:ProtocolDescription>Prepare and run LCMS, producing one mzXml file per input sample.</ns:ProtocolDescription>
+      <ns:ApplicationType>ExperimentRun</ns:ApplicationType>
+      <ns:MaxInputMaterialPerInstance xsi:nil="true"/>
+      <ns:MaxInputDataPerInstance xsi:nil="true"/>
+      <ns:OutputMaterialPerInstance xsi:nil="true"/>
+      <ns:OutputDataPerInstance xsi:nil="true"/>
+      <ns:OutputMaterialType>Material</ns:OutputMaterialType>
+      <ns:OutputDataType>Data</ns:OutputDataType>
+      <ns:ParameterDeclarations>
+        <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:MS2.PreSearch</ns:SimpleVal>
+        <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do MS2 Run</ns:SimpleVal>
+      </ns:ParameterDeclarations>
+      <ns:Properties>
+        <ns:SimpleVal Name="TreatAsFractions" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.TreatAsFractions" ValueType="String">false</ns:SimpleVal>
+        <ns:SimpleVal Name="Category" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Category" ValueType="String">mass_spec</ns:SimpleVal>
+      </ns:Properties>
+    </ns:Protocol>
+    <ns:Protocol rdf:about="${FolderLSIDBase}:SamplePreparation.Marelli_protocol" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>Marelli_protocol Sample Prep</ns:Name>
+      <ns:ProtocolDescription>An organellar 20KgP fraction was subjected to isopycnic density gradient centrifugation and analyzed
+by SDS-PAGE and Coomassie blue staining. Fractions enriched for peroxisomes (EP) or mitochondria (M) were identified by Western blotting. Equal amounts of protein derived from each of the hypotonically lysed M and EP fractions were combined and analyzed by ICAT MS/MS.</ns:ProtocolDescription>
+      <ns:ApplicationType>ProtocolApplication</ns:ApplicationType>
+      <ns:MaxInputMaterialPerInstance>1</ns:MaxInputMaterialPerInstance>
+      <ns:MaxInputDataPerInstance>0</ns:MaxInputDataPerInstance>
+      <ns:OutputMaterialPerInstance>1</ns:OutputMaterialPerInstance>
+      <ns:OutputDataPerInstance>0</ns:OutputDataPerInstance>
+      <ns:OutputMaterialType>Material</ns:OutputMaterialType>
+      <ns:OutputDataType>Data</ns:OutputDataType>
+      <ns:ParameterDeclarations>
+        <ns:SimpleVal Name="OutputMaterialLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialLSID" ValueType="String">${RunLSIDBase}:${InputName}.Modified</ns:SimpleVal>
+        <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:SamplePreparation.Default</ns:SimpleVal>
+        <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">SamplePreparation</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputMaterialNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialName" ValueType="String">${InputName}.Modified</ns:SimpleVal>
+      </ns:ParameterDeclarations>
+    </ns:Protocol>
+    <ns:Protocol rdf:about="${FolderLSIDBase}:MS2.LCMS2.Marelli_protocol" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>Marelli_protocol LC MS2</ns:Name>
+      <ns:ProtocolDescription>ICAT-labeled peptides were analyzed by µLC-ESI-MS/MS. Peptides were separated by on-line reversed-phase chromatography using a 75 µm x 10 cm self-packed Magic C18AQ column (Michrom BioResources) at a flow rate of 300 nL/min. Peptide fragmentation by collision-induced dissociation was performed in an automated fashion using the dynamic-exclusion option from the full-range MS spectra or by GPFm/z using an ion trap mass spectrometer (Thermofinnigan; Yi et al., 2002).</ns:ProtocolDescription>
+      <ns:ApplicationType>ProtocolApplication</ns:ApplicationType>
+      <ns:MaxInputMaterialPerInstance>1</ns:MaxInputMaterialPerInstance>
+      <ns:MaxInputDataPerInstance>0</ns:MaxInputDataPerInstance>
+      <ns:OutputMaterialPerInstance>0</ns:OutputMaterialPerInstance>
+      <ns:OutputDataPerInstance>1</ns:OutputDataPerInstance>
+      <ns:OutputMaterialType>Material</ns:OutputMaterialType>
+      <ns:OutputDataType>Data</ns:OutputDataType>
+      <ns:ParameterDeclarations>
+        <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:${InputLSID.objectid}.LCMS2</ns:SimpleVal>
+        <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">MS2 scan</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputDataLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataLSID" ValueType="String">${RunLSIDBase}:RAWFile</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputDataNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataName" ValueType="String">raw file (N/A)</ns:SimpleVal>
+      </ns:ParameterDeclarations>
+    </ns:Protocol>
+    <ns:Protocol rdf:about="${FolderLSIDBase}:MS2.ConvertToMzXML.Marelli_protocol" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>Convert to mzXML</ns:Name>
+      <ns:ApplicationType>ProtocolApplication</ns:ApplicationType>
+      <ns:MaxInputMaterialPerInstance>0</ns:MaxInputMaterialPerInstance>
+      <ns:MaxInputDataPerInstance>1</ns:MaxInputDataPerInstance>
+      <ns:OutputMaterialPerInstance>0</ns:OutputMaterialPerInstance>
+      <ns:OutputDataPerInstance>1</ns:OutputDataPerInstance>
+      <ns:OutputMaterialType>Material</ns:OutputMaterialType>
+      <ns:OutputDataType>Data</ns:OutputDataType>
+      <ns:ParameterDeclarations>
+        <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:${InputLSID.objectid}.ConvertToMzXML</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputDataFileTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataFile" ValueType="String"/>
+        <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Convert To MzXML</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputDataLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataLSID" ValueType="String">${AutoFileLSID}</ns:SimpleVal>
+        <ns:SimpleVal Name="OutputDataNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataName" ValueType="String">MzXML file</ns:SimpleVal>
+      </ns:ParameterDeclarations>
+    </ns:Protocol>
+    <ns:Protocol rdf:about="${FolderLSIDBase}:MarkRunOutput:2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>Mark Run Outputs</ns:Name>
+      <ns:ApplicationType>ExperimentRunOutput</ns:ApplicationType>
+      <ns:MaxInputMaterialPerInstance xsi:nil="true"/>
+      <ns:MaxInputDataPerInstance xsi:nil="true"/>
+      <ns:OutputMaterialPerInstance>0</ns:OutputMaterialPerInstance>
+      <ns:OutputDataPerInstance>0</ns:OutputDataPerInstance>
+      <ns:OutputMaterialType>Material</ns:OutputMaterialType>
+      <ns:OutputDataType>Data</ns:OutputDataType>
+      <ns:ParameterDeclarations>
+        <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:MarkOutput</ns:SimpleVal>
+        <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Run Output</ns:SimpleVal>
+      </ns:ParameterDeclarations>
+    </ns:Protocol>
+  </ns:ProtocolDefinitions>
+  <ns:ProtocolActionDefinitions>
+    <ns:ProtocolActionSet ParentProtocolLSID="${FolderLSIDBase}:MS2.PreSearch.Marelli_protocol">
+      <ns:ProtocolAction ActionSequence="1" ChildProtocolLSID="${FolderLSIDBase}:MS2.PreSearch.Marelli_protocol">
+        <ns:PredecessorAction ActionSequenceRef="1"/>
+      </ns:ProtocolAction>
+      <ns:ProtocolAction ActionSequence="10" ChildProtocolLSID="${FolderLSIDBase}:SamplePreparation.Marelli_protocol">
+        <ns:PredecessorAction ActionSequenceRef="1"/>
+      </ns:ProtocolAction>
+      <ns:ProtocolAction ActionSequence="30" ChildProtocolLSID="${FolderLSIDBase}:MS2.LCMS2.Marelli_protocol">
+        <ns:PredecessorAction ActionSequenceRef="10"/>
+      </ns:ProtocolAction>
+      <ns:ProtocolAction ActionSequence="40" ChildProtocolLSID="${FolderLSIDBase}:MS2.ConvertToMzXML.Marelli_protocol">
+        <ns:PredecessorAction ActionSequenceRef="30"/>
+      </ns:ProtocolAction>
+      <ns:ProtocolAction ActionSequence="1000" ChildProtocolLSID="${FolderLSIDBase}:MarkRunOutput:2">
+        <ns:PredecessorAction ActionSequenceRef="40"/>
+      </ns:ProtocolAction>
+    </ns:ProtocolActionSet>
+  </ns:ProtocolActionDefinitions>
+  <ns:StartingInputDefinitions>
+    <ns:Material rdf:about="${FolderLSIDBase}.${XarFileId}-1:I-MM_clICAT13" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>I-MM_clICAT13</ns:Name>
+      <ns:CpasType>urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set</ns:CpasType>
+      <ns:Properties>
+        <ns:SimpleVal Name="Sdh2p" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#Sdh2p" ValueType="Integer">0</ns:SimpleVal>
+        <ns:SimpleVal Name="Characteristic" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#Characteristic" ValueType="String">peroxisome</ns:SimpleVal>
+        <ns:SimpleVal Name="MIs1p_intensity" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#MIs1p_intensity" ValueType="Integer">54</ns:SimpleVal>
+        <ns:SimpleVal Name="Fox2p_intensity" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#Fox2p_intensity" ValueType="Integer">88</ns:SimpleVal>
+        <ns:SimpleVal Name="SourceSpecimen" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#SourceSpecimen" ValueType="String">ICAT-I-sample1</ns:SimpleVal>
+        <ns:SimpleVal Name="Organism" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#Organism" ValueType="String">Saccharomyces cerevisiae</ns:SimpleVal>
+        <ns:SimpleVal Name="SDS-Page fraction number" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#SDSPagefractionnumber" ValueType="Integer">9</ns:SimpleVal>
+        <ns:SimpleVal Name="SampleID" OntologyEntryURI="urn:lsid:labkey.com:SampleSet.Folder-8:Yeast+Sample+Set#SampleID" ValueType="String">I-MM_clICAT13</ns:SimpleVal>
+      </ns:Properties>
+    </ns:Material>
+  </ns:StartingInputDefinitions>
+  <ns:ExperimentRuns>
+    <ns:ExperimentRun rdf:about="${FolderLSIDBase}.${XarFileId}:MS2PreSearch.MS2 Sample Prep (MM_clICAT13), (Marelli_protocol)" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <ns:Name>MS2 Sample Prep (MM_clICAT13), (Marelli_protocol)</ns:Name>
+      <ns:ProtocolLSID>${FolderLSIDBase}:MS2.PreSearch.Marelli_protocol</ns:ProtocolLSID>
+      <ns:ExperimentLSID>${FolderLSIDBase}:DefaultExperiment</ns:ExperimentLSID>
+      <ns:ProtocolApplications>
+        <ns:ProtocolApplication rdf:about="${RunLSIDBase}:MS2.PreSearch">
+          <ns:Name>Do MS2 Run</ns:Name>
+          <ns:CpasType>ExperimentRun</ns:CpasType>
+          <ns:ProtocolLSID>${FolderLSIDBase}:MS2.PreSearch.Marelli_protocol</ns:ProtocolLSID>
+          <ns:ActionSequence>1</ns:ActionSequence>
+          <ns:ActivityDate>2007-06-01-07:00</ns:ActivityDate>
+          <ns:InputRefs>
+            <ns:MaterialLSID>${FolderLSIDBase}.${XarFileId}-1:I-MM_clICAT13</ns:MaterialLSID>
+          </ns:InputRefs>
+          <ns:ProtocolApplicationParameters>
+            <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do MS2 Run</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:MS2.PreSearch</ns:SimpleVal>
+          </ns:ProtocolApplicationParameters>
+          <ns:OutputMaterials/>
+          <ns:OutputDataObjects/>
+        </ns:ProtocolApplication>
+        <ns:ProtocolApplication rdf:about="${RunLSIDBase}:SamplePreparation.Default">
+          <ns:Name>SamplePreparation</ns:Name>
+          <ns:CpasType>ProtocolApplication</ns:CpasType>
+          <ns:ProtocolLSID>${FolderLSIDBase}:SamplePreparation.Marelli_protocol</ns:ProtocolLSID>
+          <ns:ActionSequence>10</ns:ActionSequence>
+          <ns:ActivityDate>2007-06-01-07:00</ns:ActivityDate>
+          <ns:InputRefs>
+            <ns:MaterialLSID>${FolderLSIDBase}.${XarFileId}-1:I-MM_clICAT13</ns:MaterialLSID>
+          </ns:InputRefs>
+          <ns:ProtocolApplicationParameters>
+            <ns:SimpleVal Name="OutputMaterialNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialName" ValueType="String">${InputName}.Modified</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">SamplePreparation</ns:SimpleVal>
+            <ns:SimpleVal Name="OutputMaterialLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialLSID" ValueType="String">${RunLSIDBase}:${InputName}.Modified</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:SamplePreparation.Default</ns:SimpleVal>
+          </ns:ProtocolApplicationParameters>
+          <ns:OutputMaterials>
+            <ns:Material rdf:about="${FolderLSIDBase}.${XarFileId}-1:I-MM_clICAT13.Modified">
+              <ns:Name>I-MM_clICAT13.Modified</ns:Name>
+              <ns:CpasType>Material</ns:CpasType>
+              <ns:SourceProtocolLSID>${FolderLSIDBase}:SamplePreparation.Marelli_protocol</ns:SourceProtocolLSID>
+            </ns:Material>
+          </ns:OutputMaterials>
+          <ns:OutputDataObjects/>
+        </ns:ProtocolApplication>
+        <ns:ProtocolApplication rdf:about="${RunLSIDBase}:I-MM_clICAT13.Modified.LCMS2">
+          <ns:Name>MS2 scan</ns:Name>
+          <ns:CpasType>ProtocolApplication</ns:CpasType>
+          <ns:ProtocolLSID>${FolderLSIDBase}:MS2.LCMS2.Marelli_protocol</ns:ProtocolLSID>
+          <ns:ActionSequence>30</ns:ActionSequence>
+          <ns:ActivityDate>2007-06-01-07:00</ns:ActivityDate>
+          <ns:InputRefs>
+            <ns:MaterialLSID>${FolderLSIDBase}.${XarFileId}-1:I-MM_clICAT13.Modified</ns:MaterialLSID>
+          </ns:InputRefs>
+          <ns:ProtocolApplicationParameters>
+            <ns:SimpleVal Name="OutputDataNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataName" ValueType="String">raw file (N/A)</ns:SimpleVal>
+            <ns:SimpleVal Name="OutputDataLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataLSID" ValueType="String">${RunLSIDBase}:RAWFile</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">MS2 scan</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:${InputLSID.objectid}.LCMS2</ns:SimpleVal>
+          </ns:ProtocolApplicationParameters>
+          <ns:OutputMaterials/>
+          <ns:OutputDataObjects>
+            <ns:Data rdf:about="${FolderLSIDBase}.${XarFileId}-1:RAWFile">
+              <ns:Name>raw file (N/A)</ns:Name>
+              <ns:CpasType>Data</ns:CpasType>
+              <ns:SourceProtocolLSID>${FolderLSIDBase}:MS2.LCMS2.Marelli_protocol</ns:SourceProtocolLSID>
+            </ns:Data>
+          </ns:OutputDataObjects>
+        </ns:ProtocolApplication>
+        <ns:ProtocolApplication rdf:about="${RunLSIDBase}:RAWFile.ConvertToMzXML">
+          <ns:Name>Convert To MzXML</ns:Name>
+          <ns:CpasType>ProtocolApplication</ns:CpasType>
+          <ns:ProtocolLSID>${FolderLSIDBase}:MS2.ConvertToMzXML.Marelli_protocol</ns:ProtocolLSID>
+          <ns:ActionSequence>40</ns:ActionSequence>
+          <ns:ActivityDate>2007-06-01-07:00</ns:ActivityDate>
+          <ns:InputRefs>
+            <ns:DataLSID>${FolderLSIDBase}.${XarFileId}-1:RAWFile</ns:DataLSID>
+          </ns:InputRefs>
+          <ns:ProtocolApplicationParameters>
+            <ns:SimpleVal Name="OutputDataNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataName" ValueType="String">MzXML file</ns:SimpleVal>
+            <ns:SimpleVal Name="OutputDataLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataLSID" ValueType="String">${AutoFileLSID}</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Convert To MzXML</ns:SimpleVal>
+            <ns:SimpleVal Name="OutputDataFileTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataFile" ValueType="String">../MM_clICAT13.mzXML</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:${InputLSID.objectid}.ConvertToMzXML</ns:SimpleVal>
+          </ns:ProtocolApplicationParameters>
+          <ns:OutputMaterials/>
+          <ns:OutputDataObjects>
+            <ns:Data rdf:about="${FolderLSIDBase}.${XarFileId}-2:../MM_clICAT13.mzXML">
+              <ns:Name>MzXML file</ns:Name>
+              <ns:CpasType>Data</ns:CpasType>
+              <ns:SourceProtocolLSID>${FolderLSIDBase}:MS2.ConvertToMzXML.Marelli_protocol</ns:SourceProtocolLSID>
+              <ns:DataFileUrl>Run3/MM_clICAT13.mzXML</ns:DataFileUrl>
+              <ns:Properties>
+                <ns:SimpleVal ValueType="String" OntologyEntryURI="terms.fhcrc.org#Data.OriginalURL" Name="OriginalURL">file:/C:/LocalPipeRoot/CPASDemo/Peroximal_ICAT/MM_clICAT13.mzXML</ns:SimpleVal>
+              </ns:Properties>
+            </ns:Data>
+          </ns:OutputDataObjects>
+        </ns:ProtocolApplication>
+        <ns:ProtocolApplication rdf:about="${RunLSIDBase}:MarkOutput">
+          <ns:Name>Run Output</ns:Name>
+          <ns:CpasType>ExperimentRunOutput</ns:CpasType>
+          <ns:ProtocolLSID>${FolderLSIDBase}:MarkRunOutput:2</ns:ProtocolLSID>
+          <ns:ActionSequence>1000</ns:ActionSequence>
+          <ns:ActivityDate>2007-06-01-07:00</ns:ActivityDate>
+          <ns:InputRefs>
+            <ns:DataLSID>${FolderLSIDBase}.${XarFileId}-2:../MM_clICAT13.mzXML</ns:DataLSID>
+          </ns:InputRefs>
+          <ns:ProtocolApplicationParameters>
+            <ns:SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Run Output</ns:SimpleVal>
+            <ns:SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:MarkOutput</ns:SimpleVal>
+          </ns:ProtocolApplicationParameters>
+          <ns:OutputMaterials/>
+          <ns:OutputDataObjects/>
+        </ns:ProtocolApplication>
+      </ns:ProtocolApplications>
+    </ns:ExperimentRun>
+  </ns:ExperimentRuns>
+</ns:ExperimentArchive>

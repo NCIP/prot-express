@@ -80,100 +80,130 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.service.impl;
 
-import javax.xml.bind.JAXBException;
-
+import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
+import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Format conversion service for the Xar.xml 2.2 format.
+ *
  * @author Scott Miller
  */
-public final class ProtExpressRegistry {
+public class Xar22FormatConversionServiceImpl implements FormatConversionService {
+
+    private static final QName QNAME = new QName("http://cpas.fhcrc.org/exp/xml", "ExperimentArchive");
+    private static final String SCHEMA_LOCATION = "https://www.labkey.org/download/XarSchema/V2.2/expTypes.xsd";
+
+    private JAXBContext jaxbContext;
+
     /**
-     * The max number of results per page in paged search results.
+     * Default constructor.
+     *
+     * @throws JAXBException thrown when the jaxb context can not be initialized
      */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+    public Xar22FormatConversionServiceImpl() throws JAXBException {
+        jaxbContext = JAXBContext.newInstance(ExperimentArchiveType.class.getPackage().getName());
+    }
 
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
+    /**
+     * {@inheritDoc}
+     */
+    public void marshallExperiments(List<Experiment> experiments, File output) throws JAXBException {
+        getNewMarshaller().marshal(convertToExperimentArchive(experiments), output);
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void marshallExperiments(List<Experiment> experiments, OutputStream output) throws JAXBException {
+        getNewMarshaller().marshal(convertToExperimentArchive(experiments), output);
+    }
 
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
+    /**
+     * Method to get a new, configured marshaller.
+     *
+     * @return the marchaller
+     * @throws JAXBException
+     */
+    private Marshaller getNewMarshaller() throws JAXBException {
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
+        return marshaller;
+    }
+
+    /**
+     * Converts the list of experiments to xar 2.2 archive data.
+     * @param experiments the experiments to convert
+     * @return the xar 2.2 jaxb ready data
+     */
+    private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(List<Experiment> experiments) {
+        ObjectFactory objectFactory = new ObjectFactory();
+        ExperimentArchiveType experimantArchive = objectFactory.createExperimentArchiveType();
+        for (Experiment experiment : experiments) {
+            ExperimentType xarExperiment = objectFactory.createExperimentType();
+            xarExperiment.setName(experiment.getName());
+            xarExperiment.setComments(experiment.getDescription());
+            xarExperiment.setHypothesis(experiment.getHypothesis());
+            xarExperiment.setExperimentDescriptionURL(experiment.getUrl());
+            experimantArchive.getExperiment().add(xarExperiment);
         }
+        return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimantArchive);
     }
 
     /**
-     * @return the singleton
+     * {@inheritDoc}
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    @SuppressWarnings("unchecked")
+    public List<Experiment> unmarshallExperiments(File input) throws JAXBException {
+        Unmarshaller u = jaxbContext.createUnmarshaller();
+        JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
+        return convertToExperiments(experimentArchive.getValue());
     }
 
     /**
-     * @return the protocolService
+     * {@inheritDoc}
      */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
+    @SuppressWarnings("unchecked")
+    public List<Experiment> unmarshallExperiments(InputStream input) throws JAXBException {
+        Unmarshaller u = jaxbContext.createUnmarshaller();
+        JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
+        return convertToExperiments(experimentArchive.getValue());
     }
 
     /**
-     * @param protocolService the protocolService to set
+     * converts the xar 2.2 experiment archive data to the internal data model.
+     *
+     * @param experimentArchive the experiment archive
+     * @return the list of experiments.
      */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the experimentService
-     */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
+    private List<Experiment> convertToExperiments(ExperimentArchiveType experimentArchive) {
+        List<ExperimentType> xarExperiments = experimentArchive.getExperiment();
+        List<Experiment> experiments = new ArrayList<Experiment>();
+        for (ExperimentType xarExperimentType : xarExperiments) {
+            Experiment experiment = new Experiment(xarExperimentType.getName());
+            experiment.setDescription(xarExperimentType.getComments());
+            experiment.setHypothesis(xarExperimentType.getHypothesis());
+            experiment.setUrl(xarExperimentType.getExperimentDescriptionURL());
+            experiments.add(experiment);
+        }
+        return experiments;
     }
 }
