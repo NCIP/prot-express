@@ -208,11 +208,11 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(0, protocolList.size());
 
-        params.setName("test prot");
+        params.setName("t prot");
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
 
-        params.setDescription("bar ");
+        params.setDescription("ar ");
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
 
@@ -224,11 +224,11 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
 
-        params.setName("test protocol 12");
+        params.setName("tocol 12");
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(2, protocolList.size());
 
-        params.setDescription("bar 12");
+        params.setDescription("r 12");
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(1, protocolList.size());
         assertEquals(ProtocolType.ExperimentRunOutput.getDisplayName(), protocolList.get(0).getType().getDisplayName());

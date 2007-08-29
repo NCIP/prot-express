@@ -146,7 +146,7 @@ public class ExperimentSearchActionTest extends ProtExpressBaseHibernateTest {
         assertEquals("c Name - Test Experiment 3", experiments.get(0).getName());
         assertEquals("a Name - Test Experiment 1", experiments.get(2).getName());
 
-        action.getSearchParameters().setName("a");
+        action.getSearchParameters().setName("a Name");
         action.getExperiments().setSortDirection(SortOrderEnum.ASCENDING);
         assertEquals(ActionSupport.SUCCESS, action.doSearch());
         experiments = action.getExperiments().getList();
