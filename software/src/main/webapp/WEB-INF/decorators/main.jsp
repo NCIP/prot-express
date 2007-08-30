@@ -1,8 +1,9 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <head>
-<title>ProtExpress - <decorator:title default="Welcome" /></title>
+<title><fmt:message key="protexpress"/> - <decorator:title default="Welcome" /></title>
 <decorator:head />
 <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css">
 </head>

@@ -15,27 +15,27 @@
     </Displayers>
 
     <Menus>
-        <Menu name="protExpressLogin" title="label.menu.protexpress">
-            <Item name="protExpress.home" title="label.menu.protexpress.home" page="/" />
-            <Item name="protExpress.login" title="label.menu.protexpress.login" page="/" />
-            <Item name="protExpress.register" title="label.menu.protexpress.register" page="/" />
+        <Menu name="protExpressLogin" title="menu.protexpress">
+            <Item name="protExpress.home" title="menu.protexpress.home" page="/" />
+            <Item name="protExpress.login" title="menu.protexpress.login" page="/" />
+            <Item name="protExpress.register" title="menu.protexpress.register" page="/" />
         </Menu>
-        <Menu name="protExpressMain" title="label.menu.protexpress">
-            <Item name="protExpress.home" title="label.menu.protexpress.home" page="/" />
-            <Item name="protExpress.dashboard" title="label.menu.protexpress.dashboard" page="/" />
-            <Item name="protExpress.protocols" title="label.menu.protexpress.protocols" page="/protocol/search/loadSearch.action" />
-            <Item name="protExpress.experiments" title="label.menu.protexpress.experiments" page="/experiment/search/loadSearch.action" />
-            <Item name="protExpress.importexport" title="label.menu.protexpress.importexport" page="/" />
+        <Menu name="protExpressMain" title="menu.protexpress">
+            <Item name="protExpress.home" title="menu.protexpress.home" page="/" />
+            <Item name="protExpress.dashboard" title="menu.protexpress.dashboard" page="/" />
+            <Item name="protExpress.protocols" title="menu.protexpress.protocols" page="/protocol/search/loadSearch.action" />
+            <Item name="protExpress.experiments" title="menu.protexpress.experiments" page="/experiment/search/loadSearch.action" />
+            <Item name="protExpress.importexport" title="menu.protexpress.importexport" page="/" />
         </Menu>
-        <Menu name="protExpressAbout" title="label.menu.aboutprotexpress">
-            <Item name="protExpressAbout.whatis" title="label.menu.aboutprotexpress.whatis" page="/" />
-            <Item name="protExpressAbout.help" title="label.menu.aboutprotexpress.help" page="/" />
+        <Menu name="protExpressAbout" title="menu.aboutprotexpress">
+            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/" />
+            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/" />
         </Menu>
-        <Menu name="globalLinks" title="label.menu.globallinks">
-            <Item name="globalLinks.ncihome" title="label.menu.globallinks.ncihome" page="/" />
-            <Item name="globalLinks.ncicbhome" title="label.menu.globallinks.ncicbhome" page="/" />
-            <Item name="globalLinks.cabighome" title="label.menu.globallinks.cabighome" page="/" />
-            <Item name="globalLinks.ncicbsupport" title="label.menu.globallinks.ncicbsupport" page="/" />
+        <Menu name="globalLinks" title="menu.globallinks">
+            <Item name="globalLinks.ncihome" title="menu.globallinks.ncihome" page="/" />
+            <Item name="globalLinks.ncicbhome" title="menu.globallinks.ncicbhome" page="/" />
+            <Item name="globalLinks.cabighome" title="menu.globallinks.cabighome" page="/" />
+            <Item name="globalLinks.ncicbsupport" title="menu.globallinks.ncicbsupport" page="/" />
         </Menu>
     </Menus>
 </MenuConfig>
