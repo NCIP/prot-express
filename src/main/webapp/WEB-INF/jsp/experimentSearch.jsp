@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+
+<s:url id="addExperiment" action="experiment/management/load"/>
+<a href="${addExperiment}"><s:property value="%{getText('label.menu.experiment.add')}" /></a>
+
 <h2>Search Experiments</h2>
 
 <s:form action="experiment/search/doSearch" method="post">
