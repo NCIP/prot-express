@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+
+<s:url id="addProtocol" action="protocol/management/load" />
+<a href="${addProtocol}"><s:property value="%{getText('label.menu.protocol.add')}" /></a>
+
 <h2>Search Protcols</h2>
 
 <s:form action="protocol/search/doSearch" method="post">

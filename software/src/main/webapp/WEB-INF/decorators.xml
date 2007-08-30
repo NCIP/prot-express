@@ -7,14 +7,6 @@
         <pattern>/images/*</pattern>
     </excludes>
 
-  <decorator name="protocolMain" page="/WEB-INF/decorators/protocolMain.jsp">
-        <pattern>/protocol/*</pattern>
-    </decorator>
-
-    <decorator name="experimentMain" page="/WEB-INF/decorators/experimentMain.jsp">
-        <pattern>/experiment/*</pattern>
-    </decorator>
-
     <decorator name="main" page="/WEB-INF/decorators/main.jsp">
         <pattern>/*</pattern>
     </decorator>
