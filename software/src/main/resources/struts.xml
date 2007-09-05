@@ -3,10 +3,10 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <constant name="struts.enable.SlashesInActionNames" value="true" />
     <package name="default" extends="struts-default">
         <interceptors>
-            <interceptor name="protExpressParams" class="gov.nih.nci.protexpress.ui.interceptors.DisplayTagParametersInterceptor" />
+            <interceptor name="protExpressParams"
+                class="gov.nih.nci.protexpress.ui.interceptors.DisplayTagParametersInterceptor" />
 
             <interceptor-stack name="protExpressParamsPrepareParamsStack">
                 <interceptor-ref name="exception" />
@@ -65,8 +65,8 @@
             <result name="input">/WEB-INF/jsp/protocolSearch.jsp</result>
         </action>
 
-        <action name="protocol/management/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction"
-            method="{1}">
+        <action name="protocol/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
             <result name="success">/WEB-INF/jsp/protocolSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
@@ -78,8 +78,8 @@
             <result name="input">/WEB-INF/jsp/experimentSearch.jsp</result>
         </action>
 
-        <action name="experiment/management/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction"
-            method="{1}">
+        <action name="experiment/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
             <result name="success">/WEB-INF/jsp/experimentSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/experimentForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
