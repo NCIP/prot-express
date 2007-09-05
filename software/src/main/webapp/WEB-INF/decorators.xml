@@ -5,6 +5,8 @@
         <pattern>/stylesheets/*</pattern>
         <pattern>/scripts/*</pattern>
         <pattern>/images/*</pattern>
+        <pattern>/dojo/*</pattern>
+        <pattern>/struts/*</pattern>
     </excludes>
 
     <decorator name="main" page="/WEB-INF/decorators/main.jsp">
