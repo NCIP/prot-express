@@ -23,7 +23,6 @@
              PROTECTION_ELEMENT_ID, USER_ID, UPDATE_DATE)
     VALUES ( 1,1,current_date);
 
-COMMIT;
 --
 --  The following entry is for your application.
 --  Replace <<application_context_name>> with your application name.
@@ -37,7 +36,6 @@ COMMIT;
   INSERT INTO CSM_PROTECTION_ELEMENT(
              PROTECTION_ELEMENT_NAME, PROTECTION_ELEMENT_DESCRIPTION, OBJECT_ID, APPLICATION_ID,UPDATE_DATE)
     VALUES ( 'protExpress','protExpress Admin Application Protection Element','protExpress',1,current_date);
-COMMIT;
 --
 --  The following entries are Common Set of Privileges
 --
@@ -62,6 +60,3 @@ COMMIT;
 
   INSERT INTO CSM_PRIVILEGE(PRIVILEGE_NAME, PRIVILEGE_DESCRIPTION,UPDATE_DATE)
   VALUES('EXECUTE','This privilege allows a user to execute a particular resource. The resource can be a method, function, behavior of the application, URL, button etc', current_date);
-
-
-COMMIT;
