@@ -222,6 +222,9 @@
                     <autocommit>true</autocommit>
                     <srcFiles>
                         <srcFile>target/hibernate3/sql/${schema.file}</srcFile>
+                        <srcFile>src/main/sql/csmDropSchema.sql</srcFile>
+                        <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
+                        <srcFile>src/main/sql/csmDataPrimingPostgres.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
                         <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                     </srcFiles>
