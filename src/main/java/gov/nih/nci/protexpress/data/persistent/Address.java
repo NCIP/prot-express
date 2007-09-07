@@ -86,66 +86,55 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
- * Class representing a protocol.
- * @author Scott Miller
+ * Class representing an experiment.
+ *
+ * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol")
+@Table(name = "address")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable {
+public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
-    private static final int TYPE_LENGTH = 20;
+    private static final int ADDRESS_LINE_LENGTH = 100;
+    private static final int ADDRESS_TYPE_LENGTH = 10;
+    private static final int CITY_LENGTH = 25;
+    private static final int STATE_LENGTH = 25;
+    private static final int COUNTRY_LENGTH = 50;
+    private static final int ZIP_LENGTH = 10;
 
     private Long id;
-    private String name;
-    private String description;
-    private String software;
-    private String instrument;
-    private ProtocolType type;
+    private String type;
+    private String line1;
+    private String line2;
+    private String city;
+    private String state;
+    private String country;
+    private String zipCode;
 
-    private Person primaryContact;
+    private Person person;
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected Protocol() {
-    }
-
-    /**
-     * Constructor to create the object and populate all required fields.
-     *
-     * @param name the name of the protocol
-     * @param type the type
-     */
-    public Protocol(String name, ProtocolType type) {
-        setName(name);
-        setType(type);
+    public Address() {
     }
 
     /**
@@ -160,162 +149,207 @@ public class Protocol implements Serializable {
     }
 
     /**
+     * Sets the id.
+     *
      * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
+
+
     /**
-     * Gets the description.
+     * Gets the type.
      *
-     * @return the description
+     * @return the type.
      */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    @Index(name = "description_index")
-    public String getDescription() {
-        return description;
+    @Column(name = "type")
+    @Length(max = ADDRESS_TYPE_LENGTH)
+    public String getType() {
+        return type;
     }
 
     /**
-     * Sets the description.
+     * Sets the type.
      *
-     * @param description the description to set
+     * @param type the type to set.
      */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Gets the instrument.
-     *
-     * @return the instrument
-     */
-    @Column(name = "instrument")
-    @Length(max = INSTRUMENT_LENGTH)
-    public String getInstrument() {
-        return instrument;
-    }
-
-    /**
-     * Sets the instrument.
-     *
-     * @param instrument the instrument to set
-     */
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name", unique = true)
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    @Index(name = "name_index")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the software.
-     *
-     * @return the software
-     */
-    @Column(name = "software")
-    @Length(max = SOFTWARE_LENGTH)
-    public String getSoftware() {
-        return software;
-    }
-
-    /**
-     *
-     * @param software the software to set
-     */
-    public void setSoftware(String software) {
-        this.software = software;
-    }
-
-    /**
-     * @return the type
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    @Index(name = "type_index")
-    public ProtocolType getType() {
-        return this.type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(ProtocolType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Gets the line1.
+     *
+     * @return the line1.
+     */
+    @Column(name = "line1")
+    @NotEmpty
+    @Length(max = ADDRESS_LINE_LENGTH)
+    public String getLine1() {
+        return line1;
+    }
 
     /**
-     * Gets the primaryContact.
+     * Sets the line1.
      *
-     * @return the primaryContact
+     * @param line1 the line1 to set.
      */
-    /*
-    @OneToMany
-    @JoinTable(
-            name = "map_protocol_contact",
-            joinColumns = { @JoinColumn(name = "protocol_id") },
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-            )*/
-   // public Person getPrimaryContact() {
-  //      return primaryContact;
-  //  }
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
 
     /**
+     * Gets the line2.
      *
-     * @param primaryContact the primaryContact to set
+     * @return the line2.
      */
-   // public void setPrimaryContact(Person primaryContact) {
-  //      this.primaryContact = primaryContact;
-  //  }
+    @Column(name = "line2")
+    @Length(max = ADDRESS_LINE_LENGTH)
+    public String getLine2() {
+        return line2;
+    }
 
+    /**
+     * Sets the line2.
+     *
+     * @param line2 the line2 to set.
+     */
+    public void setLine2(String line2) {
+        this.line2 = line2;
+    }
+
+    /**
+     * Gets the city.
+     *
+     * @return the city.
+     */
+    @Column(name = "city")
+    @Length(max = CITY_LENGTH)
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * Sets the city.
+     *
+     * @param city the city to set.
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * Gets the state.
+     *
+     * @return the state.
+     */
+    @Column(name = "state")
+    @Length(max = STATE_LENGTH)
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * Sets the state.
+     *
+     * @param state the state to set.
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    /**
+     * Gets the country.
+     *
+     * @return the country.
+     */
+    @Column(name = "country")
+    @NotEmpty
+    @Length(max = COUNTRY_LENGTH)
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * Sets the country.
+     *
+     * @param country the country to set.
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    /**
+     * Gets the zipCode.
+     *
+     * @return the zipCode.
+     */
+    @Column(name = "zip_code")
+    @NotEmpty
+    @Length(max = ZIP_LENGTH)
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    /**
+     * Sets the zipCode.
+     *
+     * @param zipCode the zipCode to set.
+     */
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    /**
+     * Gets the person.
+     *
+     * @return the person
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+                name = "person_id",
+                nullable = false
+            )
+    public Person getPerson() {
+        return person;
+    }
+
+    /**
+     * Sets the person.
+     *
+     * @param person the person to set
+     */
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Address)) {
             return false;
         }
 
-        if (o == this) {
+        if (this == obj) {
             return true;
         }
 
-        if (!(o instanceof Protocol)) {
-            return false;
-        }
-
-        Protocol p = (Protocol) o;
+        Address address = (Address) obj;
 
         if (id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getName(), p.getName()).isEquals();
+        return new EqualsBuilder()
+                            .append(getId(), address.getId())
+                            .append(getLine1(), address.getLine1())
+                            .append(getCountry(), address.getCountry())
+                            .append(getZipCode(), address.getZipCode())
+                            .isEquals();
     }
 
     /**
@@ -323,6 +357,12 @@ public class Protocol implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+        return new HashCodeBuilder()
+                        .append(getId())
+                        .append(getLine1())
+                        .append(getCountry())
+                        .append(getZipCode())
+                        .toHashCode();
     }
+
 }

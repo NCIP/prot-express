@@ -83,12 +83,16 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -120,6 +124,7 @@ public class Experiment implements Serializable {
     private String hypothesis;
     private String url;
 
+    private List<ExperimentRun> experimentRuns;
 
     /**
      * protected default constructor for hibernate only.
@@ -236,6 +241,27 @@ public class Experiment implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Gets the experimentRuns.
+     *
+     * @return the experimentRuns.
+     */
+    @OneToMany(
+            mappedBy = "experiment",
+            fetch = FetchType.LAZY
+            )
+    public List<ExperimentRun> getExperimentRuns() {
+        return experimentRuns;
+    }
+
+    /**
+     * Sets the experimentRuns.
+     *
+     * @param experimentRuns the experimentRuns to set.
+     */
+    public void setExperimentRuns(List<ExperimentRun> experimentRuns) {
+        this.experimentRuns = experimentRuns;
+    }
 
     /**
      * {@inheritDoc}
@@ -270,5 +296,6 @@ public class Experiment implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).toHashCode();
     }
+
 
 }

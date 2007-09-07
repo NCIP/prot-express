@@ -87,6 +87,10 @@ package gov.nih.nci.protexpress.data.persistent;
  *
  */
 public enum ProtocolType {
+       /**
+     * The ProtocolApplication type.
+     */
+    ProtocolApplication("Protocol Application"),
     /**
      * The ExperimentRun type.
      */

@@ -6,5 +6,8 @@
     <session-factory>
         <mapping class="gov.nih.nci.protexpress.data.persistent.Protocol"/>
         <mapping class="gov.nih.nci.protexpress.data.persistent.Experiment"/>
+        <mapping class="gov.nih.nci.protexpress.data.persistent.ExperimentRun"/>
+        <mapping class="gov.nih.nci.protexpress.data.persistent.Person"/>
+        <mapping class="gov.nih.nci.protexpress.data.persistent.Address"/>
     </session-factory>
 </hibernate-configuration>
