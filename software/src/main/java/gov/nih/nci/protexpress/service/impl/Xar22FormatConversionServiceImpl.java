@@ -242,29 +242,3 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
     }
 }
 
-/*
-// Read Protocol Definitions.
-            List <Protocol> protocols = new ArrayList<Protocol>();
-            ExperimentArchiveType.ProtocolDefinitions protocolDefn = experimentArchive.getProtocolDefinitions();
-
-            if (protocolDefn != null) {
-                List<ProtocolBaseType> protocolBaseTypes = protocolDefn.getProtocol();
-                for (ProtocolBaseType protocolBaseType : protocolBaseTypes) {
-                    Protocol protocol = new Protocol(protocolBaseType.getName(), ProtocolType.ProtocolApplication);
-                    protocol.setInstrument(protocolBaseType.getInstrument());
-                    protocol.setSoftware(protocolBaseType.getSoftware());
-
-                    ContactType protocolBaseTypeContact = protocolBaseType.getContact();
-                    Person protocolPrimaryContact = new Person(protocolBaseTypeContact.getFirstName(),
-                            protocolBaseTypeContact.getLastName());
-                    protocolPrimaryContact.setContactId(protocolBaseTypeContact.getContactId());
-                    protocolPrimaryContact.setEmail(protocolBaseTypeContact.getEmail());
-
-                    protocol.setPrimaryContact(protocolPrimaryContact);
-                    protocols.add(protocol);
-                }
-            }
-
-
-
-*/
