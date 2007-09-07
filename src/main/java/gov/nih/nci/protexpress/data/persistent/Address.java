@@ -85,19 +85,10 @@ package gov.nih.nci.protexpress.data.persistent;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 
@@ -106,30 +97,23 @@ import org.hibernate.validator.NotEmpty;
  *
  * @author Krishna Kanchinadam
  */
-@Entity
-@Table(name = "address")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Embeddable
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private static final int ADDRESS_LINE_LENGTH = 100;
-    private static final int ADDRESS_TYPE_LENGTH = 10;
     private static final int CITY_LENGTH = 25;
     private static final int STATE_LENGTH = 25;
     private static final int COUNTRY_LENGTH = 50;
     private static final int ZIP_LENGTH = 10;
 
-    private Long id;
-    private String type;
-    private String line1;
-    private String line2;
+    private String streetaddress1;
+    private String streetaddress2;
     private String city;
     private String state;
     private String country;
     private String zipCode;
-
-    private Person person;
 
     /**
      * protected default constructor for hibernate only.
@@ -138,57 +122,15 @@ public class Address implements Serializable {
     }
 
     /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets the id.
-     *
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-
-    /**
-     * Gets the type.
-     *
-     * @return the type.
-     */
-    @Column(name = "type")
-    @Length(max = ADDRESS_TYPE_LENGTH)
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Sets the type.
-     *
-     * @param type the type to set.
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
      * Gets the line1.
      *
      * @return the line1.
      */
-    @Column(name = "line1")
+    @Column(name = "streetaddress1")
     @NotEmpty
     @Length(max = ADDRESS_LINE_LENGTH)
-    public String getLine1() {
-        return line1;
+    public String getStreetAddress1() {
+        return streetaddress1;
     }
 
     /**
@@ -196,8 +138,8 @@ public class Address implements Serializable {
      *
      * @param line1 the line1 to set.
      */
-    public void setLine1(String line1) {
-        this.line1 = line1;
+    public void setStreetAddress1(String line1) {
+        this.streetaddress1 = line1;
     }
 
     /**
@@ -205,10 +147,10 @@ public class Address implements Serializable {
      *
      * @return the line2.
      */
-    @Column(name = "line2")
+    @Column(name = "streetaddress2")
     @Length(max = ADDRESS_LINE_LENGTH)
-    public String getLine2() {
-        return line2;
+    public String getStreetAddress2() {
+        return streetaddress2;
     }
 
     /**
@@ -216,8 +158,8 @@ public class Address implements Serializable {
      *
      * @param line2 the line2 to set.
      */
-    public void setLine2(String line2) {
-        this.line2 = line2;
+    public void setStreetAddress2(String line2) {
+        this.streetaddress2 = line2;
     }
 
     /**
@@ -303,29 +245,6 @@ public class Address implements Serializable {
     }
 
     /**
-     * Gets the person.
-     *
-     * @return the person
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-                name = "person_id",
-                nullable = false
-            )
-    public Person getPerson() {
-        return person;
-    }
-
-    /**
-     * Sets the person.
-     *
-     * @param person the person to set
-     */
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -340,16 +259,8 @@ public class Address implements Serializable {
 
         Address address = (Address) obj;
 
-        if (id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder()
-                            .append(getId(), address.getId())
-                            .append(getLine1(), address.getLine1())
-                            .append(getCountry(), address.getCountry())
-                            .append(getZipCode(), address.getZipCode())
-                            .isEquals();
+        return new EqualsBuilder().append(getStreetAddress1(), address.getStreetAddress1()).append(getCountry(),
+                address.getCountry()).append(getZipCode(), address.getZipCode()).isEquals();
     }
 
     /**
@@ -357,12 +268,7 @@ public class Address implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                        .append(getId())
-                        .append(getLine1())
-                        .append(getCountry())
-                        .append(getZipCode())
-                        .toHashCode();
+        return new HashCodeBuilder().append(getStreetAddress1()).append(getCountry()).append(getZipCode()).toHashCode();
     }
 
 }

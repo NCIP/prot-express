@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -91,10 +90,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -128,8 +125,6 @@ public class ExperimentRun implements Serializable {
     private String about;
     private Experiment experiment;
 
-//    private List<ProtocolApplication> protocolApplications;
-
     /**
      * protected default constructor for hibernate only.
      */
@@ -139,8 +134,7 @@ public class ExperimentRun implements Serializable {
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name
-     *            the name of the experiment
+     * @param name the name of the experiment
      */
     public ExperimentRun(String name) {
         setName(name);
@@ -166,15 +160,14 @@ public class ExperimentRun implements Serializable {
         this.id = id;
     }
 
-
     /**
      * Gets the name.
      *
      * @return the name
      */
-    @Column(name="name")
+    @Column(name = "name")
     @NotEmpty
-    @Length(max=NAME_LENGTH)
+    @Length(max = NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -193,8 +186,8 @@ public class ExperimentRun implements Serializable {
      *
      * @return the description.
      */
-    @Column(name="description")
-    @Length(max=DESCRIPTION_LENGTH)
+    @Column(name = "description")
+    @Length(max = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }
@@ -213,8 +206,8 @@ public class ExperimentRun implements Serializable {
      *
      * @return the comments
      */
-    @Column(name="comments")
-    @Length(max=COMMENTS_LENGTH)
+    @Column(name = "comments")
+    @Length(max = COMMENTS_LENGTH)
     public String getComments() {
         return comments;
     }
@@ -233,8 +226,8 @@ public class ExperimentRun implements Serializable {
      *
      * @return the about
      */
-    @Column(name="about")
-    @Length(max=ABOUT_LENGTH)
+    @Column(name = "about")
+    @Length(max = ABOUT_LENGTH)
     public String getAbout() {
         return about;
     }
@@ -254,10 +247,7 @@ public class ExperimentRun implements Serializable {
      * @return the experiment
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-                name = "experiment_id",
-                nullable = false
-            )
+    @JoinColumn(name = "experiment_id", nullable = false)
     public Experiment getExperiment() {
         return experiment;
     }
@@ -290,10 +280,8 @@ public class ExperimentRun implements Serializable {
             return false;
         }
 
-        return new EqualsBuilder()
-                            .append(getId(), experimentRun.getId())
-                            .append(getName(), experimentRun.getName())
-                            .isEquals();
+        return new EqualsBuilder().append(getId(), experimentRun.getId()).append(getName(), experimentRun.getName())
+                .isEquals();
     }
 
     /**
@@ -301,11 +289,6 @@ public class ExperimentRun implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                        .append(getId())
-                        .append(getName())
-                        .toHashCode();
+        return new HashCodeBuilder().append(getId()).append(getName()).toHashCode();
     }
-
-
 }

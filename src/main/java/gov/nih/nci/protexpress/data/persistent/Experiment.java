@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -91,7 +92,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -104,6 +104,7 @@ import org.hibernate.validator.NotEmpty;
 
 /**
  * Class representing an experiment.
+ *
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -124,7 +125,7 @@ public class Experiment implements Serializable {
     private String hypothesis;
     private String url;
 
-    private List<ExperimentRun> experimentRuns;
+    private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
     /**
      * protected default constructor for hibernate only.
@@ -219,7 +220,6 @@ public class Experiment implements Serializable {
         return url;
     }
 
-
     /**
      * Gets the name.
      *
@@ -246,10 +246,7 @@ public class Experiment implements Serializable {
      *
      * @return the experimentRuns.
      */
-    @OneToMany(
-            mappedBy = "experiment",
-            fetch = FetchType.LAZY
-            )
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY)
     public List<ExperimentRun> getExperimentRuns() {
         return experimentRuns;
     }
@@ -259,7 +256,7 @@ public class Experiment implements Serializable {
      *
      * @param experimentRuns the experimentRuns to set.
      */
-    public void setExperimentRuns(List<ExperimentRun> experimentRuns) {
+    protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
         this.experimentRuns = experimentRuns;
     }
 
@@ -296,6 +293,5 @@ public class Experiment implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).toHashCode();
     }
-
 
 }
