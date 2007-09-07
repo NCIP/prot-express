@@ -83,15 +83,13 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -99,7 +97,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
 
 /**
  * Class representing an experiment.
@@ -132,24 +129,15 @@ public class Person implements Serializable {
     private String organizationName;
     private String organizationUrl;
 
-    private List<Address> addresses;
-
-    /**
-     * protected default constructor for hibernate only.
-     */
-    protected Person() {
-    }
+    private Address address;
 
     /**
      * Constructor to create the object and populate all required fields.
      *
      * @param firstName the firstName
-     * @param lastName the lastName
-     * the first and last name of the person
+     * @param lastName the lastName the first and last name of the person
      */
-    public Person(String firstName, String lastName) {
-        setFirstName(firstName);
-        setLastName(lastName);
+    public Person() {
     }
 
     /**
@@ -178,7 +166,6 @@ public class Person implements Serializable {
      * @return the firstName
      */
     @Column(name = "first_name")
-    @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getFirstName() {
         return firstName;
@@ -219,7 +206,6 @@ public class Person implements Serializable {
      * @return the lastName
      */
     @Column(name = "last_name")
-    @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getLastName() {
         return lastName;
@@ -228,7 +214,7 @@ public class Person implements Serializable {
     /**
      * Sets the lastName.
      *
-     * @param lastName  the lastName to set
+     * @param lastName the lastName to set
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -373,26 +359,20 @@ public class Person implements Serializable {
     public void setOrganizationUrl(String organizationUrl) {
         this.organizationUrl = organizationUrl;
     }
+
     /**
-     * Gets the addresses.
-     *
-     * @return the addresses.
+     * @return the address
      */
-    @OneToMany(
-            mappedBy = "person",
-            fetch = FetchType.LAZY
-            )
-    public List<Address> getAddresses() {
-        return addresses;
+    @Embedded
+    public Address getAddress() {
+        return this.address;
     }
 
     /**
-     * Sets the addresses.
-     *
-     * @param addresses the addresses to set.
+     * @param address the address to set
      */
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     /**
@@ -414,11 +394,8 @@ public class Person implements Serializable {
             return false;
         }
 
-        return new EqualsBuilder()
-                            .append(getId(), person.getId())
-                            .append(getFirstName(), person.getFirstName())
-                            .append(getLastName(), person.getLastName())
-                            .isEquals();
+        return new EqualsBuilder().append(getId(), person.getId()).append(getFirstName(), person.getFirstName())
+                .append(getLastName(), person.getLastName()).isEquals();
     }
 
     /**
@@ -426,12 +403,7 @@ public class Person implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                        .append(getId())
-                        .append(getFirstName())
-                        .append(getLastName())
-                        .toHashCode();
+        return new HashCodeBuilder().append(getId()).append(getFirstName()).append(getLastName()).toHashCode();
     }
-
 
 }

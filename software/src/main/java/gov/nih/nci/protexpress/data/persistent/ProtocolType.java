@@ -87,7 +87,7 @@ package gov.nih.nci.protexpress.data.persistent;
  *
  */
 public enum ProtocolType {
-       /**
+    /**
      * The ProtocolApplication type.
      */
     ProtocolApplication("Protocol Application"),
@@ -108,6 +108,7 @@ public enum ProtocolType {
 
     /**
      * Constructor for ProtocolType.
+     *
      * @param displayname the display name
      */
     private ProtocolType(String displayname) {

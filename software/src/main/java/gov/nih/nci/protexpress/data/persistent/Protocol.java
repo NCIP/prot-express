@@ -91,9 +91,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -128,8 +125,6 @@ public class Protocol implements Serializable {
     private String software;
     private String instrument;
     private ProtocolType type;
-
-    private Person primaryContact;
 
     /**
      * protected default constructor for hibernate only.
@@ -265,32 +260,6 @@ public class Protocol implements Serializable {
     public void setType(ProtocolType type) {
         this.type = type;
     }
-
-
-    /**
-     * Gets the primaryContact.
-     *
-     * @return the primaryContact
-     */
-    /*
-    @OneToMany
-    @JoinTable(
-            name = "map_protocol_contact",
-            joinColumns = { @JoinColumn(name = "protocol_id") },
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-            )*/
-   // public Person getPrimaryContact() {
-  //      return primaryContact;
-  //  }
-
-    /**
-     *
-     * @param primaryContact the primaryContact to set
-     */
-   // public void setPrimaryContact(Person primaryContact) {
-  //      this.primaryContact = primaryContact;
-  //  }
-
 
     /**
      * {@inheritDoc}
