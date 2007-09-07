@@ -86,24 +86,14 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.ExperimentRuns;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import junit.framework.TestCase;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * Class to test the xar 22 conversion service
@@ -130,17 +120,15 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         currentExperiment.setHypothesis("test hypothesis 1");
         currentExperiment.setUrl("http://testUrl1:8080/index.html");
 
-        List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
         ExperimentRun expRun = new ExperimentRun("MS2 analysis of lung adenocarcinoma tissue");
         expRun.setAbout("${FolderLSIDBase}:CPASPaper:LungAdenocarcinomaStudyRun");
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
-        experimentRuns.add(expRun);
-        currentExperiment.setExperimentRuns(experimentRuns);
+        currentExperiment.getExperimentRuns().add(expRun);
 
         experiments.add(currentExperiment);
 
-       /* currentExperiment = new Experiment("test name 2");
+        currentExperiment = new Experiment("test name 2");
         currentExperiment.setDescription("test description 2");
         currentExperiment.setHypothesis("test hypothesis 2");
         currentExperiment.setUrl("http://testUrl2:8080/index.html");
@@ -149,11 +137,9 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         expRun.setAbout("${FolderLSIDBase}:CPASPaper:LungAdenocarcinomaStudyRun");
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
-        experimentRuns = new ArrayList<ExperimentRun>();
-        experimentRuns.add(expRun);
-        currentExperiment.setExperimentRuns(experimentRuns);
+        currentExperiment.getExperimentRuns().add(expRun);
 
-        experiments.add(currentExperiment);*/
+        experiments.add(currentExperiment);
     }
 
     public void testMarshallAndUmarshallFile() throws Exception {
@@ -162,7 +148,7 @@ public class Xar22FormatConversionServiceTest extends TestCase {
 
         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(file1);
 
-        assertEquals(1, unmarshalledExperiments.size());
+        assertEquals(2, unmarshalledExperiments.size());
    //     assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
       //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
     }
@@ -174,7 +160,7 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         List<Experiment> unmarshalledExperiments = fcs
                 .unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
 
-        assertEquals(1, unmarshalledExperiments.size());
+        assertEquals(2, unmarshalledExperiments.size());
       //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
       //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
     }
