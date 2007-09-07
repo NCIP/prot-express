@@ -84,15 +84,11 @@ package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
 
 import java.io.File;
 import java.io.InputStream;
@@ -157,6 +153,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
 
     /**
      * Converts the list of experiments to xar 2.2 archive data.
+     *
      * @param experiments the experiments to convert
      * @return the xar 2.2 jaxb ready data
      */
@@ -171,11 +168,9 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
             xarExperiment.setExperimentDescriptionURL(experiment.getUrl());
             experimentArchive.getExperiment().add(xarExperiment);
 
-            List<ExperimentRun> expRuns = experiment.getExperimentRuns();
-            ExperimentArchiveType.ExperimentRuns xarExperimentRuns =
-                objectFactory.createExperimentArchiveTypeExperimentRuns();
-            List<ExperimentRunType> xarExpRunType = new ArrayList<ExperimentRunType>();
-            for (ExperimentRun expRun : expRuns) {
+            ExperimentArchiveType.ExperimentRuns xarExperimentRuns = objectFactory
+                    .createExperimentArchiveTypeExperimentRuns();
+            for (ExperimentRun expRun : experiment.getExperimentRuns()) {
                 ExperimentRunType xarExperimentRun = objectFactory.createExperimentRunType();
                 xarExperimentRun.setName(expRun.getName());
                 xarExperimentRun.setAbout(expRun.getAbout());
@@ -223,22 +218,17 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
             experiment.setHypothesis(xarExperimentType.getHypothesis());
             experiment.setUrl(xarExperimentType.getExperimentDescriptionURL());
 
-            //Get ExperimentRuns.
-            List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
+            // Get ExperimentRuns.
             ExperimentArchiveType.ExperimentRuns xarExpRuns = experimentArchive.getExperimentRuns();
-            List<ExperimentRunType> xarExpRunTypes = xarExpRuns.getExperimentRun();
-            for (ExperimentRunType xarExpRunType : xarExpRunTypes) {
+            for (ExperimentRunType xarExpRunType : xarExpRuns.getExperimentRun()) {
                 ExperimentRun expRun = new ExperimentRun(xarExpRunType.getName());
                 expRun.setComments(xarExpRunType.getComments());
                 expRun.setAbout(xarExpRunType.getAbout());
-                experimentRuns.add(expRun);
+                experiment.getExperimentRuns().add(expRun);
             }
-           experiment.setExperimentRuns(experimentRuns);
-
-           experiments.add(experiment);
+            experiments.add(experiment);
         }
 
         return experiments;
     }
 }
-
