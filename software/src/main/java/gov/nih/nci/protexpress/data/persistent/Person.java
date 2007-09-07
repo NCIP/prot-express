@@ -83,16 +83,14 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -100,52 +98,58 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
- * Class representing a protocol.
- * @author Scott Miller
+ * Class representing an experiment.
+ *
+ * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol")
+@Table(name = "person")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable {
+public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
-    private static final int TYPE_LENGTH = 20;
+    private static final int EMAIL_LENGTH = 255;
+    private static final int PHONE_LENGTH = 25;
+    private static final int FAX_LENGTH = 25;
+    private static final int URL_LENGTH = 255;
+    private static final int COMMENTS_LENGTH = 255;
 
     private Long id;
-    private String name;
-    private String description;
-    private String software;
-    private String instrument;
-    private ProtocolType type;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String fax;
+    private String url;
+    private String comments;
+    private String organizationName;
+    private String organizationUrl;
 
-    private Person primaryContact;
+    private List<Address> addresses;
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected Protocol() {
+    protected Person() {
     }
 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name the name of the protocol
-     * @param type the type
+     * @param firstName the firstName
+     * @param lastName the lastName
+     * the first and last name of the person
      */
-    public Protocol(String name, ProtocolType type) {
-        setName(name);
-        setType(type);
+    public Person(String firstName, String lastName) {
+        setFirstName(firstName);
+        setLastName(lastName);
     }
 
     /**
@@ -160,6 +164,8 @@ public class Protocol implements Serializable {
     }
 
     /**
+     * Sets the id.
+     *
      * @param id the id to set
      */
     public void setId(Long id) {
@@ -167,155 +173,252 @@ public class Protocol implements Serializable {
     }
 
     /**
-     * Gets the description.
+     * Gets the firstName.
      *
-     * @return the description
+     * @return the firstName
      */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    @Index(name = "description_index")
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the description.
-     *
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Gets the instrument.
-     *
-     * @return the instrument
-     */
-    @Column(name = "instrument")
-    @Length(max = INSTRUMENT_LENGTH)
-    public String getInstrument() {
-        return instrument;
-    }
-
-    /**
-     * Sets the instrument.
-     *
-     * @param instrument the instrument to set
-     */
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name", unique = true)
+    @Column(name = "first_name")
     @NotEmpty
     @Length(max = NAME_LENGTH)
-    @Index(name = "name_index")
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * Sets the name.
+     * Sets the firstName.
      *
-     * @param name the name to set
+     * @param firstName the firstName to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
-     * Gets the software.
+     * Gets the middleName.
      *
-     * @return the software
+     * @return the middleName.
      */
-    @Column(name = "software")
-    @Length(max = SOFTWARE_LENGTH)
-    public String getSoftware() {
-        return software;
+    @Column(name = "middle_name")
+    @Length(max = NAME_LENGTH)
+    public String getMiddleName() {
+        return middleName;
     }
 
     /**
+     * Sets the middleName.
      *
-     * @param software the software to set
+     * @param middleName the middleName to set
      */
-    public void setSoftware(String software) {
-        this.software = software;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     /**
-     * @return the type
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    @Index(name = "type_index")
-    public ProtocolType getType() {
-        return this.type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(ProtocolType type) {
-        this.type = type;
-    }
-
-
-    /**
-     * Gets the primaryContact.
+     * Gets the lastName.
      *
-     * @return the primaryContact
+     * @return the lastName
      */
-    /*
-    @OneToMany
-    @JoinTable(
-            name = "map_protocol_contact",
-            joinColumns = { @JoinColumn(name = "protocol_id") },
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-            )*/
-   // public Person getPrimaryContact() {
-  //      return primaryContact;
-  //  }
+    @Column(name = "last_name")
+    @NotEmpty
+    @Length(max = NAME_LENGTH)
+    public String getLastName() {
+        return lastName;
+    }
 
     /**
+     * Sets the lastName.
      *
-     * @param primaryContact the primaryContact to set
+     * @param lastName  the lastName to set
      */
-   // public void setPrimaryContact(Person primaryContact) {
-  //      this.primaryContact = primaryContact;
-  //  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
+    /**
+     * Gets the email.
+     *
+     * @return the email
+     */
+    @Column(name = "email")
+    @Length(max = EMAIL_LENGTH)
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets the email.
+     *
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Gets the phone.
+     *
+     * @return the phone
+     */
+    @Column(name = "phone")
+    @Length(max = PHONE_LENGTH)
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * Sets the phone.
+     *
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * Gets the fax.
+     *
+     * @return the fax
+     */
+    @Column(name = "fax")
+    @Length(max = FAX_LENGTH)
+    public String getFax() {
+        return fax;
+    }
+
+    /**
+     * Sets the fax.
+     *
+     * @param fax the fax to set
+     */
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    /**
+     * Gets the url.
+     *
+     * @return the url
+     */
+    @Column(name = "url")
+    @Length(max = URL_LENGTH)
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Sets the url.
+     *
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
+     * Gets the comments.
+     *
+     * @return the comments
+     */
+    @Column(name = "comments")
+    @Length(max = COMMENTS_LENGTH)
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * Sets the comments.
+     *
+     * @param comments the comments to set
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * Gets the organizationName.
+     *
+     * @return the organizationName
+     */
+    @Column(name = "org_name")
+    @Length(max = NAME_LENGTH)
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    /**
+     * Sets the organizationName.
+     *
+     * @param organizationName the organizationName to set
+     */
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    /**
+     * Gets the organizationUrl.
+     *
+     * @return the organizationUrl
+     */
+    @Column(name = "org_url")
+    @Length(max = URL_LENGTH)
+    public String getOrganizationUrl() {
+        return organizationUrl;
+    }
+
+    /**
+     * Sets the organizationUrl.
+     *
+     * @param organizationUrl the organizationUrl to set
+     */
+    public void setOrganizationUrl(String organizationUrl) {
+        this.organizationUrl = organizationUrl;
+    }
+    /**
+     * Gets the addresses.
+     *
+     * @return the addresses.
+     */
+    @OneToMany(
+            mappedBy = "person",
+            fetch = FetchType.LAZY
+            )
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    /**
+     * Sets the addresses.
+     *
+     * @param addresses the addresses to set.
+     */
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Person)) {
             return false;
         }
 
-        if (o == this) {
+        if (this == obj) {
             return true;
         }
 
-        if (!(o instanceof Protocol)) {
-            return false;
-        }
-
-        Protocol p = (Protocol) o;
+        Person person = (Person) obj;
 
         if (id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getName(), p.getName()).isEquals();
+        return new EqualsBuilder()
+                            .append(getId(), person.getId())
+                            .append(getFirstName(), person.getFirstName())
+                            .append(getLastName(), person.getLastName())
+                            .isEquals();
     }
 
     /**
@@ -323,6 +426,12 @@ public class Protocol implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+        return new HashCodeBuilder()
+                        .append(getId())
+                        .append(getFirstName())
+                        .append(getLastName())
+                        .toHashCode();
     }
+
+
 }

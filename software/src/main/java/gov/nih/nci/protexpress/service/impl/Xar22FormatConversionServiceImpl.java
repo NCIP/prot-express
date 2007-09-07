@@ -83,10 +83,16 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.FormatConversionService;
+import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
+import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
 
 import java.io.File;
 import java.io.InputStream;
@@ -156,16 +162,30 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      */
     private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(List<Experiment> experiments) {
         ObjectFactory objectFactory = new ObjectFactory();
-        ExperimentArchiveType experimantArchive = objectFactory.createExperimentArchiveType();
+        ExperimentArchiveType experimentArchive = objectFactory.createExperimentArchiveType();
         for (Experiment experiment : experiments) {
             ExperimentType xarExperiment = objectFactory.createExperimentType();
             xarExperiment.setName(experiment.getName());
             xarExperiment.setComments(experiment.getDescription());
             xarExperiment.setHypothesis(experiment.getHypothesis());
             xarExperiment.setExperimentDescriptionURL(experiment.getUrl());
-            experimantArchive.getExperiment().add(xarExperiment);
+            experimentArchive.getExperiment().add(xarExperiment);
+
+            List<ExperimentRun> expRuns = experiment.getExperimentRuns();
+            ExperimentArchiveType.ExperimentRuns xarExperimentRuns =
+                objectFactory.createExperimentArchiveTypeExperimentRuns();
+            List<ExperimentRunType> xarExpRunType = new ArrayList<ExperimentRunType>();
+            for (ExperimentRun expRun : expRuns) {
+                ExperimentRunType xarExperimentRun = objectFactory.createExperimentRunType();
+                xarExperimentRun.setName(expRun.getName());
+                xarExperimentRun.setAbout(expRun.getAbout());
+                xarExperimentRun.setComments(expRun.getComments());
+                xarExperimentRuns.getExperimentRun().add(xarExperimentRun);
+            }
+            experimentArchive.setExperimentRuns(xarExperimentRuns);
         }
-        return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimantArchive);
+
+        return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimentArchive);
     }
 
     /**
@@ -202,8 +222,49 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
             experiment.setDescription(xarExperimentType.getComments());
             experiment.setHypothesis(xarExperimentType.getHypothesis());
             experiment.setUrl(xarExperimentType.getExperimentDescriptionURL());
-            experiments.add(experiment);
+
+            //Get ExperimentRuns.
+            List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
+            ExperimentArchiveType.ExperimentRuns xarExpRuns = experimentArchive.getExperimentRuns();
+            List<ExperimentRunType> xarExpRunTypes = xarExpRuns.getExperimentRun();
+            for (ExperimentRunType xarExpRunType : xarExpRunTypes) {
+                ExperimentRun expRun = new ExperimentRun(xarExpRunType.getName());
+                expRun.setComments(xarExpRunType.getComments());
+                expRun.setAbout(xarExpRunType.getAbout());
+                experimentRuns.add(expRun);
+            }
+           experiment.setExperimentRuns(experimentRuns);
+
+           experiments.add(experiment);
         }
+
         return experiments;
     }
 }
+
+/*
+// Read Protocol Definitions.
+            List <Protocol> protocols = new ArrayList<Protocol>();
+            ExperimentArchiveType.ProtocolDefinitions protocolDefn = experimentArchive.getProtocolDefinitions();
+
+            if (protocolDefn != null) {
+                List<ProtocolBaseType> protocolBaseTypes = protocolDefn.getProtocol();
+                for (ProtocolBaseType protocolBaseType : protocolBaseTypes) {
+                    Protocol protocol = new Protocol(protocolBaseType.getName(), ProtocolType.ProtocolApplication);
+                    protocol.setInstrument(protocolBaseType.getInstrument());
+                    protocol.setSoftware(protocolBaseType.getSoftware());
+
+                    ContactType protocolBaseTypeContact = protocolBaseType.getContact();
+                    Person protocolPrimaryContact = new Person(protocolBaseTypeContact.getFirstName(),
+                            protocolBaseTypeContact.getLastName());
+                    protocolPrimaryContact.setContactId(protocolBaseTypeContact.getContactId());
+                    protocolPrimaryContact.setEmail(protocolBaseTypeContact.getEmail());
+
+                    protocol.setPrimaryContact(protocolPrimaryContact);
+                    protocols.add(protocol);
+                }
+            }
+
+
+
+*/

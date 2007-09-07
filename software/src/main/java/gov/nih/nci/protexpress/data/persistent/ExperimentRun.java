@@ -83,16 +83,17 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -100,52 +101,49 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
- * Class representing a protocol.
- * @author Scott Miller
+ * Class representing an experiment.
+ *
+ * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol")
+@Table(name = "experiment_run")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable {
+public class ExperimentRun implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
+    private static final int NAME_LENGTH = 255;
     private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
-    private static final int TYPE_LENGTH = 20;
+    private static final int COMMENTS_LENGTH = 255;
+    private static final int ABOUT_LENGTH = 255;
 
     private Long id;
     private String name;
     private String description;
-    private String software;
-    private String instrument;
-    private ProtocolType type;
+    private String comments;
+    private String about;
+    private Experiment experiment;
 
-    private Person primaryContact;
+//    private List<ProtocolApplication> protocolApplications;
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected Protocol() {
+    protected ExperimentRun() {
     }
 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name the name of the protocol
-     * @param type the type
+     * @param name
+     *            the name of the experiment
      */
-    public Protocol(String name, ProtocolType type) {
+    public ExperimentRun(String name) {
         setName(name);
-        setType(type);
     }
 
     /**
@@ -160,62 +158,23 @@ public class Protocol implements Serializable {
     }
 
     /**
+     * Sets the id.
+     *
      * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Gets the description.
-     *
-     * @return the description
-     */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    @Index(name = "description_index")
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the description.
-     *
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Gets the instrument.
-     *
-     * @return the instrument
-     */
-    @Column(name = "instrument")
-    @Length(max = INSTRUMENT_LENGTH)
-    public String getInstrument() {
-        return instrument;
-    }
-
-    /**
-     * Sets the instrument.
-     *
-     * @param instrument the instrument to set
-     */
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
-    }
 
     /**
      * Gets the name.
      *
      * @return the name
      */
-    @Column(name = "name", unique = true)
+    @Column(name="name")
     @NotEmpty
-    @Length(max = NAME_LENGTH)
-    @Index(name = "name_index")
+    @Length(max=NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -230,92 +189,111 @@ public class Protocol implements Serializable {
     }
 
     /**
-     * Gets the software.
+     * Gets the description.
      *
-     * @return the software
+     * @return the description.
      */
-    @Column(name = "software")
-    @Length(max = SOFTWARE_LENGTH)
-    public String getSoftware() {
-        return software;
+    @Column(name="description")
+    @Length(max=DESCRIPTION_LENGTH)
+    public String getDescription() {
+        return description;
     }
 
     /**
+     * Sets the description.
      *
-     * @param software the software to set
+     * @param description the description to set
      */
-    public void setSoftware(String software) {
-        this.software = software;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * @return the type
+     * Gets the comments.
+     *
+     * @return the comments
      */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    @Index(name = "type_index")
-    public ProtocolType getType() {
-        return this.type;
+    @Column(name="comments")
+    @Length(max=COMMENTS_LENGTH)
+    public String getComments() {
+        return comments;
     }
 
     /**
-     * @param type the type to set
+     * Sets the comments.
+     *
+     * @param comments the comments to set
      */
-    public void setType(ProtocolType type) {
-        this.type = type;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
+    /**
+     * Gets the about.
+     *
+     * @return the about
+     */
+    @Column(name="about")
+    @Length(max=ABOUT_LENGTH)
+    public String getAbout() {
+        return about;
+    }
 
     /**
-     * Gets the primaryContact.
+     * Sets the about.
      *
-     * @return the primaryContact
+     * @param about the about to set
      */
-    /*
-    @OneToMany
-    @JoinTable(
-            name = "map_protocol_contact",
-            joinColumns = { @JoinColumn(name = "protocol_id") },
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-            )*/
-   // public Person getPrimaryContact() {
-  //      return primaryContact;
-  //  }
+    public void setAbout(String about) {
+        this.about = about;
+    }
 
     /**
+     * Gets the experiment.
      *
-     * @param primaryContact the primaryContact to set
+     * @return the experiment
      */
-   // public void setPrimaryContact(Person primaryContact) {
-  //      this.primaryContact = primaryContact;
-  //  }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+                name = "experiment_id",
+                nullable = false
+            )
+    public Experiment getExperiment() {
+        return experiment;
+    }
 
+    /**
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set
+     */
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ExperimentRun)) {
             return false;
         }
 
-        if (o == this) {
+        if (this == obj) {
             return true;
         }
 
-        if (!(o instanceof Protocol)) {
-            return false;
-        }
-
-        Protocol p = (Protocol) o;
+        ExperimentRun experimentRun = (ExperimentRun) obj;
 
         if (id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getName(), p.getName()).isEquals();
+        return new EqualsBuilder()
+                            .append(getId(), experimentRun.getId())
+                            .append(getName(), experimentRun.getName())
+                            .isEquals();
     }
 
     /**
@@ -323,6 +301,11 @@ public class Protocol implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+        return new HashCodeBuilder()
+                        .append(getId())
+                        .append(getName())
+                        .toHashCode();
     }
+
+
 }
