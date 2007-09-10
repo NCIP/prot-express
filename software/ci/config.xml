@@ -1,5 +1,5 @@
 <cruisecontrol>
-    <project name="protExpress">
+    <project name="protExpress" buildafterfailed="false">
         <listeners>
             <currentbuildstatuslistener file="logs/${project.name}/status.txt" />
         </listeners>
