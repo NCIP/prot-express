@@ -27,7 +27,7 @@
                 returnaddress="NCINCICBGpsXarDevTeam@mail.nih.gov"
                 subjectprefix="[${project.name} CI Notice]"
                 skipusers="true"
-                spamwhilebroken="false">
+                spamwhilebroken="true">
                 <failure address="NCINCICBGpsXarDevTeam@mail.nih.gov" reportWhenFixed="true" />
             </email>
         </publishers>
