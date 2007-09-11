@@ -101,7 +101,7 @@ public class LoginModuleTest extends ProtExpressBaseHibernateAndCsmTest {
 
     public void testUnknownUserLogin() throws Exception {
         CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("unknownUser", "unknownPassowrd");
-        LoginContext loginContext = new LoginContext("protExpressRealm", csmCallbackHandler);
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
         try {
             loginContext.login();
             fail("Invalid login did not cause exception.");
@@ -112,7 +112,18 @@ public class LoginModuleTest extends ProtExpressBaseHibernateAndCsmTest {
 
     public void testIncorrectPasswordLoginAgainstDb() throws Exception {
         CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("user1", "unknownPassowrd");
-        LoginContext loginContext = new LoginContext("protExpressRealm", csmCallbackHandler);
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
+        try {
+            loginContext.login();
+            fail("Invalid login did not cause exception.");
+        } catch (LoginException e) {
+            // expected
+        }
+    }
+
+    public void testIncorrectPasswordLoginAgainstLdap() throws Exception {
+        CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("fb_inv1", "unknownPassowrd");
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
         try {
             loginContext.login();
             fail("Invalid login did not cause exception.");
@@ -123,7 +134,7 @@ public class LoginModuleTest extends ProtExpressBaseHibernateAndCsmTest {
 
     public void testSuccessfulLoginAgainstDb() throws Exception {
         CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("user1", "password");
-        LoginContext loginContext = new LoginContext("protExpressRealm", csmCallbackHandler);
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
         loginContext.login();
 
         Iterator principals = loginContext.getSubject().getPrincipals().iterator();
@@ -132,6 +143,35 @@ public class LoginModuleTest extends ProtExpressBaseHibernateAndCsmTest {
 
         RolePrincipal rp = (RolePrincipal) principals.next();
         assertEquals("protExpressUser", rp.getName());
+
+        loginContext.logout();
+    }
+
+    public void testSuccessfulLoginAgainstLdapWithLocalAccount() throws Exception {
+        CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("fb_inv1", "f1rebird05");
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
+        loginContext.login();
+
+        Iterator principals = loginContext.getSubject().getPrincipals().iterator();
+        UserPrincipal up = (UserPrincipal) principals.next();
+        assertEquals("fb_inv1", up.getName());
+
+        RolePrincipal rp = (RolePrincipal) principals.next();
+        assertEquals("protExpressUser", rp.getName());
+
+        loginContext.logout();
+    }
+
+    public void testSuccessfulLoginAgainstLdapWithNoLocalAccount() throws Exception {
+        CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("fb_inv2", "f1rebird05");
+        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
+        loginContext.login();
+
+        Iterator principals = loginContext.getSubject().getPrincipals().iterator();
+        UserPrincipal up = (UserPrincipal) principals.next();
+        assertEquals("fb_inv2", up.getName());
+
+        assertFalse(principals.hasNext());
 
         loginContext.logout();
     }

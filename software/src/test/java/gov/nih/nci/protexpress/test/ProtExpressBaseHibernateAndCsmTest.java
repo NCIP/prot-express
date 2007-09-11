@@ -101,7 +101,8 @@ public abstract class ProtExpressBaseHibernateAndCsmTest extends TestCase {
     private static final Logger LOG = Logger.getLogger(ProtExpressBaseHibernateAndCsmTest.class);
 
     private static String[] CSM_DATA = new String[] {
-        "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) VALUES ( 'user1', 'Test 1', 'User','password', sysdate);",
+        "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) VALUES ('user1', 'Test 1', 'User','password', sysdate);",
+        "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) VALUES ('fb_inv1', 'Test 1', 'User', sysdate);",
         "commit;"
     };
 
@@ -137,10 +138,10 @@ public abstract class ProtExpressBaseHibernateAndCsmTest extends TestCase {
     private void executeSqlStatements(Session sess, String[] statements) {
         for (String stmt : statements) {
             try {
-                LOG.debug("executing: " + stmt);
+
                 sess.createSQLQuery(stmt).executeUpdate();
             } catch (HibernateException e) {
-                LOG.debug(e);
+                LOG.debug("Error executing statement: " + stmt + " : " + e);
             }
         }
     }

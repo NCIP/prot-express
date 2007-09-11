@@ -4,11 +4,11 @@
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="hibernate.connection.url">jdbc:hsqldb:mem:protExpressTests</property>
-        <property name="hibernate.connection.username">sa</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.dialect">${test.hibernate.dialect}</property>
+        <property name="hibernate.connection.driver_class">${test.jdbc.driverClassName}</property>
+        <property name="hibernate.connection.url">${test.jdbc.url}</property>
+        <property name="hibernate.connection.username">${test.jdbc.username}</property>
+        <property name="hibernate.connection.password">${test.jdbc.password}</property>
 
         <!-- mapping files -->
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml" />
