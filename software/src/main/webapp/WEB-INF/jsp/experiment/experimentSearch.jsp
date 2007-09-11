@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<html>
+<head>
+</head>
+<body>
 
 <s:url id="addExperiment" action="experiment/management/load" />
 <fmt:message key="experiments" /> | <a href="${addExperiment}"><s:property value="%{getText('experiment.add')}" /></a>
@@ -40,3 +44,6 @@
         </display:column>
     </display:table>
 </c:if>
+
+</body>
+</html>

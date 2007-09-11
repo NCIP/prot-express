@@ -15,4 +15,11 @@
         removeAbandonedTimeout="60"
         logAbandoned="true"
         validationQuery="select 1" />
+
+    <Realm className="org.apache.catalina.realm.JAASRealm"
+        appName="protExpressRealm"
+        userClassNames="gov.nih.nci.protexpress.security.UserPrincipal"
+        roleClassNames="gov.nih.nci.protexpress.security.RolePrincipal"
+        debug="99"
+        useContextClassLoader="false" />
 </Context>
