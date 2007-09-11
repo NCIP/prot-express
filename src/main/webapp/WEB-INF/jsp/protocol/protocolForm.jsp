@@ -1,6 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-
+<html>
+<head>
+</head>
+<body>
 <s:if test="protocol==null || protocol.id == null">
     <h2><fmt:message key="protocol.add" /></h2>
 </s:if>
@@ -18,3 +21,5 @@
     <s:submit value="%{getText('save')}" />
     <s:submit value="%{getText('cancel')}" name="redirect-action:protocol/search/loadSearch" />
 </s:form>
+</body>
+</html>

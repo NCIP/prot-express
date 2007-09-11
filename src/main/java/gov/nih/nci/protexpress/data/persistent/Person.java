@@ -133,9 +133,6 @@ public class Person implements Serializable {
 
     /**
      * Constructor to create the object and populate all required fields.
-     *
-     * @param firstName the firstName
-     * @param lastName the lastName the first and last name of the person
      */
     public Person() {
     }

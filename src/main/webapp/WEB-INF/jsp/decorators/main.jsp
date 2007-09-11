@@ -10,11 +10,11 @@
 
 <body>
 <!--  HEADER -->
-<div id="header"><%@ include file="/WEB-INF/decorators/mainHeader.jsp"%></div>
+<div id="header"><%@ include file="/WEB-INF/jsp/decorators/mainHeader.jsp"%></div>
 <!--  END OF HEADER -->
 
 <!--  MENU -->
-<div id="menu"><c:import url="/WEB-INF/decorators/mainMenu.jsp" /></div>
+<div id="menu"><c:import url="/WEB-INF/jsp/decorators/mainMenu.jsp" /></div>
 <!--  END OF MENU -->
 
 <!--  BODY -->
@@ -22,7 +22,7 @@
 <!--  END OF BODY -->
 
 <!--  FOOTER -->
-<div id="footer"><%@ include file="/WEB-INF/decorators/mainFooter.jsp"%></div>
+<div id="footer"><%@ include file="/WEB-INF/jsp/decorators/mainFooter.jsp"%></div>
 <!--  END OF FOOTER -->
 
 </body>

@@ -224,7 +224,7 @@
                         <srcFile>target/hibernate3/sql/${schema.file}</srcFile>
                         <srcFile>src/main/sql/csmDropSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
-                        <srcFile>src/main/sql/csmDataPrimingPostgres.sql</srcFile>
+                        <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
                         <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                     </srcFiles>
@@ -346,7 +346,7 @@
             </testResource>
             <testResource>
                 <directory>src/test/resources</directory>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </testResource>
         </testResources>
     </build>
@@ -607,6 +607,13 @@
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>${jaxb.impl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci</groupId>
+            <artifactId>security</artifactId>
+            <version>3.2</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/csmapi.jar</systemPath>
         </dependency>
 
         <!-- Dependencies provided by the container -->

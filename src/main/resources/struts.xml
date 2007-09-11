@@ -59,29 +59,33 @@
 
         <default-interceptor-ref name="protExpressDefaultStack" />
 
+        <action name="dashboard/dashboard" class="gov.nih.nci.protexpress.ui.actions.dashboard.DashboardAction" method="load">
+            <result name="success">/WEB-INF/jsp/dashboard/dashboard.jsp</result>
+        </action>
+
         <action name="protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
             method="{1}">
-            <result name="success">/WEB-INF/jsp/protocolSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/protocolSearch.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
         </action>
 
         <action name="protocol/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
-            <result name="success">/WEB-INF/jsp/protocolSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/protocolForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
             method="{1}">
-            <result name="success">/WEB-INF/jsp/experimentSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/experimentSearch.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
         </action>
 
         <action name="experiment/management/*"
             class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
-            <result name="success">/WEB-INF/jsp/experimentSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/experimentForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
     </package>
