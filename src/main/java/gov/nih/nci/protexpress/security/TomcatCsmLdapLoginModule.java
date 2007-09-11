@@ -82,16 +82,16 @@
  */
 package gov.nih.nci.protexpress.security;
 
+import gov.nih.nci.security.authentication.loginmodules.LDAPLoginModule;
+import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
+import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
+import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
+
 import java.util.Map;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginException;
-
-import gov.nih.nci.security.authentication.loginmodules.LDAPLoginModule;
-import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
-import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
-import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
 
 /**
  * Login module for ldap under tomcat, using password stacking.
@@ -103,18 +103,18 @@ public class TomcatCsmLdapLoginModule extends LDAPLoginModule {
     private Subject subject;
     private boolean authenticated;
     private String username;
-    private Map sharedState;
+    private TomcatAuthenticationStacker authenticationStacker;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void initialize(Subject theSubject, CallbackHandler callbackHandler, Map theSharedState, Map options) {
-        super.initialize(theSubject, callbackHandler, theSharedState, options);
+    public void initialize(Subject theSubject, CallbackHandler callbackHandler, Map sharedState, Map options) {
+        super.initialize(theSubject, callbackHandler, sharedState, options);
         this.subject = theSubject;
         this.authenticated = false;
         this.username = null;
-        this.sharedState = theSharedState;
+        this.authenticationStacker = new TomcatAuthenticationStacker(sharedState);
     }
 
     /**
@@ -124,15 +124,14 @@ public class TomcatCsmLdapLoginModule extends LDAPLoginModule {
     protected boolean validate(Map options, String user, char[] password, Subject theSubject)
             throws CSInternalConfigurationException, CSInternalLoginException,
             CSInternalInsufficientAttributesException {
-        if (TomcatPasswordStacker.isUserAlreadyAuthenticated(this.sharedState, user)
-                || super.validate(options, user, password, theSubject)) {
+        this.username = user;
+        if (super.validate(options, user, password, theSubject)) {
+            this.authenticationStacker.addAuthenticatedUserToSharedState(this.username);
             this.authenticated = true;
-            this.username = user;
         } else {
             this.authenticated = false;
-            this.username = null;
         }
-        return this.authenticated;
+        return this.authenticationStacker.isUserAlreadyAuthenticated(this.username);
     }
 
     /**
@@ -141,11 +140,8 @@ public class TomcatCsmLdapLoginModule extends LDAPLoginModule {
     @Override
     @SuppressWarnings("unchecked")
     public boolean commit() throws LoginException {
-        if (this.authenticated && !TomcatPasswordStacker.isUserAlreadyAuthenticated(this.sharedState, this.username)) {
+        if (this.authenticated) {
             this.subject.getPrincipals().add(new UserPrincipal(this.username));
-            TomcatPasswordStacker.addAuthenticatedUserToSharedState(this.sharedState, this.username);
-        } else if (!this.authenticated) {
-            TomcatPasswordStacker.removeUserFromSharedState(this.sharedState);
         }
         return super.commit();
     }
@@ -155,11 +151,11 @@ public class TomcatCsmLdapLoginModule extends LDAPLoginModule {
      */
     @Override
     public boolean logout() throws LoginException {
-        TomcatPasswordStacker.removeUserFromSharedState(this.sharedState);
+        this.authenticationStacker.removeUserFromSharedState();
         this.subject = null;
         this.authenticated = false;
         this.username = null;
-        this.sharedState = null;
+        this.authenticationStacker = null;
         return super.logout();
     }
 }

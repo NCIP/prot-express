@@ -89,46 +89,50 @@ import java.util.Map;
  *
  * @author Scott Miller
  */
-public final class TomcatPasswordStacker {
-    /**
-     * Hiding constructor because all functionality is static.
-     */
-    private TomcatPasswordStacker() {
-    }
-
+public class TomcatAuthenticationStacker {
     /**
      * The location of the username in the shared state if the user has already been authenticated.
      */
     private static final String SHARED_STATE_USERNAME_LOCATION = "gov.nih.nci.protexpress.security.username";
 
+    private Map sharedState;
+
+    /**
+     * Constructor.
+     *
+     * @param state the shared state
+     */
+    public TomcatAuthenticationStacker(Map state) {
+        this.sharedState = state;
+    }
+
     /**
      * Adds the user to the shared state in the proper place for this class to know if it has been authenticated by
      * another module.
-     * @param sharedState the shared state
+     *
      * @param username the username.
      */
     @SuppressWarnings("unchecked")
-    public static void addAuthenticatedUserToSharedState(Map sharedState, String username) {
-        sharedState.put(SHARED_STATE_USERNAME_LOCATION, username);
+    public void addAuthenticatedUserToSharedState(String username) {
+        this.sharedState.put(SHARED_STATE_USERNAME_LOCATION, username);
     }
 
     /**
      * Removes the user from the shared state.
-     * @param sharedState the shared state
      */
     @SuppressWarnings("unchecked")
-    public static void removeUserFromSharedState(Map sharedState) {
-        sharedState.remove(SHARED_STATE_USERNAME_LOCATION);
+    public void removeUserFromSharedState() {
+        this.sharedState.remove(SHARED_STATE_USERNAME_LOCATION);
     }
 
     /**
      * Checks if a user has already been authenticated.
-     * @param sharedState the shared state
+     *
      * @param username the username.
      * @return true if the user has already been added to the shared state, false otherwise
      */
-    public static boolean isUserAlreadyAuthenticated(Map sharedState, String username) {
-        if (username.equals(sharedState.get(SHARED_STATE_USERNAME_LOCATION))) {
+    public boolean isUserAlreadyAuthenticated(String username) {
+        if (username != null && username.equals(this.sharedState.get(SHARED_STATE_USERNAME_LOCATION))) {
             return true;
         }
         return false;
