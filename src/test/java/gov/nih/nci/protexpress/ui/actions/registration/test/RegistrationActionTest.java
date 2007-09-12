@@ -80,34 +80,22 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.test;
+package gov.nih.nci.protexpress.ui.actions.registration.test;
 
-import java.net.URL;
+import com.opensymphony.xwork2.ActionSupport;
 
-import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.HSQLDialect;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
+import gov.nih.nci.protexpress.ui.actions.registration.RegistrationAction;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
 /**
  * @author Scott Miller
  *
  */
-public abstract class ProtExpressBaseHibernateAndCsmTest extends TestCase {
-    private static final Logger LOG = Logger.getLogger(ProtExpressBaseHibernateAndCsmTest.class);
+public class RegistrationActionTest extends ProtExpressBaseCsmTest {
 
-    private static String[] CSM_DATA = new String[] {
-        "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) VALUES ('user1', 'Test 1', 'User','password', sysdate);",
-        "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) VALUES ('fb_inv1', 'Test 1', 'User', sysdate);",
-        "commit;"
-    };
-
-    private SessionFactory csmSessionFactory;
-    private Session csmSession;
+    RegistrationAction action;
 
     /**
      * {@inheritDoc}
@@ -115,34 +103,49 @@ public abstract class ProtExpressBaseHibernateAndCsmTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        URL url = getClass().getClassLoader().getResource("jaas.config");
-        System.getProperties().setProperty("java.security.auth.login.config", url.getPath());
 
-        Configuration csmHibernateConfig = new Configuration();
-        url = getClass().getClassLoader().getResource("protexpress.csm.new.hibernate.cfg.xml");
-        csmHibernateConfig = csmHibernateConfig.configure(url);
-        String[] dropScript = csmHibernateConfig.generateDropSchemaScript(new HSQLDialect());
-        String[] createScript = csmHibernateConfig.generateSchemaCreationScript(new HSQLDialect());
-
-        csmSessionFactory = csmHibernateConfig.buildSessionFactory();
-        csmSession = csmSessionFactory.openSession();
-
-        executeSqlStatements(csmSession, dropScript);
-        executeSqlStatements(csmSession, createScript);
-        executeSqlStatements(csmSession, CSM_DATA);
-        csmSession.flush();
-        csmSession.close();
-        csmSessionFactory.close();
+        action = new RegistrationAction();
     }
 
-    private void executeSqlStatements(Session sess, String[] statements) {
-        for (String stmt : statements) {
-            try {
+    public void testPasswordConfirmation() {
+        assertEquals(null, action.getPasswordConfirmation());
+        action.setPasswordConfirmation("foo");
+        assertEquals("foo", action.getPasswordConfirmation());
+    }
 
-                sess.createSQLQuery(stmt).executeUpdate();
-            } catch (HibernateException e) {
-                LOG.debug("Error executing statement: " + stmt + " : " + e);
-            }
-        }
+
+    public void testLoad() {
+        assertEquals(ActionSupport.INPUT, action.load());
+    }
+
+    public void testSaveValidUser() throws Exception {
+        action.setUser(getTestUser(1));
+        assertEquals(ActionSupport.SUCCESS, action.save());
+        User retrievedUser = ProtExpressRegistry.getUserProvisioningManager().getUser(action.getUser().getLoginName());
+        assertEquals(action.getUser(), retrievedUser);
+    }
+
+    public void testValidateWithNoErrors() throws Exception {
+        action.setUser(getTestUser(1));
+        action.validate();
+        assertFalse(action.hasErrors());
+    }
+
+    public void testValidateWithErrors() throws Exception {
+        ProtExpressRegistry.getUserProvisioningManager().createUser(getTestUser(1));
+        action.setUser(getTestUser(1));
+        action.validate();
+        assertTrue(action.hasErrors());
+        assertEquals(2, action.getFieldErrors().size());
+    }
+
+    private User getTestUser(int i) {
+        User user = new User();
+        user.setLoginName("testuser" + i);
+        user.setFirstName("Test");
+        user.setLastName("User" + i);
+        user.setEmailId(user.getLoginName() + "@devnull.com");
+        user.setPassword("pass");
+        return user;
     }
 }

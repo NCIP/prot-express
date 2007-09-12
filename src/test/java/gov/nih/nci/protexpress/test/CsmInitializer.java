@@ -80,115 +80,76 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.test;
 
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.UserProvisioningManager;
+import java.net.URL;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.HSQLDialect;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Class to init csm in the test suite
+ *
  * @author Scott Miller
  */
-public final class ProtExpressRegistry {
+public class CsmInitializer {
+    private static final Logger LOG = Logger.getLogger(CsmInitializer.class);
+
+    private static String[] CSM_DATA = new String[] {
+            "INSERT INTO CSM_APPLICATION(APPLICATION_NAME, APPLICATION_DESCRIPTION, UPDATE_DATE, DECLARATIVE_FLAG, ACTIVE_FLAG) VALUES ('protExpress', 'protExpress', sysdate, 0, 0);",
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) VALUES ('user1', 'Test 1', 'User','password', sysdate);",
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) VALUES ('fb_inv1', 'Test 1', 'User', sysdate);",
+            "commit;"};
+
+    private Configuration csmHibernateConfig;
+    private String[] dropScript;
+    private String[] createScript;
+    private SessionFactory csmSessionFactory;
+    private Session csmSession;
+
     /**
-     * The max number of results per page in paged search results.
+     * Csm initalizer constructor. Initializes the configuration and then creates and drops the db.
      */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+    public CsmInitializer() {
+        URL url = getClass().getClassLoader().getResource("jaas.config");
+        System.getProperties().setProperty("java.security.auth.login.config", url.getPath());
 
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
-    private UserProvisioningManager userProvisioningManager;
+        csmHibernateConfig = new Configuration();
+        url = getClass().getClassLoader().getResource("protExpress.csm.new.hibernate.cfg.xml");
+        csmHibernateConfig = csmHibernateConfig.configure(url);
+        dropScript = csmHibernateConfig.generateDropSchemaScript(new HSQLDialect());
+        createScript = csmHibernateConfig.generateSchemaCreationScript(new HSQLDialect());
 
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        dropAndCreateCsmDb();
+    }
+
+    /**
+     * Drop and create the csm db.
+     */
+    public void dropAndCreateCsmDb() {
+        csmSessionFactory = csmHibernateConfig.buildSessionFactory();
+        csmSession = csmSessionFactory.openSession();
+
+        executeSqlStatements(csmSession, dropScript);
+        executeSqlStatements(csmSession, createScript);
+        executeSqlStatements(csmSession, CSM_DATA);
+        csmSession.flush();
+        csmSession.close();
+        csmSessionFactory.close();
+    }
+
+    private void executeSqlStatements(Session sess, String[] statements) {
+        for (String stmt : statements) {
+            try {
+                sess.createSQLQuery(stmt).executeUpdate();
+            } catch (HibernateException e) {
+                LOG.debug("Error executing statement: " + stmt + " : " + e);
+            }
         }
     }
 
-    /**
-     * @return the singleton
-     */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
-    }
-
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the experimentService
-     */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
-    }
-
-    /**
-     * @return the userProvisioningManager
-     */
-    public static UserProvisioningManager getUserProvisioningManager() {
-        return ProtExpressRegistry.getInstance().userProvisioningManager;
-    }
-
-    /**
-     * @param userProvisioningManager the userProvisioningManager to set
-     */
-    public void setUserProvisioningManager(UserProvisioningManager userProvisioningManager) {
-        this.userProvisioningManager = userProvisioningManager;
-    }
 }

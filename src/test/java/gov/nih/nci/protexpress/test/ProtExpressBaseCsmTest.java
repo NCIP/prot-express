@@ -80,115 +80,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.test;
 
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.UserProvisioningManager;
+import junit.framework.TestCase;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
  * @author Scott Miller
+ *
  */
-public final class ProtExpressRegistry {
-    /**
-     * The max number of results per page in paged search results.
-     */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+public abstract class ProtExpressBaseCsmTest extends TestCase {
+    private CsmInitializer csmInitializer;
 
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
-    private UserProvisioningManager userProvisioningManager;
-
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public ProtExpressBaseCsmTest() {
+        csmInitializer = new CsmInitializer();
     }
 
     /**
-     * @return the singleton
+     * {@inheritDoc}
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
-    }
-
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the experimentService
-     */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
-    }
-
-    /**
-     * @return the userProvisioningManager
-     */
-    public static UserProvisioningManager getUserProvisioningManager() {
-        return ProtExpressRegistry.getInstance().userProvisioningManager;
-    }
-
-    /**
-     * @param userProvisioningManager the userProvisioningManager to set
-     */
-    public void setUserProvisioningManager(UserProvisioningManager userProvisioningManager) {
-        this.userProvisioningManager = userProvisioningManager;
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        csmInitializer.dropAndCreateCsmDb();
     }
 }

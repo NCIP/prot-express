@@ -63,6 +63,13 @@
             <result name="success">/WEB-INF/jsp/dashboard/dashboard.jsp</result>
         </action>
 
+        <action name="registration/*"
+            class="gov.nih.nci.protexpress.ui.actions.registration.RegistrationAction" method="{1}">
+            <result name="success" type="redirect-action">dashboard/dashboard.action</result>
+            <result name="input">/WEB-INF/jsp/registration/registration.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
         <action name="protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
             method="{1}">
             <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>

@@ -97,7 +97,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 
 /**
- * Base test case for the spring tests
+ * Base test case for the spring tests.
  *
  * @author Scott Miller
  */
@@ -105,6 +105,7 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
 
     protected SessionFactory theSessionFactory;
     protected Session theSession;
+    protected CsmInitializer csmInitializer;
 
     /**
      * Constructor to initialize the configuration
@@ -115,6 +116,7 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
             throw new Error("resource log4j.xml not found");
         PropertyConfigurator.configure(log4jConfig);
         setPopulateProtectedVariables(true);
+        csmInitializer = new CsmInitializer();
     }
 
     /**
@@ -123,6 +125,7 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
+        csmInitializer.dropAndCreateCsmDb();
         LocalSessionFactoryBean theSessionFactoryBean = (LocalSessionFactoryBean) getApplicationContext().getBean(
                 "&sessionFactory");
         theSessionFactoryBean.dropDatabaseSchema();
