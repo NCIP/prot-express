@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.security.test;
 
 import gov.nih.nci.protexpress.security.RolePrincipal;
 import gov.nih.nci.protexpress.security.UserPrincipal;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndCsmTest;
+import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
 import gov.nih.nci.security.authentication.callback.CSMCallbackHandler;
 
 import java.util.Iterator;
@@ -97,7 +97,7 @@ import javax.security.auth.login.LoginException;
  *
  * @author Scott Miller
  */
-public class LoginModuleTest extends ProtExpressBaseHibernateAndCsmTest {
+public class LoginModuleTest extends ProtExpressBaseCsmTest {
 
     public void testUnknownUserLogin() throws Exception {
         CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler("unknownUser", "unknownPassowrd");

@@ -18,7 +18,7 @@
         <Menu name="protExpressLogin" title="menu.protexpress">
             <Item name="protExpress.home" title="menu.protexpress.home" page="/" />
             <Item name="protExpress.login" title="menu.protexpress.login" page="/dashboard/dashboard.action" />
-            <Item name="protExpress.register" title="menu.protexpress.register" page="/registration/register.action" />
+            <Item name="protExpress.register" title="menu.protexpress.register" page="/registration/load.action" />
         </Menu>
         <Menu name="protExpressMain" title="menu.protexpress">
             <Item name="protExpress.home" title="menu.protexpress.home" page="/" />

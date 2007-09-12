@@ -80,115 +80,117 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
+package gov.nih.nci.protexpress.ui.actions.registration;
 
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.UserSearchCriteria;
+import gov.nih.nci.security.exceptions.CSTransactionException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
+import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.Validation;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
+ * Action to handle self registration.
+ *
  * @author Scott Miller
  */
-public final class ProtExpressRegistry {
+@Validation
+public class RegistrationAction extends ActionSupport {
+    private static final long serialVersionUID = 1L;
+
+    private User user = null;
+    private String passwordConfirmation = null;
+
     /**
-     * The max number of results per page in paged search results.
+     * Action to load the registration form.
+     *
+     * @return the directive for the next action / page to be directed to
      */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
 
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
-    private UserProvisioningManager userProvisioningManager;
+    /**
+     * Action to actually save the registration.
+     *
+     * @return the directive for the next action / page to be directed to
+     * @throws CSTransactionException on error
+     */
+    @Validations(
+        emails = {@EmailValidator(fieldName = "user.emailId", key = "validator.email", message = "") },
+        stringLengthFields = {@StringLengthFieldValidator(fieldName = "user.loginName", minLength = "6",
+                key = "validator.minLength", message = "") },
+        requiredStrings = {
+            @RequiredStringValidator(fieldName = "user.loginName", key = "validator.notEmpty", message = ""),
+            @RequiredStringValidator(fieldName = "user.firstName", key = "validator.notEmpty", message = ""),
+            @RequiredStringValidator(fieldName = "user.lastName", key = "validator.notEmpty", message = ""),
+            @RequiredStringValidator(fieldName = "user.emailId", key = "validator.notEmpty", message = ""),
+            @RequiredStringValidator(fieldName = "user.password", key = "validator.notEmpty", message = "") },
+        fieldExpressions = {@FieldExpressionValidator(fieldName = "passwordConfirmation",
+                expression = "user.password == passwordConfirmation", key = "passwordConfirmation.mustBeEqual",
+                message = "") })
+    public String save() throws CSTransactionException {
+        ProtExpressRegistry.getUserProvisioningManager().createUser(user);
+        return ActionSupport.SUCCESS;
+    }
 
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getUser() != null) {
+            if (StringUtils.isNotBlank(getUser().getLoginName())
+                    && ProtExpressRegistry.getUserProvisioningManager().getUser(getUser().getLoginName()) != null) {
+                addFieldError("user.loginName", getText("validator.valueInUse"));
+            }
+            if (StringUtils.isNotBlank(getUser().getEmailId())) {
+                User searchUser = new User();
+                searchUser.setEmailId(getUser().getEmailId());
+                if (ProtExpressRegistry.getUserProvisioningManager().getObjects(new UserSearchCriteria(searchUser))
+                        .size() != 0) {
+                    addFieldError("user.emailId", getText("validator.valueInUse"));
+                }
+            }
         }
     }
 
     /**
-     * @return the singleton
+     * @return the user
      */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    public User getUser() {
+        return this.user;
     }
 
     /**
-     * @return the protocolService
+     * @param user the user to set
      */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
-     * @param protocolService the protocolService to set
+     * @return the passwordConfirmation
      */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
+    public String getPasswordConfirmation() {
+        return this.passwordConfirmation;
     }
 
     /**
-     * @return the experimentService
+     * @param passwordConfirmation the passwordConfirmation to set
      */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
-    }
-
-    /**
-     * @return the userProvisioningManager
-     */
-    public static UserProvisioningManager getUserProvisioningManager() {
-        return ProtExpressRegistry.getInstance().userProvisioningManager;
-    }
-
-    /**
-     * @param userProvisioningManager the userProvisioningManager to set
-     */
-    public void setUserProvisioningManager(UserProvisioningManager userProvisioningManager) {
-        this.userProvisioningManager = userProvisioningManager;
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 }
