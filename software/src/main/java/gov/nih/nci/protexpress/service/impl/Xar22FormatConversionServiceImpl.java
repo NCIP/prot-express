@@ -83,17 +83,13 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.service.FormatConversionService;
+import gov.nih.nci.protexpress.util.Xar22FormatConversionHelper;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
-import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -158,28 +154,8 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @return the xar 2.2 jaxb ready data
      */
     private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(List<Experiment> experiments) {
-        ObjectFactory objectFactory = new ObjectFactory();
-        ExperimentArchiveType experimentArchive = objectFactory.createExperimentArchiveType();
-        for (Experiment experiment : experiments) {
-            ExperimentType xarExperiment = objectFactory.createExperimentType();
-            xarExperiment.setName(experiment.getName());
-            xarExperiment.setComments(experiment.getDescription());
-            xarExperiment.setHypothesis(experiment.getHypothesis());
-            xarExperiment.setExperimentDescriptionURL(experiment.getUrl());
-            experimentArchive.getExperiment().add(xarExperiment);
-
-            ExperimentArchiveType.ExperimentRuns xarExperimentRuns = objectFactory
-                    .createExperimentArchiveTypeExperimentRuns();
-            for (ExperimentRun expRun : experiment.getExperimentRuns()) {
-                ExperimentRunType xarExperimentRun = objectFactory.createExperimentRunType();
-                xarExperimentRun.setName(expRun.getName());
-                xarExperimentRun.setAbout(expRun.getAbout());
-                xarExperimentRun.setComments(expRun.getComments());
-                xarExperimentRuns.getExperimentRun().add(xarExperimentRun);
-            }
-            experimentArchive.setExperimentRuns(xarExperimentRuns);
-        }
-
+        Xar22FormatConversionHelper xar22ConversionHelper = new Xar22FormatConversionHelper();
+        ExperimentArchiveType experimentArchive = xar22ConversionHelper.getExperimentArchiveData(experiments);
         return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimentArchive);
     }
 
@@ -210,25 +186,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @return the list of experiments.
      */
     private List<Experiment> convertToExperiments(ExperimentArchiveType experimentArchive) {
-        List<ExperimentType> xarExperiments = experimentArchive.getExperiment();
-        List<Experiment> experiments = new ArrayList<Experiment>();
-        for (ExperimentType xarExperimentType : xarExperiments) {
-            Experiment experiment = new Experiment(xarExperimentType.getName());
-            experiment.setDescription(xarExperimentType.getComments());
-            experiment.setHypothesis(xarExperimentType.getHypothesis());
-            experiment.setUrl(xarExperimentType.getExperimentDescriptionURL());
-
-            // Get ExperimentRuns.
-            ExperimentArchiveType.ExperimentRuns xarExpRuns = experimentArchive.getExperimentRuns();
-            for (ExperimentRunType xarExpRunType : xarExpRuns.getExperimentRun()) {
-                ExperimentRun expRun = new ExperimentRun(xarExpRunType.getName());
-                expRun.setComments(xarExpRunType.getComments());
-                expRun.setAbout(xarExpRunType.getAbout());
-                experiment.getExperimentRuns().add(expRun);
-            }
-            experiments.add(experiment);
-        }
-
-        return experiments;
+        Xar22FormatConversionHelper xar22ConversionHelper = new Xar22FormatConversionHelper();
+        return xar22ConversionHelper.parseExperimentArchiveData(experimentArchive);
     }
 }
