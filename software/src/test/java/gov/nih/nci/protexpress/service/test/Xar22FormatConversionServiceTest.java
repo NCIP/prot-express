@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.service.test;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 
 import java.io.ByteArrayInputStream;
@@ -96,7 +97,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 /**
- * Class to test the xar 22 conversion service
+ * Class to test the xar 22 conversion service.
  *
  * @author Scott Miller
  */
@@ -105,6 +106,19 @@ public class Xar22FormatConversionServiceTest extends TestCase {
     private List<Experiment> experiments;
     private FormatConversionService fcs;
 
+    private final String xarFileWithOneExperiment = "src/test/inputFiles/test/testOneExperiment.xar.xml";
+    private final String xarOutfileWithOneExperiment =
+        "target/testUnmarshallAndMarshallFile-OneExperiment.xar.xml";
+
+    private final String xarFileWithMultipleExperiments = "src/test/inputFiles/test/testMultipleExperiments.xar.xml";
+    private final String xarOutfileWithMultipleExperiments =
+        "target/testUnmarshallAndMarshallFile-MultipleExperiments.xar.xml";
+
+    private final String xarOutfileOneExperimentMarshallUnmarshall =
+        "target/testMarshallAndUnmarshallFile-OneExperiment.xar.xml";
+
+    private final String xarOutfileMultipleExperimentsMarshallUnmarshall =
+        "target/testMarshallAndUnmarshallFile-MultipleExperiments.xar.xml";
     /**
      * {@inheritDoc}
      */
@@ -114,79 +128,195 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         fcs = ProtExpressRegistry.getXar22FormatConversionService();
 
         experiments = new ArrayList<Experiment>();
-
-        Experiment currentExperiment = new Experiment("test name 1");
-        currentExperiment.setDescription("test description 1");
-        currentExperiment.setHypothesis("test hypothesis 1");
-        currentExperiment.setUrl("http://testUrl1:8080/index.html");
-
-        ExperimentRun expRun = new ExperimentRun("MS2 analysis of lung adenocarcinoma tissue");
-        expRun.setAbout("${FolderLSIDBase}:CPASPaper:LungAdenocarcinomaStudyRun");
-        expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
-
-        currentExperiment.getExperimentRuns().add(expRun);
-
-        experiments.add(currentExperiment);
-
-        currentExperiment = new Experiment("test name 2");
-        currentExperiment.setDescription("test description 2");
-        currentExperiment.setHypothesis("test hypothesis 2");
-        currentExperiment.setUrl("http://testUrl2:8080/index.html");
-
-        expRun = new ExperimentRun("MS2 analysis of lung adenocarcinoma tissue");
-        expRun.setAbout("${FolderLSIDBase}:CPASPaper:LungAdenocarcinomaStudyRun");
-        expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
-
-        currentExperiment.getExperimentRuns().add(expRun);
-
-        experiments.add(currentExperiment);
+        experiments.add(getExperiment1());
+        experiments.add(getExperiment2());
     }
 
-    public void testMarshallAndUmarshallFile() throws Exception {
-        File file1 = new File("target/" + this.getClass().getSimpleName() + "-testMarshallAndUmarshallFile1.xml");
-        fcs.marshallExperiments(experiments, file1);
+    /**
+     * Reads a xar file containing multiple experiments, gets list of Experiments,
+     * performs assertions, and writes back to file.
+     * @throws Exception the exception
+     */
+    @SuppressWarnings("unchecked")
+    public void testUnmarshallAndMarshallFileMultipleExperiments() throws Exception {
+        File inFile = new File(xarFileWithMultipleExperiments);
+        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(inFile);
+        assertExperiments(unmarshalledExperiments);
 
-        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(file1);
-
-        assertEquals(2, unmarshalledExperiments.size());
-   //     assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
-      //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
+        File outFile = new File(xarOutfileWithMultipleExperiments);
+        fcs.marshallExperiments(unmarshalledExperiments, outFile);
     }
 
-    public void testMarshallAndUmarshallStream() throws Exception {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        fcs.marshallExperiments(experiments, os);
+    /**
+     * Reads a xar file containing one experiment, gets list of Experiments, performs assertions,
+     * and writes back to file.
+     * @throws Exception the exception
+     */
+    @SuppressWarnings("unchecked")
+    public void testUnmarshallAndMarshallFileOneExperiment() throws Exception {
+        File inFile = new File(xarFileWithOneExperiment);
+        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(inFile);
+        assertEquals(1, unmarshalledExperiments.size());
+        assertExperiment1Values(unmarshalledExperiments.get(0));
 
-        List<Experiment> unmarshalledExperiments = fcs
-                .unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
-
-        assertEquals(2, unmarshalledExperiments.size());
-      //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(0), unmarshalledExperiments.get(0)));
-      //  assertTrue(EqualsBuilder.reflectionEquals(experiments.get(1), unmarshalledExperiments.get(1)));
+        File outFile = new File(xarOutfileWithOneExperiment);
+        fcs.marshallExperiments(unmarshalledExperiments, outFile);
     }
 
     @SuppressWarnings("unchecked")
-    public void testLoadAndExport() throws Exception {
-        String[] srcFiles = new String[] { "src/test/inputFiles/xarEmapleFile1.xar.xml",
-                "src/test/inputFiles/xarEmapleFile2.xar.xml", "src/test/inputFiles/xarEmapleFile3.xar.xml",
-                "src/test/inputFiles/xarEmapleFile4.xar.xml", };
+     public void testMarshallAndUmarshallFileOneExperiment() throws Exception {
+         File outFile = new File(xarOutfileOneExperimentMarshallUnmarshall);
+         List<Experiment> exp = new ArrayList<Experiment>();
+         exp.add(getExperiment1());
+         fcs.marshallExperiments(exp, outFile);
 
-        File newFile = null;
-        for (int i = 0; i < srcFiles.length; i++) {
-            List<Experiment> experiments = fcs.unmarshallExperiments(new File(srcFiles[i]));
-            assertEquals(1, experiments.size());
-            newFile = new File("target/testLoadAndExport-File" + (i + 1) + ".xar.xml");
-            fcs.marshallExperiments(experiments, newFile);
-        }
+         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(outFile);
+         assertEquals(1, unmarshalledExperiments.size());
+         assertExperiment1Values(unmarshalledExperiments.get(0));
+     }
+
+     @SuppressWarnings("unchecked")
+     public void testMarshallAndUmarshallFileMultipleExperiments() throws Exception {
+         File outFile = new File(xarOutfileMultipleExperimentsMarshallUnmarshall);
+         fcs.marshallExperiments(experiments, outFile);
+
+         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(outFile);
+         assertExperiments(unmarshalledExperiments);
+     }
+
+     @SuppressWarnings("unchecked")
+     public void testMarshallAndUmarshallStream() throws Exception {
+         ByteArrayOutputStream os = new ByteArrayOutputStream();
+         fcs.marshallExperiments(experiments, os);
+         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
+         assertExperiments(unmarshalledExperiments);
+     }
+
+    private Experiment getExperiment1() {
+        // Setup first experiment.
+        Experiment currentExperiment = new Experiment("${FolderLSIDBase}:IPAS14", "IPAS14 Experiment");
+        currentExperiment.setComments("Mouse Pancreatic Cancer Research");
+        currentExperiment.setHypothesis("Cancer can kill a mouse too.");
+        currentExperiment.setUrl("http://testUrl1:8080/index.html");
+
+        // Set Experiment Runs
+        ExperimentRun expRun = new ExperimentRun("${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02", "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
+        expRun.setExperiment(currentExperiment);
+        expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
+
+        currentExperiment.getExperimentRuns().add(expRun);
+
+        // Set Primary Contact
+        Person person = new Person();
+        person.setContactId("Jim's Laboratory");
+        person.setFirstName("Jim");
+        person.setLastName("Smith");
+        person.setEmail("jim@smiths.net");
+        currentExperiment.setPrimaryContact(person);
+
+        return currentExperiment;
     }
+
+    private Experiment getExperiment2() {
+        // Setup second experiment.
+        Experiment currentExperiment = new Experiment("${FolderLSIDBase}:MS-MS-Searches", "MS-MS Searches on N-Linked Glycopeptide Purified Aliquots");
+        currentExperiment.setComments("X!Comet scoring.  Jan 2005 Human IPI fasta.");
+        currentExperiment.setHypothesis("Individual digests of identical aliquots will yield similar search results.");
+        currentExperiment.setUrl("http://testUrl2:8080/index.html");
+
+     // Set Experiment Runs
+        ExperimentRun expRun = new ExperimentRun("${FolderLSIDBase}:MS2.aliquot_01", "MS2 Peptide Search Aliquot 01");
+        expRun.setExperiment(currentExperiment);
+        expRun.setComments("Profiling of Proteins in MS2 Peptide Search Aliquot 01");
+
+        currentExperiment.getExperimentRuns().add(expRun);
+
+        // Set Primary Contact
+        Person person = new Person();
+        person.setContactId("Dr. Tabb's Research Center'");
+        person.setFirstName("John");
+        person.setLastName("Tabb");
+        person.setEmail("tabb@research-center.com");
+        currentExperiment.setPrimaryContact(person);
+
+        return currentExperiment;
+    }
+
+    private void assertExperiments(List<Experiment> experiments) {
+        assertEquals(2, experiments.size());
+        assertExperiment1Values(experiments.get(0));
+        assertExperiment2Values(experiments.get(1));
+    }
+
+    private void assertExperiment1Values(Experiment unmarshalledExperiment) {
+        assertNotNull(unmarshalledExperiment);
+        assertEquals(unmarshalledExperiment.getLsid(), "${FolderLSIDBase}:IPAS14");
+        assertEquals(unmarshalledExperiment.getName(), "IPAS14 Experiment");
+        assertEquals(unmarshalledExperiment.getHypothesis(), "Cancer can kill a mouse too.");
+        assertEquals(unmarshalledExperiment.getUrl(), "http://testUrl1:8080/index.html");
+        assertEquals(unmarshalledExperiment.getComments(), "Mouse Pancreatic Cancer Research");
+
+        List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
+        assertNotNull(unmarshalledExperimentRuns);
+        assertEquals(1, unmarshalledExperimentRuns.size());
+
+        //Experiment Runs
+        ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
+        assertNotNull(unmarshalledExperimentRun);
+        assertEquals(unmarshalledExperimentRun.getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
+        assertEquals(unmarshalledExperimentRun.getName(), "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
+        assertEquals(unmarshalledExperimentRun.getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
+        assertEquals(unmarshalledExperimentRun.getComments(), "Profiling of Proteins in Lung " +
+                "Adenocarcinoma Cell Surface");
+
+        // Person
+        Person person = unmarshalledExperiment.getPrimaryContact();
+        assertNotNull(person);
+        assertEquals(person.getContactId(), "Jim's Laboratory");
+        assertEquals(person.getFirstName(), "Jim");
+        assertEquals(person.getLastName(), "Smith");
+        assertEquals(person.getEmail(), "jim@smiths.net");
+
+    }
+
+    private void assertExperiment2Values(Experiment unmarshalledExperiment) {
+        assertNotNull(unmarshalledExperiment);
+        assertEquals(unmarshalledExperiment.getLsid(), "${FolderLSIDBase}:MS-MS-Searches");
+        assertEquals(unmarshalledExperiment.getName(), "MS-MS Searches on N-Linked Glycopeptide Purified Aliquots");
+        assertEquals(unmarshalledExperiment.getHypothesis(), "Individual digests of identical aliquots will yield " +
+                "similar search results.");
+        assertEquals(unmarshalledExperiment.getUrl(), "http://testUrl2:8080/index.html");
+        assertEquals(unmarshalledExperiment.getComments(), "X!Comet scoring.  Jan 2005 Human IPI fasta.");
+
+        List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
+        assertNotNull(unmarshalledExperimentRuns);
+        assertEquals(1, unmarshalledExperimentRuns.size());
+
+        // Experiment Runs
+        ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
+        assertNotNull(unmarshalledExperimentRun);
+        assertEquals(unmarshalledExperimentRun.getLsid(), "${FolderLSIDBase}:MS2.aliquot_01");
+        assertEquals(unmarshalledExperimentRun.getName(), "MS2 Peptide Search Aliquot 01");
+        assertEquals(unmarshalledExperimentRun.getExperiment().getLsid(), "${FolderLSIDBase}:MS-MS-Searches");
+        assertEquals(unmarshalledExperimentRun.getComments(), "Profiling of Proteins in MS2 Peptide Search Aliquot 01");
+
+        //Person
+        Person person = unmarshalledExperiment.getPrimaryContact();
+        assertNotNull(person);
+        assertEquals(person.getContactId(), "Dr. Tabb's Research Center'");
+        assertEquals(person.getFirstName(), "John");
+        assertEquals(person.getLastName(), "Tabb");
+        assertEquals(person.getEmail(), "tabb@research-center.com");
+    }
+
 
     @SuppressWarnings("unchecked")
     public void testLoadExampleFiles() throws Exception {
-        String[] srcFiles = new String[] { "src/test/inputFiles/xarEmapleFile1.xar.xml",
+        String[] srcFiles = new String[] {"src/test/inputFiles/xarEmapleFile1.xar.xml",
                 "src/test/inputFiles/xarEmapleFile2.xar.xml", "src/test/inputFiles/xarEmapleFile3.xar.xml",
                 "src/test/inputFiles/xarEmapleFile4.xar.xml", };
 
-        String[] names = new String[] { "Lung Adenocarcinoma Study",
+        String[] names = new String[] {"Lung Adenocarcinoma Study",
                 "Peroxisome membrane protein analysis, Marcello Marelli et al.", "Default Experiment",
                 "caBIG Test Data" };
 

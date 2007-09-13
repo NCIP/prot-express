@@ -99,8 +99,8 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSaveRetrieveDeleteExperiment() throws Exception {
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
+        Experiment exp1 = new Experiment("LSID_Test_Experiment_1", "Name - Test Experiment 1");
+        exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
 
@@ -123,16 +123,16 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSearchExperiments() throws Exception {
-        Experiment exp = new Experiment("test experiment 1");
-        exp.setDescription("bar 123");
+        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        exp.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
-        exp = new Experiment("test experiment 12");
-        exp.setDescription("bar 12");
+        exp = new Experiment("lsid_test_experiment_12", "test experiment 12");
+        exp.setComments("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
-        exp = new Experiment("test experiment 123");
-        exp.setDescription("bar 1");
+        exp = new Experiment("lsid_test_experiment_123", "test experiment 123");
+        exp.setComments("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
         theSession.flush();
@@ -163,24 +163,24 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
             lastVal = exp1.getName();
         }
 
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "description",
+        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "comments",
                 SortOrderEnum.ASCENDING);
         lastVal = null;
         for (Experiment exp1 : experimentList) {
             if (lastVal != null) {
-                assertTrue(exp1.getDescription().compareTo(lastVal) >= 0);
+                assertTrue(exp1.getComments().compareTo(lastVal) >= 0);
             }
-            lastVal = exp1.getDescription();
+            lastVal = exp1.getComments();
         }
 
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "description",
+        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "comments",
                 SortOrderEnum.DESCENDING);
         lastVal = null;
         for (Experiment exp1 : experimentList) {
             if (lastVal != null) {
-                assertTrue(exp1.getDescription().compareTo(lastVal) <= 0);
+                assertTrue(exp1.getComments().compareTo(lastVal) <= 0);
             }
-            lastVal = exp1.getDescription();
+            lastVal = exp1.getComments();
         }
 
         ExperimentSearchParameters exparams = new ExperimentSearchParameters();
@@ -206,7 +206,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(3, experimentList.size());
 
-        exparams.setDescription("ar ");
+        exparams.setComments("ar ");
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(3, experimentList.size());
 
@@ -214,21 +214,21 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(2, experimentList.size());
 
-        exparams.setDescription("r 12");
+        exparams.setComments("r 12");
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(1, experimentList.size());
     }
 
     public void testEqualsAndHashCode() {
-        assertFalse(new Experiment("TestExperiment1").equals(new Experiment("TestExperiment1")));
-        Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setDescription("Description - Test Experiment 1");
+        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").equals(new Experiment("LSIDTestExperiment1", "TestExperiment1")));
+        Experiment exp1 = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
 
         assertFalse(exp1.equals(null));
         assertFalse(exp1.equals(new String("Foo")));
         assertTrue(exp1.equals(exp1));
-        assertEquals(exp1.hashCode(), new Experiment("Name - Test Experiment 1").hashCode());
+        assertEquals(exp1.hashCode(), new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1").hashCode());
     }
 }

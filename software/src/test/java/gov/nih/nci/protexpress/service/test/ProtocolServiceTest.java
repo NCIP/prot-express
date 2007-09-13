@@ -101,7 +101,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSaveRetrieveDeleteProtocol() throws Exception {
-        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
         p.setInstrument("foo");
         p.setDescription("bar");
         p.setSoftware("baz");
@@ -125,15 +125,15 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSearchProtocols() throws Exception {
-        Protocol p = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
         p.setDescription("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        p = new Protocol("test protocol 12", ProtocolType.ExperimentRunOutput);
+        p = new Protocol("test_protocol_12", "test protocol 12", ProtocolType.ExperimentRunOutput);
         p.setDescription("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        p = new Protocol("test protocol 123", ProtocolType.SamplePrep);
+        p = new Protocol("test_protocol_123", "test protocol 123", ProtocolType.SamplePrep);
         p.setDescription("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
@@ -242,9 +242,9 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testEqualsAndHashCode() {
-        assertFalse(new Protocol("test", ProtocolType.ExperimentRun).equals(new Protocol("test",
+        assertFalse(new Protocol("test", "test", ProtocolType.ExperimentRun).equals(new Protocol("test", "test",
                 ProtocolType.ExperimentRun)));
-        Protocol p1 = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        Protocol p1 = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
         p1.setInstrument("foo");
         p1.setDescription("bar");
         p1.setSoftware("baz");
@@ -252,6 +252,6 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(p1.equals(null));
         assertFalse(p1.equals(new String("Foo")));
         assertTrue(p1.equals(p1));
-        assertEquals(p1.hashCode(), new Protocol("test protocol 1", ProtocolType.ExperimentRun).hashCode());
+        assertEquals(p1.hashCode(), new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun).hashCode());
     }
 }
