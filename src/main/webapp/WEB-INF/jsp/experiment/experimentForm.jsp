@@ -15,8 +15,9 @@
         </s:else>
 
         <s:form action="experiment/management/save" method="post">
+            <s:textfield name="experiment.lsid" label="%{getText('experiment.lsid')}" size="40" />
             <s:textfield name="experiment.name" label="%{getText('experiment.name')}" size="40" />
-            <s:textfield name="experiment.description" label="%{getText('experiment.description')}" size="40" />
+            <s:textfield name="experiment.comments" label="%{getText('experiment.comments')}" size="40" />
             <s:textfield name="experiment.hypothesis" label="%{getText('experiment.hypothesis')}" size="40" />
             <s:textfield name="experiment.url" label="%{getText('experiment.url')}" size="40" />
 

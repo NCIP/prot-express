@@ -16,7 +16,7 @@
     <s:hidden name="experiments.sortDirection" />
     <s:hidden name="experiments.sortCriterion" />
     <s:textfield name="searchParameters.name" label="%{getText('experiment.name')}" size="40" />
-    <s:textfield name="searchParameters.description" label="%{getText('experiment.description')}" size="40" />
+    <s:textfield name="searchParameters.comments" label="%{getText('experiment.comments')}" size="40" />
     <s:submit value="%{getText('search')}" />
     <s:submit value="%{getText('cancel')}" name="redirect-action:experiment/search/loadSearch" />
 </s:form>
@@ -29,7 +29,7 @@
         <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
         <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
         <display:column property="name" titleKey="experiment.name" sortable="true" />
-        <display:column property="description" titleKey="experiment.description" sortable="true" />
+        <display:column property="comments" titleKey="experiment.comments" sortable="true" />
         <display:column property="url" titleKey="experiment.url" sortable="true" />
 
         <display:column titleKey="actions" sortable="false">
