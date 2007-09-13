@@ -114,15 +114,13 @@ public class ExperimentRun implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 255;
-    private static final int DESCRIPTION_LENGTH = 255;
+    private static final int LSID_LENGTH = 255;
     private static final int COMMENTS_LENGTH = 255;
-    private static final int ABOUT_LENGTH = 255;
 
     private Long id;
+    private String lsid;
     private String name;
-    private String description;
     private String comments;
-    private String about;
     private Experiment experiment;
 
     /**
@@ -134,9 +132,11 @@ public class ExperimentRun implements Serializable {
     /**
      * Constructor to create the object and populate all required fields.
      *
+     * @param lsid the lsid of the experiment
      * @param name the name of the experiment
      */
-    public ExperimentRun(String name) {
+    public ExperimentRun(String lsid, String name) {
+        setLsid(lsid);
         setName(name);
     }
 
@@ -182,26 +182,6 @@ public class ExperimentRun implements Serializable {
     }
 
     /**
-     * Gets the description.
-     *
-     * @return the description.
-     */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the description.
-     *
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
      * Gets the comments.
      *
      * @return the comments
@@ -222,23 +202,24 @@ public class ExperimentRun implements Serializable {
     }
 
     /**
-     * Gets the about.
+     * Gets the lsid.
      *
-     * @return the about
+     * @return the lsid
      */
-    @Column(name = "about")
-    @Length(max = ABOUT_LENGTH)
-    public String getAbout() {
-        return about;
+    @Column(name = "lsid", unique = true)
+    @NotEmpty
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return lsid;
     }
 
     /**
-     * Sets the about.
+     * Sets the lsid.
      *
-     * @param about the about to set
+     * @param lsid the lsid to set
      */
-    public void setAbout(String about) {
-        this.about = about;
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
     }
 
     /**
