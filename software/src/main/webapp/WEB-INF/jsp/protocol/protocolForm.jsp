@@ -12,6 +12,7 @@
 </s:else>
 
 <s:form action="protocol/management/save" method="post">
+    <s:textfield name="protocol.lsid" label="%{getText('protocol.lsid')}" size="40" />
     <s:textfield name="protocol.name" label="%{getText('protocol.name')}" size="40" />
     <s:textfield name="protocol.description" label="%{getText('protocol.description')}" size="40" />
     <s:select name="protocol.type" label="%{getText('protocol.type')}"
