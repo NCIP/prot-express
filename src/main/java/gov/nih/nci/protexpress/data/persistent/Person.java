@@ -85,7 +85,6 @@ package gov.nih.nci.protexpress.data.persistent;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -110,26 +109,17 @@ public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int EMAIL_LENGTH = 255;
-    private static final int PHONE_LENGTH = 25;
-    private static final int FAX_LENGTH = 25;
-    private static final int URL_LENGTH = 255;
+    private static final int CONTACT_ID_LENGTH = 255;
+    private static final int NAME_LENGTH = 255;
+    private static final int EMAIL_LENGTH = 255;;
     private static final int COMMENTS_LENGTH = 255;
 
     private Long id;
+    private String contactId;
     private String firstName;
-    private String middleName;
     private String lastName;
     private String email;
-    private String phone;
-    private String fax;
-    private String url;
     private String comments;
-    private String organizationName;
-    private String organizationUrl;
-
-    private Address address;
 
     /**
      * Constructor to create the object and populate all required fields.
@@ -151,7 +141,8 @@ public class Person implements Serializable {
     /**
      * Sets the id.
      *
-     * @param id the id to set
+     * @param id
+     *            the id to set
      */
     public void setId(Long id) {
         this.id = id;
@@ -171,30 +162,11 @@ public class Person implements Serializable {
     /**
      * Sets the firstName.
      *
-     * @param firstName the firstName to set
+     * @param firstName
+     *            the firstName to set
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    /**
-     * Gets the middleName.
-     *
-     * @return the middleName.
-     */
-    @Column(name = "middle_name")
-    @Length(max = NAME_LENGTH)
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    /**
-     * Sets the middleName.
-     *
-     * @param middleName the middleName to set
-     */
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
     }
 
     /**
@@ -211,7 +183,8 @@ public class Person implements Serializable {
     /**
      * Sets the lastName.
      *
-     * @param lastName the lastName to set
+     * @param lastName
+     *            the lastName to set
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -231,70 +204,32 @@ public class Person implements Serializable {
     /**
      * Sets the email.
      *
-     * @param email the email to set
+     * @param email
+     *            the email to set
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Gets the phone.
+     * Gets the contactId.
      *
-     * @return the phone
+     * @return the contactId
      */
-    @Column(name = "phone")
-    @Length(max = PHONE_LENGTH)
-    public String getPhone() {
-        return phone;
+    @Column(name = "contact_id")
+    @Length(max = CONTACT_ID_LENGTH)
+    public String getContactId() {
+        return contactId;
     }
 
     /**
-     * Sets the phone.
+     * Sets the contactId.
      *
-     * @param phone the phone to set
+     * @param contactId
+     *            the contactId to set
      */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     * Gets the fax.
-     *
-     * @return the fax
-     */
-    @Column(name = "fax")
-    @Length(max = FAX_LENGTH)
-    public String getFax() {
-        return fax;
-    }
-
-    /**
-     * Sets the fax.
-     *
-     * @param fax the fax to set
-     */
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    /**
-     * Gets the url.
-     *
-     * @return the url
-     */
-    @Column(name = "url")
-    @Length(max = URL_LENGTH)
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * Sets the url.
-     *
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     /**
@@ -311,65 +246,11 @@ public class Person implements Serializable {
     /**
      * Sets the comments.
      *
-     * @param comments the comments to set
+     * @param comments
+     *            the comments to set
      */
     public void setComments(String comments) {
         this.comments = comments;
-    }
-
-    /**
-     * Gets the organizationName.
-     *
-     * @return the organizationName
-     */
-    @Column(name = "org_name")
-    @Length(max = NAME_LENGTH)
-    public String getOrganizationName() {
-        return organizationName;
-    }
-
-    /**
-     * Sets the organizationName.
-     *
-     * @param organizationName the organizationName to set
-     */
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
-    }
-
-    /**
-     * Gets the organizationUrl.
-     *
-     * @return the organizationUrl
-     */
-    @Column(name = "org_url")
-    @Length(max = URL_LENGTH)
-    public String getOrganizationUrl() {
-        return organizationUrl;
-    }
-
-    /**
-     * Sets the organizationUrl.
-     *
-     * @param organizationUrl the organizationUrl to set
-     */
-    public void setOrganizationUrl(String organizationUrl) {
-        this.organizationUrl = organizationUrl;
-    }
-
-    /**
-     * @return the address
-     */
-    @Embedded
-    public Address getAddress() {
-        return this.address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     /**
@@ -391,8 +272,9 @@ public class Person implements Serializable {
             return false;
         }
 
-        return new EqualsBuilder().append(getId(), person.getId()).append(getFirstName(), person.getFirstName())
-                .append(getLastName(), person.getLastName()).isEquals();
+        return new EqualsBuilder().append(getId(), person.getId()).append(
+                getFirstName(), person.getFirstName()).append(getLastName(),
+                person.getLastName()).isEquals();
     }
 
     /**
@@ -400,7 +282,8 @@ public class Person implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getFirstName()).append(getLastName()).toHashCode();
+        return new HashCodeBuilder().append(getId()).append(getFirstName())
+                .append(getLastName()).toHashCode();
     }
 
 }
