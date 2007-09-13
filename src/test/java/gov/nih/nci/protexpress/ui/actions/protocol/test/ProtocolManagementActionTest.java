@@ -109,7 +109,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         super.onSetUp();
         action = new ProtocolManagementAction();
 
-        protocol = new Protocol("test protocol 1", ProtocolType.ExperimentRun);
+        protocol = new Protocol("lsid_test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
         protocol.setInstrument("foo");
         protocol.setDescription("bar");
         protocol.setSoftware("baz");
@@ -124,7 +124,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         action.prepare();
         assertEquals(null, action.getProtocol());
 
-        Protocol p = new Protocol(null, null);
+        Protocol p = new Protocol(null, null, null);
         action.setProtocol(p);
         action.prepare();
         assertEquals(p, action.getProtocol());
@@ -141,7 +141,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testSaveOrUpdate() throws Exception {
-        action.setProtocol(new Protocol("zzz", ProtocolType.SamplePrep));
+        action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
         assertEquals(ActionSupport.SUCCESS, action.save());
         assertEquals(theSession.get(Protocol.class, action.getProtocol().getId()), action.getProtocol());
     }

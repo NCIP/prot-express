@@ -109,8 +109,8 @@ public class ExperimentManagementActionTest extends
         super.onSetUp();
         action = new ExperimentManagementAction();
 
-        experiment = new Experiment("Name - Test Experiment 1");
-        experiment.setDescription("Description - Test Experiment 1");
+        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
@@ -125,7 +125,7 @@ public class ExperimentManagementActionTest extends
         action.prepare();
         assertEquals(null, action.getExperiment());
 
-        Experiment p = new Experiment(null);
+        Experiment p = new Experiment(null, null);
         action.setExperiment(p);
         action.prepare();
         assertEquals(p, action.getExperiment());
@@ -143,7 +143,7 @@ public class ExperimentManagementActionTest extends
     }
 
     public void testSaveOrUpdate() throws Exception {
-        action.setExperiment(new Experiment("Test Experiment"));
+        action.setExperiment(new Experiment("Lsid_Test_Experiment", "Test Experiment"));
         assertEquals(ActionSupport.SUCCESS, action.save());
         assertEquals(theSession.get(Experiment.class, action.getExperiment()
                 .getId()), action.getExperiment());
