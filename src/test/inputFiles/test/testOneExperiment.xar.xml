@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExperimentArchive xmlns="http://cpas.fhcrc.org/exp/xml" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cpas.fhcrc.org/exp/xml http://cpas.fhcrc.org/download/XarSchema/V1.2/expTypes.xsd">
+	<Experiment rdf:about="${FolderLSIDBase}:IPAS14" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+		<Name>IPAS14 Experiment</Name>
+		<Comments>Mouse Pancreatic Cancer Research</Comments>
+		<Hypothesis>Cancer can kill a mouse too.</Hypothesis>
+		<ExperimentDescriptionURL>http://testUrl1:8080/index.html</ExperimentDescriptionURL>
+		<Contact>
+			<ContactId>Jim's Laboratory</ContactId>
+			<FirstName>Jim</FirstName>
+			<LastName>Smith</LastName>
+			<Email>jim@smiths.net</Email>
+		</Contact>
+	</Experiment>
+	<ProtocolDefinitions/>
+	<ProtocolActionDefinitions/>
+	<StartingInputDefinitions/>
+	<ExperimentRuns>
+		<ExperimentRun rdf:about="${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02" >
+			<Name>IP0014_AX02 (Mouse Pancreatic Cancer Study)</Name>
+			<ProtocolLSID>${FolderLSIDBase}:Process.IPAS14</ProtocolLSID>
+			<ExperimentLSID>${FolderLSIDBase}:IPAS14</ExperimentLSID>
+			<Comments>Profiling of Proteins in Lung Adenocarcinoma Cell Surface</Comments>
+			<ProtocolApplications/>
+		</ExperimentRun>
+	</ExperimentRuns>
+</ExperimentArchive>
