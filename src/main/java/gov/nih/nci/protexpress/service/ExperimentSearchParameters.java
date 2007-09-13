@@ -90,20 +90,20 @@ package gov.nih.nci.protexpress.service;
 public class ExperimentSearchParameters {
 
     private String name;
-    private String description;
+    private String comments;
 
     /**
-     * @return the description
+     * @return the comments
      */
-    public String getDescription() {
-        return this.description;
+    public String getComments() {
+        return this.comments;
     }
 
     /**
-     * @param description the description to set
+     * @param comments the comments to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     /**

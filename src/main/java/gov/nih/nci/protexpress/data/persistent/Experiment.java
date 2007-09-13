@@ -86,12 +86,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -115,15 +118,18 @@ public class Experiment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
+    private static final int LSID_LENGTH = 255;
+    private static final int COMMENTS_LENGTH = 255;
     private static final int HYPOTHESIS_LENGTH = 255;
     private static final int URL_LENGTH = 255;
 
     private Long id;
+    private String lsid;
     private String name;
-    private String description;
     private String hypothesis;
     private String url;
+    private String comments;
+    private Person primaryContact;
 
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
@@ -136,9 +142,12 @@ public class Experiment implements Serializable {
     /**
      * Constructor to create the object and populate all required fields.
      *
+     * @param lsid the lsid of the experiment
      * @param name the name of the experiment
+     *
      */
-    public Experiment(String name) {
+    public Experiment(String lsid, String name) {
+        setLsid(lsid);
         setName(name);
     }
 
@@ -154,30 +163,31 @@ public class Experiment implements Serializable {
     }
 
     /**
-     * @param id the id to set
+     * @param id
+     *            the id to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Gets the description.
+     * Gets the comments.
      *
-     * @return the description
+     * @return the comments
      */
-    @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
-    public String getDescription() {
-        return description;
+    @Column(name = "comments")
+    @Length(max = COMMENTS_LENGTH)
+    public String getComments() {
+        return comments;
     }
 
     /**
-     * Sets the description.
+     * Sets the comments.
      *
-     * @param description the description to set
+     * @param comments the comments to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     /**
@@ -203,7 +213,7 @@ public class Experiment implements Serializable {
     /**
      * Sets the url.
      *
-     * @param url the url to set
+     * @param url  the url to set
      */
     public void setUrl(String url) {
         this.url = url;
@@ -225,7 +235,7 @@ public class Experiment implements Serializable {
      *
      * @return the name
      */
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getName() {
@@ -242,11 +252,52 @@ public class Experiment implements Serializable {
     }
 
     /**
+     * Gets the lsid.
+     *
+     * @return the lsid
+     */
+    @Column(name = "lsid", unique = true)
+    @NotEmpty
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return lsid;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
+    }
+
+    /**
+     * Gets the primaryContact.
+     *
+     * @return the primaryContact.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id", nullable = true)
+    public Person getPrimaryContact() {
+        return primaryContact;
+    }
+
+    /**
+     * Sets the primaryContact.
+     *
+     * @param primaryContact the primaryContact to set.
+     */
+    public void setPrimaryContact(Person primaryContact) {
+        this.primaryContact = primaryContact;
+    }
+
+    /**
      * Gets the experimentRuns.
      *
      * @return the experimentRuns.
      */
-    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ExperimentRun> getExperimentRuns() {
         return experimentRuns;
     }
@@ -254,7 +305,8 @@ public class Experiment implements Serializable {
     /**
      * Sets the experimentRuns.
      *
-     * @param experimentRuns the experimentRuns to set.
+     * @param experimentRuns
+     *            the experimentRuns to set.
      */
     protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
         this.experimentRuns = experimentRuns;

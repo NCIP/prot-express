@@ -84,13 +84,17 @@ package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -118,13 +122,17 @@ public class Protocol implements Serializable {
     private static final int SOFTWARE_LENGTH = 255;
     private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
+    private static final int LSID_LENGTH = 255;
 
     private Long id;
+    private String lsid;
     private String name;
     private String description;
     private String software;
     private String instrument;
     private ProtocolType type;
+
+    private Person primaryContact;
 
     /**
      * protected default constructor for hibernate only.
@@ -135,10 +143,12 @@ public class Protocol implements Serializable {
     /**
      * Constructor to create the object and populate all required fields.
      *
+     * @param lsid the lsid of the protocol
      * @param name the name of the protocol
      * @param type the type
      */
-    public Protocol(String name, ProtocolType type) {
+    public Protocol(String lsid, String name, ProtocolType type) {
+        setLsid(lsid);
         setName(name);
         setType(type);
     }
@@ -207,7 +217,7 @@ public class Protocol implements Serializable {
      *
      * @return the name
      */
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     @NotEmpty
     @Length(max = NAME_LENGTH)
     @Index(name = "name_index")
@@ -222,6 +232,27 @@ public class Protocol implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the lsid.
+     *
+     * @return the lsid
+     */
+    @Column(name = "lsid", unique = true)
+    @NotEmpty
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return lsid;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
     }
 
     /**
@@ -259,6 +290,26 @@ public class Protocol implements Serializable {
      */
     public void setType(ProtocolType type) {
         this.type = type;
+    }
+
+    /**
+     * Gets the primaryContact.
+     *
+     * @return the primaryContact.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
+    public Person getPrimaryContact() {
+        return primaryContact;
+    }
+
+    /**
+     * Sets the primaryContact.
+     *
+     * @param primaryContact the primaryContact to set.
+     */
+    public void setPrimaryContact(Person primaryContact) {
+        this.primaryContact = primaryContact;
     }
 
     /**

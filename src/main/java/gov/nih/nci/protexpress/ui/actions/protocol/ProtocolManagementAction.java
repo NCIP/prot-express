@@ -101,7 +101,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public class ProtocolManagementAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private Protocol protocol = new Protocol(null, null);
+    private Protocol protocol = new Protocol(null, null, null);
 
     /**
      * {@inheritDoc}

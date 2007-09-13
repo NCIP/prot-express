@@ -136,8 +136,8 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
                 crit.add(Restrictions.like("name", "%" + params.getName() + "%"));
             }
 
-            if (StringUtils.isNotEmpty(params.getDescription())) {
-                crit.add(Restrictions.like("description", "%" + params.getDescription() + "%"));
+            if (StringUtils.isNotEmpty(params.getComments())) {
+                crit.add(Restrictions.like("comments", "%" + params.getComments() + "%"));
             }
         }
 
