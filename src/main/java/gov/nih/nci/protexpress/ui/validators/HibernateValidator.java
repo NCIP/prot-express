@@ -125,7 +125,7 @@ public class HibernateValidator extends FieldValidatorSupport {
      * @return the value of appendPrefix
      */
     public boolean isAppendPrefix() {
-        return appendPrefix;
+        return this.appendPrefix;
     }
 
     /**
@@ -177,8 +177,7 @@ public class HibernateValidator extends FieldValidatorSupport {
                 propertyPrefix = fieldName + ".";
             }
 
-            for (int i = 0; i < validationMessages.length; i++) {
-                InvalidValue message = validationMessages[i];
+            for (InvalidValue message : validationMessages) {
                 getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), message.getMessage());
             }
         }

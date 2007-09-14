@@ -148,7 +148,7 @@ public class ExperimentRun implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -169,7 +169,7 @@ public class ExperimentRun implements Serializable {
     @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -189,7 +189,7 @@ public class ExperimentRun implements Serializable {
     @Column(name = "comments")
     @Length(max = COMMENTS_LENGTH)
     public String getComments() {
-        return comments;
+        return this.comments;
     }
 
     /**
@@ -210,7 +210,7 @@ public class ExperimentRun implements Serializable {
     @NotEmpty
     @Length(max = LSID_LENGTH)
     public String getLsid() {
-        return lsid;
+        return this.lsid;
     }
 
     /**
@@ -230,7 +230,7 @@ public class ExperimentRun implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "experiment_id", nullable = false)
     public Experiment getExperiment() {
-        return experiment;
+        return this.experiment;
     }
 
     /**
@@ -257,7 +257,7 @@ public class ExperimentRun implements Serializable {
 
         ExperimentRun experimentRun = (ExperimentRun) obj;
 
-        if (id == null) {
+        if (this.id == null) {
             return false;
         }
 

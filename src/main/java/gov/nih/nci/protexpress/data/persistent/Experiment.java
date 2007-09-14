@@ -159,7 +159,7 @@ public class Experiment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -178,7 +178,7 @@ public class Experiment implements Serializable {
     @Column(name = "comments")
     @Length(max = COMMENTS_LENGTH)
     public String getComments() {
-        return comments;
+        return this.comments;
     }
 
     /**
@@ -198,7 +198,7 @@ public class Experiment implements Serializable {
     @Column(name = "hypothesis")
     @Length(max = HYPOTHESIS_LENGTH)
     public String getHypothesis() {
-        return hypothesis;
+        return this.hypothesis;
     }
 
     /**
@@ -227,7 +227,7 @@ public class Experiment implements Serializable {
     @Column(name = "url")
     @Length(max = URL_LENGTH)
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     /**
@@ -239,7 +239,7 @@ public class Experiment implements Serializable {
     @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -260,7 +260,7 @@ public class Experiment implements Serializable {
     @NotEmpty
     @Length(max = LSID_LENGTH)
     public String getLsid() {
-        return lsid;
+        return this.lsid;
     }
 
     /**
@@ -280,7 +280,7 @@ public class Experiment implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", nullable = true)
     public Person getPrimaryContact() {
-        return primaryContact;
+        return this.primaryContact;
     }
 
     /**
@@ -299,7 +299,7 @@ public class Experiment implements Serializable {
      */
     @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ExperimentRun> getExperimentRuns() {
-        return experimentRuns;
+        return this.experimentRuns;
     }
 
     /**
@@ -331,7 +331,7 @@ public class Experiment implements Serializable {
 
         Experiment exp = (Experiment) o;
 
-        if (id == null) {
+        if (this.id == null) {
             return false;
         }
 
