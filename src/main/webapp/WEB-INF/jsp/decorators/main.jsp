@@ -8,6 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
 </head>
 
 <body>
