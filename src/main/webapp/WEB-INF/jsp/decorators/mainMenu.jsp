@@ -13,9 +13,19 @@
 </div>
 
 <script language="javascript">
+function getCurrentSection(hrefString) {
+    var arr = hrefString.split('/');
+    contextPathString = '/' + arr[0];
+    if (contextPathString == '<%= request.getContextPath() %>') {
+        return arr[1];
+    }
+    return arr[0];
+}
+
 function setActiveMenu() {
     if(document.location.href) {
         currentLocation = document.location.href;
+        getCurrentSection(document.location.pathname);
     } else {
         currentLocation = document.location;
     }
@@ -25,7 +35,16 @@ function setActiveMenu() {
         for(var i=0; i < menuItems.length; i++) {
             if(menuItems[i].href == currentLocation) {
                 menuItems[i].className = 'selected';
-                i = menuItems.length;
+                return;
+            }
+        }
+        if (document.location.pathname != null) {
+            currentSection = getCurrentSection(document.location.pathname);
+            for(var i=0; i < menuItems.length; i++) {
+                if(getCurrentSection(menuItems[i].href) == currentSection) {
+                    menuItems[i].className = 'selected';
+                    return;
+                }
             }
         }
     }
