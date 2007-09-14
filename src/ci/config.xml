@@ -13,6 +13,7 @@
         </modificationset>
 
         <schedule interval="300">
+            <exec workingdir="projects/${project.name}/src/lib" command="projects/${project.name}/src/lib/installNonMavenDependencies.bat"/>
             <maven2 mvnhome="C:/dev/tools/maven-2.0.7" pomfile="projects/${project.name}/pom.xml"
                 goal="clean site verify hibernate3:hbm2ddl" activateprofiles="jspCompile" />
         </schedule>

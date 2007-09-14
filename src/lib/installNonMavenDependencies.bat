@@ -1,0 +1,2 @@
+call mvn install:install-file -Dfile=csmapi.jar -DgroupId=gov.nih.nci -DartifactId=security -Dversion=3.2 -Dpackaging=jar
+call mvn install:install-file -Dfile=clm.jar -DgroupId=gov.nih.nci -DartifactId=logging -Dversion=3.2 -Dpackaging=jar
