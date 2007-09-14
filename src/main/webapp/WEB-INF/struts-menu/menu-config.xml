@@ -15,27 +15,24 @@
     </Displayers>
 
     <Menus>
-        <Menu name="protExpressLogin" title="menu.protexpress">
-            <Item name="protExpress.home" title="menu.protexpress.home" page="/" />
-            <Item name="protExpress.login" title="menu.protexpress.login" page="/dashboard/dashboard.action" />
+        <Menu name="protExpressLogin" title="menu.protexpress" onclick="javascript:void(0);">
+            <Item name="protExpress.home" title="menu.protexpress.home" page="/dashboard/dashboard.action" />
             <Item name="protExpress.register" title="menu.protexpress.register" page="/registration/load.action" />
+            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/notYetImplemented.html" />
         </Menu>
-        <Menu name="protExpressMain" title="menu.protexpress">
-            <Item name="protExpress.home" title="menu.protexpress.home" page="/" />
+        <Menu name="protExpressMain" title="menu.protexpress" onclick="javascript:void(0);">
             <Item name="protExpress.dashboard" title="menu.protexpress.dashboard" page="/dashboard/dashboard.action" />
             <Item name="protExpress.protocols" title="menu.protexpress.protocols" page="/protocol/search/loadSearch.action" />
             <Item name="protExpress.experiments" title="menu.protexpress.experiments" page="/experiment/search/loadSearch.action" />
-            <Item name="protExpress.importexport" title="menu.protexpress.importexport" page="/" />
+            <Item name="protExpress.importexport" title="menu.protexpress.importexport" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/notYetImplemented.html" />
         </Menu>
-        <Menu name="protExpressAbout" title="menu.aboutprotexpress">
-            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/" />
-            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/" />
-        </Menu>
-        <Menu name="globalLinks" title="menu.globallinks">
-            <Item name="globalLinks.ncihome" title="menu.globallinks.ncihome" page="/" />
-            <Item name="globalLinks.ncicbhome" title="menu.globallinks.ncicbhome" page="/" />
-            <Item name="globalLinks.cabighome" title="menu.globallinks.cabighome" page="/" />
-            <Item name="globalLinks.ncicbsupport" title="menu.globallinks.ncicbsupport" page="/" />
+        <Menu name="globalLinks" title="menu.globallinks" onclick="javascript:void(0);">
+            <Item name="globalLinks.ncihome" title="menu.globallinks.ncihome" location="http://www.cancer.gov/" />
+            <Item name="globalLinks.ncicbhome" title="menu.globallinks.ncicbhome" location="http://ncicb.nci.nih.gov/" />
+            <Item name="globalLinks.cabighome" title="menu.globallinks.cabighome" location="https://cabig.nci.nih.gov/" />
         </Menu>
     </Menus>
 </MenuConfig>
