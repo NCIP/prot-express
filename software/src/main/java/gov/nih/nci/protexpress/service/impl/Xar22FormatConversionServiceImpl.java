@@ -117,7 +117,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @throws JAXBException thrown when the jaxb context can not be initialized
      */
     public Xar22FormatConversionServiceImpl() throws JAXBException {
-        jaxbContext = JAXBContext.newInstance(ExperimentArchiveType.class.getPackage().getName());
+        this.jaxbContext = JAXBContext.newInstance(ExperimentArchiveType.class.getPackage().getName());
     }
 
     /**
@@ -141,7 +141,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @throws JAXBException
      */
     private Marshaller getNewMarshaller() throws JAXBException {
-        Marshaller marshaller = jaxbContext.createMarshaller();
+        Marshaller marshaller = this.jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
         return marshaller;
@@ -164,7 +164,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      */
     @SuppressWarnings("unchecked")
     public List<Experiment> unmarshallExperiments(File input) throws JAXBException {
-        Unmarshaller u = jaxbContext.createUnmarshaller();
+        Unmarshaller u = this.jaxbContext.createUnmarshaller();
         JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
         return convertToExperiments(experimentArchive.getValue());
     }
@@ -174,7 +174,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      */
     @SuppressWarnings("unchecked")
     public List<Experiment> unmarshallExperiments(InputStream input) throws JAXBException {
-        Unmarshaller u = jaxbContext.createUnmarshaller();
+        Unmarshaller u = this.jaxbContext.createUnmarshaller();
         JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
         return convertToExperiments(experimentArchive.getValue());
     }

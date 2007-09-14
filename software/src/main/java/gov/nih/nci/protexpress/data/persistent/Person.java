@@ -135,7 +135,7 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -156,7 +156,7 @@ public class Person implements Serializable {
     @Column(name = "first_name")
     @Length(max = NAME_LENGTH)
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     /**
@@ -177,7 +177,7 @@ public class Person implements Serializable {
     @Column(name = "last_name")
     @Length(max = NAME_LENGTH)
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     /**
@@ -198,7 +198,7 @@ public class Person implements Serializable {
     @Column(name = "email")
     @Length(max = EMAIL_LENGTH)
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     /**
@@ -219,7 +219,7 @@ public class Person implements Serializable {
     @Column(name = "contact_id")
     @Length(max = CONTACT_ID_LENGTH)
     public String getContactId() {
-        return contactId;
+        return this.contactId;
     }
 
     /**
@@ -240,7 +240,7 @@ public class Person implements Serializable {
     @Column(name = "comments")
     @Length(max = COMMENTS_LENGTH)
     public String getComments() {
-        return comments;
+        return this.comments;
     }
 
     /**
@@ -268,7 +268,7 @@ public class Person implements Serializable {
 
         Person person = (Person) obj;
 
-        if (id == null) {
+        if (this.id == null) {
             return false;
         }
 

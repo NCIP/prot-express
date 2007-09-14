@@ -140,7 +140,7 @@ public class RegistrationAction extends ActionSupport {
                 expression = "user.password == passwordConfirmation", key = "passwordConfirmation.mustBeEqual",
                 message = "") })
     public String save() throws CSTransactionException {
-        ProtExpressRegistry.getUserProvisioningManager().createUser(user);
+        ProtExpressRegistry.getUserProvisioningManager().createUser(getUser());
         return ActionSupport.SUCCESS;
     }
 

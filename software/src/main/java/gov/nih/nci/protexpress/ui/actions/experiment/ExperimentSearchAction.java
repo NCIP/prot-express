@@ -118,7 +118,7 @@ public class ExperimentSearchAction {
     @SkipValidation
     @SuppressWarnings("unchecked")
     public String doSearch() {
-        int count = (int) ProtExpressRegistry.getExperimentService().countMatchingExperiments(getSearchParameters());
+        int count = ProtExpressRegistry.getExperimentService().countMatchingExperiments(getSearchParameters());
         getExperiments().setFullListSize(count);
         getExperiments().setList(
                 ProtExpressRegistry.getExperimentService().searchForExperiments(getSearchParameters(),

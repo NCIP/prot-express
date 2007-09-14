@@ -120,7 +120,7 @@ public class Xar22FormatConversionHelper {
      * @return the objectFactory.
      */
     public ObjectFactory getObjectFactory() {
-        return objectFactory;
+        return this.objectFactory;
     }
 
     /**
@@ -182,9 +182,9 @@ public class Xar22FormatConversionHelper {
      * @return the ExperimentArchiveType
      */
     private ExperimentArchiveType getExperimentTypes(List<Experiment> experiments) {
-        ExperimentArchiveType xarExperimentArchiveType = objectFactory.createExperimentArchiveType();
+        ExperimentArchiveType xarExperimentArchiveType = this.objectFactory.createExperimentArchiveType();
         for (Experiment exp : experiments) {
-            ExperimentType xarExperimentType = objectFactory.createExperimentType();
+            ExperimentType xarExperimentType = this.objectFactory.createExperimentType();
             xarExperimentType.setAbout(exp.getLsid());
             xarExperimentType.setComments(exp.getComments());
             xarExperimentType.setExperimentDescriptionURL(exp.getUrl());
@@ -262,11 +262,11 @@ public class Xar22FormatConversionHelper {
      * @return the ExperimentArchiveType.ExperimentRuns object
      */
     private ExperimentArchiveType.ExperimentRuns getExperimentRuns(List<Experiment> experiments) {
-        ExperimentArchiveType.ExperimentRuns xarExperimentRuns = objectFactory.
+        ExperimentArchiveType.ExperimentRuns xarExperimentRuns = this.objectFactory.
         createExperimentArchiveTypeExperimentRuns();
         for (Experiment exp : experiments) {
             for (ExperimentRun expRun : exp.getExperimentRuns()) {
-                ExperimentRunType xarExperimentRunType = objectFactory.createExperimentRunType();
+                ExperimentRunType xarExperimentRunType = this.objectFactory.createExperimentRunType();
                 xarExperimentRunType.setAbout(expRun.getLsid());
                 xarExperimentRunType.setExperimentLSID(expRun.getExperiment().getLsid());
                 xarExperimentRunType.setComments(expRun.getComments());
@@ -315,7 +315,7 @@ public class Xar22FormatConversionHelper {
      * @return xarContactType the contact type
      */
     private ContactType getContactType(Person person) {
-        ContactType xarContactType = objectFactory.createContactType();
+        ContactType xarContactType = this.objectFactory.createContactType();
         if (person != null) {
             xarContactType.setContactId(person.getContactId());
             xarContactType.setEmail(person.getEmail());

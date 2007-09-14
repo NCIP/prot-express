@@ -161,7 +161,7 @@ public class Protocol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -180,7 +180,7 @@ public class Protocol implements Serializable {
     @Length(max = DESCRIPTION_LENGTH)
     @Index(name = "description_index")
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     /**
@@ -200,7 +200,7 @@ public class Protocol implements Serializable {
     @Column(name = "instrument")
     @Length(max = INSTRUMENT_LENGTH)
     public String getInstrument() {
-        return instrument;
+        return this.instrument;
     }
 
     /**
@@ -222,7 +222,7 @@ public class Protocol implements Serializable {
     @Length(max = NAME_LENGTH)
     @Index(name = "name_index")
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -243,7 +243,7 @@ public class Protocol implements Serializable {
     @NotEmpty
     @Length(max = LSID_LENGTH)
     public String getLsid() {
-        return lsid;
+        return this.lsid;
     }
 
     /**
@@ -263,7 +263,7 @@ public class Protocol implements Serializable {
     @Column(name = "software")
     @Length(max = SOFTWARE_LENGTH)
     public String getSoftware() {
-        return software;
+        return this.software;
     }
 
     /**
@@ -300,7 +300,7 @@ public class Protocol implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     public Person getPrimaryContact() {
-        return primaryContact;
+        return this.primaryContact;
     }
 
     /**
@@ -331,7 +331,7 @@ public class Protocol implements Serializable {
 
         Protocol p = (Protocol) o;
 
-        if (id == null) {
+        if (this.id == null) {
             return false;
         }
 
