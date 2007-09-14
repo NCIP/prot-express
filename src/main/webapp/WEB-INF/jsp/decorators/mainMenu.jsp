@@ -15,11 +15,11 @@
 <script language="javascript">
 function getCurrentSection(hrefString) {
     var arr = hrefString.split('/');
-    contextPathString = '/' + arr[0];
+    contextPathString = '/' + arr[1];
     if (contextPathString == '<%= request.getContextPath() %>') {
-        return arr[1];
+        return arr[2].toLowerCase();
     }
-    return arr[0];
+    return arr[1].toLowerCase();
 }
 
 function setActiveMenu() {
@@ -32,7 +32,7 @@ function setActiveMenu() {
 
     if (document.getElementById('leftnav')!= null && currentLocation != null) {
         menuItems = document.getElementById('leftnav').getElementsByTagName('a');
-        for(var i=0; i < menuItems.length; i++) {
+        for(var i = 0; i < menuItems.length; i++) {
             if(menuItems[i].href == currentLocation) {
                 menuItems[i].className = 'selected';
                 return;
@@ -40,8 +40,8 @@ function setActiveMenu() {
         }
         if (document.location.pathname != null) {
             currentSection = getCurrentSection(document.location.pathname);
-            for(var i=0; i < menuItems.length; i++) {
-                if(getCurrentSection(menuItems[i].href) == currentSection) {
+            for(var i = 1; i < menuItems.length; i++) {
+                if(getCurrentSection(menuItems[i].pathname) == currentSection) {
                     menuItems[i].className = 'selected';
                     return;
                 }
