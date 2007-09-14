@@ -1,1 +1,1 @@
-Welcome to ProtEpress!!
+<% response.sendRedirect("dashboard/dashboard.action"); %>

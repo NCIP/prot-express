@@ -7,9 +7,6 @@
     <title><fmt:message key="protexpress" /> - <decorator:title default="Welcome" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
-    <link rel="address bar icon" href="favicon.ico" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
 </head>
 
