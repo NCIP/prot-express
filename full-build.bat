@@ -1,1 +1,0 @@
-mvn clean war:exploded tomcat:deploy hibernate3:hbm2ddl sql:execute
