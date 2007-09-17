@@ -80,122 +80,23 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress;
-
-import org.apache.log4j.Logger;
-
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.service.ProtExpressService;
-import gov.nih.nci.protexpress.service.ProtocolService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.UserProvisioningManager;
+package gov.nih.nci.protexpress.security.test;
 
 /**
- * This class is used to access all of the spring managed beans in a static manner.
- *
  * @author Scott Miller
+ *
  */
-public final class ProtExpressRegistry {
-    /**
-     * The max number of results per page in paged search results.
-     */
-    public static final int MAX_RESULTS_PER_PAGE = 10;
-    private static final Logger ERROR_LOGGER = Logger.getLogger(ProtExpressRegistry.class.getPackage().getName()
-            + ".ERROR");
+public class LdapLoginModuleTest extends LoginModuleTest {
 
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
-
-    private ProtocolService protocolService;
-    private ExperimentService experimentService;
-    private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
-    private UserProvisioningManager userProvisioningManager;
-
-    private ProtExpressRegistry() {
-        try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void testIncorrectPasswordLoginAgainstLdap() throws Exception {
+        validateFailedLogin("fb_inv1", "unknownPassowrd");
     }
 
-    /**
-     * @return the singleton
-     */
-    public static ProtExpressRegistry getInstance() {
-        return theInstance;
+    public void testSuccessfulLoginAgainstLdapWithLocalAccount() throws Exception {
+        validateSuccessfulLogin("fb_inv1", "f1rebird05", true);
     }
 
-    /**
-     * @return the protocolService
-     */
-    public static ProtocolService getProtocolService() {
-        return ProtExpressRegistry.getInstance().protocolService;
-    }
-
-    /**
-     * @param protocolService the protocolService to set
-     */
-    public void setProtocolService(ProtocolService protocolService) {
-        this.protocolService = protocolService;
-    }
-
-    /**
-     * @return the experimentService
-     */
-    public static ExperimentService getExperimentService() {
-        return ProtExpressRegistry.getInstance().experimentService;
-    }
-
-    /**
-     * @param experimentService the experimentService to set
-     */
-    public void setExperimentService(ExperimentService experimentService) {
-        this.experimentService = experimentService;
-    }
-
-    /**
-     * @return the protExpressService
-     */
-    public static ProtExpressService getProtExpressService() {
-        return ProtExpressRegistry.getInstance().protExpressService;
-    }
-
-    /**
-     * @param protExpressService the protExpressService to set
-     */
-    public void setProtExpressService(ProtExpressService protExpressService) {
-        this.protExpressService = protExpressService;
-    }
-
-    /**
-     * @return the xar22FormatConversionService
-     */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
-    }
-
-    /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
-     */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
-    }
-
-    /**
-     * @return the userProvisioningManager
-     */
-    public static UserProvisioningManager getUserProvisioningManager() {
-        return ProtExpressRegistry.getInstance().userProvisioningManager;
-    }
-
-    /**
-     * @return the ERROR_LOGGER
-     */
-    public static Logger getErrorLogger() {
-        return ERROR_LOGGER;
+    public void testSuccessfulLoginAgainstLdapWithNoLocalAccount() throws Exception {
+        validateSuccessfulLogin("fb_inv2", "f1rebird05", false);
     }
 }

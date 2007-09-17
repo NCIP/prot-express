@@ -121,6 +121,11 @@
         <test.jdbc.driverClassName>org.hsqldb.jdbcDriver</test.jdbc.driverClassName>
         <test.hibernate.dialect>org.hibernate.dialect.HSQLDialect</test.hibernate.dialect>
         <debug.mode.enabled>false</debug.mode.enabled>
+        <ldapDisabled>false</ldapDisabled>
+        <jaas.ldap.config.start></jaas.ldap.config.start>
+        <jaas.ldap.config.end></jaas.ldap.config.end>
+        <test.jaas.ldap.config.start></test.jaas.ldap.config.start>
+        <test.jaas.ldap.config.end></test.jaas.ldap.config.end>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -420,10 +425,19 @@
 
     <profiles>
         <profile>
-            <id>skipLdapTests</id>
+            <id>noLdap</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>ldapDisabled</name>
+                    <value>true</value>
+                </property>
             </activation>
+            <properties>
+                <test.jaas.ldap.config.start>/**</test.jaas.ldap.config.start>
+                <test.jaas.ldap.config.end>**/</test.jaas.ldap.config.end>
+                <jaas.ldap.config.start>/**</jaas.ldap.config.start>
+                <jaas.ldap.config.end>**/</jaas.ldap.config.end>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -431,8 +445,22 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <exclude>**/LoginModuleTest.java</exclude>
+                                <exclude>**/LdapLoginModuleTest.java</exclude>
                             </excludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <version>2.0</version>
+                        <configuration>
+                            <instrumentation>
+                                <excludes>
+                                    <exclude>jsp/**</exclude>
+                                    <exclude>**/xar2_2/**</exclude>
+                                    <exclude>**/TomcatCsmLdapLoginModule*</exclude>
+                                </excludes>
+                            </instrumentation>
                         </configuration>
                     </plugin>
                 </plugins>
