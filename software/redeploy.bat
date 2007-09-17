@@ -1,1 +1,0 @@
-mvn tomcat:undeploy war:exploded tomcat:deploy
