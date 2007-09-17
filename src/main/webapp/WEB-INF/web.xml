@@ -83,6 +83,11 @@
         <location>/error.jsp</location>
     </error-page>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/accessDenied.jsp</location>
+    </error-page>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Dashboard Functionality</web-resource-name>

@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress;
 
+import org.apache.log4j.Logger;
+
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.service.ProtExpressService;
@@ -92,6 +94,7 @@ import gov.nih.nci.security.UserProvisioningManager;
 
 /**
  * This class is used to access all of the spring managed beans in a static manner.
+ *
  * @author Scott Miller
  */
 public final class ProtExpressRegistry {
@@ -99,6 +102,9 @@ public final class ProtExpressRegistry {
      * The max number of results per page in paged search results.
      */
     public static final int MAX_RESULTS_PER_PAGE = 10;
+    private static final Logger ERROR_LOGGER = Logger.getLogger(ProtExpressRegistry.class.getPackage().getName()
+            + ".ERROR");
+
     private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
 
     private ProtocolService protocolService;
@@ -150,6 +156,7 @@ public final class ProtExpressRegistry {
     public void setExperimentService(ExperimentService experimentService) {
         this.experimentService = experimentService;
     }
+
     /**
      * @return the protExpressService
      */
@@ -190,5 +197,12 @@ public final class ProtExpressRegistry {
      */
     public void setUserProvisioningManager(UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
+    }
+
+    /**
+     * @return the ERROR_LOGGER
+     */
+    public static Logger getErrorLogger() {
+        return ERROR_LOGGER;
     }
 }

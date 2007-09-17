@@ -30,4 +30,12 @@
     <bean id="menu" class="net.sf.navigator.menu.MenuLoader">
         <property name="menuConfig" value="/WEB-INF/struts-menu/menu-config.xml" />
     </bean>
+
+    <bean id="servletContextExporter" class="org.springframework.web.context.support.ServletContextAttributeExporter">
+        <property name="attributes">
+            <map>
+                <entry key="debugModeEnabled" value="${debug.mode.enabled}" />
+            </map>
+        </property>
+    </bean>
 </beans>
