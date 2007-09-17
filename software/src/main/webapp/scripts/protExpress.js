@@ -16,8 +16,8 @@ function setActiveMenu(appContext) {
         currentLocation = document.location;
     }
 
-    if (document.getElementById('leftnav')!= null && currentLocation != null) {
-        menuItems = document.getElementById('leftnav').getElementsByTagName('a');
+    if (document.getElementById('leftnav') != null && currentLocation != null) {
+        menuItems = document.getElementById('leftnav').getElementsByTagName('ul')[0].getElementsByTagName('a');
         for(var i = 0; i < menuItems.length; i++) {
             if(menuItems[i].href == currentLocation) {
                 menuItems[i].className = 'selected';

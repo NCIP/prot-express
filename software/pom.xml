@@ -120,6 +120,7 @@
         <test.jdbc.password></test.jdbc.password>
         <test.jdbc.driverClassName>org.hsqldb.jdbcDriver</test.jdbc.driverClassName>
         <test.hibernate.dialect>org.hibernate.dialect.HSQLDialect</test.hibernate.dialect>
+        <debug.mode.enabled>false</debug.mode.enabled>
     </properties>
 
     <!-- Build process Configuration  -->
