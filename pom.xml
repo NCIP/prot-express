@@ -121,7 +121,6 @@
         <test.jdbc.driverClassName>org.hsqldb.jdbcDriver</test.jdbc.driverClassName>
         <test.hibernate.dialect>org.hibernate.dialect.HSQLDialect</test.hibernate.dialect>
         <debug.mode.enabled>false</debug.mode.enabled>
-        <ldapDisabled>false</ldapDisabled>
         <jaas.ldap.config.start></jaas.ldap.config.start>
         <jaas.ldap.config.end></jaas.ldap.config.end>
         <test.jaas.ldap.config.start></test.jaas.ldap.config.start>
@@ -427,10 +426,7 @@
         <profile>
             <id>noLdap</id>
             <activation>
-                <property>
-                    <name>ldapDisabled</name>
-                    <value>true</value>
-                </property>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <test.jaas.ldap.config.start>/**</test.jaas.ldap.config.start>
