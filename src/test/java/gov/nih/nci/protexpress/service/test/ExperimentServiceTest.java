@@ -106,18 +106,18 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp1);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
-        Experiment exp2 = (Experiment) ProtExpressRegistry.getExperimentService().getExperimentById(exp1.getId());
+        Experiment exp2 = ProtExpressRegistry.getExperimentService().getExperimentById(exp1.getId());
         assertEquals(exp1, exp2);
 
         ProtExpressRegistry.getExperimentService().deleteExperiment(exp2);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
-        List<Experiment> experimentList = theSession.createQuery("from " + Experiment.class.getName()).list();
+        List<Experiment> experimentList = this.theSession.createQuery("from " + Experiment.class.getName()).list();
         assertEquals(0, experimentList.size());
     }
 
@@ -135,8 +135,8 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         exp.setComments("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
         List<Experiment> experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0,
                 null, null);
@@ -220,7 +220,8 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testEqualsAndHashCode() {
-        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").equals(new Experiment("LSIDTestExperiment1", "TestExperiment1")));
+        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").
+                equals(new Experiment("LSIDTestExperiment1", "TestExperiment1")));
         Experiment exp1 = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
         exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");

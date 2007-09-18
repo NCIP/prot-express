@@ -108,7 +108,7 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
     protected CsmInitializer csmInitializer;
 
     /**
-     * Constructor to initialize the configuration
+     * Constructor to initialize the configuration.
      */
     public ProtExpressBaseHibernateTest() {
         URL log4jConfig = getClass().getClassLoader().getResource("log4j.xml");
