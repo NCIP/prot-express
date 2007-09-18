@@ -106,27 +106,29 @@ public abstract class ProtExpressBaseHibernateAndStrutsTestCase extends ProtExpr
         super();
     }
 
+    @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
         initDispatcher(null);
-        actionProxyFactory = container.getInstance(ActionProxyFactory.class);
+        this.actionProxyFactory = this.container.getInstance(ActionProxyFactory.class);
     }
 
+    @Override
     protected void onTearDown() throws Exception {
-        XWorkTestCaseHelper.tearDown(configurationManager);
-        configurationManager = null;
-        configuration = null;
-        container = null;
-        actionProxyFactory = null;
+        XWorkTestCaseHelper.tearDown(this.configurationManager);
+        this.configurationManager = null;
+        this.configuration = null;
+        this.container = null;
+        this.actionProxyFactory = null;
         StrutsTestCaseHelper.tearDown();
         super.onTearDown();
     }
 
-    protected Dispatcher initDispatcher(Map<String,String> params) {
+    protected Dispatcher initDispatcher(Map<String, String> params) {
         Dispatcher du = StrutsTestCaseHelper.initDispatcher(params);
-        configurationManager = du.getConfigurationManager();
-        configuration = configurationManager.getConfiguration();
-        container = configuration.getContainer();
+        this.configurationManager = du.getConfigurationManager();
+        this.configuration = this.configurationManager.getConfiguration();
+        this.container = this.configuration.getContainer();
         return du;
     }
 }

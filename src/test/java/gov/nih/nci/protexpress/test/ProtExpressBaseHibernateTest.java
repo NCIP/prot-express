@@ -112,11 +112,12 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
      */
     public ProtExpressBaseHibernateTest() {
         URL log4jConfig = getClass().getClassLoader().getResource("log4j.xml");
-        if (log4jConfig == null)
+        if (log4jConfig == null) {
             throw new Error("resource log4j.xml not found");
+        }
         PropertyConfigurator.configure(log4jConfig);
         setPopulateProtectedVariables(true);
-        csmInitializer = new CsmInitializer();
+        this.csmInitializer = new CsmInitializer();
     }
 
     /**
@@ -125,20 +126,20 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        csmInitializer.dropAndCreateCsmDb();
+        this.csmInitializer.dropAndCreateCsmDb();
         LocalSessionFactoryBean theSessionFactoryBean = (LocalSessionFactoryBean) getApplicationContext().getBean(
                 "&sessionFactory");
         theSessionFactoryBean.dropDatabaseSchema();
         theSessionFactoryBean.createDatabaseSchema();
-        theSessionFactory = (SessionFactory) theSessionFactoryBean.getObject();
-        theSessionFactory.evictQueries();
-        for (Object o : theSessionFactory.getAllClassMetadata().values()) {
+        this.theSessionFactory = (SessionFactory) theSessionFactoryBean.getObject();
+        this.theSessionFactory.evictQueries();
+        for (Object o : this.theSessionFactory.getAllClassMetadata().values()) {
             ClassMetadata cm = (ClassMetadata) o;
-            theSessionFactory.evict(cm.getMappedClass(EntityMode.POJO));
+            this.theSessionFactory.evict(cm.getMappedClass(EntityMode.POJO));
         }
 
-        theSession = theSessionFactory.openSession();
-        TransactionSynchronizationManager.bindResource(theSessionFactory, new SessionHolder(theSession));
+        this.theSession = this.theSessionFactory.openSession();
+        TransactionSynchronizationManager.bindResource(this.theSessionFactory, new SessionHolder(this.theSession));
     }
 
     /**
@@ -146,8 +147,8 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
      */
     @Override
     protected void onTearDown() throws Exception {
-        TransactionSynchronizationManager.unbindResource(theSessionFactory);
-        SessionFactoryUtils.closeSession(theSession);
+        TransactionSynchronizationManager.unbindResource(this.theSessionFactory);
+        SessionFactoryUtils.closeSession(this.theSession);
         super.onTearDown();
     }
 
@@ -156,6 +157,6 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
      */
     @Override
     protected String[] getConfigLocations() {
-        return new String[] { "applicationContext-test.xml", "applicationContext-main.xml" };
+        return new String[]{"applicationContext-test.xml", "applicationContext-main.xml"};
     }
 }
