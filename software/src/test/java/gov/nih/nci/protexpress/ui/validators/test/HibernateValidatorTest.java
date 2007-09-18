@@ -97,7 +97,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
 
 /**
- * This class tests the struts hibernate validator
+ * This class tests the struts hibernate validator.
  *
  * @author Scott Miller
  */
@@ -110,28 +110,28 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        action = new TestAction();
-        action.setProtocol(new Protocol("lsid_test_name_1", "test name 1", ProtocolType.ExperimentRun));
-        action.setProtocol2(new Protocol("lsid_test_name_2", "test name 2", ProtocolType.ExperimentRun));
+        this.action = new TestAction();
+        this.action.setProtocol(new Protocol("lsid_test_name_1", "test name 1", ProtocolType.ExperimentRun));
+        this.action.setProtocol2(new Protocol("lsid_test_name_2", "test name 2", ProtocolType.ExperimentRun));
     }
 
     public void testHibernateValidatorWithNullObject() throws Exception {
-        action.setProtocol(null);
+        this.action.setProtocol(null);
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertFalse(action.hasErrors());
+        assertFalse(this.action.hasErrors());
         assertEquals(0, fieldErrors.size());
     }
 
     public void testHibernateValidatorWithInvalidObject() throws Exception {
-        action.setProtocol(new Protocol(null, null, null));
+        this.action.setProtocol(new Protocol(null, null, null));
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertTrue(action.hasErrors());
+        assertTrue(this.action.hasErrors());
         assertEquals(3, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocol.lsid"));
         assertTrue(fieldErrors.containsKey("protocol.name"));
@@ -140,24 +140,24 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
 
     public void testHibernateValidatorWithValidObject() throws Exception {
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertFalse(action.hasErrors());
+        assertFalse(this.action.hasErrors());
         assertEquals(0, fieldErrors.size());
     }
 
     public void testHibernateValidatorListProcessing() throws Exception {
-        action.getProtocolList().add(new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun));
-        action.getProtocolList().add(new Protocol(null, null, null));
-        action.getProtocolList().add(null);
-        action.getProtocolList().add(new Protocol("lsid_test_name_4", "test name 4", ProtocolType.ExperimentRun));
+        this.action.getProtocolList().add(new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun));
+        this.action.getProtocolList().add(new Protocol(null, null, null));
+        this.action.getProtocolList().add(null);
+        this.action.getProtocolList().add(new Protocol("lsid_test_name_4", "test name 4", ProtocolType.ExperimentRun));
 
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertTrue(action.hasErrors());
+        assertTrue(this.action.hasErrors());
         assertEquals(3, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocolList[1].lsid"));
         assertTrue(fieldErrors.containsKey("protocolList[1].name"));
@@ -165,14 +165,14 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     }
 
     public void testHibernateValidatorArrayProcessing() throws Exception {
-        action.setProtocolArray(new Protocol[] { new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun),
+        this.action.setProtocolArray(new Protocol[] { new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun),
                 new Protocol(null, null, null), null, new Protocol("lsid_test_name_4", "test name 4", ProtocolType.ExperimentRun) });
 
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertTrue(action.hasErrors());
+        assertTrue(this.action.hasErrors());
         assertEquals(3, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocolArray[1].lsid"));
         assertTrue(fieldErrors.containsKey("protocolArray[1].name"));
@@ -180,12 +180,12 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     }
 
     public void testHibernateValidatorWithNoPrefix() throws Exception {
-        action.setProtocol2(new Protocol(null, null, null));
+        this.action.setProtocol2(new Protocol(null, null, null));
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(action, null);
-        Map fieldErrors = action.getFieldErrors();
+        avm.validate(this.action, null);
+        Map fieldErrors = this.action.getFieldErrors();
 
-        assertTrue(action.hasErrors());
+        assertTrue(this.action.hasErrors());
         assertEquals(3, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("lsid"));
         assertTrue(fieldErrors.containsKey("name"));
@@ -204,10 +204,11 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
         private List<Protocol> protocolList = new ArrayList<Protocol>();
 
         /**
-         * Test action does nothing
+         * Test action does nothing.
          *
          * @return the directive for the next action / page to be directed to
          */
+        @Override
         public String execute() {
             return ActionSupport.SUCCESS;
         }

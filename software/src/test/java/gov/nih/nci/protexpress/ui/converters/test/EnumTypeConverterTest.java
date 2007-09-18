@@ -87,7 +87,7 @@ import gov.nih.nci.protexpress.ui.converters.EnumTypeConverter;
 import junit.framework.TestCase;
 
 /**
- * Test case for the enum type converter
+ * Test case for the enum type converter.
  * @author Scott Miller
  */
 public class EnumTypeConverterTest extends TestCase {
