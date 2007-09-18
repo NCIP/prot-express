@@ -92,22 +92,24 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.HSQLDialect;
 
 /**
- * Class to init csm in the test suite
+ * Class to init csm in the test suite.
  *
  * @author Scott Miller
  */
 public class CsmInitializer {
     private static final Logger LOG = Logger.getLogger(CsmInitializer.class);
 
-    private static String[] CSM_DATA = new String[] {
-            "INSERT INTO CSM_APPLICATION(APPLICATION_NAME, APPLICATION_DESCRIPTION, UPDATE_DATE, DECLARATIVE_FLAG, ACTIVE_FLAG) VALUES ('protExpress', 'protExpress', sysdate, 0, 0);",
-            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) VALUES ('user1', 'Test 1', 'User','password', sysdate);",
-            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) VALUES ('fb_inv1', 'Test 1', 'User', sysdate);",
-            "commit;"};
+    private static String[] csmData = new String[]{
+            "INSERT INTO CSM_APPLICATION(APPLICATION_NAME, APPLICATION_DESCRIPTION, UPDATE_DATE, DECLARATIVE_FLAG, "
+                    + "ACTIVE_FLAG) VALUES ('protExpress', 'protExpress', sysdate, 0, 0);",
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) "
+                    + "VALUES ('user1', 'Test 1', 'User','password', sysdate);",
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) "
+                    + "VALUES ('fb_inv1', 'Test 1', 'User', sysdate);", "commit;"};
 
     private Configuration csmHibernateConfig;
-    private String[] dropScript;
-    private String[] createScript;
+    private final String[] dropScript;
+    private final String[] createScript;
     private SessionFactory csmSessionFactory;
     private Session csmSession;
 
@@ -118,11 +120,11 @@ public class CsmInitializer {
         URL url = getClass().getClassLoader().getResource("jaas.config");
         System.getProperties().setProperty("java.security.auth.login.config", url.getPath());
 
-        csmHibernateConfig = new Configuration();
+        this.csmHibernateConfig = new Configuration();
         url = getClass().getClassLoader().getResource("protExpress.csm.new.hibernate.cfg.xml");
-        csmHibernateConfig = csmHibernateConfig.configure(url);
-        dropScript = csmHibernateConfig.generateDropSchemaScript(new HSQLDialect());
-        createScript = csmHibernateConfig.generateSchemaCreationScript(new HSQLDialect());
+        this.csmHibernateConfig = this.csmHibernateConfig.configure(url);
+        this.dropScript = this.csmHibernateConfig.generateDropSchemaScript(new HSQLDialect());
+        this.createScript = this.csmHibernateConfig.generateSchemaCreationScript(new HSQLDialect());
 
         dropAndCreateCsmDb();
     }
@@ -131,15 +133,15 @@ public class CsmInitializer {
      * Drop and create the csm db.
      */
     public void dropAndCreateCsmDb() {
-        csmSessionFactory = csmHibernateConfig.buildSessionFactory();
-        csmSession = csmSessionFactory.openSession();
+        this.csmSessionFactory = this.csmHibernateConfig.buildSessionFactory();
+        this.csmSession = this.csmSessionFactory.openSession();
 
-        executeSqlStatements(csmSession, dropScript);
-        executeSqlStatements(csmSession, createScript);
-        executeSqlStatements(csmSession, CSM_DATA);
-        csmSession.flush();
-        csmSession.close();
-        csmSessionFactory.close();
+        executeSqlStatements(this.csmSession, this.dropScript);
+        executeSqlStatements(this.csmSession, this.createScript);
+        executeSqlStatements(this.csmSession, csmData);
+        this.csmSession.flush();
+        this.csmSession.close();
+        this.csmSessionFactory.close();
     }
 
     private void executeSqlStatements(Session sess, String[] statements) {

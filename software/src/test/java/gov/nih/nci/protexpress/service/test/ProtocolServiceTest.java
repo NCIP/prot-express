@@ -108,18 +108,18 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
-        Protocol p2 = (Protocol) ProtExpressRegistry.getProtocolService().getProtocolById(p.getId());
+        Protocol p2 = ProtExpressRegistry.getProtocolService().getProtocolById(p.getId());
         assertEquals(p, p2);
 
         ProtExpressRegistry.getProtocolService().deleteProtocol(p2);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
-        List<Protocol> protocolList = theSession.createQuery("from " + Protocol.class.getName()).list();
+        List<Protocol> protocolList = this.theSession.createQuery("from " + Protocol.class.getName()).list();
         assertEquals(0, protocolList.size());
     }
 
@@ -137,8 +137,8 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         p.setDescription("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        theSession.flush();
-        theSession.clear();
+        this.theSession.flush();
+        this.theSession.clear();
 
         List<Protocol> protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, null,
                 null);
@@ -148,7 +148,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "name",
                 SortOrderEnum.ASCENDING);
         String lastVal = null;
-        for (Protocol prot: protocolList) {
+        for (Protocol prot : protocolList) {
             if (lastVal != null) {
                 assertTrue(prot.getName().compareTo(lastVal) >= 0);
             }
@@ -158,7 +158,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "name",
                 SortOrderEnum.DESCENDING);
         lastVal = null;
-        for (Protocol prot: protocolList) {
+        for (Protocol prot : protocolList) {
             if (lastVal != null) {
                 assertTrue(prot.getName().compareTo(lastVal) <= 0);
             }
@@ -168,7 +168,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
                 SortOrderEnum.ASCENDING);
         lastVal = null;
-        for (Protocol prot: protocolList) {
+        for (Protocol prot : protocolList) {
             if (lastVal != null) {
                 assertTrue(prot.getDescription().compareTo(lastVal) >= 0);
             }
@@ -178,7 +178,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(null, 10, 0, "description",
                 SortOrderEnum.DESCENDING);
         lastVal = null;
-        for (Protocol prot: protocolList) {
+        for (Protocol prot : protocolList) {
             if (lastVal != null) {
                 assertTrue(prot.getDescription().compareTo(lastVal) <= 0);
             }
@@ -252,6 +252,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(p1.equals(null));
         assertFalse(p1.equals(new String("Foo")));
         assertTrue(p1.equals(p1));
-        assertEquals(p1.hashCode(), new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun).hashCode());
+        assertEquals(p1.hashCode(), new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun)
+                .hashCode());
     }
 }
