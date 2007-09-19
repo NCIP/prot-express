@@ -9,6 +9,10 @@
     <packaging>war</packaging>
     <name>Prot Express</name>
     <version>1.0-SNAPSHOT</version>
+    <issueManagement>
+        <system>GForge Tracker</system>
+        <url>https://gforge.nci.nih.gov/tracker/?group_id=327</url>
+    </issueManagement>
 
     <ciManagement>
         <system>CruiseControl</system>
@@ -373,8 +377,7 @@
                 <configuration>
                     <configLocation>protExpressCheckstyle.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
-                    <excludes>jsp/**</excludes>
-                    <exclude>**/xar2_2/**</exclude>
+                    <excludes>jsp/**, **/xar2_2/**, gov/nih/nci/protexpress/ui/filters/UserFilter*</excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -389,6 +392,7 @@
                     </check>
                     <instrumentation>
                         <excludes>
+                            <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
                             <exclude>jsp/**</exclude>
                             <exclude>**/xar2_2/**</exclude>
                         </excludes>
@@ -454,6 +458,7 @@
                                 <excludes>
                                     <exclude>jsp/**</exclude>
                                     <exclude>**/xar2_2/**</exclude>
+                                    <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
                                     <exclude>**/TomcatCsmLdapLoginModule*</exclude>
                                 </excludes>
                             </instrumentation>

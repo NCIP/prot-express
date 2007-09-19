@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!-- NCI/NIH Header -->
+<%@page import="gov.nih.nci.protexpress.util.UserHolder"%>
 <div id="nciheader">
     <div id="ncilogo">
         <a href="http://www.cancer.gov">
@@ -24,7 +25,7 @@
     </div>
     <c:if test="${pageContext.request.remoteUser != null}">
     <div id="userinfo">
-        <fmt:message key="welcome" />, ${pageContext.request.remoteUser} |
+        <fmt:message key="welcome" />, ${currentUserDisplayName} |
         <a href="<c:url value="/notYetImplemented.html"/>"><fmt:message key="account" /></a> |
         <a href="<c:url value="/logout.jsp"/>"><fmt:message key="logout" /></a>
     </div>

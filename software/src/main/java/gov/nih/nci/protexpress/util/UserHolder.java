@@ -80,31 +80,50 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.util.test;
+package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
-import junit.framework.TestCase;
+import org.apache.commons.lang.StringUtils;
+
+import gov.nih.nci.security.authorization.domainobjects.User;
 
 /**
+ * Utility class to store the threads current user.
  * @author Scott Miller
- *
  */
-public class ResourceBundleHelperTest extends TestCase {
+public final class UserHolder {
+    private static ThreadLocal<User> tlocal = new ThreadLocal<User>();
 
-    public void testReplaceFieldName() {
-        String testMessage = " is not valid.";
-        String msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals(testMessage, msg);
+    private UserHolder() {
+        // No constructor for util class
+    }
 
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "lsid");
-        assertEquals("LSID" + testMessage, msg);
+    /**
+     * @param user the user to set for the current thread
+     */
+    public static void setUser(User user) {
+        tlocal.set(user);
+    }
 
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "foo");
-        assertEquals("experiment.foo" + testMessage, msg);
+    /**
+     * @return the currently logged in user for this thread
+     */
+    public static User getUser() {
+        return tlocal.get();
+    }
 
-        testMessage = "{fieldName}{fieldName} a {fieldName} b c {fieldName} d {fieldName}";
-        msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals("LSIDLSID a LSID b c LSID d LSID", msg);
+    /**
+     * @return the display name of the currently logged in user
+     */
+    public static String getDisplayNameForUser() {
+        String name = null;
+        User user = UserHolder.getUser();
+        if (user != null) {
+            if (StringUtils.isNotBlank(user.getFirstName()) && StringUtils.isNotBlank(user.getLastName())) {
+                name =  user.getFirstName() + " " + user.getLastName();
+            } else {
+                name = user.getLoginName();
+            }
+        }
+        return name;
     }
 }
