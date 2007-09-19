@@ -82,29 +82,40 @@
  */
 package gov.nih.nci.protexpress.util.test;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import junit.framework.TestCase;
 
 /**
  * @author Scott Miller
  *
  */
-public class ResourceBundleHelperTest extends TestCase {
+public class UserHolderTest extends TestCase {
 
-    public void testReplaceFieldName() {
-        String testMessage = " is not valid.";
-        String msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals(testMessage, msg);
-
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "lsid");
-        assertEquals("LSID" + testMessage, msg);
-
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "foo");
-        assertEquals("experiment.foo" + testMessage, msg);
-
-        testMessage = "{fieldName}{fieldName} a {fieldName} b c {fieldName} d {fieldName}";
-        msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals("LSIDLSID a LSID b c LSID d LSID", msg);
+    public void testEmptyUserHolder() {
+        assertEquals(null, UserHolder.getUser());
+        assertEquals(null, UserHolder.getDisplayNameForUser());
     }
+
+    public void testFilledUserHolder() {
+        User u = new User();
+        u.setLoginName("foo");
+        UserHolder.setUser(u);
+
+        assertEquals("foo", UserHolder.getUser().getLoginName());
+        assertEquals("foo", UserHolder.getDisplayNameForUser());
+
+        u.setFirstName("");
+        assertEquals("foo", UserHolder.getDisplayNameForUser());
+
+        u.setLastName("");
+        assertEquals("foo", UserHolder.getDisplayNameForUser());
+
+        u.setFirstName("Test");
+        assertEquals("foo", UserHolder.getDisplayNameForUser());
+
+        u.setLastName("User");
+        assertEquals("Test User", UserHolder.getDisplayNameForUser());
+    }
+
 }

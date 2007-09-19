@@ -80,31 +80,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.util.test;
+package gov.nih.nci.protexpress.ui.filters;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
-import junit.framework.TestCase;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Scott Miller
+ * filter to add the currently logged in user to the {@link UserHolder}.
  *
+ * @author Scott Miller
  */
-public class ResourceBundleHelperTest extends TestCase {
+public class UserFilter implements Filter {
 
-    public void testReplaceFieldName() {
-        String testMessage = " is not valid.";
-        String msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals(testMessage, msg);
+    /**
+     * {@inheritDoc}
+     */
+    public void destroy() {
+    }
 
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "lsid");
-        assertEquals("LSID" + testMessage, msg);
+    /**
+     * {@inheritDoc}
+     */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        if (!(request instanceof HttpServletRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        String username = ((HttpServletRequest) request).getRemoteUser();
+        User user = ProtExpressRegistry.getUserProvisioningManager().getUser(username);
+        if (user == null) {
+            user = new User();
+            user.setLoginName(username);
+        }
+        UserHolder.setUser(user);
+        request.setAttribute("currentUser", UserHolder.getUser());
+        request.setAttribute("currentUserDisplayName", UserHolder.getDisplayNameForUser());
+        chain.doFilter(request, response);
+    }
 
-        msg = ResourceBundleHelper.replaceFieldNameInMessage("{fieldName}" + testMessage, Experiment.class, "foo");
-        assertEquals("experiment.foo" + testMessage, msg);
-
-        testMessage = "{fieldName}{fieldName} a {fieldName} b c {fieldName} d {fieldName}";
-        msg = ResourceBundleHelper.replaceFieldNameInMessage(testMessage, Experiment.class, "lsid");
-        assertEquals("LSIDLSID a LSID b c LSID d LSID", msg);
+    /**
+     * {@inheritDoc}
+     */
+    public void init(FilterConfig config) throws ServletException {
     }
 }

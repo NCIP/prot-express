@@ -92,10 +92,14 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Scott Miller
  */
-public class ResourceBundleHelper {
+public final class ResourceBundleHelper {
     private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
     private static final String FIELD_NAME_TOKEN = "{fieldName}";
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE);
+
+    private ResourceBundleHelper() {
+        // no constructor for utility class
+    }
 
     /**
      * Get the default prot express resource bundle.
