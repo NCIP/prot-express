@@ -104,34 +104,14 @@ import java.util.List;
 
 public class Xar22FormatConversionHelper {
 
-    private ObjectFactory objectFactory = new ObjectFactory();
+    private final ObjectFactory objectFactory = new ObjectFactory();
 
     /**
      * Default constructor.
      *
      */
     public Xar22FormatConversionHelper() {
-
     }
-
-    /**
-     * Gets the objectFactory.
-     *
-     * @return the objectFactory.
-     */
-    public ObjectFactory getObjectFactory() {
-        return this.objectFactory;
-    }
-
-    /**
-     * Sets the objectFactory.
-     *
-     * @param objectFactory the objectFactory to set.
-     */
-    public void setObjectFactory(ObjectFactory objectFactory) {
-        this.objectFactory = objectFactory;
-    }
-
 
     /**
      * Given a XAR 2.2 Experiment Archive data, converts it to the internal data model.

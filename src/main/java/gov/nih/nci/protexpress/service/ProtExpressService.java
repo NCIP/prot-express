@@ -82,15 +82,29 @@
  */
 package gov.nih.nci.protexpress.service;
 
+import gov.nih.nci.protexpress.data.persistent.Persistent;
 
 /**
+ * Service of utility methods that are not attached to a specific class.
+ *
  * @author Scott Miller
  */
 public interface ProtExpressService {
 
     /**
      * Saves or updates the given hibernate object.
+     *
      * @param object the object to save
      */
     void saveOrUpdate(Object object);
+
+    /**
+     * Is the object the one and only object with the value for the given field.
+     *
+     * @param bean the object to check for uniqueness with
+     * @param fieldName the fieldName of the unique field in question
+     * @param fieldValue the value of the field
+     * @return true if the object is the one and only object with the given value for the given field
+     */
+    boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue);
 }

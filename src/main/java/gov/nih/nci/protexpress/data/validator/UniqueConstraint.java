@@ -80,115 +80,30 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.data.validator;
 
-import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.validator.InvalidValue;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import org.hibernate.validator.ValidatorClass;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
- *
  * @author Scott Miller
  */
-public class HibernateValidator extends FieldValidatorSupport {
-
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ContextualClassValidator> CLASS_VALIDATOR_MAP =
-        new HashMap<Class, ContextualClassValidator>();
-
-    private boolean appendPrefix = true;
+@ValidatorClass(UniqueConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UniqueConstraint {
 
     /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
+     * The name of the property that should be searched in the unique check.
      */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
-    }
+    String propertyName();
 
     /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
+     * The message to use.
      */
-    public boolean isAppendPrefix() {
-        return this.appendPrefix;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
-    }
-
-    private void validateArrayElements(Object[] array, String fieldName) {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
-
-        ContextualClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ContextualClassValidator(o.getClass(), ResourceBundleHelper
-                    .getProtExpressResourceBundle());
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
-
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
-
-            for (InvalidValue message : validationMessages) {
-                String msg = ResourceBundleHelper.replaceFieldNameInMessage(message.getMessage(), o.getClass(), message
-                        .getPropertyName());
-                if (StringUtils.isNotBlank(message.getPropertyName())) {
-                    getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), msg);
-                } else {
-                    getValidatorContext().addActionError(msg);
-                }
-            }
-        }
-    }
+    String message() default "{validator.unique}";
 }

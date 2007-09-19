@@ -82,15 +82,19 @@
  */
 package gov.nih.nci.protexpress.service.impl;
 
+import gov.nih.nci.protexpress.data.persistent.Persistent;
+import gov.nih.nci.protexpress.service.ProtExpressService;
+
+import java.util.List;
+
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.nih.nci.protexpress.service.ProtExpressService;
-
 /**
- * @author Scott Miller
+ * Implementation of the {@link ProtExpressService}.
  *
+ * @author Scott Miller
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtExpressService {
@@ -101,5 +105,25 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveOrUpdate(Object object) {
         getHibernateTemplate().saveOrUpdate(object);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue) {
+        StringBuffer hql = new StringBuffer("from " + bean.getClass().getName() + " where " + fieldName + " = ?");
+        Object[] args = null;
+        if (bean.getId() != null) {
+            hql.append(" and id != ?");
+            args = new Object[]{fieldValue, bean.getId()};
+        } else {
+            args = new Object[]{fieldValue};
+        }
+        List objects = getHibernateTemplate().find(hql.toString(), args);
+        if (objects.size() > 0) {
+            return false;
+        }
+        return true;
     }
 }
