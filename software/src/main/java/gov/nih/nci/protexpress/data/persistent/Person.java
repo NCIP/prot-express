@@ -105,7 +105,7 @@ import org.hibernate.validator.Length;
 @Entity
 @Table(name = "person")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Person implements Serializable {
+public class Person implements Serializable, Persistent {
 
     private static final long serialVersionUID = 1L;
 

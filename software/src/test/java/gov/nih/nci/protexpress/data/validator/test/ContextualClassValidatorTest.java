@@ -80,115 +80,59 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.data.validator.test;
 
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
-
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.validator.InvalidValue;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
- *
  * @author Scott Miller
+ *
  */
-public class HibernateValidator extends FieldValidatorSupport {
+public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
 
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ContextualClassValidator> CLASS_VALIDATOR_MAP =
-        new HashMap<Class, ContextualClassValidator>();
-
-    private boolean appendPrefix = true;
-
-    /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
-     */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
-    }
-
-    /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
-     */
-    public boolean isAppendPrefix() {
-        return this.appendPrefix;
-    }
+    private Protocol protocol1;
+    private Protocol protocol2;
+    ContextualClassValidator<Protocol> classValidator = new ContextualClassValidator<Protocol>(Protocol.class, null);
 
     /**
      * {@inheritDoc}
      */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+
+        this.protocol1 = new Protocol("lsid_test_name_1", "test name 1", ProtocolType.ExperimentRun);
+        this.protocol2 = new Protocol("lsid_test_name_2", "test name 2", ProtocolType.ExperimentRun);
+        this.theSession.save(this.protocol1);
+        this.theSession.save(this.protocol2);
+        this.theSession.flush();
+        this.theSession.clear();
     }
 
-    private void validateArrayElements(Object[] array, String fieldName) {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
+    public void testValidObject() {
+        Protocol p = new Protocol("valid lsid", "valid name", ProtocolType.ExperimentRun);
+        assertEquals(0, this.classValidator.getInvalidValues(p).length);
     }
 
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
+    public void testInvalidObject() {
+        Protocol p = new Protocol("lsid_test_name_1", "valid name", ProtocolType.ExperimentRun);
+        assertEquals(1, this.classValidator.getInvalidValues(p).length);
 
-        ContextualClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ContextualClassValidator(o.getClass(), ResourceBundleHelper
-                    .getProtExpressResourceBundle());
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
+        assertEquals(0, this.classValidator.getInvalidValues(p, "name").length);
+        assertEquals(1, this.classValidator.getInvalidValues(p, "lsid").length);
+    }
 
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
+    public void testUpdateObject() {
+        this.protocol1.setName("new valid name");
+        assertEquals(0, this.classValidator.getInvalidValues(this.protocol1).length);
 
-            for (InvalidValue message : validationMessages) {
-                String msg = ResourceBundleHelper.replaceFieldNameInMessage(message.getMessage(), o.getClass(), message
-                        .getPropertyName());
-                if (StringUtils.isNotBlank(message.getPropertyName())) {
-                    getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), msg);
-                } else {
-                    getValidatorContext().addActionError(msg);
-                }
-            }
-        }
+        this.protocol1.setLsid(this.protocol2.getLsid());
+        assertEquals(1, this.classValidator.getInvalidValues(this.protocol1).length);
+
+        assertEquals(0, this.classValidator.getInvalidValues(this.protocol1, "name").length);
+        assertEquals(1, this.classValidator.getInvalidValues(this.protocol1, "lsid").length);
     }
 }

@@ -80,115 +80,72 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.validators;
+package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
-
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.validator.InvalidValue;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.util.ValueStack;
-import com.opensymphony.xwork2.validator.ValidationException;
-import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
 
 /**
- * Class to provide hibernate validator support in Struts 2.
+ * Utility class for handling resource bundles in prot express.
  *
  * @author Scott Miller
  */
-public class HibernateValidator extends FieldValidatorSupport {
-
-    private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
-    private static final HashMap<Class, ContextualClassValidator> CLASS_VALIDATOR_MAP =
-        new HashMap<Class, ContextualClassValidator>();
-
-    private boolean appendPrefix = true;
+public class ResourceBundleHelper {
+    private static final String PROT_EXPRESS_RESOURCE_BUNDLE = "protExpress";
+    private static final String FIELD_NAME_TOKEN = "{fieldName}";
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(PROT_EXPRESS_RESOURCE_BUNDLE);
 
     /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
+     * Get the default prot express resource bundle.
      *
-     * @param appendPrefix the value to set
+     * @return the resource bundle.
      */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
+    public static ResourceBundle getProtExpressResourceBundle() {
+        return RESOURCE_BUNDLE;
     }
 
     /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
+     * Replace all instances of {fieldName} in the given message with the il8n value for the field property.
      *
-     * @return the value of appendPrefix
+     * @param originalMessage the orginal message
+     * @param fieldClass the class of the object whose property we are trying to get the il8n name of
+     * @param propertyName the property
+     * @return the message
      */
-    public boolean isAppendPrefix() {
-        return this.appendPrefix;
+    public static String replaceFieldNameInMessage(String originalMessage, Class fieldClass, String propertyName) {
+        return ResourceBundleHelper.replaceTokenInMessageWithFieldName(FIELD_NAME_TOKEN, originalMessage, fieldClass,
+                propertyName);
     }
 
     /**
-     * {@inheritDoc}
+     * Replace all instances of the token in the given message with the il8n value for the field property.
+     *
+     * @param token the token to replace
+     * @param originalMessage the orginal message
+     * @param fieldClass the class of the object whose property we are trying to get the il8n name of
+     * @param propertyName the property
+     * @return the message
      */
-    public void validate(Object object) throws ValidationException {
-        String fieldName = getFieldName();
-        Object value = getFieldValue(fieldName, object);
-        ValueStack stack = ActionContext.getContext().getValueStack();
-        stack.push(object);
-        if (value instanceof Collection) {
-            Collection coll = (Collection) value;
-            Object[] array = coll.toArray();
-            validateArrayElements(array, fieldName);
-        } else if (value instanceof Object[]) {
-            Object[] array = (Object[]) value;
-            validateArrayElements(array, fieldName);
-        } else {
-            validateObject(fieldName, value);
-        }
-        stack.pop();
-    }
-
-    private void validateArrayElements(Object[] array, String fieldName) {
-        for (int i = 0; i < array.length; i++) {
-            Object o = array[i];
-            validateObject(fieldName + "[" + i + "]", o);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void validateObject(String fieldName, Object o) {
-        if (o == null) {
-            LOG.warn("The visited object is null, VisitorValidator will not be able to handle validation properly. "
-                    + "Please make sure the visited object is not null for VisitorValidator to function properly");
-            return;
-        }
-
-        ContextualClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
-        if (classValidator == null) {
-            classValidator = new ContextualClassValidator(o.getClass(), ResourceBundleHelper
-                    .getProtExpressResourceBundle());
-            CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
-        }
-        InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
-
-        if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
+    private static String replaceTokenInMessageWithFieldName(String token, String originalMessage, Class fieldClass,
+            String propertyName) {
+        String message = originalMessage;
+        if (StringUtils.contains(originalMessage, token)) {
+            String fieldName = "";
+            String resourceKey = fieldClass.getSimpleName().toLowerCase();
+            if (StringUtils.isNotBlank(propertyName)) {
+                resourceKey += "." + propertyName;
+            }
+            try {
+                fieldName = ResourceBundleHelper.getProtExpressResourceBundle().getString(resourceKey);
+            } catch (MissingResourceException e) {
+                // if the resource is not found, then use the key
+                fieldName = resourceKey;
             }
 
-            for (InvalidValue message : validationMessages) {
-                String msg = ResourceBundleHelper.replaceFieldNameInMessage(message.getMessage(), o.getClass(), message
-                        .getPropertyName());
-                if (StringUtils.isNotBlank(message.getPropertyName())) {
-                    getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), msg);
-                } else {
-                    getValidatorContext().addActionError(msg);
-                }
-            }
+            message = StringUtils.replace(message, FIELD_NAME_TOKEN, fieldName);
         }
+        return message;
     }
 }

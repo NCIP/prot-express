@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
+import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +115,7 @@ import org.hibernate.validator.NotEmpty;
 @Entity
 @Table(name = "experiment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Experiment implements Serializable {
+public class Experiment implements Serializable, Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -256,8 +258,9 @@ public class Experiment implements Serializable {
      *
      * @return the lsid
      */
-    @Column(name = "lsid", unique = true)
+    @Column(name = "lsid")
     @NotEmpty
+    @UniqueConstraint(propertyName = "lsid")
     @Length(max = LSID_LENGTH)
     public String getLsid() {
         return this.lsid;
