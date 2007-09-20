@@ -87,6 +87,7 @@ import gov.nih.nci.protexpress.service.ProtExpressService;
 
 import java.util.List;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,7 +113,11 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
      */
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue) {
-        StringBuffer hql = new StringBuffer("from " + bean.getClass().getName() + " where " + fieldName + " = ?");
+        Class persistentClass = bean.getClass();
+        if (bean instanceof HibernateProxy) {
+            persistentClass = ((HibernateProxy)bean).getHibernateLazyInitializer().getPersistentClass();
+        }
+        StringBuffer hql = new StringBuffer("from " + persistentClass.getName() + " where " + fieldName + " = ?");
         Object[] args = null;
         if (bean.getId() != null) {
             hql.append(" and id != ?");
