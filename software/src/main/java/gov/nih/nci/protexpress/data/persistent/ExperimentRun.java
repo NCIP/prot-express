@@ -163,6 +163,28 @@ public class ExperimentRun implements Serializable, Persistent {
     }
 
     /**
+     * Gets the lsid.
+     *
+     * @return the lsid
+     */
+    @Column(name = "lsid")
+    @UniqueConstraint(propertyName = "lsid")
+    @NotEmpty
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return this.lsid;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
+    }
+
+    /**
      * Gets the name.
      *
      * @return the name
@@ -203,27 +225,6 @@ public class ExperimentRun implements Serializable, Persistent {
         this.comments = comments;
     }
 
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @UniqueConstraint(propertyName = "lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
 
     /**
      * Gets the experiment.
@@ -264,7 +265,7 @@ public class ExperimentRun implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getId(), experimentRun.getId()).append(getName(), experimentRun.getName())
+        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid())
                 .isEquals();
     }
 
@@ -273,6 +274,6 @@ public class ExperimentRun implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getName()).toHashCode();
+        return new HashCodeBuilder().append(getLsid()).toHashCode();
     }
 }

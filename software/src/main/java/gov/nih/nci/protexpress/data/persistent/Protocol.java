@@ -129,7 +129,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
-    private static final int CREATOR_LENGTH = 100;
 
     private Long id;
     private String lsid;
@@ -207,10 +206,10 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @return the name
      */
+    @Index(name = "name_index")
     @Column(name = "name")
     @NotEmpty
     @Length(max = NAME_LENGTH)
-    @Index(name = "name_index")
     public String getName() {
         return this.name;
     }
@@ -307,7 +306,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
     // not be validated at the UI
-    @Column(name = "creator", nullable = false, length = CREATOR_LENGTH)
+    @Column(name = "creator", nullable = false, length = Auditable.CREATOR_LENGTH)
     public String getCreator() {
         return this.creator;
     }

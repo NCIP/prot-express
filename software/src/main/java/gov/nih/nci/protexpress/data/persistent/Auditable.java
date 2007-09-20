@@ -92,6 +92,11 @@ import java.util.Date;
 public interface Auditable {
 
     /**
+     * Length of the creator field in the DB.
+     */
+    int CREATOR_LENGTH = 100;
+
+    /**
      * Get the username of the creator of the object.
      *
      * @return the username of the creator.
