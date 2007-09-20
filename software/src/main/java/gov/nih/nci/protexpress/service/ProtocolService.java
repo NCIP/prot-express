@@ -117,6 +117,15 @@ public interface ProtocolService {
             String sortProperty, SortOrderEnum sortDir);
 
     /**
+     * Get the protocols the user has edited most recently.
+     *
+     * @param username the username of the user
+     * @param numberOfProtocols the number of protocols to return
+     * @return the protocols
+     */
+    List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
+
+    /**
      * Retrieve the protocol ith the given identifier.
      *
      * @param id the id of the protocol to retrive

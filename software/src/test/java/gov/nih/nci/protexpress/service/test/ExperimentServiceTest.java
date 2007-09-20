@@ -4,6 +4,7 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.util.List;
 
@@ -219,9 +220,68 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(1, experimentList.size());
     }
 
+    public void testGetMostRecentExperiments() throws Exception {
+        List<Experiment> experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 3);
+        assertEquals(0, experiments.size());
+
+        Experiment experiment1 = new Experiment("ex1", "ex1");
+        this.theSession.save(experiment1);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(1, experiments.size());
+        assertEquals(experiment1, experiments.get(0));
+
+        Experiment experiment2 = new Experiment("ex2", "ex2");
+        this.theSession.save(experiment2);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, experiments.size());
+        assertEquals(experiment2, experiments.get(0));
+        assertEquals(experiment1, experiments.get(1));
+
+        Experiment experiment3 = new Experiment("ex3", "ex3");
+        this.theSession.save(experiment3);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, experiments.size());
+        assertEquals(experiment3, experiments.get(0));
+        assertEquals(experiment2, experiments.get(1));
+
+        experiment1.setComments("new comments");
+        this.theSession.update(experiment1);
+        this.theSession.flush();
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, experiments.size());
+        assertEquals(experiment1, experiments.get(0));
+        assertEquals(experiment3, experiments.get(1));
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), 5);
+        assertEquals(3, experiments.size());
+        assertEquals(experiment1, experiments.get(0));
+        assertEquals(experiment3, experiments.get(1));
+        assertEquals(experiment2, experiments.get(2));
+
+
+        experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser("unuseduser", 3);
+        assertEquals(0, experiments.size());
+    }
+
     public void testEqualsAndHashCode() {
-        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").
-                equals(new Experiment("LSIDTestExperiment1", "TestExperiment1")));
+        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").equals(new Experiment(
+                "LSIDTestExperiment1", "TestExperiment1")));
         Experiment exp1 = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
         exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");

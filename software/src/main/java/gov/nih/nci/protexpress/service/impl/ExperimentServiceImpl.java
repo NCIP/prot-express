@@ -91,6 +91,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.properties.SortOrderEnum;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -149,6 +150,17 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
             }
         }
         return crit;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments) {
+        String hql = "from " + Experiment.class.getName() + " where creator = :username order by lastModifiedDate desc";
+        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
+        query.setString("username", username);
+        return query.setMaxResults(numberOfExperiments).list();
     }
 
     /**
