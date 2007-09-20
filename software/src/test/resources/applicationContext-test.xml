@@ -21,6 +21,9 @@
         <property name="configurationClass">
             <value>org.hibernate.cfg.AnnotationConfiguration</value>
         </property>
+        <property name="entityInterceptor">
+            <bean class="gov.nih.nci.protexpress.data.interceptor.ProtExpressHibernateInterceptor" />
+        </property>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${test.hibernate.dialect}</prop>

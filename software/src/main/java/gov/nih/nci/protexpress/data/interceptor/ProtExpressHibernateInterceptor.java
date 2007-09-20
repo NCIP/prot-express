@@ -80,47 +80,61 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.util.test;
+package gov.nih.nci.protexpress.data.interceptor;
 
+import gov.nih.nci.protexpress.data.persistent.Auditable;
 import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import junit.framework.TestCase;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.EmptyInterceptor;
+import org.hibernate.type.Type;
 
 /**
+ * Interceptor for prot express.
  * @author Scott Miller
- *
  */
-public class UserHolderTest extends TestCase {
+public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
+    private static final long serialVersionUID = 1L;
 
-    public void testEmptyUserHolder() {
-        assertEquals(null, UserHolder.getUser());
-        assertEquals(null, UserHolder.getUsername());
-        assertEquals(null, UserHolder.getDisplayNameForUser());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+        if (entity instanceof Auditable) {
+            for (int i = 0; i < propertyNames.length; i++) {
+                if ("creator".equals(propertyNames[i]) && StringUtils.isNotBlank(UserHolder.getUsername())) {
+                    state[i] = UserHolder.getUsername();
+                }
+                if ("creationDate".equals(propertyNames[i])) {
+                    state[i] = new Date();
+                }
+                if ("lastModifiedDate".equals(propertyNames[i])) {
+                    state[i] = new Date();
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
-    public void testFilledUserHolder() {
-        User u = new User();
-        u.setLoginName("foo");
-        UserHolder.setUser(u);
-
-        assertEquals("foo", UserHolder.getUser().getLoginName());
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setFirstName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setLastName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setFirstName("Test");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setLastName("User");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("Test User", UserHolder.getDisplayNameForUser());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
+            String[] propertyNames, Type[] types) {
+        if (entity instanceof Auditable) {
+            for (int i = 0; i < propertyNames.length; i++) {
+                if ("lastModifiedDate".equals(propertyNames[i])) {
+                    currentState[i] = new Date();
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

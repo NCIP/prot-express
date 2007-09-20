@@ -1,5 +1,8 @@
 package gov.nih.nci.protexpress.test;
 
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
+
 import java.net.URL;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -127,6 +130,9 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
     protected void onSetUp() throws Exception {
         super.onSetUp();
         this.csmInitializer.dropAndCreateCsmDb();
+        User u = new User();
+        u.setLoginName("~unittestuser~");
+        UserHolder.setUser(u);
         LocalSessionFactoryBean theSessionFactoryBean = (LocalSessionFactoryBean) getApplicationContext().getBean(
                 "&sessionFactory");
         theSessionFactoryBean.dropDatabaseSchema();
@@ -149,6 +155,7 @@ public abstract class ProtExpressBaseHibernateTest extends AbstractDependencyInj
     protected void onTearDown() throws Exception {
         TransactionSynchronizationManager.unbindResource(this.theSessionFactory);
         SessionFactoryUtils.closeSession(this.theSession);
+        UserHolder.setUser(null);
         super.onTearDown();
     }
 

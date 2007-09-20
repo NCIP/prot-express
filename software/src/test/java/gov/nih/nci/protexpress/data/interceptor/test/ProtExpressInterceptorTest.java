@@ -80,47 +80,51 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.util.test;
+package gov.nih.nci.protexpress.data.interceptor.test;
 
+import gov.nih.nci.protexpress.data.persistent.Person;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import junit.framework.TestCase;
+
+import java.util.Date;
 
 /**
  * @author Scott Miller
- *
  */
-public class UserHolderTest extends TestCase {
+public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
-    public void testEmptyUserHolder() {
-        assertEquals(null, UserHolder.getUser());
-        assertEquals(null, UserHolder.getUsername());
-        assertEquals(null, UserHolder.getDisplayNameForUser());
+    public void testSaveAndUpdateAuditableObject() throws Exception {
+        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
+        assertEquals(null, p.getCreator());
+        this.theSession.save(p);
+        assertEquals(UserHolder.getUsername(), p.getCreator());
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
+        Date oldDate = p.getLastModifiedDate();
+        p.setDescription("new desc");
+        Thread.sleep(500);
+        this.theSession.update(p);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
+        assertEquals(-1, oldDate.compareTo(p.getLastModifiedDate()));
     }
 
-    public void testFilledUserHolder() {
-        User u = new User();
-        u.setLoginName("foo");
-        UserHolder.setUser(u);
+    public void testSaveAnUpdateNonAuditableObject() {
+        Person p = new Person();
+        this.theSession.save(p);
+        this.theSession.flush();
+        this.theSession.clear();
 
-        assertEquals("foo", UserHolder.getUser().getLoginName());
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setFirstName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setLastName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setFirstName("Test");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setLastName("User");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("Test User", UserHolder.getDisplayNameForUser());
+        p.setFirstName("test");
+        this.theSession.update(p);
+        this.theSession.flush();
+        this.theSession.clear();
     }
 }

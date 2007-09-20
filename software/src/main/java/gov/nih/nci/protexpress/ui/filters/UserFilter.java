@@ -96,6 +96,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * filter to add the currently logged in user to the {@link UserHolder}.
  *
@@ -119,14 +121,18 @@ public class UserFilter implements Filter {
             return;
         }
         String username = ((HttpServletRequest) request).getRemoteUser();
-        User user = ProtExpressRegistry.getUserProvisioningManager().getUser(username);
-        if (user == null) {
-            user = new User();
-            user.setLoginName(username);
+        if (StringUtils.isNotBlank(username)) {
+            User user = ProtExpressRegistry.getUserProvisioningManager().getUser(username);
+            if (user == null) {
+                user = new User();
+                user.setLoginName(username);
+            }
+            UserHolder.setUser(user);
+            request.setAttribute("currentUser", UserHolder.getUser());
+            request.setAttribute("currentUserDisplayName", UserHolder.getDisplayNameForUser());
+        } else {
+            UserHolder.setUser(null);
         }
-        UserHolder.setUser(user);
-        request.setAttribute("currentUser", UserHolder.getUser());
-        request.setAttribute("currentUserDisplayName", UserHolder.getDisplayNameForUser());
         chain.doFilter(request, response);
     }
 

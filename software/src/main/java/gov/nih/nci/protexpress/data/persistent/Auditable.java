@@ -80,47 +80,56 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.util.test;
+package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import junit.framework.TestCase;
+import java.util.Date;
 
 /**
- * @author Scott Miller
+ * Interface for all auditable entities.
  *
+ * @author Scott Miller
  */
-public class UserHolderTest extends TestCase {
+public interface Auditable {
 
-    public void testEmptyUserHolder() {
-        assertEquals(null, UserHolder.getUser());
-        assertEquals(null, UserHolder.getUsername());
-        assertEquals(null, UserHolder.getDisplayNameForUser());
-    }
+    /**
+     * Get the username of the creator of the object.
+     *
+     * @return the username of the creator.
+     */
+    String getCreator();
 
-    public void testFilledUserHolder() {
-        User u = new User();
-        u.setLoginName("foo");
-        UserHolder.setUser(u);
+    /**
+     * Set the username of the creator.
+     *
+     * @param creator the username of the creator
+     */
+    void setCreator(String creator);
 
-        assertEquals("foo", UserHolder.getUser().getLoginName());
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
+    /**
+     * Get the creation date.
+     *
+     * @return the creation date
+     */
+    Date getCreationDate();
 
-        u.setFirstName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
+    /**
+     * Set the creation date.
+     *
+     * @param creationDate the creation date
+     */
+    void setCreationDate(Date creationDate);
 
-        u.setLastName("");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
+    /**
+     * Get the last modified date.
+     *
+     * @return the last modified date
+     */
+    Date getLastModifiedDate();
 
-        u.setFirstName("Test");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("foo", UserHolder.getDisplayNameForUser());
-
-        u.setLastName("User");
-        assertEquals("foo", UserHolder.getUsername());
-        assertEquals("Test User", UserHolder.getDisplayNameForUser());
-    }
+    /**
+     * Set the last modified date.
+     *
+     * @param lastModifiedDate the last modified date
+     */
+    void setLastModifiedDate(Date lastModifiedDate);
 }
