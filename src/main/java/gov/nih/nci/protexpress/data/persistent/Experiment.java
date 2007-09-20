@@ -86,6 +86,7 @@ import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -99,6 +100,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -115,7 +118,7 @@ import org.hibernate.validator.NotEmpty;
 @Entity
 @Table(name = "experiment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Experiment implements Serializable, Persistent {
+public class Experiment implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
@@ -131,8 +134,10 @@ public class Experiment implements Serializable, Persistent {
     private String hypothesis;
     private String url;
     private String comments;
+    private String creator;
+    private Date creationDate = new Date();
+    private Date lastModifiedDate = new Date();
     private Person primaryContact;
-
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
     /**
@@ -170,6 +175,49 @@ public class Experiment implements Serializable, Persistent {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the lsid.
+     *
+     * @return the lsid
+     */
+    @Column(name = "lsid")
+    @NotEmpty
+    @UniqueConstraint(propertyName = "lsid")
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return this.lsid;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    @Column(name = "name")
+    @Length(max = NAME_LENGTH)
+    @NotEmpty
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -233,46 +281,56 @@ public class Experiment implements Serializable, Persistent {
     }
 
     /**
-     * Gets the name.
-     *
-     * @return the name
+     * {@inheritDoc}
      */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    public String getName() {
-        return this.name;
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Column(name = "creator", nullable = false, length = Auditable.CREATOR_LENGTH)
+    public String getCreator() {
+        return this.creator;
     }
 
     /**
-     * Sets the name.
-     *
-     * @param name the name to set
+     * {@inheritDoc}
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     /**
-     * Gets the lsid.
-     *
-     * @return the lsid
+     * {@inheritDoc}
      */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date", nullable = false)
+    public Date getCreationDate() {
+        return this.creationDate;
     }
 
     /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
+     * {@inheritDoc}
      */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Column(name = "modification_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getLastModifiedDate() {
+        return this.lastModifiedDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -338,7 +396,7 @@ public class Experiment implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getName(), exp.getName()).isEquals();
+        return new EqualsBuilder().append(getLsid(), exp.getLsid()).isEquals();
     }
 
     /**
@@ -346,7 +404,7 @@ public class Experiment implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+        return new HashCodeBuilder().append(getLsid()).toHashCode();
     }
 
 }
