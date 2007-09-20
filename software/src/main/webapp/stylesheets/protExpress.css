@@ -237,7 +237,7 @@ SUP {
     text-decoration: none;
 }
 
-#leftnav UL A.selected:hover, #leftnav UL A.selected:focus {
+#leftnav UL A.selected:hover,#leftnav UL A.selected:focus {
     background: #ccc url("../images/ico_arrow.gif") no-repeat 7px 7px;
     text-decoration: none;
 }
@@ -270,11 +270,11 @@ SUP {
     background-position: 5px 5px
 }
 
-#quicklinks UL A:hover, #quicklinks UL A:focus {
+#quicklinks UL A:hover,#quicklinks UL A:focus {
     background: #475b82;
 }
 
-#leftnav LI A.actuator, #leftnav LI A.actuator:hover, #leftnav LI A.focus {
+#leftnav LI A.actuator,#leftnav LI A.actuator:hover,#leftnav LI A.focus {
     background: #5c5c5c;
     color: #fff;
     padding: 3px 8px;
@@ -290,12 +290,137 @@ SUP {
     padding: 8px
 }
 
+#content A {
+    text-decoration: none
+}
+
+#content A:hover {
+    text-decoration: underline
+}
+
+.floatbox {
+    width: 45%;
+    margin-right: 1%;
+    padding: 5px;
+    float: left;
+    background: #d7e4f9
+}
+
+.floatbox H2 {
+    color: #496DA5;
+    font-size: 160%;
+    font-weight: normal;
+    padding: 3px 5px 5px 5px;
+    border-bottom: 2px solid #eef3fa;
+    margin-bottom: 0
+}
+
+.toolbar {
+    padding: 5px;
+    min-height: .1%;
+}
+
+.toolbar A {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 92%;
+    color: #333;
+    display: block;
+    float: left;
+    padding: 3px 10px 3px 15px;
+    border-right: 1px solid #BDD4F9;
+    height: 1.5em
+}
+
+#content .toolbar A:hover {
+    text-decoration: none;
+    background: #eef3fa
+}
+
+A.search {
+    background: url("../images/ico_search.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+#content A.search:hover {
+    background: #eef3fa url("../images/ico_search.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+A.add {
+    background: url("../images/ico_add.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+#content A.add:hover {
+    background: #eef3fa url("../images/ico_add.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+A.import {
+    background: url("../images/ico_import.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+#content A.import:hover {
+    background: #eef3fa url("../images/ico_import.gif") no-repeat 6px 3px;
+    padding-left: 22px
+}
+
+.floatbox TABLE.searchresults {
+    margin-top: 5px
+}
+
+.floatbox TABLE.searchresults TH {
+    background: #496DA5;
+    color: #BDD4F9;
+    font-size: 125%;
+    padding: 4px
+}
+
+.floatbox TABLE.searchresults TD {
+    font-size: 110%;
+    padding: 6px
+}
+
+/* Search Results and Alternating Table Rows Tables */
+TABLE.searchresults {
+    border-collapse: separate;
+    width: 99.9%;
+    clear: both;
+    background: #fff;
+}
+
+TABLE.searchresults TH {
+    padding: 4px 5px;
+    border-top: 1px solid #eef3fa;
+    border-bottom: 1px solid #808080;
+    background: #8a8a8a;
+    color: #fff
+}
+
+TABLE.searchresults TH A {
+    color: #fff
+}
+
+TABLE.searchresults TR.odd {
+    background: #f0f0f0
+}
+
+TABLE.searchresults TD {
+    padding: 5px;
+    border-bottom: 2px solid #BDD4F9
+}
+
+TABLE.searchresults TD.title {
+    font-weight: bold;
+}
+
 /* Footer Styles */
 #footerwrapper {
     font-size: 85%;
     font-weight: bold;
 }
-
 
 #footernav {
     padding-left: 175px;
