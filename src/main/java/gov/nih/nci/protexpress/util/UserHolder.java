@@ -105,14 +105,25 @@ public final class UserHolder {
     }
 
     /**
-     * @return the currently logged in user for this thread
+     * @return the currently logged in user for this thread, or null
      */
     public static User getUser() {
         return tlocal.get();
     }
 
     /**
-     * @return the display name of the currently logged in user
+     * Return the currently logged in users username, or null.
+     * @return the username, or null
+     */
+    public static String getUsername() {
+        if (UserHolder.getUser() != null) {
+            return UserHolder.getUser().getLoginName();
+        }
+        return null;
+    }
+
+    /**
+     * @return the display name of the currently logged in user, or null
      */
     public static String getDisplayNameForUser() {
         String name = null;

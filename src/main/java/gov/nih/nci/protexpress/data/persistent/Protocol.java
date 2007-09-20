@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.data.persistent;
 import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -98,6 +99,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -110,12 +113,13 @@ import org.hibernate.validator.NotNull;
 
 /**
  * Class representing a protocol.
+ *
  * @author Scott Miller
  */
 @Entity
 @Table(name = "protocol")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable, Persistent {
+public class Protocol implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
@@ -125,15 +129,18 @@ public class Protocol implements Serializable, Persistent {
     private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
+    private static final int CREATOR_LENGTH = 100;
 
     private Long id;
     private String lsid;
     private String name;
+    private ProtocolType type;
     private String description;
     private String software;
     private String instrument;
-    private ProtocolType type;
-
+    private String creator;
+    private Date creationDate = new Date();
+    private Date lastModifiedDate = new Date();
     private Person primaryContact;
 
     /**
@@ -171,6 +178,68 @@ public class Protocol implements Serializable, Persistent {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the lsid.
+     *
+     * @return the lsid
+     */
+    @Column(name = "lsid")
+    @UniqueConstraint(propertyName = "lsid")
+    @NotEmpty
+    @Length(max = LSID_LENGTH)
+    public String getLsid() {
+        return this.lsid;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    @Column(name = "name")
+    @NotEmpty
+    @Length(max = NAME_LENGTH)
+    @Index(name = "name_index")
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the type
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = TYPE_LENGTH)
+    @NotNull
+    @Index(name = "type_index")
+    public ProtocolType getType() {
+        return this.type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(ProtocolType type) {
+        this.type = type;
     }
 
     /**
@@ -215,50 +284,6 @@ public class Protocol implements Serializable, Persistent {
     }
 
     /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    @Index(name = "name_index")
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @UniqueConstraint(propertyName = "lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
      * Gets the software.
      *
      * @return the software
@@ -278,21 +303,56 @@ public class Protocol implements Serializable, Persistent {
     }
 
     /**
-     * @return the type
+     * {@inheritDoc}
      */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    @Index(name = "type_index")
-    public ProtocolType getType() {
-        return this.type;
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Column(name = "creator", nullable = false, length = CREATOR_LENGTH)
+    public String getCreator() {
+        return this.creator;
     }
 
     /**
-     * @param type the type to set
+     * {@inheritDoc}
      */
-    public void setType(ProtocolType type) {
-        this.type = type;
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Column(name = "creation_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreationDate() {
+        return this.creationDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
+    // not be validated at the UI
+    @Column(name = "modification_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getLastModifiedDate() {
+        return this.lastModifiedDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -338,7 +398,7 @@ public class Protocol implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getName(), p.getName()).isEquals();
+        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
     }
 
     /**
@@ -346,6 +406,6 @@ public class Protocol implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName()).toHashCode();
+        return new HashCodeBuilder().append(getLsid()).toHashCode();
     }
 }
