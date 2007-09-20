@@ -91,6 +91,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.properties.SortOrderEnum;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -153,6 +154,17 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
             }
         }
         return crit;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols) {
+        String hql = "from " + Protocol.class.getName() + " where creator = :username order by lastModifiedDate desc";
+        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
+        query.setString("username", username);
+        return query.setMaxResults(numberOfProtocols).list();
     }
 
     /**

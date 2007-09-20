@@ -5,6 +5,7 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,6 +240,65 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         params.setTypes(types);
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(0, protocolList.size());
+    }
+
+    public void testGetMostRecentExperiments() throws Exception {
+        List<Protocol> protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 3);
+        assertEquals(0, protocols.size());
+
+        Protocol protocol1 = new Protocol("ex1", "ex1", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol1);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(1, protocols.size());
+        assertEquals(protocol1, protocols.get(0));
+
+        Protocol protocol2 = new Protocol("ex2", "ex2", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol2);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, protocols.size());
+        assertEquals(protocol2, protocols.get(0));
+        assertEquals(protocol1, protocols.get(1));
+
+        Protocol protocol3 = new Protocol("ex3", "ex3", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol3);
+        this.theSession.flush();
+        Thread.sleep(100);
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, protocols.size());
+        assertEquals(protocol3, protocols.get(0));
+        assertEquals(protocol2, protocols.get(1));
+
+        protocol1.setDescription("new comments");
+        this.theSession.update(protocol1);
+        this.theSession.flush();
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 2);
+        assertEquals(2, protocols.size());
+        assertEquals(protocol1, protocols.get(0));
+        assertEquals(protocol3, protocols.get(1));
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), 5);
+        assertEquals(3, protocols.size());
+        assertEquals(protocol1, protocols.get(0));
+        assertEquals(protocol3, protocols.get(1));
+        assertEquals(protocol2, protocols.get(2));
+
+
+        protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser("unuseduser", 3);
+        assertEquals(0, protocols.size());
     }
 
     public void testEqualsAndHashCode() {

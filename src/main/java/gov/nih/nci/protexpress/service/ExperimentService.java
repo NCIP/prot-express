@@ -90,6 +90,7 @@ import org.displaytag.properties.SortOrderEnum;
 
 /**
  * Service to handle the manipulation of experiments.
+ *
  * @author Krishna Kanchinadam
  */
 public interface ExperimentService {
@@ -115,9 +116,18 @@ public interface ExperimentService {
     List<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir);
 
+    /**
+     * Get the experiments the user has edited most recently.
+     *
+     * @param username the username of the user
+     * @param numberOfExperiments the number of experiments to return
+     * @return the experiments
+     */
+    List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
 
     /**
      * Retrieve the experiment ith the given identifier.
+     *
      * @param id the id of the experiment to retrive
      * @return the experiment to retrieve
      */
@@ -125,6 +135,7 @@ public interface ExperimentService {
 
     /**
      * delete the given experiment.
+     *
      * @param experiment the experiment to delete
      */
     void deleteExperiment(Experiment experiment);
