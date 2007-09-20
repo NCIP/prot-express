@@ -82,16 +82,19 @@
  */
 package gov.nih.nci.protexpress.ui.actions.dashboard.test;
 
-import com.opensymphony.xwork2.ActionSupport;
-
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.dashboard.DashboardAction;
-import junit.framework.TestCase;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Test for the dashboard action.
  * @author Scott Miller
  */
-public class DashboardActionTest extends TestCase {
+public class DashboardActionTest extends ProtExpressBaseHibernateTest {
 
     private DashboardAction action;
 
@@ -99,12 +102,19 @@ public class DashboardActionTest extends TestCase {
      * {@inheritDoc}
      */
     @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        action = new DashboardAction();
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new DashboardAction();
     }
 
     public void testLoad() {
-        assertEquals(ActionSupport.SUCCESS, action.load());
+        Protocol p = new Protocol("p1", "p1", ProtocolType.ExperimentRun);
+        Experiment e = new Experiment("e1", "e1");
+        this.theSession.save(p);
+        this.theSession.save(e);
+
+        assertEquals(ActionSupport.SUCCESS, this.action.load());
+        assertEquals(1, this.action.getRecentExperiments().size());
+        assertEquals(1, this.action.getRecentProtocols().size());
     }
 }

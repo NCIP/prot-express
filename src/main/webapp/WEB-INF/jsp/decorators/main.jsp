@@ -26,6 +26,7 @@
 
     <!--  CONTENT -->
     <div id="content">
+
         <!-- DECORATED BODY -->
         <decorator:body />
         <!-- END DECORATED BODY -->

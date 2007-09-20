@@ -82,19 +82,65 @@
  */
 package gov.nih.nci.protexpress.ui.actions.dashboard;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.util.UserHolder;
+
+import java.util.List;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Actions for the dashboard functionality.
+ *
  * @author Scott Miller
  */
 public class DashboardAction {
 
+    private static final int NUM_RECENT_RESULTS_TO_DISPLAY = 3;
+
+    private List<Protocol> recentProtocols;
+    private List<Experiment> recentExperiments;
+
     /**
      * Action for loading the dashboard.
+     *
      * @return the directive for the next action / page to be directed to
      */
     public String load() {
+        setRecentExperiments(ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
+                UserHolder.getUsername(), NUM_RECENT_RESULTS_TO_DISPLAY));
+        setRecentProtocols(ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser(
+                UserHolder.getUsername(), NUM_RECENT_RESULTS_TO_DISPLAY));
         return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * @return the recentProtocols
+     */
+    public List<Protocol> getRecentProtocols() {
+        return this.recentProtocols;
+    }
+
+    /**
+     * @param recentProtocols the recentProtocols to set
+     */
+    public void setRecentProtocols(List<Protocol> recentProtocols) {
+        this.recentProtocols = recentProtocols;
+    }
+
+    /**
+     * @return the recentExperiments
+     */
+    public List<Experiment> getRecentExperiments() {
+        return this.recentExperiments;
+    }
+
+    /**
+     * @param recentExperiments the recentExperiments to set
+     */
+    public void setRecentExperiments(List<Experiment> recentExperiments) {
+        this.recentExperiments = recentExperiments;
     }
 }
