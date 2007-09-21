@@ -115,7 +115,7 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
     public boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue) {
         Class persistentClass = bean.getClass();
         if (bean instanceof HibernateProxy) {
-            persistentClass = ((HibernateProxy)bean).getHibernateLazyInitializer().getPersistentClass();
+            persistentClass = ((HibernateProxy) bean).getHibernateLazyInitializer().getPersistentClass();
         }
         StringBuffer hql = new StringBuffer("from " + persistentClass.getName() + " where " + fieldName + " = ?");
         Object[] args = null;
