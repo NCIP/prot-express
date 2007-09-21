@@ -11,7 +11,7 @@
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
 </head>
 
-<body>
+<body onload="<decorator:getProperty property="body.onload" />">
 
 <!--  HEADER -->
 <div id="header"><%@ include file="/WEB-INF/jsp/decorators/mainHeader.jsp"%></div>
