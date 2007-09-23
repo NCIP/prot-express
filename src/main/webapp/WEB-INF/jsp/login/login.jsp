@@ -19,12 +19,14 @@
         </div>
         <div id="homelogin">
             <h1><fmt:message key="login.header" /></h1>
-            <c:if test="${not empty failedLogin}">
-                <fmt:message key="login.error" />
-            </c:if>
             <form id="login" name="login" action=j_security_check>
                 <table class="login">
                     <tbody>
+                    <c:if test="${not empty failedLogin}">
+                    <tr>
+                        <td colspan="2" class="loginerror"><fmt:message key="login.error" /></td>
+                    </tr>
+                    </c:if>
                     <tr>
                         <td colspan="2" class="space">&nbsp;</td>
                     </tr>
