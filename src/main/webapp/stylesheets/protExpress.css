@@ -148,6 +148,16 @@ SUP {
     padding-left: 19px;
 }
 
+.centered {
+    text-align: center
+}
+
+.intro {
+    font-size: 120%;
+    padding-right: 20px;
+    line-height: 1.3em
+}
+
 /* Header Styles */
 #nciheader {
     background: #a90101;
@@ -290,12 +300,98 @@ SUP {
     padding: 8px
 }
 
+#contenthome {
+    margin-left: 175px;
+    min-height: 330px;
+    border-left: 1px solid #fff;
+    border-top: 0;
+    padding: 0;
+    padding-bottom: 40px
+}
+
 #content A {
     text-decoration: none
 }
 
 #content A:hover {
     text-decoration: underline
+}
+
+.homebanner {
+    margin: 0;
+    background: #8590ab;
+    border-bottom: 1px solid #fff
+}
+
+#homeinfo H1 {
+    font-size: 120%;
+    background: #d6d6d6;
+    font-weight: bold;
+    padding: 0;
+    color: #fff;
+    border: 0;
+}
+
+P.intro,.homepage P {
+    padding: 10px;
+    padding-bottom: 0
+}
+
+#homecontentbar {
+    margin: 0;
+    height: 2.1em;
+    background: #fff url("../images/bg_bar_home.gif") repeat-x;
+}
+
+#homecontentwrapper {
+    width: 600px
+}
+
+#homeinfo {
+    float: left;
+    width: 400px;
+}
+
+#homeinfo H1,#homelogin H1 {
+    border: 0;
+    font-weight: bold;
+    padding: 4px;
+    background: none;
+    font-family: verdana;
+    font-size: 92%;
+    color: #333
+}
+
+#homelogin {
+    float: left;
+    background: #8a8a8a;
+    width: 198px;
+    padding-bottom: 20px;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff
+}
+
+#homelogin H1 {
+    color: #fff
+}
+
+#homelogin A.loginlinks {
+    font-size: 90%;
+    color: #fff
+}
+
+TABLE.login {
+    width: 160px;
+    height: 96px;
+    margin: 0 auto
+}
+
+TABLE.login TD.label {
+    padding: 3px;
+}
+
+TABLE.login TD.value {
+    padding: 3px;
 }
 
 .floatbox {
@@ -414,6 +510,29 @@ TABLE.searchresults TD {
 
 TABLE.searchresults TD.title {
     font-weight: bold;
+}
+
+.label {
+    width: 30%;
+    text-align: right;
+    font-weight: bold;
+}
+
+.value INPUT,.value SELECT,.value TEXTAREA {
+    display: block;
+    margin-top: -5px
+}
+
+TD.space {
+    padding: 0
+}
+
+TD.value {
+    padding-left: 0px;
+}
+
+.value TEXTAREA {
+    width: 380px
 }
 
 /* Footer Styles */
