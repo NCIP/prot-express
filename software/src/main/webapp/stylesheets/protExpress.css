@@ -287,7 +287,7 @@ SUP {
 #leftnav LI A.actuator,#leftnav LI A.actuator:hover,#leftnav LI A.focus {
     background: #5c5c5c;
     color: #fff;
-    padding: 3px 8px;
+    padding: 4px 8px;
     border-bottom: 1px solid #fff;
     width: 159px;
 }
@@ -384,6 +384,11 @@ TABLE.login {
     width: 160px;
     height: 96px;
     margin: 0 auto
+}
+
+Table.login TD.loginerror {
+    font-size: 100%;
+    color: #900;
 }
 
 TABLE.login TD.label {
