@@ -2,18 +2,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<html>
+<head>
+</head>
+<body>
 
-<s:url id="addProtocol" action="protocol/management/load" />
-<fmt:message key="protocols" /> | <a href="${addProtocol}"><s:property value="%{getText('protocol.add')}" /></a>
+<fmt:message key="protocols" /> | <a href="<c:url value="/protocol/management/load.action" />"><fmt:message key="protocol.add" /></a>
 
 <h2><fmt:message key="protocols.search" /></h2>
 
 <s:form action="protocol/search/doSearch" method="post">
     <s:hidden name="protocols.sortDirection" />
     <s:hidden name="protocols.sortCriterion" />
-    <s:textfield name="searchParameters.name" label="%{getText('protocol.name')}" size="40" />
-    <s:textfield name="searchParameters.description" label="%{getText('protocol.description')}" size="40" />
-    <s:select name="searchParameters.types" label="%{getText('protocol.type')}"
+    <s:textfield name="searchParameters.name" key="protocol.name" size="40" />
+    <s:textfield name="searchParameters.description" key="protocol.description" size="40" />
+    <s:select name="searchParameters.types" key="protocol.type"
         list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName" headerKey=""
         multiple="true" />
     <s:submit value="%{getText('search')}" />
@@ -43,3 +46,6 @@
         </display:column>
     </display:table>
 </c:if>
+
+</body>
+</html>
