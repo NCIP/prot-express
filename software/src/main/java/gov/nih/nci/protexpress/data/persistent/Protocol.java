@@ -129,6 +129,8 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
+    private static final int OUTPUT_MATERIAL_TYPE_LENGTH = 25;
+    private static final int OUTPUT_DATA_TYPE_LENGTH = 25;
 
     private Long id;
     private String lsid;
@@ -137,6 +139,12 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private String description;
     private String software;
     private String instrument;
+    private Integer maxInputMaterialPerInstance;
+    private Integer maxInputDataPerInstance;
+    private Integer outputMaterialPerInstance;
+    private Integer outputDataPerInstance;
+    private String outputMaterialType = "Material";
+    private String outputDataType = "Data";
     private String creator;
     private Date creationDate = new Date();
     private Date lastModifiedDate = new Date();
@@ -373,6 +381,123 @@ public class Protocol implements Serializable, Persistent, Auditable {
     public void setPrimaryContact(Person primaryContact) {
         this.primaryContact = primaryContact;
     }
+
+    /**
+     * Gets the maxInputMaterialPerInstance.
+     *
+     * @return the maxInputMaterialPerInstance.
+     */
+    @Column(name = "max_input_material")
+    public Integer getMaxInputMaterialPerInstance() {
+        return maxInputMaterialPerInstance;
+    }
+
+    /**
+     * Sets the maxInputMaterialPerInstance.
+     *
+     * @param maxInputMaterialPerInstance the maxInputMaterialPerInstance to set.
+     */
+    public void setMaxInputMaterialPerInstance(Integer maxInputMaterialPerInstance) {
+        this.maxInputMaterialPerInstance = maxInputMaterialPerInstance;
+    }
+
+    /**
+     * Gets the maxInputDataPerInstance.
+     *
+     * @return the maxInputDataPerInstance.
+     */
+    @Column(name = "max_input_data")
+    public Integer getMaxInputDataPerInstance() {
+        return maxInputDataPerInstance;
+    }
+
+    /**
+     * Sets the maxInputDataPerInstance.
+     *
+     * @param maxInputDataPerInstance the maxInputDataPerInstance to set.
+     */
+    public void setMaxInputDataPerInstance(Integer maxInputDataPerInstance) {
+        this.maxInputDataPerInstance = maxInputDataPerInstance;
+    }
+
+    /**
+     * Gets the outputMaterialPerInstance.
+     *
+     * @return the outputMaterialPerInstance.
+     */
+    @Column(name = "output_material")
+    public Integer getOutputMaterialPerInstance() {
+        return outputMaterialPerInstance;
+    }
+
+    /**
+     * Sets the outputMaterialPerInstance.
+     *
+     * @param outputMaterialPerInstance the outputMaterialPerInstance to set.
+     */
+    public void setOutputMaterialPerInstance(Integer outputMaterialPerInstance) {
+        this.outputMaterialPerInstance = outputMaterialPerInstance;
+    }
+
+    /**
+     * Gets the outputDataPerInstance.
+     *
+     * @return the outputDataPerInstance.
+     */
+    @Column(name = "output_data")
+    public Integer getOutputDataPerInstance() {
+        return outputDataPerInstance;
+    }
+
+    /**
+     * Sets the outputDataPerInstance.
+     *
+     * @param outputDataPerInstance the outputDataPerInstance to set.
+     */
+    public void setOutputDataPerInstance(Integer outputDataPerInstance) {
+        this.outputDataPerInstance = outputDataPerInstance;
+    }
+
+    /**
+     * Gets the outputMaterialType.
+     *
+     * @return the outputMaterialType.
+     */
+    @Column(name = "output_material_type")
+    @Length(max = OUTPUT_MATERIAL_TYPE_LENGTH)
+    public String getOutputMaterialType() {
+        return outputMaterialType;
+    }
+
+    /**
+     * Sets the outputMaterialType.
+     *
+     * @param outputMaterialType the outputMaterialType to set.
+     */
+    public void setOutputMaterialType(String outputMaterialType) {
+        this.outputMaterialType = outputMaterialType;
+    }
+
+    /**
+     * Gets the outputDataType.
+     *
+     * @return the outputDataType.
+     */
+    @Column(name = "output_data_type")
+    @Length(max = OUTPUT_DATA_TYPE_LENGTH)
+    public String getOutputDataType() {
+        return outputDataType;
+    }
+
+    /**
+     * Sets the outputDataType.
+     *
+     * @param outputDataType the outputDataType to set.
+     */
+    public void setOutputDataType(String outputDataType) {
+        this.outputDataType = outputDataType;
+    }
+
 
     /**
      * {@inheritDoc}

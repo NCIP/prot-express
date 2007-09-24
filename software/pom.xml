@@ -315,6 +315,7 @@
                     <schemaDirectory>src/main/xsd</schemaDirectory>
                     <schemaIncludes>
                         <value>xar2.2/expTypes.xsd</value>
+                        <value>bindings/JaxbBindings.xsd</value>
                     </schemaIncludes>
                 </configuration>
                 <dependencies>
