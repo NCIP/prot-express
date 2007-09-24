@@ -13,7 +13,7 @@
 <h1><fmt:message key="registration.header" /></h1>
 
 <div class="box">
-    <h2>Create a new protExpress account</h2>
+    <h2><fmt:message key="registration.create.header" /></h2>
     <div class="padme5">
         <s:form action="registration/save" method="post" id="regForm">
             <s:textfield name="user.loginName" key="user.loginName" size="40" />
