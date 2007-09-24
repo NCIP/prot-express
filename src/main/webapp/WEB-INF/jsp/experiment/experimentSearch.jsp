@@ -8,15 +8,15 @@
 <body>
 
 <s:url id="addExperiment" action="experiment/management/load" />
-<fmt:message key="experiments" /> | <a href="${addExperiment}"><s:property value="%{getText('experiment.add')}" /></a>
+<fmt:message key="experiments" /> | <a href="${addExperiment}"><fmt:message key="experiment.add" /></a>
 
 <h2><fmt:message key="experiments.search" /></h2>
 
 <s:form action="experiment/search/doSearch" method="post">
     <s:hidden name="experiments.sortDirection" />
     <s:hidden name="experiments.sortCriterion" />
-    <s:textfield name="searchParameters.name" label="%{getText('experiment.name')}" size="40" />
-    <s:textfield name="searchParameters.comments" label="%{getText('experiment.comments')}" size="40" />
+    <s:textfield name="searchParameters.name" key="experiment.name" size="40" />
+    <s:textfield name="searchParameters.comments" key="experiment.comments" size="40" />
     <s:submit value="%{getText('search')}" />
     <s:submit value="%{getText('cancel')}" name="redirect-action:experiment/search/loadSearch" />
 </s:form>

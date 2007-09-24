@@ -26,7 +26,7 @@
             <s:textfield name="protocol.description" key="protocol.description" size="40" />
             <s:select name="protocol.type" key="protocol.type"
                 list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
-                headerKey="protocol.type.select" />
+                headerKey="" headerValue="%{getText('protocol.type.select')}" />
             <s:hidden name="protocol.Id" />
             <div class="hidesubmit"><input type="submit"></div>
         </s:form>

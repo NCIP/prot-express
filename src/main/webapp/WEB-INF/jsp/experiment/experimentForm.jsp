@@ -15,11 +15,11 @@
         </s:else>
 
         <s:form action="experiment/management/save" method="post">
-            <s:textfield name="experiment.lsid" label="%{getText('experiment.lsid')}" size="40" />
-            <s:textfield name="experiment.name" label="%{getText('experiment.name')}" size="40" />
-            <s:textfield name="experiment.comments" label="%{getText('experiment.comments')}" size="40" />
-            <s:textfield name="experiment.hypothesis" label="%{getText('experiment.hypothesis')}" size="40" />
-            <s:textfield name="experiment.url" label="%{getText('experiment.url')}" size="40" />
+            <s:textfield name="experiment.lsid" key="experiment.lsid" size="40" />
+            <s:textfield name="experiment.name" key="experiment.name" size="40" />
+            <s:textfield name="experiment.comments" key="experiment.comments" size="40" />
+            <s:textfield name="experiment.hypothesis" key="experiment.hypothesis" size="40" />
+            <s:textfield name="experiment.url" key="experiment.url" size="40" />
 
             <s:hidden name="experiment.Id" />
             <s:submit value="%{getText('save')}" />
