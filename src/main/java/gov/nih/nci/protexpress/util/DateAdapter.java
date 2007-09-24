@@ -80,225 +80,43 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import java.util.Calendar;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
+import javax.xml.bind.DatatypeConverter;
 
 /**
- * Class representing an experiment.
- *
  * @author Krishna Kanchinadam
+ *
  */
-@Entity
-@Table(name = "experiment_run")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ExperimentRun implements Serializable, Persistent {
-
-    private static final long serialVersionUID = 1L;
-
-    private static final int NAME_LENGTH = 255;
-    private static final int LSID_LENGTH = 255;
-    private static final int COMMENTS_LENGTH = 255;
-
-    private Long id;
-    private String lsid;
-    private String name;
-    private String comments;
-    private Experiment experiment;
-    private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
+public class DateAdapter {
 
     /**
-     * protected default constructor for hibernate only.
+     * Constructor.
      */
-    protected ExperimentRun() {
+    protected DateAdapter() {
+
     }
 
     /**
-     * Constructor to create the object and populate all required fields.
+     * Given a String representation of JAXB Xml date value, returns a Date object.
      *
-     * @param lsid the lsid of the experiment
-     * @param name the name of the experiment
+     * @param s the JAXB Xml Date String value
+     * @return the Date
      */
-    public ExperimentRun(String lsid, String name) {
-        setLsid(lsid);
-        setName(name);
+    public static Calendar getDateFromXmlString(String s) {
+         return DatatypeConverter.parseDate(s);
     }
 
     /**
-     * The id of the object.
+     * Given a Date object, returns the String value.
      *
-     * @return the id, null for new objects
+     * @param cal the Date
+     * @return the String value
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets the id.
-     *
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @UniqueConstraint(propertyName = "lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the comments.
-     *
-     * @return the comments
-     */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
-    }
-
-    /**
-     * Sets the comments.
-     *
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-
-    /**
-     * Gets the experiment.
-     *
-     * @return the experiment
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_id", nullable = false)
-    public Experiment getExperiment() {
-        return this.experiment;
-    }
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-    /**
-     * Gets the protocolApplications.
-     *
-     * @return the protocolApplications.
-     */
-    @OneToMany(mappedBy = "experimentRun", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<ProtocolApplication> getProtocolApplications() {
-        return protocolApplications;
-    }
-
-    /**
-     * Sets the protocolApplications.
-     *
-     * @param protocolApplications the protocolApplications to set.
-     */
-    public void setProtocolApplications(
-            List<ProtocolApplication> protocolApplications) {
-        this.protocolApplications = protocolApplications;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ExperimentRun)) {
-            return false;
-        }
-
-        if (this == obj) {
-            return true;
-        }
-
-        ExperimentRun experimentRun = (ExperimentRun) obj;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid())
-                .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+    public static String getXmlStringFromDate(Calendar cal) {
+        return DatatypeConverter.printDate(cal);
     }
 }

@@ -12,16 +12,64 @@
 			<Email>jim@smiths.net</Email>
 		</Contact>
 	</Experiment>
-	<ProtocolDefinitions/>
+	<ProtocolDefinitions>
+		<Protocol rdf:about="${FolderLSIDBase}:Process.IPAS14">
+			<Name>IPAS14 Process</Name>
+			<ProtocolDescription>Prepare and run LCMS, including fractionation of the input sample.  Produces one mzXML file per fraction in a single directory.</ProtocolDescription>
+			<ApplicationType>ExperimentRun</ApplicationType>
+			<MaxInputMaterialPerInstance xsi:nil="true"/>
+			<MaxInputDataPerInstance xsi:nil="true"/>
+			<OutputMaterialPerInstance xsi:nil="true"/>
+			<OutputDataPerInstance xsi:nil="true"/>
+			<OutputMaterialType>Material</OutputMaterialType>
+			<OutputDataType>Data</OutputDataType>
+			<Instrument>This is the instrument.</Instrument>
+			<Software>this is the software....</Software>
+			<ParameterDeclarations>
+				<SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:IPAS14</SimpleVal>
+				<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do IPAS 14 protocol</SimpleVal>
+			</ParameterDeclarations>
+			<Properties>
+				<SimpleVal Name="TreatAsFractions" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.TreatAsFractions" ValueType="String">true</SimpleVal>
+				<SimpleVal Name="Category" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Category" ValueType="String">mass_spec</SimpleVal>
+			</Properties>
+			<Contact>
+				<ContactId>Dr. Tabb's Research Center' for Protocols</ContactId>
+				<FirstName>John</FirstName>
+				<LastName>Tabb</LastName>
+				<Email>tabb@research-center.com</Email>
+			</Contact>
+		</Protocol>
+	</ProtocolDefinitions>
 	<ProtocolActionDefinitions/>
 	<StartingInputDefinitions/>
 	<ExperimentRuns>
-		<ExperimentRun rdf:about="${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02" >
+		<ExperimentRun rdf:about="${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02">
 			<Name>IP0014_AX02 (Mouse Pancreatic Cancer Study)</Name>
 			<ProtocolLSID>${FolderLSIDBase}:Process.IPAS14</ProtocolLSID>
 			<ExperimentLSID>${FolderLSIDBase}:IPAS14</ExperimentLSID>
 			<Comments>Profiling of Proteins in Lung Adenocarcinoma Cell Surface</Comments>
-			<ProtocolApplications/>
+			<ProtocolApplications>
+				<ProtocolApplication rdf:about="${RunLSIDBase}:IPAS14">
+					<Name>Do IPAS 14 protocol</Name>
+					<CpasType>ExperimentRun</CpasType>
+					<ProtocolLSID>${FolderLSIDBase}:Process.IPAS14</ProtocolLSID>
+					<ActionSequence>1</ActionSequence>
+					<ActivityDate>2006-08-31-07:00</ActivityDate>
+					<InputRefs>
+						<MaterialLSID>${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer</MaterialLSID>
+						<MaterialLSID>${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase</MaterialLSID>
+						<DataLSID>${FolderLSIDBase}-Xar${XarFileId}-1:tandem.xml</DataLSID>
+						<DataLSID>${FolderLSIDBase}-Xar${XarFileId}-2:IPI_Mouse.fasta</DataLSID>
+					</InputRefs>
+					<ProtocolApplicationParameters>
+						<SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:IPAS14</SimpleVal>
+						<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do IPAS 14 protocol</SimpleVal>
+					</ProtocolApplicationParameters>
+					<OutputMaterials/>
+					<OutputDataObjects/>
+				</ProtocolApplication>
+			</ProtocolApplications>
 		</ExperimentRun>
 	</ExperimentRuns>
 </ExperimentArchive>
