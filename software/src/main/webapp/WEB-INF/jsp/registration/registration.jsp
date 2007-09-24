@@ -4,7 +4,7 @@
 <html>
 <head>
 </head>
-<body>
+<body onload="document.getElementById('loginName').focus();">
 
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
@@ -16,12 +16,13 @@
     <h2>Create a new protExpress account</h2>
     <div class="padme5">
         <s:form action="registration/save" method="post" id="regForm">
-            <s:textfield name="user.loginName" key="user.loginName" size="40" />
+            <s:textfield id="loginName" name="user.loginName" key="user.loginName" size="40" />
             <s:textfield name="user.firstName" key="user.firstName" size="40" />
             <s:textfield name="user.lastName" key="user.lastName" size="40" />
             <s:textfield name="user.emailId" key="user.emailId" size="40" />
             <s:password name="user.password" key="user.password" size="40" />
             <s:password name="passwordConfirmation" key="passwordConfirmation" size="40" />
+            <s:submit cssStyle="display:none"/>
         </s:form>
     </div>
     <div class="actions">

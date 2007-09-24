@@ -90,6 +90,7 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
@@ -153,14 +154,18 @@ public class RegistrationAction extends ActionSupport {
         if (getUser() != null) {
             if (StringUtils.isNotBlank(getUser().getLoginName())
                     && ProtExpressRegistry.getUserProvisioningManager().getUser(getUser().getLoginName()) != null) {
-                addFieldError("user.loginName", getText("validator.valueInUse"));
+                String errorField = "user.loginName";
+                ActionContext.getContext().getValueStack().set("fieldName", errorField);
+                addFieldError(errorField, getText("validator.unique"));
             }
             if (StringUtils.isNotBlank(getUser().getEmailId())) {
                 User searchUser = new User();
                 searchUser.setEmailId(getUser().getEmailId());
                 if (ProtExpressRegistry.getUserProvisioningManager().getObjects(new UserSearchCriteria(searchUser))
                         .size() != 0) {
-                    addFieldError("user.emailId", getText("validator.valueInUse"));
+                    String errorField = "user.emailId";
+                    ActionContext.getContext().getValueStack().set("fieldName", errorField);
+                    addFieldError(errorField, getText("validator.unique"));
                 }
             }
         }
