@@ -413,10 +413,11 @@ TABLE.login TD.value {
 }
 
 .box {
+    width: 98%;
     float: left;
     padding: 5px;
     background: #d7e4f9;
-    min-width: 550px
+    min-width: 550px;
 }
 
 .box H2 {
