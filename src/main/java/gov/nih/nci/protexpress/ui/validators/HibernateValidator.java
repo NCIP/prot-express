@@ -82,8 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.validators;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
-import gov.nih.nci.protexpress.util.ResourceBundleHelper;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -93,6 +93,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.validator.InvalidValue;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.util.TextParseUtil;
 import com.opensymphony.xwork2.util.ValueStack;
 import com.opensymphony.xwork2.validator.ValidationException;
 import com.opensymphony.xwork2.validator.validators.FieldValidatorSupport;
@@ -107,28 +108,6 @@ public class HibernateValidator extends FieldValidatorSupport {
     private static final Logger LOG = Logger.getLogger(HibernateValidator.class);
     private static final HashMap<Class, ContextualClassValidator> CLASS_VALIDATOR_MAP =
         new HashMap<Class, ContextualClassValidator>();
-
-    private boolean appendPrefix = true;
-
-    /**
-     * Sets whether the field name of this field validator should be prepended to the field name of the visited field to
-     * determine the full field name when an error occurs. The default is true.
-     *
-     * @param appendPrefix the value to set
-     */
-    public void setAppendPrefix(boolean appendPrefix) {
-        this.appendPrefix = appendPrefix;
-    }
-
-    /**
-     * Flags whether the field name of this field validator should be prepended to the field name of the visited field
-     * to determine the full field name when an error occurs. The default is true.
-     *
-     * @return the value of appendPrefix
-     */
-    public boolean isAppendPrefix() {
-        return this.appendPrefix;
-    }
 
     /**
      * {@inheritDoc}
@@ -168,26 +147,22 @@ public class HibernateValidator extends FieldValidatorSupport {
 
         ContextualClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
         if (classValidator == null) {
-            classValidator = new ContextualClassValidator(o.getClass(), ResourceBundleHelper
-                    .getProtExpressResourceBundle());
+            classValidator = new ContextualClassValidator(o.getClass(), ProtExpressRegistry.getResourceBundle());
             CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
         }
         InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
 
         if (validationMessages.length > 0) {
-            String propertyPrefix = "";
-            if (isAppendPrefix()) {
-                propertyPrefix = fieldName + ".";
-            }
-
             for (InvalidValue message : validationMessages) {
-                String msg = ResourceBundleHelper.replaceFieldNameInMessage(message.getMessage(), o.getClass(), message
-                        .getPropertyName());
+                String errorField = fieldName;
+                String msg = message.getMessage();
                 if (StringUtils.isNotBlank(message.getPropertyName())) {
-                    getValidatorContext().addFieldError(propertyPrefix + message.getPropertyName(), msg);
-                } else {
-                    getValidatorContext().addActionError(msg);
+                    errorField = fieldName + "." + message.getPropertyName();
+                    msg = StringUtils.replace(msg, "fieldName", "\"" + errorField + "\"");
                 }
+                ValueStack stack = ActionContext.getContext().getValueStack();
+                msg = TextParseUtil.translateVariables(msg, stack);
+                getValidatorContext().addFieldError(errorField, msg);
             }
         }
     }

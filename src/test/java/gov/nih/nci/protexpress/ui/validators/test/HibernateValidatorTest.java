@@ -179,19 +179,6 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
         assertTrue(fieldErrors.containsKey("protocolArray[1].type"));
     }
 
-    public void testHibernateValidatorWithNoPrefix() throws Exception {
-        this.action.setProtocol2(new Protocol(null, null, null));
-        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(this.action, null);
-        Map fieldErrors = this.action.getFieldErrors();
-
-        assertTrue(this.action.hasErrors());
-        assertEquals(3, fieldErrors.size());
-        assertTrue(fieldErrors.containsKey("lsid"));
-        assertTrue(fieldErrors.containsKey("name"));
-        assertTrue(fieldErrors.containsKey("type"));
-    }
-
     /**
      * The action for this test case.
      */

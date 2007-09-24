@@ -82,8 +82,6 @@
  */
 package gov.nih.nci.protexpress;
 
-import org.apache.log4j.Logger;
-
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.service.ProtExpressService;
@@ -91,6 +89,10 @@ import gov.nih.nci.protexpress.service.ProtocolService;
 import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
+
+import java.util.ResourceBundle;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class is used to access all of the spring managed beans in a static manner.
@@ -104,6 +106,7 @@ public final class ProtExpressRegistry {
     public static final int MAX_RESULTS_PER_PAGE = 10;
     private static final Logger ERROR_LOGGER = Logger.getLogger(ProtExpressRegistry.class.getPackage().getName()
             + ".ERROR");
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("protExpress");
 
     private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
 
@@ -197,5 +200,12 @@ public final class ProtExpressRegistry {
      */
     public static Logger getErrorLogger() {
         return ERROR_LOGGER;
+    }
+
+    /**
+     * @return get the protExpress resource bundle
+     */
+    public static ResourceBundle getResourceBundle() {
+        return ProtExpressRegistry.RESOURCE_BUNDLE;
     }
 }
