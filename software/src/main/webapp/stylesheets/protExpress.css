@@ -158,6 +158,19 @@ SUP {
     line-height: 1.3em
 }
 
+.padme5 {
+    padding: 5px;
+    background: #fff
+}
+
+.errorMessage {
+    clear: both;
+    font-size: 100%;
+    color: #c00;
+    font-style: italic;
+    display: block;
+}
+
 /* Header Styles */
 #nciheader {
     background: #a90101;
@@ -399,6 +412,21 @@ TABLE.login TD.value {
     padding: 3px;
 }
 
+.box {
+    float: left;
+    padding: 5px;
+    background: #d7e4f9;
+    min-width: 550px
+}
+
+.box H2 {
+    color: #496DA5;
+    font-size: 125%;
+    font-weight: bold;
+    padding: 3px 5px 5px 5px;
+    margin-bottom: 0
+}
+
 .floatbox {
     width: 45%;
     margin-right: 1%;
@@ -448,9 +476,35 @@ A.search {
     padding-left: 22px
 }
 
+.actions {
+    text-align: center;
+    border-top: 2px solid #dcdcdc;
+    background: #d7e4f9;
+    padding: 5px;
+    height: 1.3em;
+    color: #ccc
+}
+
 A.add {
     background: url("../images/ico_add.gif") no-repeat 6px 3px;
     padding-left: 22px
+}
+
+A.save {
+    float: right;
+    margin: -16px 50% 0 50%;
+    display: block;
+    width: 5.5em;
+    height: 16px;
+    background: url("../images/ico_save.gif") no-repeat;
+}
+
+A.cancel {
+    float: left;
+    display: block;
+    width: 6.5em;
+    height: 16px;
+    background: url("../images/ico_cancel.gif") no-repeat;
 }
 
 #content A.add:hover {
@@ -517,7 +571,7 @@ TABLE.searchresults TD.title {
     font-weight: bold;
 }
 
-.label {
+.label, TABLE.wwFormTable TD.tdLabel {
     width: 30%;
     text-align: right;
     font-weight: bold;
@@ -534,6 +588,10 @@ TD.space {
 
 TD.value {
     padding-left: 0px;
+}
+
+TABLE.wwFormTable TD {
+    padding: 0px 0px 4px 4px;
 }
 
 .value TEXTAREA {
