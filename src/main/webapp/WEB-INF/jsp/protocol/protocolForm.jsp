@@ -1,26 +1,40 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <html>
 <head>
 </head>
-<body>
-<s:if test="protocol==null || protocol.id == null">
-    <h2><fmt:message key="protocol.add" /></h2>
-</s:if>
-<s:else>
-    <h2><fmt:message key="protocol.edit" /></h2>
-</s:else>
+<body onload="document.getElementById('protocolForm_protocol_lsid').focus();">
 
-<s:form action="protocol/management/save" method="post">
-    <s:textfield name="protocol.lsid" label="%{getText('protocol.lsid')}" size="40" />
-    <s:textfield name="protocol.name" label="%{getText('protocol.name')}" size="40" />
-    <s:textfield name="protocol.description" label="%{getText('protocol.description')}" size="40" />
-    <s:select name="protocol.type" label="%{getText('protocol.type')}"
-        list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName" headerKey=""
-        headerValue="%{getText('protocol.type.select')}" />
-    <s:hidden name="protocol.Id" />
-    <s:submit value="%{getText('save')}" />
-    <s:submit value="%{getText('cancel')}" name="redirect-action:protocol/search/loadSearch" />
-</s:form>
+<!--Page Help-->
+<a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
+<!--/Page Help-->
+
+<h1><fmt:message key="protocols" /></h1>
+
+<div class="box">
+    <s:if test="protocol==null || protocol.id == null">
+        <h2><fmt:message key="protocol.add" /></h2>
+    </s:if>
+    <s:else>
+        <h2><fmt:message key="protocol.edit" /></h2>
+    </s:else>
+    <div class="padme5">
+        <s:form action="protocol/management/save" method="post" id="protocolForm">
+            <s:textfield name="protocol.lsid" key="protocol.lsid" size="40" />
+            <s:textfield name="protocol.name" key="protocol.name" size="40" />
+            <s:textfield name="protocol.description" key="protocol.description" size="40" />
+            <s:select name="protocol.type" key="protocol.type"
+                list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
+                headerKey="protocol.type.select" />
+            <s:hidden name="protocol.Id" />
+            <div class="hidesubmit"><input type="submit"></div>
+        </s:form>
+    </div>
+    <div class="actions">
+        <a href="<s:url action="protocol/search/loadSearch" />" class="cancel"><fmt:message key="cancel" /></a>
+        <a href="javascript:document.getElementById('protocolForm').submit();" class="save"><fmt:message key="save" /></a>
+    </div>
+</div>
 </body>
 </html>

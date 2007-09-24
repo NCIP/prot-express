@@ -22,7 +22,7 @@
             <s:textfield name="user.emailId" key="user.emailId" size="40" />
             <s:password name="user.password" key="user.password" size="40" />
             <s:password name="passwordConfirmation" key="passwordConfirmation" size="40" />
-            <s:submit cssStyle="display:none"/>
+            <div class="hidesubmit"><input type="submit"></div>
         </s:form>
     </div>
     <div class="actions">
