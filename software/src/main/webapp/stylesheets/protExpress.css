@@ -171,6 +171,13 @@ SUP {
     display: block;
 }
 
+div.hidesubmit {
+    border: none;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+
 /* Header Styles */
 #nciheader {
     background: #a90101;
@@ -572,7 +579,7 @@ TABLE.searchresults TD.title {
     font-weight: bold;
 }
 
-.label, TABLE.wwFormTable TD.tdLabel {
+.label,TABLE.wwFormTable TD.tdLabel {
     width: 30%;
     text-align: right;
     font-weight: bold;
