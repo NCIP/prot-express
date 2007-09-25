@@ -26,7 +26,7 @@
         </s:form>
     </div>
     <div class="actions">
-        <a href="<s:url action="dashboard/dashboard" />" class="cancel"><fmt:message key="cancel" /></a>
+        <a href="<c:url value="/dashboard/dashboard.action" />" class="cancel"><fmt:message key="cancel" /></a>
         <a href="javascript:document.getElementById('regForm').submit();" class="save"><fmt:message key="save" /></a>
     </div>
 </div>

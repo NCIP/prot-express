@@ -28,11 +28,18 @@
                 list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
                 headerKey="" headerValue="%{getText('protocol.type.select')}" />
             <s:hidden name="protocol.Id" />
+            <s:hidden name="resultingForward" />
             <div class="hidesubmit"><input type="submit"></div>
         </s:form>
     </div>
     <div class="actions">
-        <a href="<s:url action="protocol/search/loadSearch" />" class="cancel"><fmt:message key="cancel" /></a>
+        <s:if test="resultingForward == 'dashboard'">
+            <c:url value="/dashboard/dashboard.action" var="cancelUrl"/>
+        </s:if>
+        <s:else>
+            <c:url value="/protocol/search/loadSearch.action" var="cancelUrl"/>
+        </s:else>
+        <a href="${cancelUrl}" class="cancel"><fmt:message key="cancel" /></a>
         <a href="javascript:document.getElementById('protocolForm').submit();" class="save"><fmt:message key="save" /></a>
     </div>
 </div>
