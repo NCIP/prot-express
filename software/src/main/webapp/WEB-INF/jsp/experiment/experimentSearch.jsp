@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<s:url id="addExperiment" action="experiment/management/load" />
+<c:url var="addExperiment" value="/experiment/management/load.action" />
 <fmt:message key="experiments" /> | <a href="${addExperiment}"><fmt:message key="experiment.add" /></a>
 
 <h2><fmt:message key="experiments.search" /></h2>

@@ -79,6 +79,7 @@
         <action name="protocol/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
             <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
+            <result name="dashboard" type="chain">dashboard/dashboard</result>
             <result name="input">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>

@@ -20,8 +20,11 @@
     <div class="floatbox">
         <h2><fmt:message key="protocols" /></h2>
         <div class="toolbar">
-            <a href="<s:url action="protocol/search/loadSearch" />" class="search"><fmt:message key="search" /></a>
-            <a href="<s:url action="protocol/management/load" />" class="add" style="border: 0"><fmt:message key="dashboard.protocols.add" /></a>
+            <c:url value="/protocol/management/load.action" var="addUrl">
+                <c:param name="resultingForward" value="dashboard"/>
+            </c:url>
+            <a href="<c:url value="/protocol/search/loadSearch.action" />" class="search"><fmt:message key="search" /></a>
+            <a href="${addUrl}" class="add" style="border: 0"><fmt:message key="dashboard.protocols.add" /></a>
         </div>
         <table class="searchresults" cellspacing="0">
             <tr>
@@ -37,6 +40,7 @@
                 <c:forEach items="${recentProtocols}" var="protocol">
                     <c:url var="loadUrl" value="/protocol/management/load.action">
                         <c:param name="protocol.id" value="${protocol.id}" />
+                        <c:param name="resultingForward" value="dashboard"/>
                     </c:url>
                     <tr>
                         <td><a href="<c:url value="/notYetImplemented.html"/>">${protocol.name}</a></td>
@@ -50,8 +54,8 @@
     <div class="floatbox">
         <h2><fmt:message key="experiments" /></h2>
         <div class="toolbar">
-            <a href="<s:url action="experiment/search/loadSearch" />" class="search"><fmt:message key="search" /></a>
-            <a href="<s:url action="experiment/management/load" />" class="add" style="border: 0"><fmt:message key="dashboard.experiments.add" /></a>
+            <a href="<c:url value="/experiment/search/loadSearch.action" />" class="search"><fmt:message key="search" /></a>
+            <a href="<c:url value="/experiment/management/load.action" />" class="add" style="border: 0"><fmt:message key="dashboard.experiments.add" /></a>
             <a href="<c:url value="/notYetImplemented.html"/>" class="import" style="border: 0"><fmt:message key="dashboard.experiments.import" /></a>
         </div>
         <table class="searchresults" cellspacing="0">

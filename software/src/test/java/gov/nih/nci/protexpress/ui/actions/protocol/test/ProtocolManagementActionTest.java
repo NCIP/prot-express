@@ -107,50 +107,57 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        action = new ProtocolManagementAction();
+        this.action = new ProtocolManagementAction();
 
-        protocol = new Protocol("lsid_test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
-        protocol.setInstrument("foo");
-        protocol.setDescription("bar");
-        protocol.setSoftware("baz");
+        this.protocol = new Protocol("lsid_test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.protocol.setInstrument("foo");
+        this.protocol.setDescription("bar");
+        this.protocol.setSoftware("baz");
 
-        theSession.saveOrUpdate(protocol);
-        theSession.flush();
-        theSession.clear();
+        this.theSession.saveOrUpdate(this.protocol);
+        this.theSession.flush();
+        this.theSession.clear();
     }
 
     public void testPrepare() throws Exception {
-        action.setProtocol(null);
-        action.prepare();
-        assertEquals(null, action.getProtocol());
+        this.action.setProtocol(null);
+        this.action.prepare();
+        assertEquals(null, this.action.getProtocol());
 
         Protocol p = new Protocol(null, null, null);
-        action.setProtocol(p);
-        action.prepare();
-        assertEquals(p, action.getProtocol());
+        this.action.setProtocol(p);
+        this.action.prepare();
+        assertEquals(p, this.action.getProtocol());
 
-        action.getProtocol().setId(protocol.getId());
-        action.prepare();
-        assertEquals(theSession.get(Protocol.class, protocol.getId()), action.getProtocol());
-        assertTrue(EqualsBuilder.reflectionEquals(theSession.get(Protocol.class, protocol.getId()), action
+        this.action.getProtocol().setId(this.protocol.getId());
+        this.action.prepare();
+        assertEquals(this.theSession.get(Protocol.class, this.protocol.getId()), this.action.getProtocol());
+        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Protocol.class, this.protocol.getId()), this.action
                 .getProtocol()));
     }
 
     public void testLoad() throws Exception {
-        assertEquals(ActionSupport.INPUT, action.load());
+        assertEquals(ActionSupport.INPUT, this.action.load());
     }
 
     public void testSaveOrUpdate() throws Exception {
-        action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
-        assertEquals(ActionSupport.SUCCESS, action.save());
-        assertEquals(theSession.get(Protocol.class, action.getProtocol().getId()), action.getProtocol());
+        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
+    }
+
+    public void testSaveOrUpdateReturnToDashboard() throws Exception {
+        this.action.setResultingForward("dashboard");
+        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
+        assertEquals("dashboard", this.action.save());
+        assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
     }
 
     public void testDelete() throws Exception {
-        action.setProtocol((Protocol) theSession.get(Protocol.class, protocol.getId()));
-        assertEquals(ActionSupport.SUCCESS, action.delete());
-        theSession.flush();
-        theSession.clear();
-        assertEquals(0, theSession.createQuery("from " + Protocol.class.getName()).list().size());
+        this.action.setProtocol((Protocol) this.theSession.get(Protocol.class, this.protocol.getId()));
+        assertEquals(ActionSupport.SUCCESS, this.action.delete());
+        this.theSession.flush();
+        this.theSession.clear();
+        assertEquals(0, this.theSession.createQuery("from " + Protocol.class.getName()).list().size());
     }
 }

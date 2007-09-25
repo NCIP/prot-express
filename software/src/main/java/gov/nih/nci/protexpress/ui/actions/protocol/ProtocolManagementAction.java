@@ -103,6 +103,8 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
 
     private Protocol protocol = new Protocol(null, null, null);
 
+    private String resultingForward = ActionSupport.SUCCESS;
+
     /**
      * {@inheritDoc}
      */
@@ -129,7 +131,7 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     public String save() {
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return ActionSupport.SUCCESS;
+        return getResultingForward();
     }
 
     /**
@@ -156,5 +158,19 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
+    }
+
+    /**
+     * @return the resultingForward
+     */
+    public String getResultingForward() {
+        return this.resultingForward;
+    }
+
+    /**
+     * @param resultingForward the resultingForward to set
+     */
+    public void setResultingForward(String resultingForward) {
+        this.resultingForward = resultingForward;
     }
 }
