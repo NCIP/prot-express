@@ -302,12 +302,9 @@ public class Xar22FormatConversionHelper {
            ProtocolApplications xarProtApplications = xarExpRunType.getProtocolApplications();
            if (xarProtApplications != null) {
                for (ProtocolApplicationBaseType xarProtAppBaseType : xarProtApplications.getProtocolApplication()) {
-                   ProtocolApplication protApplication = getProtocolApplication(xarProtAppBaseType);
-
                    // Get the protocol corresponding to the LSID and set the properties.
-                   Protocol protocol = protocolMap.get(protApplication.getProtocolLsid());
-                   protApplication.setProtocol(protocol);
-
+                   Protocol protocol = protocolMap.get(xarProtAppBaseType.getProtocolLSID());
+                   ProtocolApplication protApplication = getProtocolApplication(xarProtAppBaseType, protocol);
                    expRun.getProtocolApplications().add(protApplication);
                }
            }
@@ -385,28 +382,28 @@ public class Xar22FormatConversionHelper {
         ProtocolBaseType xarProtocolBaseType = objectFactory.createProtocolBaseType();
         if (protApp != null) {
             xarProtocolBaseType.setAbout(protApp.getProtocolLsid());
-            xarProtocolBaseType.setApplicationType(protApp.getProtocolType().name());
-            xarProtocolBaseType.setInstrument(protApp.getProtocolInstrument());
-            xarProtocolBaseType.setName(protApp.getProtocolName());
-            xarProtocolBaseType.setProtocolDescription(protApp.getProtocolDescription());
-            xarProtocolBaseType.setSoftware(protApp.getProtocolSoftware());
+            xarProtocolBaseType.setApplicationType(protApp.getProtocol().getType().name());
+            xarProtocolBaseType.setInstrument(protApp.getProtocol().getInstrument());
+            xarProtocolBaseType.setName(protApp.getProtocol().getName());
+            xarProtocolBaseType.setProtocolDescription(protApp.getProtocol().getDescription());
+            xarProtocolBaseType.setSoftware(protApp.getProtocol().getSoftware());
 
-            xarProtocolBaseType.setOutputMaterialType(protApp.getProtocolOutputMaterialType());
-            xarProtocolBaseType.setOutputDataType(protApp.getProtocolOutputDataType());
+            xarProtocolBaseType.setOutputMaterialType(protApp.getProtocol().getOutputMaterialType());
+            xarProtocolBaseType.setOutputDataType(protApp.getProtocol().getOutputDataType());
             xarProtocolBaseType.setMaxInputDataPerInstance(objectFactory.createProtocolBaseTypeMaxInputDataPerInstance(
-                    protApp.getProtocolMaxInputDataPerInstance()));
+                    protApp.getProtocol().getMaxInputDataPerInstance()));
             xarProtocolBaseType.setMaxInputMaterialPerInstance(objectFactory.
                     createProtocolBaseTypeMaxInputMaterialPerInstance(
-                            protApp.getProtocolMaxInputMaterialPerInstance()));
+                            protApp.getProtocol().getMaxInputMaterialPerInstance()));
             xarProtocolBaseType.setOutputDataPerInstance(objectFactory.
                     createProtocolBaseTypeOutputDataPerInstance(
-                    protApp.getProtocolOutputDataPerInstance()));
+                    protApp.getProtocol().getOutputDataPerInstance()));
             xarProtocolBaseType.setOutputMaterialPerInstance(objectFactory.
                     createProtocolBaseTypeOutputMaterialPerInstance(
-                    protApp.getProtocolOutputMaterialPerInstance()));
+                    protApp.getProtocol().getOutputMaterialPerInstance()));
 
             // Get the contact
-            xarProtocolBaseType.setContact(getContactType(protApp.getProtocolPrimaryContact()));
+            xarProtocolBaseType.setContact(getContactType(protApp.getProtocol().getPrimaryContact()));
         }
 
         return xarProtocolBaseType;
@@ -446,12 +443,14 @@ public class Xar22FormatConversionHelper {
      * Given a XAR 2.2 ProtocolApplicationBaseType, parses it and returns a ProtocolApplication.
      *
      * @param xarProtocolApplicationBaseType the protocol application base type
+     * @param protocol the protocol
      * @return the protocol application
      */
-    private ProtocolApplication getProtocolApplication(ProtocolApplicationBaseType xarProtAppBaseType) {
+    private ProtocolApplication getProtocolApplication(ProtocolApplicationBaseType xarProtAppBaseType,
+            Protocol protocol) {
         ProtocolApplication protApplication = new ProtocolApplication(xarProtAppBaseType.getAbout(),
                 xarProtAppBaseType.getName(), ProtocolType.valueOf(xarProtAppBaseType.getCpasType()),
-                xarProtAppBaseType.getActionSequence(), xarProtAppBaseType.getActivityDate());
+                xarProtAppBaseType.getActionSequence(), xarProtAppBaseType.getActivityDate(), protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
         protApplication.setProtocolLsid(xarProtAppBaseType.getProtocolLSID());
