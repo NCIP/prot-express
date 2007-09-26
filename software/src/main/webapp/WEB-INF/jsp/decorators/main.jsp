@@ -8,6 +8,7 @@
     <title><fmt:message key="protexpress" /> - <decorator:title default="Welcome" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
+    <link rel="stylesheet" href="<c:url value="/stylesheets/baseStyles.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
 </head>
@@ -21,20 +22,21 @@
 <!-- MAIN ROW (Area between header and footer) -->
 <div id="main">
 
+    <div id="contentwrapper">
+        <!--  CONTENT -->
+        <div id="<decorator:getProperty property="contentCssId" default="content" />">
+
+            <!-- DECORATED BODY -->
+            <decorator:body />
+            <!-- END DECORATED BODY -->
+
+        </div>
+        <!--  END OF CONTENT -->
+    </div>
+
     <!-- LEFTNAV -->
     <div id="leftnav"><c:import url="/WEB-INF/jsp/decorators/mainMenu.jsp" /></div>
     <!--  END OF LEFTNAV -->
-
-    <!--  CONTENT -->
-    <div id="<decorator:getProperty property="contentCssId" default="content" />">
-
-        <!-- DECORATED BODY -->
-        <decorator:body />
-        <!-- END DECORATED BODY -->
-
-        <div class="clear"></div>
-    </div>
-    <!--  END OF CONTENT -->
 
     <div class="clear"></div>
 </div>

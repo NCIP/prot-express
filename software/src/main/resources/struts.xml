@@ -96,5 +96,18 @@
             <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+
+        <action name="ajax/experiment/management/load/*"
+            class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="load">
+            <result name="input">/WEB-INF/jsp/experiment/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/experiment/management/save/*"
+            class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="save">
+            <result name="input">/WEB-INF/jsp/experiment/{1}.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
     </package>
 </struts>

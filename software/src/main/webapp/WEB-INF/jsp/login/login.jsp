@@ -8,7 +8,7 @@
 <body onload="document.getElementById('j_username').focus();">
 <page:param name="contentCssId">contenthome</page:param>
 <!--Home Banner-->
-<div class="homebanner"><img src="<c:url value="/images/banner_protexpress.gif"/>" alt="" height="140" width="600"></div>
+<div class="homebanner"><img src="<c:url value="/images/banner_protexpress.gif"/>" alt="" height="140" width="599"></div>
 <!--/Home Banner-->
 
 <div id="homecontentbar">
