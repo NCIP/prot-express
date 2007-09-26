@@ -109,6 +109,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 
@@ -211,6 +212,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
     @Column(name = "name")
     @Length(max = NAME_LENGTH)
     @NotEmpty
+    @Index(name = "experiment_name_idx")
     public String getName() {
         return this.name;
     }
@@ -231,6 +233,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      */
     @Column(name = "comments")
     @Length(max = COMMENTS_LENGTH)
+    @Index(name = "experiment_comments_idx")
     public String getComments() {
         return this.comments;
     }
@@ -386,7 +389,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
             joinColumns = { @JoinColumn(name = "experiment_id") },
             inverseJoinColumns = { @JoinColumn(name = "protocol_id") })
     public List<Protocol> getProtocols() {
-        return protocols;
+        return this.protocols;
     }
 
     /**

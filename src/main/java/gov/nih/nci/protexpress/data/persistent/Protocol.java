@@ -214,7 +214,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @return the name
      */
-    @Index(name = "name_index")
+    @Index(name = "protocol_name_idx")
     @Column(name = "name")
     @NotEmpty
     @Length(max = NAME_LENGTH)
@@ -237,7 +237,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = TYPE_LENGTH)
     @NotNull
-    @Index(name = "type_index")
+    @Index(name = "protocol_type_idx")
     public ProtocolType getType() {
         return this.type;
     }
@@ -256,7 +256,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "description")
     @Length(max = DESCRIPTION_LENGTH)
-    @Index(name = "description_index")
+    @Index(name = "protocol_desc_idx")
     public String getDescription() {
         return this.description;
     }
@@ -389,7 +389,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "max_input_material")
     public Integer getMaxInputMaterialPerInstance() {
-        return maxInputMaterialPerInstance;
+        return this.maxInputMaterialPerInstance;
     }
 
     /**
@@ -408,7 +408,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "max_input_data")
     public Integer getMaxInputDataPerInstance() {
-        return maxInputDataPerInstance;
+        return this.maxInputDataPerInstance;
     }
 
     /**
@@ -427,7 +427,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "output_material")
     public Integer getOutputMaterialPerInstance() {
-        return outputMaterialPerInstance;
+        return this.outputMaterialPerInstance;
     }
 
     /**
@@ -446,7 +446,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "output_data")
     public Integer getOutputDataPerInstance() {
-        return outputDataPerInstance;
+        return this.outputDataPerInstance;
     }
 
     /**
@@ -466,7 +466,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     @Column(name = "output_material_type")
     @Length(max = OUTPUT_MATERIAL_TYPE_LENGTH)
     public String getOutputMaterialType() {
-        return outputMaterialType;
+        return this.outputMaterialType;
     }
 
     /**
@@ -486,7 +486,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     @Column(name = "output_data_type")
     @Length(max = OUTPUT_DATA_TYPE_LENGTH)
     public String getOutputDataType() {
-        return outputDataType;
+        return this.outputDataType;
     }
 
     /**
