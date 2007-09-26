@@ -124,7 +124,6 @@ public class ProtocolApplication implements Serializable {
     private static final int ACTIVITY_DATE_LENGTH = 25;
     private static final int COMMENTS_LENGTH = 255;
 
-    // ProtocolApplication attributes
     private Long id;
     private String lsid;
     private String name;
@@ -355,7 +354,7 @@ public class ProtocolApplication implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "experiment_run_id", nullable = false)
     public ExperimentRun getExperimentRun() {
-        return experimentRun;
+        return this.experimentRun;
     }
 
     /**
