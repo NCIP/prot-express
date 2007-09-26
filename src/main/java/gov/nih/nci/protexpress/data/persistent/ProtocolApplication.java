@@ -107,7 +107,7 @@ import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 
 /**
- * Class representing a protocol.
+ * Class representing a protocol application.
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -118,15 +118,11 @@ public class ProtocolApplication implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
     private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
     private static final int ACTION_SEQUENCE_LENGTH = 3;
     private static final int ACTIVITY_DATE_LENGTH = 25;
-    private static final int OUTPUT_MATERIAL_TYPE_LENGTH = 25;
-    private static final int OUTPUT_DATA_TYPE_LENGTH = 25;
+    private static final int COMMENTS_LENGTH = 255;
 
     // ProtocolApplication attributes
     private Long id;
@@ -138,21 +134,7 @@ public class ProtocolApplication implements Serializable {
     private Calendar activityDate;
     private String comments;
     private ExperimentRun experimentRun;
-
-    // Protocol Attributes
     private Protocol protocol;
-    private String protocolName;
-    private String protocolDescription;
-    private ProtocolType protocolType;
-    private Integer protocolMaxInputMaterialPerInstance;
-    private Integer protocolMaxInputDataPerInstance;
-    private Integer protocolOutputMaterialPerInstance;
-    private Integer protocolOutputDataPerInstance;
-    private String protocolOutputMaterialType = "Material";
-    private String protocolOutputDataType = "Data";
-    private String protocolSoftware;
-    private String protocolInstrument;
-    private Person protocolPrimaryContact;
 
     /**
      * protected default constructor for hibernate only.
@@ -168,13 +150,16 @@ public class ProtocolApplication implements Serializable {
      * @param type the protocol application type
      * @param actionSequence the action sequence
      * @param activityDate the activity date
+     * @param protocol the protocol being applied
      */
-    public ProtocolApplication(String lsid, String name, ProtocolType type, int actionSequence, Calendar activityDate) {
+    public ProtocolApplication(String lsid, String name, ProtocolType type, int actionSequence,
+            Calendar activityDate, Protocol protocol) {
         setLsid(lsid);
         setName(name);
         setType(type);
         setActionSequence(actionSequence);
         setActivityDate(activityDate);
+        setProtocol(protocol);
     }
 
     /**
@@ -263,6 +248,9 @@ public class ProtocolApplication implements Serializable {
     @NotEmpty
     @Length(max = LSID_LENGTH)
     public String getProtocolLsid() {
+        if (this.protocol != null) {
+            this.protocolLsid = this.protocol.getLsid();
+        }
         return this.protocolLsid;
     }
 
@@ -325,7 +313,7 @@ public class ProtocolApplication implements Serializable {
      */
     @Column(name = "comments")
     @NotEmpty
-    @Length(max = DESCRIPTION_LENGTH)
+    @Length(max = COMMENTS_LENGTH)
     public String getComments() {
         return this.comments;
     }
@@ -357,272 +345,6 @@ public class ProtocolApplication implements Serializable {
      */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
-        this.updateProtocolValues();
-    }
-
-    /**
-     * Updates the protocol related attribute values.
-     *
-     */
-    private void updateProtocolValues() {
-        if (this.protocol != null) {
-            this.setProtocolName(this.protocol.getName());
-            this.setProtocolDescription(this.protocol.getDescription());
-            this.setProtocolType(this.protocol.getType());
-            this.setProtocolMaxInputMaterialPerInstance(this.protocol.getMaxInputMaterialPerInstance());
-            this.setProtocolMaxInputDataPerInstance(this.protocol.getMaxInputDataPerInstance());
-            this.setProtocolOutputMaterialPerInstance(this.protocol.getOutputMaterialPerInstance());
-            this.setProtocolOutputDataPerInstance(this.protocol.getOutputDataPerInstance());
-            this.setProtocolOutputMaterialType(this.protocol.getOutputMaterialType());
-            this.setProtocolSoftware(this.protocol.getSoftware());
-            this.setProtocolInstrument(this.protocol.getInstrument());
-            this.setProtocolLsid(this.protocol.getLsid());
-            // Set the Contact Person.
-            Person person = new Person();
-            person.setComments(this.protocol.getPrimaryContact().getComments());
-            person.setContactId(this.protocol.getPrimaryContact().getContactId());
-            person.setEmail(this.protocol.getPrimaryContact().getEmail());
-            person.setFirstName(this.protocol.getPrimaryContact().getFirstName());
-            person.setLastName(this.protocol.getPrimaryContact().getLastName());
-
-            this.setProtocolPrimaryContact(person);
-        }
-    }
-
-
-    /**
-     * Gets the protocolName.
-     *
-     * @return the protocolName.
-     */
-    @Column(name = "protocol_name")
-    @Length(max = NAME_LENGTH)
-    public String getProtocolName() {
-        return protocolName;
-    }
-
-    /**
-     * Sets the protocolName.
-     *
-     * @param protocolName the protocolName to set.
-     */
-    public void setProtocolName(String protocolName) {
-        this.protocolName = protocolName;
-    }
-
-    /**
-     * Gets the protocolDescription.
-     *
-     * @return the protocolDescription
-     */
-    @Column(name = "protocol_description")
-    @Length(max = DESCRIPTION_LENGTH)
-    public String getProtocolDescription() {
-        return this.protocolDescription;
-    }
-
-    /**
-     * Sets the protocolDescription.
-     *
-     * @param protocolDescription the protocolDescription to set
-     */
-    public void setProtocolDescription(String protocolDescription) {
-        this.protocolDescription = protocolDescription;
-    }
-
-    /**
-     * @return the protocolType
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "protocol_type", length = TYPE_LENGTH)
-    @NotNull
-    public ProtocolType getProtocolType() {
-        return this.protocolType;
-    }
-
-    /**
-     * @param protocolType the protocolType to set
-     */
-    public void setProtocolType(ProtocolType protocolType) {
-        this.protocolType = protocolType;
-    }
-
-    /**
-     * Gets the protocolMaxInputMaterialPerInstance.
-     *
-     * @return the protocolMaxInputMaterialPerInstance.
-     */
-    @Column(name = "max_input_material")
-    public Integer getProtocolMaxInputMaterialPerInstance() {
-        return protocolMaxInputMaterialPerInstance;
-    }
-
-    /**
-     * Sets the protocolMaxInputMaterialPerInstance.
-     *
-     * @param protocolMaxInputMaterialPerInstance the protocolMaxInputMaterialPerInstance to set.
-     */
-    public void setProtocolMaxInputMaterialPerInstance(
-            Integer protocolMaxInputMaterialPerInstance) {
-        this.protocolMaxInputMaterialPerInstance = protocolMaxInputMaterialPerInstance;
-    }
-
-    /**
-     * Gets the protocolMaxInputDataPerInstance.
-     *
-     * @return the protocolMaxInputDataPerInstance.
-     */
-    @Column(name = "max_input_data")
-    public Integer getProtocolMaxInputDataPerInstance() {
-        return protocolMaxInputDataPerInstance;
-    }
-
-    /**
-     * Sets the protocolMaxInputDataPerInstance.
-     *
-     * @param protocolMaxInputDataPerInstance the protocolMaxInputDataPerInstance to set.
-     */
-    public void setProtocolMaxInputDataPerInstance(
-            Integer protocolMaxInputDataPerInstance) {
-        this.protocolMaxInputDataPerInstance = protocolMaxInputDataPerInstance;
-    }
-
-    /**
-     * Gets the protocolOutputMaterialPerInstance.
-     *
-     * @return the protocolOutputMaterialPerInstance.
-     */
-    @Column(name = "output_material")
-    public Integer getProtocolOutputMaterialPerInstance() {
-        return protocolOutputMaterialPerInstance;
-    }
-
-    /**
-     * Sets the protocolOutputMaterialPerInstance.
-     *
-     * @param protocolOutputMaterialPerInstance the protocolOutputMaterialPerInstance to set.
-     */
-    public void setProtocolOutputMaterialPerInstance(
-            Integer protocolOutputMaterialPerInstance) {
-        this.protocolOutputMaterialPerInstance = protocolOutputMaterialPerInstance;
-    }
-
-    /**
-     * Gets the protocolOutputDataPerInstance.
-     *
-     * @return the protocolOutputDataPerInstance.
-     */
-    @Column(name = "output_data")
-    public Integer getProtocolOutputDataPerInstance() {
-        return protocolOutputDataPerInstance;
-    }
-
-    /**
-     * Sets the protocolOutputDataPerInstance.
-     *
-     * @param protocolOutputDataPerInstance the protocolOutputDataPerInstance to set.
-     */
-    public void setProtocolOutputDataPerInstance(Integer protocolOutputDataPerInstance) {
-        this.protocolOutputDataPerInstance = protocolOutputDataPerInstance;
-    }
-
-    /**
-     * Gets the protocolOutputMaterialType.
-     *
-     * @return the protocolOutputMaterialType.
-     */
-    @Column(name = "output_material_type")
-    @Length(max = OUTPUT_MATERIAL_TYPE_LENGTH)
-    public String getProtocolOutputMaterialType() {
-        return protocolOutputMaterialType;
-    }
-
-    /**
-     * Sets the protocolOutputMaterialType.
-     *
-     * @param protocolOutputMaterialType the protocolOutputMaterialType to set.
-     */
-    public void setProtocolOutputMaterialType(String protocolOutputMaterialType) {
-        this.protocolOutputMaterialType = protocolOutputMaterialType;
-    }
-
-    /**
-     * Gets the protocolOutputDataType.
-     *
-     * @return the protocolOutputDataType.
-     */
-    @Column(name = "output_data_type")
-    @Length(max = OUTPUT_DATA_TYPE_LENGTH)
-    public String getProtocolOutputDataType() {
-        return protocolOutputDataType;
-    }
-
-    /**
-     * Sets the protocolOutputDataType.
-     *
-     * @param protocolOutputDataType the protocolOutputDataType to set.
-     */
-    public void setProtocolOutputDataType(String protocolOutputDataType) {
-        this.protocolOutputDataType = protocolOutputDataType;
-    }
-
-    /**
-     * Gets the protocolSoftware.
-     *
-     * @return the protocolSoftware
-     */
-    @Column(name = "protocol_software")
-    @Length(max = SOFTWARE_LENGTH)
-    public String getProtocolSoftware() {
-        return this.protocolSoftware;
-    }
-
-    /**
-     *
-     * @param protocolSoftware the protocolSoftware to set
-     */
-    public void setProtocolSoftware(String protocolSoftware) {
-        this.protocolSoftware = protocolSoftware;
-    }
-
-    /**
-     * Gets the protocolInstrument.
-     *
-     * @return the protocolInstrument
-     */
-    @Column(name = "protocol_instrument")
-    @Length(max = INSTRUMENT_LENGTH)
-    public String getProtocolInstrument() {
-        return this.protocolInstrument;
-    }
-
-    /**
-     * Sets the protocolInstrument.
-     *
-     * @param protocolInstrument the protocolInstrument to set
-     */
-    public void setProtocolInstrument(String protocolInstrument) {
-        this.protocolInstrument = protocolInstrument;
-    }
-
-    /**
-     * Gets the protocolPrimaryContact.
-     *
-     * @return the protocolPrimaryContact.
-     */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "protocol_person_id")
-    public Person getProtocolPrimaryContact() {
-        return this.protocolPrimaryContact;
-    }
-
-    /**
-     * Sets the protocolPrimaryContact.
-     *
-     * @param protocolPrimaryContact the protocolPrimaryContact to set.
-     */
-    public void setProtocolPrimaryContact(Person protocolPrimaryContact) {
-        this.protocolPrimaryContact = protocolPrimaryContact;
     }
 
     /**

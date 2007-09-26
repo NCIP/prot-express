@@ -109,19 +109,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     private List<Protocol> protocols;
     private FormatConversionService fcs;
 
-    private final String xarFileWithOneExperiment = "src/test/inputFiles/test/testOneExperiment.xar.xml";
-    private final String xarOutfileWithOneExperiment =
-        "target/outfile-testUnmarshallAndMarshallFile-OneExperiment.xar.xml";
+    private final String inputXARFile = "src/test/inputFiles/test/inputXARFile.xar.xml";
+    private final String outputXARFile1 = "target/outputXARFile-Unmarshall_Marshall.xar.xml";
+    private final String outputXARFile2 = "target/outputXARFile-Marshall_Unmarshall.xar.xml";
 
-    private final String xarFileWithMultipleExperiments = "src/test/inputFiles/test/testMultipleExperiments.xar.xml";
-    private final String xarOutfileWithMultipleExperiments =
-        "target/outfile-testUnmarshallAndMarshallFile-MultipleExperiments.xar.xml";
-
-    private final String xarOutfileOneExperimentMarshallUnmarshall =
-        "target/outfile-testMarshallAndUnmarshallFile-OneExperiment.xar.xml";
-
-    private final String xarOutfileMultipleExperimentsMarshallUnmarshall =
-        "target/outfile-testMarshallAndUnmarshallFile-MultipleExperiments.xar.xml";
     /**
      * {@inheritDoc}
      */
@@ -143,49 +134,25 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testUnmarshallAndMarshallFileMultipleExperiments() throws Exception {
-        File inFile = new File(xarFileWithMultipleExperiments);
+    public void testUnmarshallAndMarshallFile() throws Exception {
+        File inFile = new File(inputXARFile);
         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(inFile);
         assertExperiments(unmarshalledExperiments);
 
-        File outFile = new File(xarOutfileWithMultipleExperiments);
-        fcs.marshallExperiments(unmarshalledExperiments, outFile);
-    }
-
-    /**
-     * Reads a xar file containing one experiment, gets list of Experiments, performs assertions,
-     * and writes back to file.
-     * @throws Exception the exception
-     */
-    @SuppressWarnings("unchecked")
-    public void testUnmarshallAndMarshallFileOneExperiment() throws Exception {
-        File inFile = new File(xarFileWithOneExperiment);
-        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(inFile);
-        assertEquals(1, unmarshalledExperiments.size());
-        assertExperiment1Values(unmarshalledExperiments.get(0));
-
-        File outFile = new File(xarOutfileWithOneExperiment);
+        File outFile = new File(outputXARFile1);
         fcs.marshallExperiments(unmarshalledExperiments, outFile);
     }
 
     @SuppressWarnings("unchecked")
-     public void testMarshallAndUmarshallFileOneExperiment() throws Exception {
-         File outFile = new File(xarOutfileOneExperimentMarshallUnmarshall);
+     public void testMarshallAndUmarshallFile() throws Exception {
+         File outFile = new File(outputXARFile2);
          List<Experiment> exp = new ArrayList<Experiment>();
          exp.add(getExperiment1());
+         exp.add(getExperiment2());
          fcs.marshallExperiments(exp, outFile);
 
          List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(outFile);
-         assertEquals(1, unmarshalledExperiments.size());
-         assertExperiment1Values(unmarshalledExperiments.get(0));
-     }
-
-     @SuppressWarnings("unchecked")
-     public void testMarshallAndUmarshallFileMultipleExperiments() throws Exception {
-         File outFile = new File(xarOutfileMultipleExperimentsMarshallUnmarshall);
-         fcs.marshallExperiments(experiments, outFile);
-
-         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(outFile);
+         assertEquals(2, unmarshalledExperiments.size());
          assertExperiments(unmarshalledExperiments);
      }
 
@@ -237,8 +204,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
         // Set a Protocol Application
-        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", ProtocolType.valueOf("ExperimentRun"), 1, DateAdapter.getDateFromXmlString("2006-08-31-07:00"));
-        protApp1.setProtocol(protocols.get(0));
+        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", ProtocolType.valueOf("ExperimentRun"), 1, DateAdapter.getDateFromXmlString("2006-08-31-07:00"), protocols.get(0));
 
         List<ProtocolApplication> protApplications = new ArrayList<ProtocolApplication>();
         protApplications.add(protApp1);
@@ -265,10 +231,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
         // Set Primary Contact
         Person person = new Person();
-        person.setContactId("Dr. Tabb's Research Center'");
-        person.setFirstName("John");
-        person.setLastName("Tabb");
-        person.setEmail("tabb@research-center.com");
+        person.setContactId("John's Research Center'");
+        person.setFirstName("Jonathan");
+        person.setLastName("Doe");
+        person.setEmail("jdoe@research-center.com");
         currentExperiment.setPrimaryContact(person);
 
         return currentExperiment;
@@ -354,10 +320,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         //Person
         Person person = unmarshalledExperiment.getPrimaryContact();
         assertNotNull(person);
-        assertEquals(person.getContactId(), "Dr. Tabb's Research Center'");
-        assertEquals(person.getFirstName(), "John");
-        assertEquals(person.getLastName(), "Tabb");
-        assertEquals(person.getEmail(), "tabb@research-center.com");
+        assertEquals(person.getContactId(), "John's Research Center'");
+        assertEquals(person.getFirstName(), "Jonathan");
+        assertEquals(person.getLastName(), "Doe");
+        assertEquals(person.getEmail(), "jdoe@research-center.com");
 
         List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
         assertNotNull(unmarshalledExperimentRuns);
