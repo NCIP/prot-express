@@ -13,21 +13,23 @@
 <h1><fmt:message key="registration.header" /></h1>
 
 <div class="box">
-    <h2><fmt:message key="registration.create.header" /></h2>
-    <div class="padme5">
-        <s:form action="registration/save" method="post" id="regForm">
-            <s:textfield name="user.loginName" key="user.loginName" size="40" />
-            <s:textfield name="user.firstName" key="user.firstName" size="40" />
-            <s:textfield name="user.lastName" key="user.lastName" size="40" />
-            <s:textfield name="user.emailId" key="user.emailId" size="40" />
-            <s:password name="user.password" key="user.password" size="40" />
-            <s:password name="passwordConfirmation" key="passwordConfirmation" size="40" />
-            <div class="hidesubmit"><input type="submit"></div>
-        </s:form>
-    </div>
-    <div class="actions">
-        <a href="<c:url value="/dashboard/dashboard.action" />" class="cancel"><fmt:message key="cancel" /></a>
-        <a href="javascript:document.getElementById('regForm').submit();" class="save"><fmt:message key="save" /></a>
+    <div class="formbox">
+        <div id="boxinner">
+            <h3><fmt:message key="registration.create.header" /></h3>
+            <s:form action="registration/save" method="post" id="regForm">
+                <s:textfield name="user.loginName" key="user.loginName" size="40" />
+                <s:textfield name="user.firstName" key="user.firstName" size="40" />
+                <s:textfield name="user.lastName" key="user.lastName" size="40" />
+                <s:textfield name="user.emailId" key="user.emailId" size="40" />
+                <s:password name="user.password" key="user.password" size="40" />
+                <s:password name="passwordConfirmation" key="passwordConfirmation" size="40" />
+                <div class="hidesubmit"><input type="submit"></div>
+            </s:form>
+            <div class="actions">
+                <a href="<c:url value="/dashboard/dashboard.action" />" class="cancel"><fmt:message key="cancel" /></a>
+                <a href="javascript:document.getElementById('regForm').submit();" class="save"><fmt:message key="save" /></a>
+            </div>
+        </div>
     </div>
 </div>
 </body>
