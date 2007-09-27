@@ -91,13 +91,14 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
-import gov.nih.nci.protexpress.util.DateAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Class to test the xar 22 conversion service.
@@ -119,13 +120,13 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        fcs = ProtExpressRegistry.getXar22FormatConversionService();
+        this.fcs = ProtExpressRegistry.getXar22FormatConversionService();
 
         setupProtocols();
 
-        experiments = new ArrayList<Experiment>();
-        experiments.add(getExperiment1());
-        experiments.add(getExperiment2());
+        this.experiments = new ArrayList<Experiment>();
+        this.experiments.add(getExperiment1());
+        this.experiments.add(getExperiment2());
     }
 
     /**
@@ -135,23 +136,23 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
      */
     @SuppressWarnings("unchecked")
     public void testUnmarshallAndMarshallFile() throws Exception {
-        File inFile = new File(inputXARFile);
-        List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(inFile);
+        File inFile = new File(this.inputXARFile);
+        List<Experiment> unmarshalledExperiments = this.fcs.unmarshallExperiments(inFile);
         assertExperiments(unmarshalledExperiments);
 
-        File outFile = new File(outputXARFile1);
-        fcs.marshallExperiments(unmarshalledExperiments, outFile);
+        File outFile = new File(this.outputXARFile1);
+        this.fcs.marshallExperiments(unmarshalledExperiments, outFile);
     }
 
     @SuppressWarnings("unchecked")
      public void testMarshallAndUmarshallFile() throws Exception {
-         File outFile = new File(outputXARFile2);
+         File outFile = new File(this.outputXARFile2);
          List<Experiment> exp = new ArrayList<Experiment>();
          exp.add(getExperiment1());
          exp.add(getExperiment2());
-         fcs.marshallExperiments(exp, outFile);
+         this.fcs.marshallExperiments(exp, outFile);
 
-         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(outFile);
+         List<Experiment> unmarshalledExperiments = this.fcs.unmarshallExperiments(outFile);
          assertEquals(2, unmarshalledExperiments.size());
          assertExperiments(unmarshalledExperiments);
      }
@@ -159,13 +160,13 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
      @SuppressWarnings("unchecked")
      public void testMarshallAndUmarshallStream() throws Exception {
          ByteArrayOutputStream os = new ByteArrayOutputStream();
-         fcs.marshallExperiments(experiments, os);
-         List<Experiment> unmarshalledExperiments = fcs.unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
+         this.fcs.marshallExperiments(this.experiments, os);
+         List<Experiment> unmarshalledExperiments = this.fcs.unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
          assertExperiments(unmarshalledExperiments);
      }
 
      private void setupProtocols() {
-         protocols = new ArrayList<Protocol>();
+         this.protocols = new ArrayList<Protocol>();
 
          Protocol prot1 = new Protocol("${FolderLSIDBase}:Process.IPAS14", "IPAS14 Process", ProtocolType.valueOf("ExperimentRun"));
          prot1.setDescription("Prepare and run LCMS, including fractionation of the input sample.  Produces one mzXML file per fraction in a single directory.");
@@ -180,7 +181,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          person.setComments("Comment for a Person attached to Protocol Process.IPAS14");
          prot1.setPrimaryContact(person);
 
-         protocols.add(prot1);
+         this.protocols.add(prot1);
      }
 
     private Experiment getExperiment1() {
@@ -204,7 +205,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
         // Set a Protocol Application
-        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", ProtocolType.valueOf("ExperimentRun"), 1, DateAdapter.getDateFromXmlString("2006-08-31-07:00"), protocols.get(0));
+        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", ProtocolType.valueOf("ExperimentRun"), 1, DatatypeConverter.parseDate("2006-08-31-07:00"), this.protocols.get(0));
 
         List<ProtocolApplication> protApplications = new ArrayList<ProtocolApplication>();
         protApplications.add(protApp1);
@@ -281,7 +282,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         ProtocolApplication unmarshalledProtApp1 = protApplications.get(0);
         assertNotNull(unmarshalledProtApp1);
         assertEquals(unmarshalledProtApp1.getActionSequence(), 1);
-        assertEquals(unmarshalledProtApp1.getActivityDate(), DateAdapter.getDateFromXmlString("2006-08-31-07:00"));
+        assertEquals(unmarshalledProtApp1.getActivityDate(), DatatypeConverter.parseDate("2006-08-31-07:00"));
         assertEquals(unmarshalledProtApp1.getComments(), null);
         assertEquals(unmarshalledProtApp1.getLsid(), "${RunLSIDBase}:IPAS14");
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
@@ -353,7 +354,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
                 "caBIG Test Data" };
 
         for (int i = 0; i < srcFiles.length; i++) {
-            List<Experiment> experiments = fcs.unmarshallExperiments(new File(srcFiles[i]));
+            List<Experiment> experiments = this.fcs.unmarshallExperiments(new File(srcFiles[i]));
             assertEquals(1, experiments.size());
             assertEquals(names[i], experiments.get(0).getName());
         }

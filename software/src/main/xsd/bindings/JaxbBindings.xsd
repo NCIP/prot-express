@@ -1,13 +1,18 @@
-<xs:schema elementFormDefault="qualified" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0" targetNamespace="calendar-schemalet">
-  <xs:annotation>
-    <xs:appinfo>
-      <jaxb:globalBindings>
-        <jaxb:javaType
-            name="java.util.Calendar"
-            xmlType="xs:date"
-            parseMethod="gov.nih.nci.protexpress.util.DateAdapter.getDateFromXmlString"
-            printMethod="gov.nih.nci.protexpress.util.DateAdapter.getXmlStringFromDate"/>
-      </jaxb:globalBindings>
-    </xs:appinfo>
-  </xs:annotation>
+<xs:schema elementFormDefault="qualified" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0" targetNamespace="calendar-schemalet">
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings>
+                <jaxb:javaType name="java.util.Calendar" xmlType="xs:date"
+                    parseMethod="javax.xml.bind.DatatypeConverter.parseDate"
+                    printMethod="javax.xml.bind.DatatypeConverter.printDate" />
+                <jaxb:javaType name="java.util.Calendar" xmlType="xs:time"
+                    parseMethod="javax.xml.bind.DatatypeConverter.parseTime"
+                    printMethod="javax.xml.bind.DatatypeConverter.printTime" />
+                <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
+                    parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+                    printMethod="javax.xml.bind.DatatypeConverter.printDateTime" />
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
 </xs:schema>
