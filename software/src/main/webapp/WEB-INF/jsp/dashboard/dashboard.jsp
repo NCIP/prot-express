@@ -44,7 +44,7 @@
                     </c:url>
                     <tr>
                         <td><a href="<c:url value="/notYetImplemented.html"/>">${protocol.name}</a></td>
-                        <td><fmt:formatDate dateStyle="short" value="${protocol.lastModifiedDate}"/></td>
+                        <td><fmt:formatDate dateStyle="short" value="${protocol.lastModifiedDate.time}"/></td>
                         <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="Edit" /></a></td>
                     </tr>
                 </c:forEach>
@@ -74,7 +74,7 @@
                     </c:url>
                     <tr>
                         <td><a href="<c:url value="/notYetImplemented.html"/>">${experiment.name}</a></td>
-                        <td><fmt:formatDate dateStyle="short" value="${experiment.lastModifiedDate}"/></td>
+                        <td><fmt:formatDate dateStyle="short" value="${experiment.lastModifiedDate.time}"/></td>
                         <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="Edit" /></a></td>
                     </tr>
                 </c:forEach>
