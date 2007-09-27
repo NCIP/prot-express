@@ -378,7 +378,7 @@
                 <configuration>
                     <configLocation>protExpressCheckstyle.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
-                    <excludes>jsp/**, **/xar2_2/**, gov/nih/nci/protexpress/ui/filters/UserFilter*</excludes>
+                    <excludes>jsp/**, org/apache/jsp/tag/**, **/xar2_2/**, gov/nih/nci/protexpress/ui/filters/UserFilter*</excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -395,6 +395,7 @@
                         <excludes>
                             <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
                             <exclude>jsp/**</exclude>
+                            <exclude>org/apache/jsp/tag/**</exclude>
                             <exclude>**/xar2_2/**</exclude>
                         </excludes>
                     </instrumentation>
@@ -403,7 +404,7 @@
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <excludePackageNames>jsp</excludePackageNames>
+                    <excludePackageNames>jsp, org.apache.jsp.tag</excludePackageNames>
                 </configuration>
             </plugin>
             <plugin>
@@ -414,6 +415,7 @@
                     <excludes>
                         <exclude>jsp/**</exclude>
                         <exclude>**/xar2_2/**</exclude>
+                        <exclude>org/apache/jsp/tag/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -457,6 +459,7 @@
                         <configuration>
                             <instrumentation>
                                 <excludes>
+                                    <exclude>org/apache/jsp/tag/**</exclude>
                                     <exclude>jsp/**</exclude>
                                     <exclude>**/xar2_2/**</exclude>
                                     <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
