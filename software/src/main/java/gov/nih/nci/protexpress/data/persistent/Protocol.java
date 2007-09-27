@@ -465,6 +465,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "output_material_type")
     @Length(max = OUTPUT_MATERIAL_TYPE_LENGTH)
+    @NotNull
     public String getOutputMaterialType() {
         return this.outputMaterialType;
     }
@@ -485,6 +486,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @Column(name = "output_data_type")
     @Length(max = OUTPUT_DATA_TYPE_LENGTH)
+    @NotNull
     public String getOutputDataType() {
         return this.outputDataType;
     }

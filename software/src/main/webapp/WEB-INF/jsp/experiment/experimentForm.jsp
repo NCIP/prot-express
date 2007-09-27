@@ -36,10 +36,10 @@
     </s:url>
 
     <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/experiment/overview.jsp">
-        <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true"></protExpress:tab>
-        <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink"></protExpress:tab>
-        <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink"></protExpress:tab>
-        <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink"></protExpress:tab>
+        <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
+        <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" />
+        <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
+        <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" />
     </protExpress:tabbedPanel>
 </div>
 </body>

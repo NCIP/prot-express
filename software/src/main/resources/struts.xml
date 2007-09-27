@@ -59,17 +59,22 @@
 
         <default-interceptor-ref name="protExpressDefaultStack" />
 
-        <action name="dashboard/dashboard" class="gov.nih.nci.protexpress.ui.actions.dashboard.DashboardAction" method="load">
-            <result name="success">/WEB-INF/jsp/dashboard/dashboard.jsp</result>
-        </action>
-
+        <!-- Registration Actions -->
         <action name="registration/*"
             class="gov.nih.nci.protexpress.ui.actions.registration.RegistrationAction" method="{1}">
             <result name="success">/WEB-INF/jsp/registration/success.jsp</result>
             <result name="input">/WEB-INF/jsp/registration/registration.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+        <!-- End Registration -->
 
+        <!-- Dashboard Actions -->
+        <action name="dashboard/dashboard" class="gov.nih.nci.protexpress.ui.actions.dashboard.DashboardAction" method="load">
+            <result name="success">/WEB-INF/jsp/dashboard/dashboard.jsp</result>
+        </action>
+        <!-- End Dashboard -->
+
+        <!-- Protocol Actions -->
         <action name="protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
             method="{1}">
             <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
@@ -84,6 +89,22 @@
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
+        <action name="ajax/protocol/management/load/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="load">
+            <result name="input">/WEB-INF/jsp/protocol/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/protocol/management/save/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="save">
+            <result name="input">/WEB-INF/jsp/protocol/{1}.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocol/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End Protocol -->
+
+
+        <!-- Experiment Actions -->
         <action name="experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
             method="{1}">
             <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
@@ -109,5 +130,6 @@
             <result name="success">/WEB-INF/jsp/experiment/{1}.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+        <!-- End Experiment -->
     </package>
 </struts>
