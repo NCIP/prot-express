@@ -113,18 +113,17 @@ import java.util.List;
 public class Xar22FormatConversionHelper {
     private final ObjectFactory objectFactory = new ObjectFactory();
 
-    private List<Experiment> experiments;
-    private HashMap<String, Experiment> experimentMap;
-    private HashMap<String, ExperimentRun> expRunMap;
-    private HashMap<String, Protocol> protocolMap;
-    private HashMap<String, ProtocolBaseType> xarProtocolBaseTypeMap;
+    private List<Experiment> experiments = new ArrayList<Experiment>();
+    private HashMap<String, Experiment> experimentMap = new HashMap<String, Experiment>();
+    private HashMap<String, ExperimentRun> expRunMap = new HashMap<String, ExperimentRun>();
+    private HashMap<String, Protocol> protocolMap = new HashMap<String, Protocol>();
+    private HashMap<String, ProtocolBaseType> xarProtocolBaseTypeMap = new HashMap<String, ProtocolBaseType>();
 
     /**
      * Default constructor.
      *
      */
     public Xar22FormatConversionHelper() {
-        doReset();
     }
 
     /**
@@ -134,8 +133,6 @@ public class Xar22FormatConversionHelper {
      * @return the list of experiments.
      */
     public List<Experiment> parseExperimentArchiveData(ExperimentArchiveType experimentArchive) {
-        doReset();
-
         getExperimentList(experimentArchive);
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
@@ -150,8 +147,6 @@ public class Xar22FormatConversionHelper {
      * @return an ExperimentArchiveType
      */
     public ExperimentArchiveType getExperimentArchiveData(List<Experiment> exps) {
-        doReset();
-
         this.experiments = exps;
 
         ExperimentArchiveType xarExperimentArchiveType = getExperimentTypes();
@@ -170,25 +165,6 @@ public class Xar22FormatConversionHelper {
         xarExperimentArchiveType.setProtocolDefinitions(xarProtocolDefinitions);
 
         return xarExperimentArchiveType;
-    }
-
-    /**
-     * Sets the internal attributes to Null.
-     *
-     */
-    private void doReset() {
-        experiments = null;
-        experimentMap = null;
-        expRunMap = null;
-        protocolMap = null;
-        xarProtocolBaseTypeMap = null;
-
-        // Reset
-        experiments = new ArrayList<Experiment>();
-        experimentMap = new HashMap<String, Experiment>();
-        expRunMap = new HashMap<String, ExperimentRun>();
-        protocolMap = new HashMap<String, Protocol>();
-        xarProtocolBaseTypeMap = new HashMap<String, ProtocolBaseType>();
     }
 
     /**
@@ -367,7 +343,7 @@ public class Xar22FormatConversionHelper {
         xarProtocolApplicationBaseType.setComments(protApp.getComments());
         xarProtocolApplicationBaseType.setCpasType(protApp.getType().name());
         xarProtocolApplicationBaseType.setName(protApp.getName());
-        xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocolLsid());
+        xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocol().getLsid());
 
         return xarProtocolApplicationBaseType;
     }
@@ -381,7 +357,7 @@ public class Xar22FormatConversionHelper {
     private ProtocolBaseType getProtocolBaseType(ProtocolApplication protApp) {
         ProtocolBaseType xarProtocolBaseType = objectFactory.createProtocolBaseType();
         if (protApp != null) {
-            xarProtocolBaseType.setAbout(protApp.getProtocolLsid());
+            xarProtocolBaseType.setAbout(protApp.getProtocol().getLsid());
             xarProtocolBaseType.setApplicationType(protApp.getProtocol().getType().name());
             xarProtocolBaseType.setInstrument(protApp.getProtocol().getInstrument());
             xarProtocolBaseType.setName(protApp.getProtocol().getName());
@@ -453,8 +429,6 @@ public class Xar22FormatConversionHelper {
                 xarProtAppBaseType.getActionSequence(), xarProtAppBaseType.getActivityDate(), protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
-        protApplication.setProtocolLsid(xarProtAppBaseType.getProtocolLSID());
-
         return protApplication;
     }
 

@@ -128,7 +128,6 @@ public class ProtocolApplication implements Serializable {
     private String lsid;
     private String name;
     private ProtocolType type;
-    private String protocolLsid;
     private int actionSequence;
     private Calendar activityDate;
     private String comments;
@@ -236,30 +235,6 @@ public class ProtocolApplication implements Serializable {
      */
     public void setType(ProtocolType type) {
         this.type = type;
-    }
-
-    /**
-     * Gets the protocolLsid.
-     *
-     * @return the protocolLsid
-     */
-    @Column(name = "protocol_lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getProtocolLsid() {
-        if (this.protocol != null) {
-            this.protocolLsid = this.protocol.getLsid();
-        }
-        return this.protocolLsid;
-    }
-
-    /**
-     * Sets the protocolLsid.
-     *
-     * @param protocolLsid the protocolLsid to set
-     */
-    public void setProtocolLsid(String protocolLsid) {
-        this.protocolLsid = protocolLsid;
     }
 
     /**
