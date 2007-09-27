@@ -86,7 +86,7 @@ import gov.nih.nci.protexpress.data.persistent.Auditable;
 import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.EmptyInterceptor;
@@ -110,10 +110,10 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
                     state[i] = UserHolder.getUsername();
                 }
                 if ("creationDate".equals(propertyNames[i])) {
-                    state[i] = new Date();
+                    state[i] = Calendar.getInstance();
                 }
                 if ("lastModifiedDate".equals(propertyNames[i])) {
-                    state[i] = new Date();
+                    state[i] = Calendar.getInstance();
                 }
             }
             return true;
@@ -130,7 +130,7 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
         if (entity instanceof Auditable) {
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
-                    currentState[i] = new Date();
+                    currentState[i] = Calendar.getInstance();
                 }
             }
             return true;

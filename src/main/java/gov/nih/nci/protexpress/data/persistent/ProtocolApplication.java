@@ -97,6 +97,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -121,7 +123,6 @@ public class ProtocolApplication implements Serializable {
     private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
     private static final int ACTION_SEQUENCE_LENGTH = 3;
-    private static final int ACTIVITY_DATE_LENGTH = 25;
     private static final int COMMENTS_LENGTH = 255;
 
     private Long id;
@@ -264,8 +265,8 @@ public class ProtocolApplication implements Serializable {
      * @return the activityDate
      */
     @Column(name = "activity_date")
-    @NotEmpty
-    @Length(max = ACTIVITY_DATE_LENGTH)
+    @NotNull
+    @Temporal(TemporalType.DATE)
     public Calendar getActivityDate() {
         return this.activityDate;
     }

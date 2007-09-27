@@ -88,7 +88,7 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * @author Scott Miller
@@ -105,7 +105,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
         this.theSession.clear();
 
         p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        Date oldDate = p.getLastModifiedDate();
+        Calendar oldDate = p.getLastModifiedDate();
         p.setDescription("new desc");
         Thread.sleep(500);
         this.theSession.update(p);
