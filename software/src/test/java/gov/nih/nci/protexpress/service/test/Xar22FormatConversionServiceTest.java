@@ -286,7 +286,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(unmarshalledProtApp1.getLsid(), "${RunLSIDBase}:IPAS14");
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
         assertEquals(unmarshalledProtApp1.getType(), ProtocolType.valueOf("ExperimentRun"));
-        assertEquals(unmarshalledProtApp1.getProtocolLsid(), "${FolderLSIDBase}:Process.IPAS14");
+        assertEquals(unmarshalledProtApp1.getProtocol().getLsid(), "${FolderLSIDBase}:Process.IPAS14");
 
         Protocol prot1 = unmarshalledProtApp1.getProtocol();
         assertNotNull(prot1);

@@ -97,8 +97,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -142,8 +140,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private Date lastModifiedDate = new Date();
     private Person primaryContact;
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
-    private List<Protocol> protocols = new ArrayList<Protocol>();
-
 
     /**
      * protected default constructor for hibernate only.
@@ -377,28 +373,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
      */
     protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
         this.experimentRuns = experimentRuns;
-    }
-
-    /**
-     * Gets the protocols.
-     *
-     * @return the protocols.
-     */
-    @ManyToMany(targetEntity = Protocol.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "experiment_protocol",
-            joinColumns = { @JoinColumn(name = "experiment_id") },
-            inverseJoinColumns = { @JoinColumn(name = "protocol_id") })
-    public List<Protocol> getProtocols() {
-        return this.protocols;
-    }
-
-    /**
-     * Sets the protocols.
-     *
-     * @param protocols the protocols to set.
-     */
-    public void setProtocols(List<Protocol> protocols) {
-        this.protocols = protocols;
     }
 
     /**
