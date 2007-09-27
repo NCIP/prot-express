@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Interface for all auditable entities.
@@ -115,26 +115,26 @@ public interface Auditable {
      *
      * @return the creation date
      */
-    Date getCreationDate();
+    Calendar getCreationDate();
 
     /**
      * Set the creation date.
      *
      * @param creationDate the creation date
      */
-    void setCreationDate(Date creationDate);
+    void setCreationDate(Calendar creationDate);
 
     /**
      * Get the last modified date.
      *
      * @return the last modified date
      */
-    Date getLastModifiedDate();
+    Calendar getLastModifiedDate();
 
     /**
      * Set the last modified date.
      *
      * @param lastModifiedDate the last modified date
      */
-    void setLastModifiedDate(Date lastModifiedDate);
+    void setLastModifiedDate(Calendar lastModifiedDate);
 }

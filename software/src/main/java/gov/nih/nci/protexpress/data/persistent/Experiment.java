@@ -86,7 +86,7 @@ import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -136,8 +136,8 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private String url;
     private String comments;
     private String creator;
-    private Date creationDate = new Date();
-    private Date lastModifiedDate = new Date();
+    private Calendar creationDate = Calendar.getInstance();
+    private Calendar lastModifiedDate = Calendar.getInstance();
     private Person primaryContact;
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
@@ -307,14 +307,14 @@ public class Experiment implements Serializable, Persistent, Auditable {
     // not be validated at the UI
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date", nullable = false)
-    public Date getCreationDate() {
+    public Calendar getCreationDate() {
         return this.creationDate;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Calendar creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -325,14 +325,14 @@ public class Experiment implements Serializable, Persistent, Auditable {
     // not be validated at the UI
     @Column(name = "modification_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    public Date getLastModifiedDate() {
+    public Calendar getLastModifiedDate() {
         return this.lastModifiedDate;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(Calendar lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
