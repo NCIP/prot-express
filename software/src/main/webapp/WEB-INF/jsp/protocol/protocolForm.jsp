@@ -25,12 +25,16 @@
     <s:url action="ajax/protocol/management/load/overview" id="overviewUrl">
         <s:param name="protocol.id" value="${protocol.id}" />
     </s:url>
+    <s:url action="ajax/protocol/management/load/inputOutput" id="inputOutputUrl">
+        <s:param name="protocol.id" value="${protocol.id}" />
+    </s:url>
     <s:url action="ajax/protocol/management/load/contact" id="contactUrl">
         <s:param name="protocol.id" value="${protocol.id}" />
     </s:url>
 
     <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/protocol/overview.jsp">
         <protExpress:tab tabHeaderKey="protocol.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
+        <protExpress:tab tabHeaderKey="protocol.tabs.inputOutput" tabUrl="${inputOutputUrl}" id="inputOutputLink" />
         <protExpress:tab tabHeaderKey="protocol.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
     </protExpress:tabbedPanel>
 </div>

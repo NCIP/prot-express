@@ -9,7 +9,7 @@
         <s:textfield name="experiment.comments" key="experiment.comments" size="40" />
         <s:textfield name="experiment.hypothesis" key="experiment.hypothesis" size="40" />
         <s:textfield name="experiment.url" key="experiment.url" size="40" />
-        <s:hidden name="experiment.Id" />
+        <s:hidden name="experiment.id" />
     </s:form>
     <div class="actions">
         <a href="<c:url value="/experiment/search/loadSearch.action" />" class="cancel"><fmt:message key="cancel" /></a>

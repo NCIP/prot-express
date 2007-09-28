@@ -95,6 +95,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
 
 /**
@@ -197,6 +198,7 @@ public class Person implements Serializable, Persistent {
      */
     @Column(name = "email")
     @Length(max = EMAIL_LENGTH)
+    @Email()
     public String getEmail() {
         return this.email;
     }
