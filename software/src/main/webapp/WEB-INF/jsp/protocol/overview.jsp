@@ -10,6 +10,14 @@
         <s:select name="protocol.type" key="protocol.type"
             list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
             headerKey="" headerValue="%{getText('protocol.type.select')}" />
+        <s:textfield name="protocol.software" key="protocol.software" size="40" />
+        <s:textfield name="protocol.instrument" key="protocol.instrument" size="40" />
+        <s:textfield name="protocol.maxInputMaterialPerInstance" key="protocol.maxInputMaterialPerInstance" size="40" />
+        <s:textfield name="protocol.maxInputDataPerInstance" key="protocol.maxInputDataPerInstance" size="40" />
+        <s:textfield name="protocol.outputMaterialPerInstance" key="protocol.outputMaterialPerInstance" size="40" />
+        <s:textfield name="protocol.outputDataPerInstance" key="protocol.outputDataPerInstance" size="40" />
+        <s:textfield name="protocol.outputMaterialType" key="protocol.outputMaterialType" size="40" />
+        <s:textfield name="protocol.outputDataType" key="protocol.outputDataType" size="40" />
         <s:hidden name="protocol.Id" />
         <s:hidden name="resultingForward" />
     </s:form>

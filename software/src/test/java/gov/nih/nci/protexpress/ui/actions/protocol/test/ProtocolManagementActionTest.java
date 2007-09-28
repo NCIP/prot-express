@@ -149,7 +149,8 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
         this.action.setResultingForward("dashboard");
         this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
-        assertEquals("dashboard", this.action.save());
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("dashboard", this.action.getResultingForward());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
     }
 

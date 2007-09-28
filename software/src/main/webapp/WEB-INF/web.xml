@@ -119,8 +119,28 @@
 
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Ajax Protocol Functionality</web-resource-name>
+            <url-pattern>/ajax/protocol/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
             <web-resource-name>Experiment Functionality</web-resource-name>
             <url-pattern>/experiment/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Ajax Experiment Functionality</web-resource-name>
+            <url-pattern>/ajax/experiment/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>protExpressUser</role-name>

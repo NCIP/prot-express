@@ -131,7 +131,7 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     public String save() {
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-        return getResultingForward();
+        return ActionSupport.SUCCESS;
     }
 
     /**
