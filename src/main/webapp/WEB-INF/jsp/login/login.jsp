@@ -39,7 +39,7 @@
                         <td class="value"><input name="j_password" tabindex="2" maxlength="100" size="15" value="" style="width: 90px;" type="password"></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="centered"><input src="<c:url value="/images/btn_login.gif" />" value="Login" class="button" type="image"></td>
+                        <td colspan="2" class="centered"><input tabindex="3" src="<c:url value="/images/btn_login.gif" />" value="Login" class="button" type="image"></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="space">&nbsp;</td>
