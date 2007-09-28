@@ -82,7 +82,6 @@
  */
 package gov.nih.nci.protexpress.ui.validators;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
 
 import java.util.Collection;
@@ -147,7 +146,7 @@ public class HibernateValidator extends FieldValidatorSupport {
 
         ContextualClassValidator classValidator = CLASS_VALIDATOR_MAP.get(o.getClass());
         if (classValidator == null) {
-            classValidator = new ContextualClassValidator(o.getClass(), ProtExpressRegistry.getResourceBundle());
+            classValidator = new ContextualClassValidator(o.getClass());
             CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
         }
         InvalidValue[] validationMessages = classValidator.getInvalidValues(o);

@@ -84,8 +84,6 @@ package gov.nih.nci.protexpress.data.validator;
 
 import gov.nih.nci.protexpress.data.persistent.Persistent;
 
-import java.util.ResourceBundle;
-
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 
@@ -110,11 +108,10 @@ public class ContextualClassValidator<T> extends ClassValidator<T> {
     /**
      * Constructs the class validator.
      *
-     * @param beanClass the class to validate.
-     * @param resourceBundle the resource bundle from which the error messages come.
+     * @param beanClazz the class to validate.
      */
-    public ContextualClassValidator(Class<T> beanClass, ResourceBundle resourceBundle) {
-        super(beanClass, resourceBundle);
+    public ContextualClassValidator(Class<T> beanClazz) {
+        super(beanClazz);
         setCurrentBean(null);
     }
 

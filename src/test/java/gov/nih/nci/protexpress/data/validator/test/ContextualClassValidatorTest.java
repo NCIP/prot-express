@@ -95,7 +95,7 @@ public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
 
     private Protocol protocol1;
     private Protocol protocol2;
-    ContextualClassValidator<Protocol> classValidator = new ContextualClassValidator<Protocol>(Protocol.class, null);
+    ContextualClassValidator<Protocol> classValidator = new ContextualClassValidator<Protocol>(Protocol.class);
 
     /**
      * {@inheritDoc}
