@@ -110,6 +110,7 @@ import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Valid;
 
 /**
  * Class representing a protocol.
@@ -369,6 +370,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
+    @Valid
     public Person getPrimaryContact() {
         return this.primaryContact;
     }
