@@ -15,7 +15,7 @@
     <div class="formbox">
         <div id="boxinner">
             <h3><fmt:message key="registration.success.header" /></h3>
-            <div class="padme5">
+            <div class="confirm_msg">
                 <fmt:message key="registration.success.msg">
                     <fmt:param><a href="<c:url value="/dashboard/dashboard.action" />"><fmt:message key="registration.here" /></a></fmt:param>
                 </fmt:message>

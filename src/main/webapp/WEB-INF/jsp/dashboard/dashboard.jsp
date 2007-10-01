@@ -21,7 +21,7 @@
         <h2><fmt:message key="protocols" /></h2>
         <div class="toolbar">
             <c:url value="/protocol/management/load.action" var="addUrl">
-                <c:param name="resultingForward" value="dashboard"/>
+                <c:param name="cancelResult" value="dashboard"/>
             </c:url>
             <a href="<c:url value="/protocol/search/loadSearch.action" />" class="search"><fmt:message key="search" /></a>
             <a href="${addUrl}" class="add" style="border: 0"><fmt:message key="dashboard.protocols.add" /></a>
@@ -40,7 +40,7 @@
                 <c:forEach items="${recentProtocols}" var="protocol">
                     <c:url var="loadUrl" value="/protocol/management/load.action">
                         <c:param name="protocol.id" value="${protocol.id}" />
-                        <c:param name="resultingForward" value="dashboard"/>
+                        <c:param name="cancelResult" value="dashboard"/>
                     </c:url>
                     <tr>
                         <td><a href="<c:url value="/notYetImplemented.html"/>">${protocol.name}</a></td>

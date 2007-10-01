@@ -147,18 +147,32 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
-        this.action.setResultingForward("dashboard");
+        this.action.setCancelResult("dashboard");
         this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("dashboard", this.action.getResultingForward());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
+        assertEquals("Protocol successfully created.", this.action.getSuccessMessage());
+
+        Protocol p = this.action.getProtocol();
+        this.action = new ProtocolManagementAction();
+        p.setName("Updated test name");
+        this.action.setProtocol(p);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Protocol successfully updated.", this.action.getSuccessMessage());
     }
 
     public void testDelete() throws Exception {
         this.action.setProtocol((Protocol) this.theSession.get(Protocol.class, this.protocol.getId()));
-        assertEquals(ActionSupport.SUCCESS, this.action.delete());
+        assertEquals("search", this.action.delete());
+        assertEquals("test protocol 1 successfully deleted.", this.action.getSuccessMessage());
         this.theSession.flush();
         this.theSession.clear();
         assertEquals(0, this.theSession.createQuery("from " + Protocol.class.getName()).list().size());
+    }
+
+    public void testCancel() throws Exception {
+        assertEquals("search", this.action.cancel());
+        this.action.setCancelResult("dashboard");
+        assertEquals("dashboard", this.action.cancel());
     }
 }

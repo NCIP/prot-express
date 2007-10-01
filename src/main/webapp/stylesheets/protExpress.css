@@ -67,12 +67,16 @@ TABLE.wwFormTable TD {
 .box {
     width: 99%;
     min-width: 585px;
+    margin-bottom: 5px;
 }
 
 .formbox {
     padding: 5px;
     border-top: 0;
     background: #9fb4d2;
+}
+
+#dashboardwrapper {
     margin-bottom: 5px;
 }
 
@@ -104,4 +108,8 @@ div.hidesubmit {
     font-style: normal;
     font-weight: bold;
     color: #333333;
+}
+
+.confirm_msg {
+    margin: 5px;
 }
