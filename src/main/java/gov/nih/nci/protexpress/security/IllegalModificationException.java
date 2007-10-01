@@ -80,93 +80,22 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.interceptor.test;
+package gov.nih.nci.protexpress.security;
 
-import gov.nih.nci.protexpress.data.persistent.Person;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.security.IllegalModificationException;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
-import java.util.Calendar;
-
 /**
+ * Exception to indicate that a user attempted to make an illegal modification.
  * @author Scott Miller
  */
-public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
+public class IllegalModificationException extends RuntimeException {
 
-    public void testSaveAndUpdateAuditableObject() throws Exception {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
-        assertEquals(null, p.getCreator());
-        this.theSession.save(p);
-        assertEquals(UserHolder.getUsername(), p.getCreator());
+    private static final long serialVersionUID = 1L;
 
-        this.theSession.flush();
-        this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        Calendar oldDate = p.getLastModifiedDate();
-        p.setDescription("new desc");
-        Thread.sleep(500);
-        this.theSession.update(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        assertEquals(-1, oldDate.compareTo(p.getLastModifiedDate()));
-    }
-
-    public void testSaveAnUpdateNonAuditableObject() {
-        Person p = new Person();
-        this.theSession.save(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        UserHolder.setUser(null);
-
-        p.setFirstName("test");
-        this.theSession.update(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        this.theSession.delete(p);
-        this.theSession.flush();
-        this.theSession.clear();
-    }
-
-    public void testIllegalUpdate() {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
-        this.theSession.save(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-
-        try {
-            UserHolder.setUser(null);
-            this.theSession.delete(p);
-            this.theSession.flush();
-        } catch (IllegalModificationException e) {
-            // expected
-        }
-    }
-
-    public void testIllegalDeletee() {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
-        this.theSession.save(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-
-        try {
-            UserHolder.setUser(null);
-            p.setName("test change");
-            this.theSession.update(p);
-            this.theSession.flush();
-        } catch (IllegalModificationException e) {
-            // expected
-        }
+    /**
+     * Default constructor.
+     */
+    public IllegalModificationException() {
+        super(UserHolder.getUsername() + " attempted to modify an object they can not edit.");
     }
 }

@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.data.interceptor;
 
 import gov.nih.nci.protexpress.data.persistent.Auditable;
+import gov.nih.nci.protexpress.security.IllegalModificationException;
 import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.io.Serializable;
@@ -128,6 +129,9 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
     public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
             String[] propertyNames, Type[] types) {
         if (entity instanceof Auditable) {
+            if (!((Auditable) entity).getCreator().equals(UserHolder.getUsername())) {
+                throw new IllegalModificationException();
+            }
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
                     currentState[i] = Calendar.getInstance();
@@ -136,5 +140,18 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
             return true;
         }
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+        if (entity instanceof Auditable) {
+            if (!((Auditable) entity).getCreator().equals(UserHolder.getUsername())) {
+                throw new IllegalModificationException();
+            }
+        }
+        super.onDelete(entity, id, state, propertyNames, types);
     }
 }
