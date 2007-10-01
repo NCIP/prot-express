@@ -9,6 +9,10 @@
 
 <fmt:message key="protocols" /> | <a href="<c:url value="/protocol/management/load.action" />"><fmt:message key="protocol.add" /></a>
 
+<c:if test="${not empty successMessage}">
+    <div class="confirm_msg">${successMessage}</div>
+</c:if>
+
 <h2><fmt:message key="protocols.search" /></h2>
 
 <s:form action="protocol/search/doSearch" method="post">
@@ -37,6 +41,7 @@
         <display:column titleKey="actions" sortable="false">
             <c:url var="loadUrl" value="/protocol/management/load.action">
                 <c:param name="protocol.id" value="${row.id}" />
+                <c:param name="cancelResult" value="search" />
             </c:url>
             <a href="${loadUrl}"><s:text name="edit" /></a>
             <c:url var="deleteUrl" value="/protocol/management/delete.action">

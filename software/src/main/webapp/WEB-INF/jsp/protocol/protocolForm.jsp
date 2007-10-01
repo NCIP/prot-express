@@ -15,27 +15,32 @@
 <h1><fmt:message key="protocols" /></h1>
 
 <div class="box">
-    <s:if test="protocol ==null || protocol.id == null">
+    <s:if test="protocol == null || protocol.id == null">
         <h2><fmt:message key="protocol.add" /></h2>
     </s:if>
     <s:else>
         <h2>${protocol.name}</h2>
     </s:else>
 
-    <s:url action="ajax/protocol/management/load/overview" id="overviewUrl">
-        <s:param name="protocol.id" value="${protocol.id}" />
-    </s:url>
-    <s:url action="ajax/protocol/management/load/inputOutput" id="inputOutputUrl">
-        <s:param name="protocol.id" value="${protocol.id}" />
-    </s:url>
-    <s:url action="ajax/protocol/management/load/contact" id="contactUrl">
-        <s:param name="protocol.id" value="${protocol.id}" />
-    </s:url>
+    <c:url value="/ajax/protocol/management/load/overview.action" var="overviewUrl">
+        <c:param name="protocol.id" value="${protocol.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
+    <c:url value="/ajax/protocol/management/load/inputOutput.action" var="inputOutputUrl">
+        <c:param name="protocol.id" value="${protocol.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
+    <c:url value="/ajax/protocol/management/load/contact.action" var="contactUrl">
+        <c:param name="protocol.id" value="${protocol.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
 
     <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/protocol/overview.jsp">
         <protExpress:tab tabHeaderKey="protocol.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
-        <protExpress:tab tabHeaderKey="protocol.tabs.inputOutput" tabUrl="${inputOutputUrl}" id="inputOutputLink" />
-        <protExpress:tab tabHeaderKey="protocol.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
+        <s:if test="protocol != null && protocol.id != null">
+            <protExpress:tab tabHeaderKey="protocol.tabs.inputOutput" tabUrl="${inputOutputUrl}" id="inputOutputLink" />
+            <protExpress:tab tabHeaderKey="protocol.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
+        </s:if>
     </protExpress:tabbedPanel>
 </div>
 </body>

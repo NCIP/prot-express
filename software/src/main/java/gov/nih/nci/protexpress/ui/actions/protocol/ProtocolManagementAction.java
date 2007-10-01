@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.protocol;
 
+import java.text.MessageFormat;
+
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 
@@ -103,7 +105,8 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
 
     private Protocol protocol = new Protocol(null, null, null);
 
-    private String resultingForward = ActionSupport.SUCCESS;
+    private String cancelResult = "search";
+    private String successMessage = null;
 
     /**
      * {@inheritDoc}
@@ -125,11 +128,25 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     }
 
     /**
+     * The action for handling a cancel.
+     * @return the forward to go to.
+     */
+    @SkipValidation
+    public String cancel() {
+        return getCancelResult();
+    }
+
+    /**
      * Saves or updates the protocols.
      *
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
+        if (getProtocol().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+        }
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
         return ActionSupport.SUCCESS;
     }
@@ -141,8 +158,10 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     @SkipValidation
     public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.delete.success");
+        setSuccessMessage(MessageFormat.format(msg, getProtocol().getName()));
         ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return ActionSupport.SUCCESS;
+        return "search";
     }
 
     /**
@@ -161,16 +180,30 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     }
 
     /**
-     * @return the resultingForward
+     * @return the cancelResult
      */
-    public String getResultingForward() {
-        return this.resultingForward;
+    public String getCancelResult() {
+        return this.cancelResult;
     }
 
     /**
-     * @param resultingForward the resultingForward to set
+     * @param cancelResult the cancelResult to set
      */
-    public void setResultingForward(String resultingForward) {
-        this.resultingForward = resultingForward;
+    public void setCancelResult(String cancelResult) {
+        this.cancelResult = cancelResult;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

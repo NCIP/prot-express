@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress;
 
+import java.util.ResourceBundle;
+
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.service.ProtExpressService;
@@ -104,8 +106,9 @@ public final class ProtExpressRegistry {
     public static final int MAX_RESULTS_PER_PAGE = 10;
     private static final Logger ERROR_LOGGER = Logger.getLogger(ProtExpressRegistry.class.getPackage().getName()
             + ".ERROR");
+    private static final ResourceBundle PROT_EXPRESS_RESOURCE_BUNDLE = ResourceBundle.getBundle("protExpress");
 
-    private static ProtExpressRegistry theInstance = new ProtExpressRegistry();
+    private static final ProtExpressRegistry THE_INSTANCE = new ProtExpressRegistry();
 
     private ProtocolService protocolService;
     private ExperimentService experimentService;
@@ -126,7 +129,7 @@ public final class ProtExpressRegistry {
      * @return the singleton
      */
     public static ProtExpressRegistry getInstance() {
-        return theInstance;
+        return THE_INSTANCE;
     }
 
     /**
@@ -197,5 +200,12 @@ public final class ProtExpressRegistry {
      */
     public static Logger getErrorLogger() {
         return ERROR_LOGGER;
+    }
+
+    /**
+     * @return the pROT_EXPRESS_RESOURCE_BUNDLE
+     */
+    public static ResourceBundle getApplicationResourceBundle() {
+        return PROT_EXPRESS_RESOURCE_BUNDLE;
     }
 }

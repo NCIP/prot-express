@@ -46,8 +46,8 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="loginlinks">
-                            <a href="<c:url value="/registration/load.action" />" class="loginlinks"><fmt:message key="register" /></a> |
-                            <a href="<c:url value="/notYetImplemented.html" />" class="loginlinks"><fmt:message key="login.forgotpassword" /></a>
+                            <a href="<c:url value="/registration/load.action" />" class="loginlinks" tabindex="4"><fmt:message key="register" /></a> |
+                            <a href="<c:url value="/notYetImplemented.html" />" class="loginlinks" tabindex="5"><fmt:message key="login.forgotpassword" /></a>
                         </td>
                     </tr>
                     </tbody>
