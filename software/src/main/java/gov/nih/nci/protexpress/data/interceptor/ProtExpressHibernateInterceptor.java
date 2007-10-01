@@ -95,6 +95,7 @@ import org.hibernate.type.Type;
 
 /**
  * Interceptor for prot express.
+ *
  * @author Scott Miller
  */
 public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
@@ -147,10 +148,8 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
      */
     @Override
     public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        if (entity instanceof Auditable) {
-            if (!((Auditable) entity).getCreator().equals(UserHolder.getUsername())) {
-                throw new IllegalModificationException();
-            }
+        if (entity instanceof Auditable && !((Auditable) entity).getCreator().equals(UserHolder.getUsername())) {
+            throw new IllegalModificationException();
         }
         super.onDelete(entity, id, state, propertyNames, types);
     }
