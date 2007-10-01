@@ -39,15 +39,17 @@
         <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
 
         <display:column titleKey="actions" sortable="false">
-            <c:url var="loadUrl" value="/protocol/management/load.action">
-                <c:param name="protocol.id" value="${row.id}" />
-                <c:param name="cancelResult" value="search" />
-            </c:url>
-            <a href="${loadUrl}"><s:text name="edit" /></a>
-            <c:url var="deleteUrl" value="/protocol/management/delete.action">
-                <c:param name="protocol.id" value="${row.id}" />
-            </c:url>
-            <a href="${deleteUrl}"><s:text name="delete" /></a>
+            <c:if test="${row.creator == currentUser.loginName}">
+                <c:url var="loadUrl" value="/protocol/management/load.action">
+                    <c:param name="protocol.id" value="${row.id}" />
+                    <c:param name="cancelResult" value="search" />
+                </c:url>
+                <a href="${loadUrl}"><s:text name="edit" /></a>
+                <c:url var="deleteUrl" value="/protocol/management/delete.action">
+                    <c:param name="protocol.id" value="${row.id}" />
+                </c:url>
+                <a href="${deleteUrl}"><s:text name="delete" /></a>
+            </c:if>
         </display:column>
     </display:table>
 </c:if>
