@@ -17,7 +17,7 @@
             <h3><fmt:message key="registration.success.header" /></h3>
             <div class="confirm_msg">
                 <fmt:message key="registration.success.msg">
-                    <fmt:param><a href="<c:url value="/dashboard/dashboard.action" />"><fmt:message key="registration.here" /></a></fmt:param>
+                    <fmt:param><a href="<c:url value="/dashboard/dashboard.action" />" tabindex="1"><fmt:message key="registration.here" /></a></fmt:param>
                 </fmt:message>
             </div>
         </div>

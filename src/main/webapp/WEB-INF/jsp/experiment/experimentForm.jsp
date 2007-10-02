@@ -15,31 +15,37 @@
 <h1><fmt:message key="experiments" /></h1>
 
 <div class="box">
-    <s:if test="experiment==null || experiment.id == null">
+    <s:if test="experiment == null || experiment.id == null">
         <h2><fmt:message key="experiment.add" /></h2>
     </s:if>
     <s:else>
         <h2>${experiment.name}</h2>
     </s:else>
 
-    <s:url action="ajax/experiment/management/load/overview" id="overviewUrl">
-        <s:param name="experiment.id" value="${experiment.id}" />
-    </s:url>
-    <s:url action="ajax/experiment/management/load/experimentRuns" id="experimentRunsUrl">
-        <s:param name="experiment.id" value="${experiment.id}" />
-    </s:url>
-    <s:url action="ajax/experiment/management/load/contact" id="contactUrl">
-        <s:param name="experiment.id" value="${experiment.id}" />
-    </s:url>
-    <s:url action="ajax/experiment/management/load/export" id="exportUrl">
-        <s:param name="experiment.id" value="${experiment.id}" />
-    </s:url>
+    <c:url value="/ajax/experiment/management/load/overview.action" var="overviewUrl">
+        <c:param name="experiment.id" value="${experiment.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
+    <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="experimentRunsUrl">
+        <c:param name="experiment.id" value="${experiment.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
+    <c:url value="/ajax/experiment/management/load/contact.action" var="contactUrl">
+        <c:param name="experiment.id" value="${experiment.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
+    <c:url value="/ajax/experiment/management/load/export.action" var="exportUrl">
+        <c:param name="experiment.id" value="${experiment.id}" />
+        <c:param name="cancelResult" value="${cancelResult}" />
+    </c:url>
 
     <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/experiment/overview.jsp">
         <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
-        <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" />
-        <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
-        <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" />
+        <s:if test="experiment != null && experiment.id != null">
+            <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" />
+            <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
+            <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" />
+        </s:if>
     </protExpress:tabbedPanel>
 </div>
 </body>

@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
+import java.text.MessageFormat;
+
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 
@@ -102,6 +104,8 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null, null);
+    private String cancelResult = "search";
+    private String successMessage = null;
 
     /**
      * {@inheritDoc}
@@ -123,11 +127,26 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
     }
 
     /**
+     * The action for handling a cancel.
+     * @return the forward to go to.
+     */
+    @SkipValidation
+    public String cancel() {
+        return getCancelResult();
+    }
+
+    /**
      * Saves the experiment.
      *
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
+        if (getExperiment().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().
+                    getString("experiment.update.success"));
+        }
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         return ActionSupport.SUCCESS;
     }
@@ -139,8 +158,10 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
      */
     @SkipValidation
     public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.delete.success");
+        setSuccessMessage(MessageFormat.format(msg, getExperiment().getName()));
         ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
-        return ActionSupport.SUCCESS;
+        return "search";
     }
 
     /**
@@ -156,5 +177,33 @@ public class ExperimentManagementAction extends ActionSupport implements Prepara
      */
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
+    }
+
+    /**
+     * @return the cancelResult
+     */
+    public String getCancelResult() {
+        return this.cancelResult;
+    }
+
+    /**
+     * @param cancelResult the cancelResult to set
+     */
+    public void setCancelResult(String cancelResult) {
+        this.cancelResult = cancelResult;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

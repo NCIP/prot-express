@@ -95,8 +95,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *
  * @author Krishna Kanchinadam
  */
-public class ExperimentManagementActionTest extends
-        ProtExpressBaseHibernateTest {
+public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest {
 
     ExperimentManagementAction action;
     Experiment experiment;
@@ -107,55 +106,72 @@ public class ExperimentManagementActionTest extends
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        action = new ExperimentManagementAction();
+        this.action = new ExperimentManagementAction();
 
-        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
-        experiment.setComments("Description - Test Experiment 1");
-        experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        experiment.setUrl("URL - Test Experiment 1");
+        this.experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.experiment.setComments("Description - Test Experiment 1");
+        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        this.experiment.setUrl("URL - Test Experiment 1");
 
-        theSession.saveOrUpdate(experiment);
-        theSession.flush();
-        theSession.clear();
-
+        this.theSession.saveOrUpdate(this.experiment);
+        this.theSession.flush();
+        this.theSession.clear();
     }
 
     public void testPrepare() throws Exception {
-        action.setExperiment(null);
-        action.prepare();
-        assertEquals(null, action.getExperiment());
+        this.action.setExperiment(null);
+        this.action.prepare();
+        assertEquals(null, this.action.getExperiment());
 
         Experiment p = new Experiment(null, null);
-        action.setExperiment(p);
-        action.prepare();
-        assertEquals(p, action.getExperiment());
+        this.action.setExperiment(p);
+        this.action.prepare();
+        assertEquals(p, this.action.getExperiment());
 
-        action.getExperiment().setId(experiment.getId());
-        action.prepare();
-        assertEquals(theSession.get(Experiment.class, experiment.getId()),
-                action.getExperiment());
-        assertTrue(EqualsBuilder.reflectionEquals(theSession.get(
-                Experiment.class, experiment.getId()), action.getExperiment()));
+        this.action.getExperiment().setId(this.experiment.getId());
+        this.action.prepare();
+        assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
+        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action
+                .getExperiment()));
     }
 
     public void testLoad() throws Exception {
-        assertEquals(ActionSupport.INPUT, action.load());
+        assertEquals(ActionSupport.INPUT, this.action.load());
     }
 
     public void testSaveOrUpdate() throws Exception {
-        action.setExperiment(new Experiment("Lsid_Test_Experiment", "Test Experiment"));
-        assertEquals(ActionSupport.SUCCESS, action.save());
-        assertEquals(theSession.get(Experiment.class, action.getExperiment()
-                .getId()), action.getExperiment());
+        this.action.setExperiment(new Experiment("Lsid_Test_Experiment", "Test Experiment"));
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
     }
 
     public void testDelete() throws Exception {
-        action.setExperiment((Experiment) theSession.get(Experiment.class,
-                experiment.getId()));
-        assertEquals(ActionSupport.SUCCESS, action.delete());
-        theSession.flush();
-        theSession.clear();
-        assertEquals(0, theSession.createQuery(
-                "from " + Experiment.class.getName()).list().size());
+        this.action.setExperiment((Experiment) this.theSession.get(Experiment.class, this.experiment.getId()));
+        assertEquals("search", this.action.delete());
+        assertEquals("Name - Test Experiment 1 successfully deleted.", this.action.getSuccessMessage());
+        this.theSession.flush();
+        this.theSession.clear();
+        assertEquals(0, this.theSession.createQuery("from " + Experiment.class.getName()).list().size());
+    }
+
+    public void testSaveOrUpdateReturnToDashboard() throws Exception {
+        this.action.setCancelResult("dashboard");
+        this.action.setExperiment(new Experiment("lsid", "zzz"));
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
+        assertEquals("Experiment successfully created.", this.action.getSuccessMessage());
+
+        Experiment e = this.action.getExperiment();
+        this.action = new ExperimentManagementAction();
+        e.setName("Updated test name");
+        this.action.setExperiment(e);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Experiment successfully updated.", this.action.getSuccessMessage());
+    }
+
+    public void testCancel() throws Exception {
+        assertEquals("search", this.action.cancel());
+        this.action.setCancelResult("dashboard");
+        assertEquals("dashboard", this.action.cancel());
     }
 }

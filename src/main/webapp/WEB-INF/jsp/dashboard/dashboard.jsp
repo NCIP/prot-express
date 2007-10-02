@@ -20,11 +20,11 @@
     <div class="floatbox">
         <h2><fmt:message key="protocols" /></h2>
         <div class="toolbar">
-            <c:url value="/protocol/management/load.action" var="addUrl">
+            <c:url value="/protocol/management/load.action" var="addProtocolUrl">
                 <c:param name="cancelResult" value="dashboard"/>
             </c:url>
             <a href="<c:url value="/protocol/search/loadSearch.action" />" class="search"><fmt:message key="search" /></a>
-            <a href="${addUrl}" class="add" style="border: 0"><fmt:message key="dashboard.protocols.add" /></a>
+            <a href="${addProtocolUrl}" class="add" style="border: 0"><fmt:message key="dashboard.protocols.add" /></a>
         </div>
         <table class="searchresults" cellspacing="0">
             <tr>
@@ -54,8 +54,11 @@
     <div class="floatbox">
         <h2><fmt:message key="experiments" /></h2>
         <div class="toolbar">
+            <c:url value="/experiment/management/load.action" var="addExperimentUrl">
+                <c:param name="cancelResult" value="dashboard"/>
+            </c:url>
             <a href="<c:url value="/experiment/search/loadSearch.action" />" class="search"><fmt:message key="search" /></a>
-            <a href="<c:url value="/experiment/management/load.action" />" class="add" style="border: 0"><fmt:message key="dashboard.experiments.add" /></a>
+            <a href="${addExperimentUrl}" class="add" style="border: 0"><fmt:message key="dashboard.experiments.add" /></a>
             <a href="<c:url value="/notYetImplemented.html"/>" class="import" style="border: 0"><fmt:message key="dashboard.experiments.import" /></a>
         </div>
         <table class="searchresults" cellspacing="0">
@@ -71,9 +74,10 @@
                 <c:forEach items="${recentExperiments}" var="experiment">
                     <c:url var="loadUrl" value="/experiment/management/load.action">
                         <c:param name="experiment.id" value="${experiment.id}" />
+                        <c:param name="cancelResult" value="dashboard"/>
                     </c:url>
                     <tr>
-                        <td><a href="<c:url value="/notYetImplemented.html"/>">${experiment.name}</a></td>
+                        <td><a href="${loadUrl}">${experiment.name}</a></td>
                         <td><fmt:formatDate dateStyle="short" value="${experiment.lastModifiedDate.time}"/></td>
                         <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="Edit" /></a></td>
                     </tr>
