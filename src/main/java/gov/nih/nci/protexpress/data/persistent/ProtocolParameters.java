@@ -147,7 +147,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     /**
      * The OutputDataDirTemplate string.
      */
-   public static final String OUTPUT_DATA_DIR_TEMPLATE = "OutputDataDirTemplate  ";
+    public static final String OUTPUT_DATA_DIR_TEMPLATE = "OutputDataDirTemplate  ";
 
     private static final String URI_APP_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationLSID";
     private static final String URI_APP_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationName";
@@ -210,7 +210,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "lsid_template")
     public SimpleTypeValue getAppLsidTemplate() {
-        return appLsidTemplate;
+        return this.appLsidTemplate;
     }
 
     /**
@@ -221,7 +221,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "appname_template")
     public SimpleTypeValue getAppNameTemplate() {
-        return appNameTemplate;
+        return this.appNameTemplate;
     }
 
     /**
@@ -232,7 +232,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outmateriallsidtemplate")
     public SimpleTypeValue getOutputMaterialLsidTemplate() {
-        return outputMaterialLsidTemplate;
+        return this.outputMaterialLsidTemplate;
     }
 
     /**
@@ -243,7 +243,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outmaterialnametemplate")
     public SimpleTypeValue getOutputMaterialNameTemplate() {
-        return outputMaterialNameTemplate;
+        return this.outputMaterialNameTemplate;
     }
 
     /**
@@ -254,7 +254,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outdatalsidtemplate")
     public SimpleTypeValue getOutputDataLsidTemplate() {
-        return outputDataLsidTemplate;
+        return this.outputDataLsidTemplate;
     }
 
     /**
@@ -265,7 +265,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outdatanametemplate")
     public SimpleTypeValue getOutputDataNameTemplate() {
-        return outputDataNameTemplate;
+        return this.outputDataNameTemplate;
     }
 
     /**
@@ -276,7 +276,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outdatafiletemplate")
     public SimpleTypeValue getOutputDataFileTemplate() {
-        return outputDataFileTemplate;
+        return this.outputDataFileTemplate;
     }
 
     /**
@@ -287,7 +287,7 @@ public class ProtocolParameters implements Serializable, Persistent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "outdatadirtemplate")
     public SimpleTypeValue getOutputDataDirTemplate() {
-        return outputDataDirTemplate;
+        return this.outputDataDirTemplate;
     }
 
     /**
@@ -333,8 +333,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputMaterialLsidTemplate the outputMaterialLsidTemplate to set.
      */
-    public void setOutputMaterialLsidTemplate(
-            SimpleTypeValue outputMaterialLsidTemplate) {
+    public void setOutputMaterialLsidTemplate(SimpleTypeValue outputMaterialLsidTemplate) {
         this.outputMaterialLsidTemplate = outputMaterialLsidTemplate;
     }
 
@@ -343,8 +342,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputMaterialNameTemplate the outputMaterialNameTemplate to set.
      */
-    public void setOutputMaterialNameTemplate(
-            SimpleTypeValue outputMaterialNameTemplate) {
+    public void setOutputMaterialNameTemplate(SimpleTypeValue outputMaterialNameTemplate) {
         this.outputMaterialNameTemplate = outputMaterialNameTemplate;
     }
 

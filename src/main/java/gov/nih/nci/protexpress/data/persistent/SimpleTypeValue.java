@@ -122,7 +122,6 @@ public class SimpleTypeValue implements Serializable, Persistent {
     private String ontologyEntryURI;
     private String value;
 
-
     /**
      * protected default constructor for hibernate only.
      */
@@ -168,9 +167,8 @@ public class SimpleTypeValue implements Serializable, Persistent {
     @Column(name = "name")
     @Length(max = NAME_LENGTH)
     public String getName() {
-        return name;
+        return this.name;
     }
-
 
     /**
      * Sets the name.
@@ -181,7 +179,6 @@ public class SimpleTypeValue implements Serializable, Persistent {
         this.name = name;
     }
 
-
     /**
      * Gets the valueType.
      *
@@ -190,9 +187,8 @@ public class SimpleTypeValue implements Serializable, Persistent {
     @Enumerated(EnumType.STRING)
     @Column(name = "value_type", length = TYPE_LENGTH)
     public SimpleType getValueType() {
-        return valueType;
+        return this.valueType;
     }
-
 
     /**
      * Sets the valueType.
@@ -203,7 +199,6 @@ public class SimpleTypeValue implements Serializable, Persistent {
         this.valueType = valueType;
     }
 
-
     /**
      * Gets the ontologyEntryURI.
      *
@@ -212,9 +207,8 @@ public class SimpleTypeValue implements Serializable, Persistent {
     @Column(name = "ontology_uri")
     @Length(max = URI_LENGTH)
     public String getOntologyEntryURI() {
-        return ontologyEntryURI;
+        return this.ontologyEntryURI;
     }
-
 
     /**
      * Sets the ontologyEntryURI.
@@ -233,7 +227,7 @@ public class SimpleTypeValue implements Serializable, Persistent {
     @Column(name = "value")
     @Length(max = VALUE_LENGTH)
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -268,11 +262,8 @@ public class SimpleTypeValue implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder()
-        .append(getName(), svt.getName())
-        .append(getOntologyEntryURI(), svt.getOntologyEntryURI())
-        .append(getValueType().toString(), svt.getValueType().toString())
-        .isEquals();
+        return new EqualsBuilder().append(getName(), svt.getName()).append(getOntologyEntryURI(),
+                svt.getOntologyEntryURI()).append(getValueType().toString(), svt.getValueType().toString()).isEquals();
     }
 
     /**
@@ -280,11 +271,8 @@ public class SimpleTypeValue implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-        .append(getName())
-        .append(getOntologyEntryURI())
-        .append(getValueType().toString())
-        .toHashCode();
+        return new HashCodeBuilder().append(getName()).append(getOntologyEntryURI()).append(getValueType().toString())
+                .toHashCode();
     }
 
 }

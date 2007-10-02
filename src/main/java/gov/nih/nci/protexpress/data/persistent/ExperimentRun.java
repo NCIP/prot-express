@@ -109,7 +109,7 @@ import org.hibernate.validator.NotEmpty;
 
 /**
  * Class representing an experiment.
- *
+ * 
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -138,7 +138,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Constructor to create the object and populate all required fields.
-     *
+     * 
      * @param lsid the lsid of the experiment
      * @param name the name of the experiment
      */
@@ -149,7 +149,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * The id of the object.
-     *
+     * 
      * @return the id, null for new objects
      */
     @Id
@@ -160,7 +160,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the id.
-     *
+     * 
      * @param id the id to set
      */
     public void setId(Long id) {
@@ -169,7 +169,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Gets the lsid.
-     *
+     * 
      * @return the lsid
      */
     @Column(name = "lsid")
@@ -182,7 +182,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the lsid.
-     *
+     * 
      * @param lsid the lsid to set
      */
     public void setLsid(String lsid) {
@@ -191,7 +191,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Gets the name.
-     *
+     * 
      * @return the name
      */
     @Column(name = "name")
@@ -203,7 +203,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the name.
-     *
+     * 
      * @param name the name to set
      */
     public void setName(String name) {
@@ -212,7 +212,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Gets the comments.
-     *
+     * 
      * @return the comments
      */
     @Column(name = "comments")
@@ -223,17 +223,16 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the comments.
-     *
+     * 
      * @param comments the comments to set
      */
     public void setComments(String comments) {
         this.comments = comments;
     }
 
-
     /**
      * Gets the experiment.
-     *
+     * 
      * @return the experiment
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -244,7 +243,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the experiment.
-     *
+     * 
      * @param experiment the experiment to set
      */
     public void setExperiment(Experiment experiment) {
@@ -253,7 +252,7 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Gets the protocolApplications.
-     *
+     * 
      * @return the protocolApplications.
      */
     @OneToMany(mappedBy = "experimentRun", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -263,11 +262,10 @@ public class ExperimentRun implements Serializable, Persistent {
 
     /**
      * Sets the protocolApplications.
-     *
+     * 
      * @param protocolApplications the protocolApplications to set.
      */
-    public void setProtocolApplications(
-            List<ProtocolApplication> protocolApplications) {
+    public void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
         this.protocolApplications = protocolApplications;
     }
 
@@ -290,8 +288,7 @@ public class ExperimentRun implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid())
-                .isEquals();
+        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid()).isEquals();
     }
 
     /**

@@ -100,7 +100,7 @@ import org.hibernate.validator.Length;
 
 /**
  * Class representing an experiment.
- *
+ * 
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -130,7 +130,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * The id of the object.
-     *
+     * 
      * @return the id, null for new objects
      */
     @Id
@@ -141,9 +141,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the id.
-     *
-     * @param id
-     *            the id to set
+     * 
+     * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
@@ -151,7 +150,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Gets the firstName.
-     *
+     * 
      * @return the firstName
      */
     @Column(name = "first_name")
@@ -162,9 +161,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the firstName.
-     *
-     * @param firstName
-     *            the firstName to set
+     * 
+     * @param firstName the firstName to set
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -172,7 +170,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Gets the lastName.
-     *
+     * 
      * @return the lastName
      */
     @Column(name = "last_name")
@@ -183,9 +181,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the lastName.
-     *
-     * @param lastName
-     *            the lastName to set
+     * 
+     * @param lastName the lastName to set
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -193,7 +190,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Gets the email.
-     *
+     * 
      * @return the email
      */
     @Column(name = "email")
@@ -205,9 +202,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the email.
-     *
-     * @param email
-     *            the email to set
+     * 
+     * @param email the email to set
      */
     public void setEmail(String email) {
         this.email = email;
@@ -215,7 +211,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Gets the contactId.
-     *
+     * 
      * @return the contactId
      */
     @Column(name = "contact_id")
@@ -226,9 +222,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the contactId.
-     *
-     * @param contactId
-     *            the contactId to set
+     * 
+     * @param contactId the contactId to set
      */
     public void setContactId(String contactId) {
         this.contactId = contactId;
@@ -236,7 +231,7 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Gets the comments.
-     *
+     * 
      * @return the comments
      */
     @Column(name = "comments")
@@ -247,9 +242,8 @@ public class Person implements Serializable, Persistent {
 
     /**
      * Sets the comments.
-     *
-     * @param comments
-     *            the comments to set
+     * 
+     * @param comments the comments to set
      */
     public void setComments(String comments) {
         this.comments = comments;
@@ -274,9 +268,8 @@ public class Person implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getId(), person.getId()).append(
-                getFirstName(), person.getFirstName()).append(getLastName(),
-                person.getLastName()).isEquals();
+        return new EqualsBuilder().append(getId(), person.getId()).append(getFirstName(), person.getFirstName())
+                .append(getLastName(), person.getLastName()).isEquals();
     }
 
     /**
@@ -284,8 +277,7 @@ public class Person implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getFirstName())
-                .append(getLastName()).toHashCode();
+        return new HashCodeBuilder().append(getId()).append(getFirstName()).append(getLastName()).toHashCode();
     }
 
 }
