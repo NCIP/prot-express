@@ -24,7 +24,7 @@
 
     <div id="contentwrapper">
         <!--  CONTENT -->
-        <div id="<decorator:getProperty property="contentCssId" default="content" />">
+        <div id="<decorator:getProperty property="contentCssId" default="content" />" style="margin-bottom: 5px;">
 
             <!-- DECORATED BODY -->
             <decorator:body />
