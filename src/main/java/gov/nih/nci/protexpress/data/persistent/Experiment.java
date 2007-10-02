@@ -110,10 +110,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.Valid;
 
 /**
  * Class representing an experiment.
- * 
+ *
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -149,10 +150,10 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Constructor to create the object and populate all required fields.
-     * 
+     *
      * @param lsid the lsid of the experiment
      * @param name the name of the experiment
-     * 
+     *
      */
     public Experiment(String lsid, String name) {
         setLsid(lsid);
@@ -161,7 +162,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * The id of the object.
-     * 
+     *
      * @return the id, null for new objects
      */
     @Id
@@ -179,7 +180,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the lsid.
-     * 
+     *
      * @return the lsid
      */
     @Column(name = "lsid")
@@ -192,7 +193,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the lsid.
-     * 
+     *
      * @param lsid the lsid to set
      */
     public void setLsid(String lsid) {
@@ -201,7 +202,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the name.
-     * 
+     *
      * @return the name
      */
     @Column(name = "name")
@@ -214,7 +215,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -223,7 +224,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the comments.
-     * 
+     *
      * @return the comments
      */
     @Column(name = "comments")
@@ -235,7 +236,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the comments.
-     * 
+     *
      * @param comments the comments to set
      */
     public void setComments(String comments) {
@@ -244,7 +245,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the hypothesis.
-     * 
+     *
      * @return the hypothesis
      */
     @Column(name = "hypothesis")
@@ -255,7 +256,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the hypothesis.
-     * 
+     *
      * @param hypothesis the hypothesis to set
      */
     public void setHypothesis(String hypothesis) {
@@ -264,7 +265,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the url.
-     * 
+     *
      * @param url the url to set
      */
     public void setUrl(String url) {
@@ -273,7 +274,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the url.
-     * 
+     *
      * @return the url
      */
     @Column(name = "url")
@@ -337,18 +338,19 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the primaryContact.
-     * 
+     *
      * @return the primaryContact.
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", nullable = true)
+    @Valid
     public Person getPrimaryContact() {
         return this.primaryContact;
     }
 
     /**
      * Sets the primaryContact.
-     * 
+     *
      * @param primaryContact the primaryContact to set.
      */
     public void setPrimaryContact(Person primaryContact) {
@@ -357,7 +359,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Gets the experimentRuns.
-     * 
+     *
      * @return the experimentRuns.
      */
     @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -367,7 +369,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     /**
      * Sets the experimentRuns.
-     * 
+     *
      * @param experimentRuns the experimentRuns to set.
      */
     protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
