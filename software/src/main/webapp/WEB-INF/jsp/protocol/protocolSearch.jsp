@@ -30,11 +30,13 @@
 <c:if test="${protocols.list != null}">
     <c:url var="sortUrl" value="/protocol/search/doSearch.action" />
 
+    <c:url var="loadUrlBase" value="/protocol/management/load.action" />
+
     <display:table list="${protocols}" requestURI="${sortUrl}" id="row">
         <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
         <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
         <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
-        <display:column property="name" titleKey="protocol.name" sortable="true" />
+        <display:column property="name" titleKey="protocol.name" sortable="true" href="${loadUrlBase}" paramId="protocol.id" paramProperty="id"/>
         <display:column property="description" titleKey="protocol.description" sortable="true" />
         <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
 
