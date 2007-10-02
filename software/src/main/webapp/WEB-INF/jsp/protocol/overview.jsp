@@ -10,7 +10,7 @@
     <c:set var="formAction" value="protocol/management/save"/>
 </s:else>
 <protExpress:tabPane paneTitleKey="protocol.overview">
-    <s:form action="${formAction}" method="post" id="protocolForm" disabled="${isReadOnly}">
+    <s:form action="${formAction}" id="protocolForm" method="post" disabled="${isReadOnly}">
         <s:textfield name="protocol.lsid" key="protocol.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
         <s:textfield name="protocol.name" key="protocol.name" size="40" tabindex="2" disabled="${isReadOnly}" />
         <s:textfield name="protocol.description" key="protocol.description" size="40" tabindex="3" disabled="${isReadOnly}" />

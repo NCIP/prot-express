@@ -150,7 +150,6 @@ public class HibernateValidator extends FieldValidatorSupport {
             CLASS_VALIDATOR_MAP.put(o.getClass(), classValidator);
         }
         InvalidValue[] validationMessages = classValidator.getInvalidValues(o);
-        LOG.debug("Found" + validationMessages.length + " problems.");
 
         if (validationMessages.length > 0) {
             for (InvalidValue message : validationMessages) {

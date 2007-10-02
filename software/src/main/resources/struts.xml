@@ -114,8 +114,10 @@
 
         <action name="experiment/management/*"
             class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
-            <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
+            <result name="dashboard" type="chain">dashboard/dashboard</result>
+            <result name="search">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

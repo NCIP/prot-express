@@ -132,8 +132,8 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         this.action.getProtocol().setId(this.protocol.getId());
         this.action.prepare();
         assertEquals(this.theSession.get(Protocol.class, this.protocol.getId()), this.action.getProtocol());
-        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Protocol.class, this.protocol.getId()), this.action
-                .getProtocol()));
+        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Protocol.class, this.protocol.getId()),
+                this.action.getProtocol()));
     }
 
     public void testLoad() throws Exception {

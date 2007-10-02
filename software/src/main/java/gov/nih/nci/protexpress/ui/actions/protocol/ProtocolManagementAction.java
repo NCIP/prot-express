@@ -104,7 +104,6 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     private static final long serialVersionUID = 1L;
 
     private Protocol protocol = new Protocol(null, null, null);
-
     private String cancelResult = "search";
     private String successMessage = null;
 
