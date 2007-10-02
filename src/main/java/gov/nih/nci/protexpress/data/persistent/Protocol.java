@@ -150,6 +150,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private Calendar creationDate = Calendar.getInstance();
     private Calendar lastModifiedDate = Calendar.getInstance();
     private Person primaryContact;
+    private ProtocolParameters parameters;
 
     /**
      * protected default constructor for hibernate only.
@@ -502,6 +503,25 @@ public class Protocol implements Serializable, Persistent, Auditable {
         this.outputDataType = outputDataType;
     }
 
+    /**
+     * Gets the parameters.
+     *
+     * @return the parameters.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "parameters_id")
+    public ProtocolParameters getParameters() {
+        return parameters;
+    }
+
+    /**
+     * Sets the parameters.
+     *
+     * @param parameters the parameters to set.
+     */
+    public void setParameters(ProtocolParameters parameters) {
+        this.parameters = parameters;
+    }
 
     /**
      * {@inheritDoc}
