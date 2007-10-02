@@ -84,11 +84,13 @@ package gov.nih.nci.protexpress.data.persistent;
 
 /**
  * Interface for persistent classes.
+ * 
  * @author Scott Miller
  */
 public interface Persistent {
     /**
      * Get the id of the object.
+     * 
      * @return the id
      */
     Long getId();

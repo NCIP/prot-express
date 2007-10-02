@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.data.persistent;
 
 /**
  * @author Scott Miller
- *
+ * 
  */
 public enum ProtocolType {
     /**
@@ -108,7 +108,7 @@ public enum ProtocolType {
 
     /**
      * Constructor for ProtocolType.
-     *
+     * 
      * @param displayname the display name
      */
     private ProtocolType(String displayname) {

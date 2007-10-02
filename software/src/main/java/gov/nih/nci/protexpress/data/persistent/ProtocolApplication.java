@@ -108,6 +108,7 @@ import org.hibernate.validator.NotNull;
 
 /**
  * Class representing a protocol application.
+ * 
  * @author Krishna Kanchinadam
  */
 @Entity
@@ -139,15 +140,14 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Constructor to create the object and populate all required fields.
-     *
+     * 
      * @param lsid the lsid of the protocol application
      * @param name the name of the protocol application
      * @param actionSequence the action sequence
      * @param activityDate the activity date
      * @param protocol the protocol being applied
      */
-    public ProtocolApplication(String lsid, String name, int actionSequence,
-            Calendar activityDate, Protocol protocol) {
+    public ProtocolApplication(String lsid, String name, int actionSequence, Calendar activityDate, Protocol protocol) {
         setLsid(lsid);
         setName(name);
         setActionSequence(actionSequence);
@@ -157,7 +157,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * The id of the object.
-     *
+     * 
      * @return the id, null for new objects
      */
     @Id
@@ -175,7 +175,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the lsid.
-     *
+     * 
      * @return the lsid
      */
     @Column(name = "lsid", unique = true)
@@ -187,7 +187,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the lsid.
-     *
+     * 
      * @param lsid the lsid to set
      */
     public void setLsid(String lsid) {
@@ -196,7 +196,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the name.
-     *
+     * 
      * @return the name
      */
     @Column(name = "name")
@@ -208,7 +208,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the name.
-     *
+     * 
      * @param name the name to set
      */
     public void setName(String name) {
@@ -217,7 +217,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the actionSequence.
-     *
+     * 
      * @return the actionSequence
      */
     @Column(name = "action_sequence")
@@ -229,7 +229,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the actionSequence.
-     *
+     * 
      * @param actionSequence the actionSequence to set
      */
     public void setActionSequence(int actionSequence) {
@@ -238,7 +238,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the activityDate.
-     *
+     * 
      * @return the activityDate
      */
     @Column(name = "activity_date")
@@ -250,17 +250,16 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the activityDate.
-     *
+     * 
      * @param activityDate the activityDate to set
      */
     public void setActivityDate(Calendar activityDate) {
         this.activityDate = activityDate;
     }
 
-
     /**
      * Gets the comments.
-     *
+     * 
      * @return the comments
      */
     @Column(name = "comments")
@@ -272,7 +271,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the comments.
-     *
+     * 
      * @param comments the comments to set
      */
     public void setComments(String comments) {
@@ -281,7 +280,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the protocol.
-     *
+     * 
      * @return the protocol.
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -292,7 +291,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the protocol.
-     *
+     * 
      * @param protocol the protocol to set.
      */
     public void setProtocol(Protocol protocol) {
@@ -301,7 +300,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Gets the experimentRun.
-     *
+     * 
      * @return the experimentRun.
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -312,7 +311,7 @@ public class ProtocolApplication implements Serializable {
 
     /**
      * Sets the experimentRun.
-     *
+     * 
      * @param experimentRun the experimentRun to set.
      */
     public void setExperimentRun(ExperimentRun experimentRun) {
