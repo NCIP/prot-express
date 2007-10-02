@@ -511,7 +511,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parameters_id")
     public ProtocolParameters getParameters() {
-        return parameters;
+        return this.parameters;
     }
 
     /**
