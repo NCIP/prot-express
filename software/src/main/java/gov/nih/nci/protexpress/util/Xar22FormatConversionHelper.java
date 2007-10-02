@@ -88,6 +88,7 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
@@ -96,6 +97,9 @@ import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
+import gov.nih.nci.protexpress.xml.xar2_2.SimpleTypeNames;
+import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueCollectionType;
+import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType.ProtocolApplications;
 
 import java.util.ArrayList;
@@ -341,7 +345,7 @@ public class Xar22FormatConversionHelper {
         xarProtocolApplicationBaseType.setActionSequence(protApp.getActionSequence());
         xarProtocolApplicationBaseType.setActivityDate(protApp.getActivityDate());
         xarProtocolApplicationBaseType.setComments(protApp.getComments());
-        xarProtocolApplicationBaseType.setCpasType(protApp.getType().name());
+        xarProtocolApplicationBaseType.setCpasType(protApp.getProtocol().getType().name());
         xarProtocolApplicationBaseType.setName(protApp.getName());
         xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocol().getLsid());
 
@@ -380,9 +384,83 @@ public class Xar22FormatConversionHelper {
 
             // Get the contact
             xarProtocolBaseType.setContact(getContactType(protApp.getProtocol().getPrimaryContact()));
+
+            // Get the protocol parameters.
+            xarProtocolBaseType.setParameterDeclarations(getParameterDeclarations(protApp.getProtocol()));
         }
 
         return xarProtocolBaseType;
+    }
+
+    /**
+     * Given a Protocol, returns the XAR 2.2 ParameterDeclarations element.
+     *
+     * @param protocol the protocol
+     * @return the XAR 2.2 Parameter Declaration
+     */
+    private SimpleValueCollectionType getParameterDeclarations(Protocol protocol) {
+        SimpleValueCollectionType xarSimpleValueCollectionType = objectFactory.createSimpleValueCollectionType();
+        if ((protocol != null) && (protocol.getParameters() != null)) {
+            if (getSimpleVal(protocol.getParameters().getAppLsidTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getAppLsidTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getAppNameTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getAppNameTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputDataDirTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputDataDirTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputDataFileTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputDataFileTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputDataLsidTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputDataLsidTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputDataNameTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputDataNameTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputMaterialLsidTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputMaterialLsidTemplate()));
+            }
+
+            if (getSimpleVal(protocol.getParameters().getOutputMaterialNameTemplate()) != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
+                        getParameters().getOutputMaterialNameTemplate()));
+            }
+        }
+        return xarSimpleValueCollectionType;
+    }
+
+    /**
+     * Given a protExpress SimpleTypeValue, returns a XAR 2.2 SimpleValueType.
+     *
+     * @param simpleTypeVal the protexpress simple type value
+     * @return the XAR 2.2 SimpleValueType
+     */
+    private SimpleValueType getSimpleVal(gov.nih.nci.protexpress.data.persistent.SimpleTypeValue simpleTypeVal) {
+        SimpleValueType xarSimpleValType = null;
+        if ((simpleTypeVal != null) && (simpleTypeVal.getValue() != null)) {
+            xarSimpleValType = objectFactory.createSimpleValueType();
+            xarSimpleValType.setValueType(SimpleTypeNames.fromValue(simpleTypeVal.getValueType().name()));
+            xarSimpleValType.setOntologyEntryURI(simpleTypeVal.getOntologyEntryURI());
+            xarSimpleValType.setName(simpleTypeVal.getName());
+            xarSimpleValType.setValue(simpleTypeVal.getValue());
+        }
+
+        return xarSimpleValType;
     }
 
     /**
@@ -412,6 +490,40 @@ public class Xar22FormatConversionHelper {
         protocol.setDescription(xarProtocolBaseType.getProtocolDescription());
         protocol.setPrimaryContact(getPerson(xarProtocolBaseType.getContact()));
 
+        // Get the protocol parameters, if any.
+        if (xarProtocolBaseType.getParameterDeclarations() != null) {
+            ProtocolParameters protocolParam = new ProtocolParameters();
+            for (SimpleValueType xarSimpleVal : xarProtocolBaseType.getParameterDeclarations().getSimpleVal()) {
+                if ((xarSimpleVal != null) && (xarSimpleVal.getName() != null)) {
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_LSID_TEMPLATE)) {
+                        protocolParam.getAppLsidTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_NAME_TEMPLATE)) {
+                        protocolParam.getAppNameTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_LSID_TEMPLATE)) {
+                        protocolParam.getOutputMaterialLsidTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_NAME_TEMPLATE)) {
+                        protocolParam.getOutputMaterialNameTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_LSID_TEMPLATE)) {
+                        protocolParam.getOutputDataLsidTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_NAME_TEMPLATE)) {
+                        protocolParam.getOutputDataNameTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_FILE_TEMPLATE)) {
+                        protocolParam.getOutputDataFileTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_DIR_TEMPLATE)) {
+                        protocolParam.getOutputDataDirTemplate().setValue(xarSimpleVal.getValue());
+                    }
+                }
+            }
+            protocol.setParameters(protocolParam);
+        }
+
         return protocol;
     }
 
@@ -425,8 +537,8 @@ public class Xar22FormatConversionHelper {
     private ProtocolApplication getProtocolApplication(ProtocolApplicationBaseType xarProtAppBaseType,
             Protocol protocol) {
         ProtocolApplication protApplication = new ProtocolApplication(xarProtAppBaseType.getAbout(),
-                xarProtAppBaseType.getName(), ProtocolType.valueOf(xarProtAppBaseType.getCpasType()),
-                xarProtAppBaseType.getActionSequence(), xarProtAppBaseType.getActivityDate(), protocol);
+                xarProtAppBaseType.getName(), xarProtAppBaseType.getActionSequence(),
+                xarProtAppBaseType.getActivityDate(), protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
         return protApplication;

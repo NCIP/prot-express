@@ -83,76 +83,63 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
- * Class representing a protocol application.
+ * Class representing a Simple Value Type (name, value and a URI).
+ *
  * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol_application")
+@Table(name = "simple_value_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolApplication implements Serializable {
+public class SimpleTypeValue implements Serializable, Persistent {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int LSID_LENGTH = 255;
-    private static final int ACTION_SEQUENCE_LENGTH = 3;
-    private static final int COMMENTS_LENGTH = 255;
+    private static final int NAME_LENGTH = 255;
+    private static final int TYPE_LENGTH = 255;
+    private static final int VALUE_LENGTH = 255;
+    private static final int URI_LENGTH = 255;
 
     private Long id;
-    private String lsid;
     private String name;
-    private int actionSequence;
-    private Calendar activityDate;
-    private String comments;
-    private ExperimentRun experimentRun;
-    private Protocol protocol;
+    private SimpleType valueType;
+    private String ontologyEntryURI;
+    private String value;
+
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected ProtocolApplication() {
+    protected SimpleTypeValue() {
     }
 
     /**
-     * Constructor to create the object and populate all required fields.
+     * Constructor to create the object with a short name and a fully-qualified name (ontology entry uri).
      *
-     * @param lsid the lsid of the protocol application
-     * @param name the name of the protocol application
-     * @param actionSequence the action sequence
-     * @param activityDate the activity date
-     * @param protocol the protocol being applied
+     * @param name the short name
+     * @param uri the ontology entry uri
+     * @param valueType the value type
      */
-    public ProtocolApplication(String lsid, String name, int actionSequence,
-            Calendar activityDate, Protocol protocol) {
-        setLsid(lsid);
+    public SimpleTypeValue(String name, String uri, SimpleType valueType) {
         setName(name);
-        setActionSequence(actionSequence);
-        setActivityDate(activityDate);
-        setProtocol(protocol);
+        setOntologyEntryURI(uri);
+        setValueType(valueType);
     }
 
     /**
@@ -174,149 +161,88 @@ public class ProtocolApplication implements Serializable {
     }
 
     /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid", unique = true)
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
      * Gets the name.
      *
-     * @return the name
+     * @return the name.
      */
     @Column(name = "name")
-    @NotEmpty
     @Length(max = NAME_LENGTH)
     public String getName() {
-        return this.name;
+        return name;
     }
+
 
     /**
      * Sets the name.
      *
-     * @param name the name to set
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Gets the actionSequence.
-     *
-     * @return the actionSequence
-     */
-    @Column(name = "action_sequence")
-    @NotEmpty
-    @Length(max = ACTION_SEQUENCE_LENGTH)
-    public int getActionSequence() {
-        return this.actionSequence;
-    }
 
     /**
-     * Sets the actionSequence.
+     * Gets the valueType.
      *
-     * @param actionSequence the actionSequence to set
+     * @return the valueType.
      */
-    public void setActionSequence(int actionSequence) {
-        this.actionSequence = actionSequence;
-    }
-
-    /**
-     * Gets the activityDate.
-     *
-     * @return the activityDate
-     */
-    @Column(name = "activity_date")
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    public Calendar getActivityDate() {
-        return this.activityDate;
-    }
-
-    /**
-     * Sets the activityDate.
-     *
-     * @param activityDate the activityDate to set
-     */
-    public void setActivityDate(Calendar activityDate) {
-        this.activityDate = activityDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "value_type", length = TYPE_LENGTH)
+    public SimpleType getValueType() {
+        return valueType;
     }
 
 
     /**
-     * Gets the comments.
+     * Sets the valueType.
      *
-     * @return the comments
+     * @param valueType the valueType to set.
      */
-    @Column(name = "comments")
-    @NotEmpty
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
+    public void setValueType(SimpleType valueType) {
+        this.valueType = valueType;
+    }
+
+
+    /**
+     * Gets the ontologyEntryURI.
+     *
+     * @return the ontologyEntryURI.
+     */
+    @Column(name = "ontology_uri")
+    @Length(max = URI_LENGTH)
+    public String getOntologyEntryURI() {
+        return ontologyEntryURI;
+    }
+
+
+    /**
+     * Sets the ontologyEntryURI.
+     *
+     * @param ontologyEntryURI the ontologyEntryURI to set.
+     */
+    public void setOntologyEntryURI(String ontologyEntryURI) {
+        this.ontologyEntryURI = ontologyEntryURI;
     }
 
     /**
-     * Sets the comments.
+     * Gets the value.
      *
-     * @param comments the comments to set
+     * @return the value.
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    @Column(name = "value")
+    @Length(max = VALUE_LENGTH)
+    public String getValue() {
+        return value;
     }
 
     /**
-     * Gets the protocol.
+     * Sets the value.
      *
-     * @return the protocol.
+     * @param value the value to set.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "protocol_id")
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Sets the protocol.
-     *
-     * @param protocol the protocol to set.
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
-
-    /**
-     * Gets the experimentRun.
-     *
-     * @return the experimentRun.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_run_id", nullable = false)
-    public ExperimentRun getExperimentRun() {
-        return this.experimentRun;
-    }
-
-    /**
-     * Sets the experimentRun.
-     *
-     * @param experimentRun the experimentRun to set.
-     */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     /**
@@ -332,17 +258,21 @@ public class ProtocolApplication implements Serializable {
             return true;
         }
 
-        if (!(o instanceof ProtocolApplication)) {
+        if (!(o instanceof SimpleTypeValue)) {
             return false;
         }
 
-        ProtocolApplication p = (ProtocolApplication) o;
+        SimpleTypeValue svt = (SimpleTypeValue) o;
 
         if (this.id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
+        return new EqualsBuilder()
+        .append(getName(), svt.getName())
+        .append(getOntologyEntryURI(), svt.getOntologyEntryURI())
+        .append(getValueType().toString(), svt.getValueType().toString())
+        .isEquals();
     }
 
     /**
@@ -350,6 +280,11 @@ public class ProtocolApplication implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder()
+        .append(getName())
+        .append(getOntologyEntryURI())
+        .append(getValueType().toString())
+        .toHashCode();
     }
+
 }

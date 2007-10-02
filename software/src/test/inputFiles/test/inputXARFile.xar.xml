@@ -40,6 +40,7 @@
 			<ParameterDeclarations>
 				<SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:IPAS14</SimpleVal>
 				<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do IPAS 14 protocol</SimpleVal>
+				<SimpleVal ValueType="String" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputDataName " Name="OutputDataNameTemplate ">OUT DATANAMETEMPLATE</SimpleVal>
 			</ParameterDeclarations>
 			<Properties>
 				<SimpleVal Name="TreatAsFractions" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.TreatAsFractions" ValueType="String">true</SimpleVal>
