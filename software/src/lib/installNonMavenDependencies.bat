@@ -1,2 +1,3 @@
 call mvn install:install-file -Dfile=csmapi.jar -DgroupId=gov.nih.nci -DartifactId=security -Dversion=3.2 -Dpackaging=jar -DgeneratePom=true
 call mvn install:install-file -Dfile=clm.jar -DgroupId=gov.nih.nci -DartifactId=logging -Dversion=3.2 -Dpackaging=jar -DgeneratePom=true
+call mvn install:install-file -Dfile=ajaxtags-1.3-beta-rc7.jar -DgroupId=ajaxtags -DartifactId=ajaxtags -Dversion=1.3-beta-rc7 -Dpackaging=jar -DgeneratePom=true
