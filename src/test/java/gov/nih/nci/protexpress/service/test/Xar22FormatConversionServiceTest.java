@@ -183,9 +183,9 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          prot1.setPrimaryContact(person);
 
          ProtocolParameters protParams = new ProtocolParameters();
-         protParams.getAppLsidTemplate().setValue("${RunLSIDBase}:IPAS14");
-         protParams.getAppNameTemplate().setValue("Do IPAS 14 protocol");
-         protParams.getOutputDataNameTemplate().setValue("OUT DATANAMETEMPLATE");
+         protParams.setAppLsidTemplate("${RunLSIDBase}:IPAS14");
+         protParams.setAppNameTemplate("Do IPAS 14 protocol");
+         protParams.setOutputDataNameTemplate("OUT DATANAMETEMPLATE");
          prot1.setParameters(protParams);
 
          this.protocols.add(prot1);
@@ -213,6 +213,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
         // Set a Protocol Application
         ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), this.protocols.get(0));
+        ProtocolParameters protParams = new ProtocolParameters();
+        protParams.setOutputDataFileTemplate("Out Data File Template");
+        protParams.setAppNameTemplate("Do IPAS 14 protocol");
+        protApp1.setParameters(protParams);
 
         List<ProtocolApplication> protApplications = new ArrayList<ProtocolApplication>();
         protApplications.add(protApp1);
@@ -294,6 +298,12 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(unmarshalledProtApp1.getLsid(), "${RunLSIDBase}:IPAS14");
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
         assertEquals(unmarshalledProtApp1.getProtocol().getLsid(), "${FolderLSIDBase}:Process.IPAS14");
+        assertEquals(unmarshalledProtApp1.getParameters().getOutputDataFileTemplate(), "Out Data File Template");
+        assertEquals(unmarshalledProtApp1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
+
+        assertNotNull(unmarshalledProtApp1.getExperimentRun());
+        assertEquals(unmarshalledProtApp1.getExperimentRun().getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
+        assertEquals(unmarshalledProtApp1.getExperimentRun().getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
 
         Protocol prot1 = unmarshalledProtApp1.getProtocol();
         assertNotNull(prot1);
@@ -306,9 +316,9 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(prot1.getOutputDataType(), "Data");
         assertEquals(prot1.getOutputMaterialType(), "Material");
 
-        assertEquals(prot1.getParameters().getAppLsidTemplate().getValue(), "${RunLSIDBase}:IPAS14");
-        assertEquals(prot1.getParameters().getAppNameTemplate().getValue(), "Do IPAS 14 protocol");
-        assertEquals(prot1.getParameters().getOutputDataNameTemplate().getValue(), "OUT DATANAMETEMPLATE");
+        assertEquals(prot1.getParameters().getAppLsidTemplate(), "${RunLSIDBase}:IPAS14");
+        assertEquals(prot1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
+        assertEquals(prot1.getParameters().getOutputDataNameTemplate(), "OUT DATANAMETEMPLATE");
 
         Person prot1Contact = prot1.getPrimaryContact();
         assertNotNull(prot1Contact);
