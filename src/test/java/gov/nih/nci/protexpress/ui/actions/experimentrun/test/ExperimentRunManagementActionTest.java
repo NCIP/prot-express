@@ -80,77 +80,70 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.interceptor;
+package gov.nih.nci.protexpress.ui.actions.experimentrun.test;
 
-import gov.nih.nci.protexpress.data.persistent.AuditInfo;
-import gov.nih.nci.protexpress.data.persistent.Auditable;
-import gov.nih.nci.protexpress.security.IllegalModificationException;
-import gov.nih.nci.protexpress.util.UserHolder;
+import com.opensymphony.xwork2.ActionSupport;
 
-import java.io.Serializable;
-import java.util.Calendar;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.EmptyInterceptor;
-import org.hibernate.type.Type;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction;
 
 /**
- * Interceptor for prot express.
- *
  * @author Scott Miller
+ *
  */
-public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
-    private static final long serialVersionUID = 1L;
+public class ExperimentRunManagementActionTest extends ProtExpressBaseHibernateTest {
+
+    ExperimentRunManagementAction action;
+    Experiment experiment;
+    ExperimentRun experimentRun;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        if (entity instanceof Auditable) {
-            for (int i = 0; i < propertyNames.length; i++) {
-                if ("auditInfo".equals(propertyNames[i]) && StringUtils.isNotBlank(UserHolder.getUsername())) {
-                    AuditInfo ai = (AuditInfo) state[i];
-                    ai.setCreator(UserHolder.getUsername());
-                    ai.setCreationDate(Calendar.getInstance());
-                    ai.setLastModifiedDate(Calendar.getInstance());
-                }
-            }
-            return true;
-        }
-        return false;
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new ExperimentRunManagementAction();
+
+        this.experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.experiment.setComments("Description - Test Experiment 1");
+        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        this.experiment.setUrl("URL - Test Experiment 1");
+
+        this.theSession.saveOrUpdate(this.experiment);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun.setComments("test comments");
+        this.experimentRun.setExperiment(this.experiment);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
-            String[] propertyNames, Type[] types) {
-        if (entity instanceof Auditable) {
-            if (!((Auditable) entity).getAuditInfo().getCreator().equals(UserHolder.getUsername())) {
-                throw new IllegalModificationException();
-            }
-            for (int i = 0; i < propertyNames.length; i++) {
-                if ("auditInfo".equals(propertyNames[i])) {
-                    AuditInfo ai = (AuditInfo) currentState[i];
-                    ai.setLastModifiedDate(Calendar.getInstance());
-                }
-            }
-            return true;
-        }
-        return false;
+    public void testLoadByExperimentId() throws Exception {
+        this.action.setExperimentId(this.experiment.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.INPUT, this.action.load());
+        assertEquals(this.experiment, this.action.getExperimentRun().getExperiment());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        if (entity instanceof Auditable
-                && !((Auditable) entity).getAuditInfo().getCreator().equals(UserHolder.getUsername())) {
-            throw new IllegalModificationException();
-        }
-        super.onDelete(entity, id, state, propertyNames, types);
+    public void testAddAndDeleteExperimentRun() throws Exception {
+        this.action.setExperimentRun(this.experimentRun);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Experiment Run successfully created.", this.action.getSuccessMessage());
+
+        this.action = new ExperimentRunManagementAction();
+        this.action.getExperimentRun().setId(this.experimentRun.getId());
+        this.action.prepare();
+        this.action.getExperimentRun().setName("new name");
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Experiment Run successfully updated.", this.action.getSuccessMessage());
+
+        this.action = new ExperimentRunManagementAction();
+        this.action.getExperimentRun().setId(this.experimentRun.getId());
+        this.action.prepare();
+        assertEquals("success", this.action.delete());
+        assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
     }
 }

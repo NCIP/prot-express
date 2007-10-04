@@ -36,15 +36,15 @@
         <display:column property="url" titleKey="experiment.url" sortable="true" />
 
         <display:column titleKey="actions" sortable="false">
-            <c:if test="${row.creator == currentUser.loginName}">
+            <c:if test="${row.auditInfo.creator == currentUser.loginName}">
                 <c:url var="loadUrl" value="/experiment/management/load.action">
                     <c:param name="experiment.id" value="${row.id}" />
                 </c:url>
-                <a href="${loadUrl}"><s:text name="edit" /></a>
+                <a href="${loadUrl}"><fmt:message key="edit" /></a>
                 <c:url var="deleteUrl" value="/experiment/management/delete.action">
                     <c:param name="experiment.id" value="${row.id}" />
                 </c:url>
-                <a href="${deleteUrl}"><s:text name="delete" /></a>
+                <a href="${deleteUrl}"><fmt:message key="delete" /></a>
             </c:if>
         </display:column>
     </display:table>

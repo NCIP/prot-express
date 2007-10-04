@@ -98,15 +98,15 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
     public void testSaveAndUpdateAuditableObject() throws Exception {
         Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
-        assertEquals(null, p.getCreator());
+        assertEquals(null, p.getAuditInfo().getCreator());
         this.theSession.save(p);
-        assertEquals(UserHolder.getUsername(), p.getCreator());
+        assertEquals(UserHolder.getUsername(), p.getAuditInfo().getCreator());
 
         this.theSession.flush();
         this.theSession.clear();
 
         p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        Calendar oldDate = p.getLastModifiedDate();
+        Calendar oldDate = p.getAuditInfo().getLastModifiedDate();
         p.setDescription("new desc");
         Thread.sleep(500);
         this.theSession.update(p);
@@ -114,7 +114,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
         this.theSession.clear();
 
         p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        assertEquals(-1, oldDate.compareTo(p.getLastModifiedDate()));
+        assertEquals(-1, oldDate.compareTo(p.getAuditInfo().getLastModifiedDate()));
     }
 
     public void testSaveAnUpdateNonAuditableObject() {

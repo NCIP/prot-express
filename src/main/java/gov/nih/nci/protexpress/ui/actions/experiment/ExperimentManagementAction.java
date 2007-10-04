@@ -97,7 +97,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 /**
  * Action for managing experiments.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller, Krishna Kanchinadam
  */
 @Validation
 public class ExperimentManagementAction extends ActionSupport implements Preparable {

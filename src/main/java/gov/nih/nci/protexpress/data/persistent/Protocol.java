@@ -85,7 +85,6 @@ package gov.nih.nci.protexpress.data.persistent;
 import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -100,8 +99,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -147,9 +144,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private Integer outputDataPerInstance;
     private String outputMaterialType = "Material";
     private String outputDataType = "Data";
-    private String creator;
-    private Calendar creationDate = Calendar.getInstance();
-    private Calendar lastModifiedDate = Calendar.getInstance();
+    private AuditInfo auditInfo = new AuditInfo();
     private Person primaryContact;
     private ProtocolParameters parameters = new ProtocolParameters();
 
@@ -313,56 +308,18 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * {@inheritDoc}
+     * @return the auditInfo
      */
-    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
-    // not be validated at the UI
-    @Column(name = "creator", nullable = false, length = Auditable.CREATOR_LENGTH)
-    public String getCreator() {
-        return this.creator;
+    @Embedded
+    public AuditInfo getAuditInfo() {
+        return this.auditInfo;
     }
 
     /**
-     * {@inheritDoc}
+     * @param auditInfo the auditInfo to set
      */
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
-    // not be validated at the UI
-    @Column(name = "creation_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    public Calendar getCreationDate() {
-        return this.creationDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setCreationDate(Calendar creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
-    // not be validated at the UI
-    @Column(name = "modification_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    public Calendar getLastModifiedDate() {
-        return this.lastModifiedDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setLastModifiedDate(Calendar lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public void setAuditInfo(AuditInfo auditInfo) {
+        this.auditInfo = auditInfo;
     }
 
     /**

@@ -80,241 +80,124 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.ui.actions.experimentrun;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.MessageFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
 /**
- * Class representing an experiment.
+ * Action for editing an experiment run.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller
  */
-@Entity
-@Table(name = "experiment_run")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ExperimentRun implements Serializable, Persistent, Auditable {
+public class ExperimentRunManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-
-    private static final int NAME_LENGTH = 255;
-    private static final int LSID_LENGTH = 255;
-    private static final int COMMENTS_LENGTH = 255;
-
-    private Long id;
-    private String lsid;
-    private String name;
-    private String comments;
-    private AuditInfo auditInfo = new AuditInfo();
-    private Experiment experiment;
-    private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
-
-    /**
-     * protected default constructor for hibernate only.
-     */
-    protected ExperimentRun() {
-    }
-
-    /**
-     * Constructor to create the object and populate all required fields.
-     *
-     * @param lsid the lsid of the experiment
-     * @param name the name of the experiment
-     */
-    public ExperimentRun(String lsid, String name) {
-        setLsid(lsid);
-        setName(name);
-    }
-
-    /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets the id.
-     *
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @UniqueConstraint(propertyName = "lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the comments.
-     *
-     * @return the comments
-     */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
-    }
-
-    /**
-     * Sets the comments.
-     *
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    /**
-     * @return the auditInfo
-     */
-    @Embedded
-    public AuditInfo getAuditInfo() {
-        return this.auditInfo;
-    }
-
-    /**
-     * @param auditInfo the auditInfo to set
-     */
-    public void setAuditInfo(AuditInfo auditInfo) {
-        this.auditInfo = auditInfo;
-    }
-
-    /**
-     * Gets the experiment.
-     *
-     * @return the experiment
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_id", nullable = false)
-    public Experiment getExperiment() {
-        return this.experiment;
-    }
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-    /**
-     * Gets the protocolApplications.
-     *
-     * @return the protocolApplications.
-     */
-    @OneToMany(mappedBy = "experimentRun", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("actionSequence")
-    public List<ProtocolApplication> getProtocolApplications() {
-        return this.protocolApplications;
-    }
-
-    /**
-     * Sets the protocolApplications.
-     *
-     * @param protocolApplications the protocolApplications to set.
-     */
-    public void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
-        this.protocolApplications = protocolApplications;
-    }
+    private ExperimentRun experimentRun = new ExperimentRun(null, null);
+    private Long experimentId;
+    private String successMessage = null;
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ExperimentRun)) {
-            return false;
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        if (getExperimentRun().getId() != null) {
+            setExperimentRun(es.getExperimentRunById(getExperimentRun().getId()));
+        } else if (getExperimentId() != null) {
+            getExperimentRun().setExperiment(es.getExperimentById(getExperimentId()));
         }
-
-        if (this == obj) {
-            return true;
-        }
-
-        ExperimentRun experimentRun = (ExperimentRun) obj;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid()).isEquals();
     }
 
     /**
-     * {@inheritDoc}
+     * loads the experiments.
+     *
+     * @return the directive for the next action / page to be directed to
      */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Saves the experiment.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String save() {
+        if (getExperimentRun().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                    .getString("experimentRun.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
+                    "experimentRun.update.success"));
+        }
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperimentRun());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * delete the experiments.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experimentRun.delete.success");
+        setSuccessMessage(MessageFormat.format(msg, getExperimentRun().getName()));
+        ProtExpressRegistry.getExperimentService().deleteExperimentRun(getExperimentRun());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * @return the experimentRun
+     */
+    @CustomValidator(type = "hibernate")
+    public ExperimentRun getExperimentRun() {
+        return this.experimentRun;
+    }
+
+    /**
+     * @param experimentRun the experimentRun to set
+     */
+    public void setExperimentRun(ExperimentRun experimentRun) {
+        this.experimentRun = experimentRun;
+    }
+
+    /**
+     * @return the experimentId
+     */
+    public Long getExperimentId() {
+        return this.experimentId;
+    }
+
+    /**
+     * @param experimentId the experimentId to set
+     */
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

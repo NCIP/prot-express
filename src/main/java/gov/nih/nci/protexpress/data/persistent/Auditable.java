@@ -82,59 +82,24 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import java.util.Calendar;
-
 /**
  * Interface for all auditable entities.
- * 
+ *
  * @author Scott Miller
  */
 public interface Auditable {
 
     /**
-     * Length of the creator field in the DB.
+     * The audit info.
+     *
+     * @return the audit info
      */
-    int CREATOR_LENGTH = 100;
+    AuditInfo getAuditInfo();
 
     /**
-     * Get the username of the creator of the object.
-     * 
-     * @return the username of the creator.
+     * Set the audit info.
+     *
+     * @param auditInfo the audit info.
      */
-    String getCreator();
-
-    /**
-     * Set the username of the creator.
-     * 
-     * @param creator the username of the creator
-     */
-    void setCreator(String creator);
-
-    /**
-     * Get the creation date.
-     * 
-     * @return the creation date
-     */
-    Calendar getCreationDate();
-
-    /**
-     * Set the creation date.
-     * 
-     * @param creationDate the creation date
-     */
-    void setCreationDate(Calendar creationDate);
-
-    /**
-     * Get the last modified date.
-     * 
-     * @return the last modified date
-     */
-    Calendar getLastModifiedDate();
-
-    /**
-     * Set the last modified date.
-     * 
-     * @param lastModifiedDate the last modified date
-     */
-    void setLastModifiedDate(Calendar lastModifiedDate);
+    void setAuditInfo(AuditInfo auditInfo);
 }

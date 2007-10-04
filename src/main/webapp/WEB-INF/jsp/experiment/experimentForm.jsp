@@ -22,6 +22,28 @@
         <h2>${experiment.name}</h2>
     </s:else>
 
+    <c:set var="overviewActive" value="false" />
+    <c:set var="experimentRunActive" value="false" />
+    <c:set var="contactActive" value="false" />
+    <c:set var="exportActive" value="false" />
+
+    <s:if test="${param.initialTab == null || param.initialTab == 'overview'}">
+        <c:set var="overviewActive" value="true" />
+        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/overview.jsp" />
+    </s:if>
+    <s:elseif test="${param.initialTab == 'experimentRun'}">
+        <c:set var="experimentRunActive" value="true" />
+        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/experimentRuns.jsp" />
+    </s:elseif>
+    <s:elseif test="${param.initialTab == 'contact'}">
+        <c:set var="contactActive" value="true" />
+        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/contact.jsp" />
+    </s:elseif>
+    <s:elseif test="${param.initialTab == 'export'}">
+        <c:set var="exportActive" value="true" />
+        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/export.jsp" />
+    </s:elseif>
+
     <c:url value="/ajax/experiment/management/load/overview.action" var="overviewUrl">
         <c:param name="experiment.id" value="${experiment.id}" />
         <c:param name="cancelResult" value="${cancelResult}" />
@@ -39,12 +61,12 @@
         <c:param name="cancelResult" value="${cancelResult}" />
     </c:url>
 
-    <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/experiment/overview.jsp">
-        <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
+    <protExpress:tabbedPanel initialFile="${initialPage}">
+        <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="${overviewActive}" />
         <s:if test="experiment != null && experiment.id != null">
-            <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" />
-            <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
-            <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" />
+            <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" isActive="${experimentRunActive}" />
+            <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" isActive="${contactActive}" />
+            <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" isActive="${exportActive}" />
         </s:if>
     </protExpress:tabbedPanel>
 </div>
