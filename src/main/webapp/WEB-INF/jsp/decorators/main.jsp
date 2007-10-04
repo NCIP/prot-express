@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="<c:url value="/stylesheets/baseStyles.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/prototype.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/scriptaculous.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/builder.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/controls.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/dragdrop.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/effects.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/slider.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_controls.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_parser.js"/>"></script>
 </head>
 
 <body onload="<decorator:getProperty property="body.onload" />">
