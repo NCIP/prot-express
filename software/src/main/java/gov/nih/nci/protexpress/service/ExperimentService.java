@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 
 import java.util.List;
 
@@ -91,7 +92,7 @@ import org.displaytag.properties.SortOrderEnum;
 /**
  * Service to handle the manipulation of experiments.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller, Krishna Kanchinadam
  */
 public interface ExperimentService {
 
@@ -126,7 +127,7 @@ public interface ExperimentService {
     List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
 
     /**
-     * Retrieve the experiment ith the given identifier.
+     * Retrieve the experiment with the given identifier.
      *
      * @param id the id of the experiment to retrive
      * @return the experiment to retrieve
@@ -134,9 +135,24 @@ public interface ExperimentService {
     Experiment getExperimentById(Long id);
 
     /**
+     * Retrieve the experiment with the given identifier.
+     *
+     * @param id the id of the experiment run.
+     * @return the experiment run.
+     */
+    ExperimentRun getExperimentRunById(Long id);
+
+    /**
      * delete the given experiment.
      *
      * @param experiment the experiment to delete
      */
     void deleteExperiment(Experiment experiment);
+
+    /**
+     * delete the given experiment run.
+     *
+     * @param experimentRun the experiment run to delete.
+     */
+    void deleteExperimentRun(ExperimentRun experimentRun);
 }

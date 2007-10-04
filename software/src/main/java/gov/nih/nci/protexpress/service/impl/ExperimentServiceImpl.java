@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
@@ -102,7 +103,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Default hibernate backed implementation of the experiment service.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller, Krishna Kanchinadam
  */
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class ExperimentServiceImpl extends HibernateDaoSupport implements ExperimentService {
@@ -157,7 +158,8 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
      */
     @SuppressWarnings("unchecked")
     public List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments) {
-        String hql = "from " + Experiment.class.getName() + " where creator = :username order by lastModifiedDate desc";
+        String hql = "from " + Experiment.class.getName()
+                + " where creator = :username order by auditInfo.lastModifiedDate desc";
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
         query.setString("username", username);
         return query.setMaxResults(numberOfExperiments).list();
@@ -173,8 +175,23 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     /**
      * {@inheritDoc}
      */
+    public ExperimentRun getExperimentRunById(Long id) {
+        return (ExperimentRun) getHibernateTemplate().load(ExperimentRun.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteExperiment(Experiment experiment) {
         getHibernateTemplate().delete(experiment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteExperimentRun(ExperimentRun experimentRun) {
+        getHibernateTemplate().delete(experimentRun);
     }
 }

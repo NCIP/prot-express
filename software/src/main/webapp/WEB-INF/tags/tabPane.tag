@@ -1,6 +1,7 @@
 <%@ attribute name="paneTitleKey" required="true"%>
 <%@ attribute name="submittingPaneMessageKey" required="false"%>
 <%@ attribute name="initialFormFieldId" required="false"%>
+<%@ attribute name="ignoreSuccessMessage" required="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:if test="${empty submittingPaneMessageKey}">
@@ -17,7 +18,7 @@ function showSubmittingText() {
     <div class="padme5"><fmt:message key="${submittingPaneMessageKey}" /></div>
 </div>
 <div id="theForm">
-    <c:if test="${not empty successMessage}">
+    <c:if test="${not empty successMessage && ignoreSuccessMessage != 'true'}">
         <div class="confirm_msg">${successMessage}</div>
     </c:if>
     <jsp:doBody />

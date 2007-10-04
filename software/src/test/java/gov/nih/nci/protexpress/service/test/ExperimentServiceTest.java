@@ -2,6 +2,7 @@ package gov.nih.nci.protexpress.service.test;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
@@ -291,5 +292,31 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(exp1.equals(new String("Foo")));
         assertTrue(exp1.equals(exp1));
         assertEquals(exp1.hashCode(), new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1").hashCode());
+    }
+
+    public void testAddAndDeleteExperimentRun() throws Exception {
+        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        exp.setComments("bar 123");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ExperimentRun experimentRun = new ExperimentRun("test er1", "test er1");
+        experimentRun.setExperiment(exp);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(experimentRun);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ExperimentRun retrievedExperimentRun = ProtExpressRegistry.getExperimentService().getExperimentRunById(experimentRun.getId());
+        assertEquals(retrievedExperimentRun, experimentRun);
+
+        ProtExpressRegistry.getExperimentService().deleteExperimentRun(retrievedExperimentRun);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        List<ExperimentRun> experimentRuns = this.theSession.createQuery("from " + ExperimentRun.class.getName()).list();
+        assertEquals(0, experimentRuns.size());
     }
 }

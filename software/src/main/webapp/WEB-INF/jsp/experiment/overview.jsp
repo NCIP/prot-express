@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<c:set var="isReadOnly" value="${experiment.id != null && experiment.creator != currentUser.loginName}" />
+<c:set var="isReadOnly" value="${experiment.id != null && experiment.auditInfo.creator != currentUser.loginName}" />
 <s:if test="${experiment.id != null}">
     <c:set var="formAction" value="ajax/experiment/management/save/overview"/>
 </s:if>

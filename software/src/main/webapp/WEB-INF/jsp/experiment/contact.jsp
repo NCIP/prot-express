@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<c:set var="isReadOnly" value="${experiment.id != null && experiment.creator != currentUser.loginName}" />
+<c:set var="isReadOnly" value="${experiment.id != null && experiment.auditInfo.creator != currentUser.loginName}" />
 <protExpress:tabPane paneTitleKey="experiment.tabs.contact">
     <s:form action="ajax/experiment/management/save/contact" method="post" id="experimentForm" disabled="${isReadOnly}" >
         <s:textfield name="experiment.primaryContact.firstName" key="experiment.primaryContact.firstName" size="40" tabindex="1" disabled="${isReadOnly}" />

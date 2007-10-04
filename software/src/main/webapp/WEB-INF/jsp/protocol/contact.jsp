@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<c:set var="isReadOnly" value="${protocol.creator != currentUser.loginName}" />
+<c:set var="isReadOnly" value="${protocol.auditInfo.creator != currentUser.loginName}" />
 <protExpress:tabPane paneTitleKey="protocol.tabs.contact">
     <s:form action="ajax/protocol/management/save/contact" method="post" id="protocolForm" disabled="${isReadOnly}" >
         <s:textfield name="protocol.primaryContact.firstName" key="protocol.primaryContact.firstName" size="40" tabindex="1" disabled="${isReadOnly}" />

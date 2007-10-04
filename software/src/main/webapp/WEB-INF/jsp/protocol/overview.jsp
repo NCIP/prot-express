@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<c:set var="isReadOnly" value="${protocol.id != null && protocol.creator != currentUser.loginName}" />
+<c:set var="isReadOnly" value="${protocol.id != null && protocol.auditInfo.creator != currentUser.loginName}" />
 <s:if test="${protocol.id != null}">
     <c:set var="formAction" value="ajax/protocol/management/save/overview"/>
 </s:if>

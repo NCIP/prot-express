@@ -134,5 +134,33 @@
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
         <!-- End Experiment -->
+
+        <!-- Experiment Run Actions -->
+        <action name="experimentRun/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/experimentRun/experimentRunForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/experimentRun/experimentRunForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/experimentRun/management/load/*"
+            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="load">
+            <result name="input">/WEB-INF/jsp/experimentRun/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/experimentRun/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="delete">
+            <result name="success" type="chain">ajax/experiment/management/load/experimentRuns</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/experimentRun/management/save/*"
+            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="save">
+            <result name="input">/WEB-INF/jsp/experimentRun/{1}.jsp</result>
+            <result name="success">/WEB-INF/jsp/experimentRun/{1}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End Experiment Runs -->
     </package>
 </struts>
