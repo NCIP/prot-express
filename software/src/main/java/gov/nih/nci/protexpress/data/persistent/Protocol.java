@@ -89,6 +89,7 @@ import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -150,7 +151,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private Calendar creationDate = Calendar.getInstance();
     private Calendar lastModifiedDate = Calendar.getInstance();
     private Person primaryContact;
-    private ProtocolParameters parameters;
+    private ProtocolParameters parameters = new ProtocolParameters();
 
     /**
      * protected default constructor for hibernate only.
@@ -508,8 +509,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @return the parameters.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "parameters_id")
+    @Embedded
     public ProtocolParameters getParameters() {
         return this.parameters;
     }

@@ -285,6 +285,7 @@ public class Xar22FormatConversionHelper {
                    // Get the protocol corresponding to the LSID and set the properties.
                    Protocol protocol = protocolMap.get(xarProtAppBaseType.getProtocolLSID());
                    ProtocolApplication protApplication = getProtocolApplication(xarProtAppBaseType, protocol);
+                   protApplication.setExperimentRun(expRun);
                    expRun.getProtocolApplications().add(protApplication);
                }
            }
@@ -349,6 +350,9 @@ public class Xar22FormatConversionHelper {
         xarProtocolApplicationBaseType.setName(protApp.getName());
         xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocol().getLsid());
 
+     // Get the protocol application parameters.
+        xarProtocolApplicationBaseType.setProtocolApplicationParameters(getProtocolApplicationParameters(protApp));
+
         return xarProtocolApplicationBaseType;
     }
 
@@ -386,79 +390,120 @@ public class Xar22FormatConversionHelper {
             xarProtocolBaseType.setContact(getContactType(protApp.getProtocol().getPrimaryContact()));
 
             // Get the protocol parameters.
-            xarProtocolBaseType.setParameterDeclarations(getParameterDeclarations(protApp.getProtocol()));
+            xarProtocolBaseType.setParameterDeclarations(getProtocolParameterDeclarations(protApp.getProtocol()));
         }
 
         return xarProtocolBaseType;
     }
 
     /**
-     * Given a Protocol, returns the XAR 2.2 ParameterDeclarations element.
+     * Given a Protocol, returns the XAR 2.2 SimpleValueCollectionType element.
      *
      * @param protocol the protocol
-     * @return the XAR 2.2 Parameter Declaration
+     * @return the XAR 2.2 SimpleValueCollectionType element
      */
-    private SimpleValueCollectionType getParameterDeclarations(Protocol protocol) {
+    private SimpleValueCollectionType getProtocolParameterDeclarations(Protocol protocol) {
+        return getParameterDeclarations(protocol.getParameters());
+    }
+
+    /**
+     * Given a ProtocolApplication, returns the XAR 2.2 SimpleValueCollectionType element.
+     *
+     * @param protocol the protocol application
+     * @return the XAR 2.2 SimpleValueCollectionType element
+     */
+    private SimpleValueCollectionType getProtocolApplicationParameters(ProtocolApplication protApp) {
+        return getParameterDeclarations(protApp.getParameters());
+    }
+
+    /**
+     * Given a ProtocolParameter object, returns the XAR 2.2 SimpleValueCollectionType element.
+     *
+     * @param protocolParam the ProtocolParameters
+     * @return the XAR 2.2 SimpleValueCollectionType element
+     */
+    private SimpleValueCollectionType getParameterDeclarations(ProtocolParameters protocolParam) {
         SimpleValueCollectionType xarSimpleValueCollectionType = objectFactory.createSimpleValueCollectionType();
-        if ((protocol != null) && (protocol.getParameters() != null)) {
-            if (getSimpleVal(protocol.getParameters().getAppLsidTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getAppLsidTemplate()));
+        if (protocolParam != null) {
+            if (protocolParam.getAppLsidTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getAppLsidTemplate(),
+                        ProtocolParameters.APP_LSID_TEMPLATE,
+                        ProtocolParameters.URI_APP_LSID_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
 
-            if (getSimpleVal(protocol.getParameters().getAppNameTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getAppNameTemplate()));
+            if (protocolParam.getAppNameTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getAppNameTemplate(),
+                        ProtocolParameters.APP_NAME_TEMPLATE,
+                        ProtocolParameters.URI_APP_NAME_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
 
-            if (getSimpleVal(protocol.getParameters().getOutputDataDirTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputDataDirTemplate()));
+            if (protocolParam.getOutputDataDirTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getOutputDataDirTemplate(),
+                        ProtocolParameters.OUTPUT_DATA_DIR_TEMPLATE,
+                        ProtocolParameters.URI_OUTPUT_DATA_DIR_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
+            }
+            if (protocolParam.getOutputDataFileTemplate() != null) {
+                 xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                         protocolParam.getOutputDataFileTemplate(),
+                         ProtocolParameters.OUTPUT_DATA_FILE_TEMPLATE,
+                         ProtocolParameters.URI_OUTPUT_DATA_FILE_TEMPLATE,
+                         ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
 
-            if (getSimpleVal(protocol.getParameters().getOutputDataFileTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputDataFileTemplate()));
+            if (protocolParam.getOutputDataLsidTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getOutputDataLsidTemplate(),
+                        ProtocolParameters.OUTPUT_DATA_LSID_TEMPLATE,
+                        ProtocolParameters.URI_OUTPUT_DATA_LSID_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
 
-            if (getSimpleVal(protocol.getParameters().getOutputDataLsidTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputDataLsidTemplate()));
+            if (protocolParam.getOutputDataNameTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getOutputDataNameTemplate(),
+                        ProtocolParameters.OUTPUT_DATA_NAME_TEMPLATE,
+                        ProtocolParameters.URI_OUTPUT_DATA_NAME_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
+            }
+            if (protocolParam.getOutputMaterialLsidTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getOutputMaterialLsidTemplate(),
+                        ProtocolParameters.OUTPUT_MATERIAL_LSID_TEMPLATE,
+                        ProtocolParameters.URI_OUTPUT_MATERIAL_LSID_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
 
-            if (getSimpleVal(protocol.getParameters().getOutputDataNameTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputDataNameTemplate()));
-            }
-
-            if (getSimpleVal(protocol.getParameters().getOutputMaterialLsidTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputMaterialLsidTemplate()));
-            }
-
-            if (getSimpleVal(protocol.getParameters().getOutputMaterialNameTemplate()) != null) {
-                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleVal(protocol.
-                        getParameters().getOutputMaterialNameTemplate()));
+            if (protocolParam.getOutputMaterialNameTemplate() != null) {
+                xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
+                        protocolParam.getOutputMaterialNameTemplate(),
+                        ProtocolParameters.OUTPUT_MATERIAL_NAME_TEMPLATE,
+                        ProtocolParameters.URI_OUTPUT_MATERIAL_NAME_TEMPLATE,
+                        ProtocolParameters.PROTOCOL_PARAMETERS_TYPE));
             }
         }
         return xarSimpleValueCollectionType;
     }
 
     /**
-     * Given a protExpress SimpleTypeValue, returns a XAR 2.2 SimpleValueType.
+     * Given a value, paramter name, and the uri, returns a XAR 2.2 SimpleValueType.
      *
-     * @param simpleTypeVal the protexpress simple type value
-     * @return the XAR 2.2 SimpleValueType
+     * @param value the value
+     * @param paramName the parameter name
+     * @param uri the URI value
+     * @param type the type
      */
-    private SimpleValueType getSimpleVal(gov.nih.nci.protexpress.data.persistent.SimpleTypeValue simpleTypeVal) {
-        SimpleValueType xarSimpleValType = null;
-        if ((simpleTypeVal != null) && (simpleTypeVal.getValue() != null)) {
-            xarSimpleValType = objectFactory.createSimpleValueType();
-            xarSimpleValType.setValueType(SimpleTypeNames.fromValue(simpleTypeVal.getValueType().name()));
-            xarSimpleValType.setOntologyEntryURI(simpleTypeVal.getOntologyEntryURI());
-            xarSimpleValType.setName(simpleTypeVal.getName());
-            xarSimpleValType.setValue(simpleTypeVal.getValue());
-        }
+    private SimpleValueType getSimpleValueTypeElement(String value, String paramName, String uri, String type) {
+        SimpleValueType xarSimpleValType = objectFactory.createSimpleValueType();
+        xarSimpleValType.setValue(value);
+        xarSimpleValType.setName(paramName);
+        xarSimpleValType.setOntologyEntryURI(uri);
+        xarSimpleValType.setValueType(SimpleTypeNames.fromValue(type));
 
         return xarSimpleValType;
     }
@@ -491,38 +536,7 @@ public class Xar22FormatConversionHelper {
         protocol.setPrimaryContact(getPerson(xarProtocolBaseType.getContact()));
 
         // Get the protocol parameters, if any.
-        if (xarProtocolBaseType.getParameterDeclarations() != null) {
-            ProtocolParameters protocolParam = new ProtocolParameters();
-            for (SimpleValueType xarSimpleVal : xarProtocolBaseType.getParameterDeclarations().getSimpleVal()) {
-                if ((xarSimpleVal != null) && (xarSimpleVal.getName() != null)) {
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_LSID_TEMPLATE)) {
-                        protocolParam.getAppLsidTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_NAME_TEMPLATE)) {
-                        protocolParam.getAppNameTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_LSID_TEMPLATE)) {
-                        protocolParam.getOutputMaterialLsidTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_NAME_TEMPLATE)) {
-                        protocolParam.getOutputMaterialNameTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_LSID_TEMPLATE)) {
-                        protocolParam.getOutputDataLsidTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_NAME_TEMPLATE)) {
-                        protocolParam.getOutputDataNameTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_FILE_TEMPLATE)) {
-                        protocolParam.getOutputDataFileTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_DIR_TEMPLATE)) {
-                        protocolParam.getOutputDataDirTemplate().setValue(xarSimpleVal.getValue());
-                    }
-                }
-            }
-            protocol.setParameters(protocolParam);
-        }
+        protocol.setParameters(getProtocolParameters(xarProtocolBaseType.getParameterDeclarations()));
 
         return protocol;
     }
@@ -541,7 +555,50 @@ public class Xar22FormatConversionHelper {
                 xarProtAppBaseType.getActivityDate(), protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
+
+        // Get the protocol application parameters, if any.
+        protApplication.setParameters(getProtocolParameters(xarProtAppBaseType.getProtocolApplicationParameters()));
+
         return protApplication;
+    }
+
+    /**
+     * Given a XAR 2.2 SimpleValueCollectionType element, returns the ProtoocolParameters.
+     *
+     */
+    private ProtocolParameters getProtocolParameters(SimpleValueCollectionType xarSimpleValCollection) {
+        ProtocolParameters protocolParam = new ProtocolParameters();
+        if (xarSimpleValCollection != null) {
+            for (SimpleValueType xarSimpleVal : xarSimpleValCollection.getSimpleVal()) {
+                if ((xarSimpleVal != null) && (xarSimpleVal.getName() != null)) {
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_LSID_TEMPLATE)) {
+                        protocolParam.setAppLsidTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.APP_NAME_TEMPLATE)) {
+                        protocolParam.setAppNameTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_LSID_TEMPLATE)) {
+                        protocolParam.setOutputMaterialLsidTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_MATERIAL_NAME_TEMPLATE)) {
+                        protocolParam.setOutputMaterialNameTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_LSID_TEMPLATE)) {
+                        protocolParam.setOutputDataLsidTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_NAME_TEMPLATE)) {
+                        protocolParam.setOutputDataNameTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_FILE_TEMPLATE)) {
+                        protocolParam.setOutputDataFileTemplate(xarSimpleVal.getValue());
+                    }
+                    if (xarSimpleVal.getName().equals(ProtocolParameters.OUTPUT_DATA_DIR_TEMPLATE)) {
+                        protocolParam.setOutputDataDirTemplate(xarSimpleVal.getValue());
+                    }
+                }
+            }
+        }
+        return protocolParam;
     }
 
     /**

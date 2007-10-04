@@ -87,6 +87,7 @@ import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -131,6 +132,8 @@ public class ProtocolApplication implements Serializable {
     private String comments;
     private ExperimentRun experimentRun;
     private Protocol protocol;
+    private ProtocolParameters parameters = new ProtocolParameters();
+
 
     /**
      * protected default constructor for hibernate only.
@@ -316,6 +319,25 @@ public class ProtocolApplication implements Serializable {
      */
     public void setExperimentRun(ExperimentRun experimentRun) {
         this.experimentRun = experimentRun;
+    }
+
+    /**
+     * Gets the parameters.
+     *
+     * @return the parameters.
+     */
+    @Embedded
+    public ProtocolParameters getParameters() {
+        return parameters;
+    }
+
+    /**
+     * Sets the parameters.
+     *
+     * @param parameters the parameters to set.
+     */
+    public void setParameters(ProtocolParameters parameters) {
+        this.parameters = parameters;
     }
 
     /**

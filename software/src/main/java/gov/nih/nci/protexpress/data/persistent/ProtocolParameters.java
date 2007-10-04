@@ -84,30 +84,25 @@ package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.Length;
 
 /**
  * Class representing the protocol parameters.
  *
  * @author Krishna Kanchinadam
  */
-@Entity
-@Table(name = "protocol_parameters")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolParameters implements Serializable, Persistent {
+@Embeddable
+public class ProtocolParameters implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The Protocol Parameter type (default is string).
+     */
+    public static final String PROTOCOL_PARAMETERS_TYPE = "String";
 
     /**
      * The ApplicationLSIDTemplate string.
@@ -122,61 +117,83 @@ public class ProtocolParameters implements Serializable, Persistent {
     /**
      * The OutputMaterialLSIDTemplate string.
      */
-    public static final String OUTPUT_MATERIAL_LSID_TEMPLATE = "OutputMaterialLSIDTemplate ";
+    public static final String OUTPUT_MATERIAL_LSID_TEMPLATE = "OutputMaterialLSIDTemplate";
 
     /**
      * The OutputMaterialNameTemplate string.
      */
-    public static final String OUTPUT_MATERIAL_NAME_TEMPLATE = "OutputMaterialNameTemplate ";
+    public static final String OUTPUT_MATERIAL_NAME_TEMPLATE = "OutputMaterialNameTemplate";
 
     /**
      * The OutputDataLSIDTemplate string.
      */
-    public static final String OUTPUT_DATA_LSID_TEMPLATE = "OutputDataLSIDTemplate ";
+    public static final String OUTPUT_DATA_LSID_TEMPLATE = "OutputDataLSIDTemplate";
 
     /**
      * The OutputDataNameTemplate string.
      */
-    public static final String OUTPUT_DATA_NAME_TEMPLATE = "OutputDataNameTemplate ";
+    public static final String OUTPUT_DATA_NAME_TEMPLATE = "OutputDataNameTemplate";
 
     /**
      * The OutputDataFileTemplate string.
      */
-    public static final String OUTPUT_DATA_FILE_TEMPLATE = "OutputDataFileTemplate  ";
+    public static final String OUTPUT_DATA_FILE_TEMPLATE = "OutputDataFileTemplate";
 
     /**
      * The OutputDataDirTemplate string.
      */
-    public static final String OUTPUT_DATA_DIR_TEMPLATE = "OutputDataDirTemplate  ";
+    public static final String OUTPUT_DATA_DIR_TEMPLATE = "OutputDataDirTemplate";
 
-    private static final String URI_APP_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationLSID";
-    private static final String URI_APP_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationName";
-    private static final String URI_OUTPUT_MATERIAL_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputMaterialLSID ";
-    private static final String URI_OUTPUT_MATERIAL_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputMaterialName ";
-    private static final String URI_OUTPUT_DATA_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataLSID ";
-    private static final String URI_OUTPUT_DATA_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataName ";
-    private static final String URI_OUTPUT_DATA_FILE_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataFile  ";
-    private static final String URI_OUTPUT_DATA_DIR_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataDir  ";
+    /**
+     * The Application LSID URI string.
+     */
+    public static final String URI_APP_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationLSID";
 
-    private Long id;
-    private Protocol protocol;
+    /**
+     * The Application Name URI string.
+     */
+    public static final String URI_APP_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.ApplicationName";
 
-    private SimpleTypeValue appLsidTemplate = new SimpleTypeValue(APP_LSID_TEMPLATE, URI_APP_LSID_TEMPLATE,
-            SimpleType.String);
-    private SimpleTypeValue appNameTemplate = new SimpleTypeValue(APP_NAME_TEMPLATE, URI_APP_NAME_TEMPLATE,
-            SimpleType.String);
-    private SimpleTypeValue outputMaterialLsidTemplate = new SimpleTypeValue(OUTPUT_MATERIAL_LSID_TEMPLATE,
-            URI_OUTPUT_MATERIAL_LSID_TEMPLATE, SimpleType.String);
-    private SimpleTypeValue outputMaterialNameTemplate = new SimpleTypeValue(OUTPUT_MATERIAL_NAME_TEMPLATE,
-            URI_OUTPUT_MATERIAL_NAME_TEMPLATE, SimpleType.String);
-    private SimpleTypeValue outputDataLsidTemplate = new SimpleTypeValue(OUTPUT_DATA_LSID_TEMPLATE,
-            URI_OUTPUT_DATA_LSID_TEMPLATE, SimpleType.String);
-    private SimpleTypeValue outputDataNameTemplate = new SimpleTypeValue(OUTPUT_DATA_NAME_TEMPLATE,
-            URI_OUTPUT_DATA_NAME_TEMPLATE, SimpleType.String);
-    private SimpleTypeValue outputDataFileTemplate = new SimpleTypeValue(OUTPUT_DATA_FILE_TEMPLATE,
-            URI_OUTPUT_DATA_FILE_TEMPLATE, SimpleType.String);
-    private SimpleTypeValue outputDataDirTemplate = new SimpleTypeValue(OUTPUT_DATA_DIR_TEMPLATE,
-            URI_OUTPUT_DATA_DIR_TEMPLATE, SimpleType.String);
+    /**
+     * The Output Material LSID URI string.
+     */
+    public static final String URI_OUTPUT_MATERIAL_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputMaterialLSID";
+
+    /**
+     * The Output Material Name URI string.
+     */
+    public static final String URI_OUTPUT_MATERIAL_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputMaterialName";
+
+    /**
+     * The Output Data LSID URI string.
+     */
+    public static final String URI_OUTPUT_DATA_LSID_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataLSID";
+
+    /**
+     * The Output Data Name URI string.
+     */
+    public static final String URI_OUTPUT_DATA_NAME_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataName";
+
+    /**
+     * The Output Data File URI string.
+     */
+    public static final String URI_OUTPUT_DATA_FILE_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataFile";
+
+    /**
+     * The Output Data Dir URI string.
+     */
+    public static final String URI_OUTPUT_DATA_DIR_TEMPLATE = "terms.fhcrc.org#XarTemplate.OutputDataDir";
+
+    private static final int PARAM_LENGTH = 255;
+
+    private String appLsidTemplate;
+    private String appNameTemplate;
+    private String outputMaterialLsidTemplate;
+    private String outputMaterialNameTemplate;
+    private String outputDataLsidTemplate;
+    private String outputDataNameTemplate;
+    private String outputDataFileTemplate;
+    private String outputDataDirTemplate;
 
     /**
      * protected default constructor for hibernate only.
@@ -185,31 +202,13 @@ public class ProtocolParameters implements Serializable, Persistent {
     }
 
     /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
      * Gets the appLsidTemplate.
      *
      * @return the appLsidTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "lsid_template")
-    public SimpleTypeValue getAppLsidTemplate() {
+    @Column(name = "lsid_template")
+    @Length(max = PARAM_LENGTH)
+    public String getAppLsidTemplate() {
         return this.appLsidTemplate;
     }
 
@@ -218,9 +217,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the appNameTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "appname_template")
-    public SimpleTypeValue getAppNameTemplate() {
+    @Column(name = "appname_template")
+    @Length(max = PARAM_LENGTH)
+    public String getAppNameTemplate() {
         return this.appNameTemplate;
     }
 
@@ -229,9 +228,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputMaterialLsidTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outmateriallsidtemplate")
-    public SimpleTypeValue getOutputMaterialLsidTemplate() {
+    @Column(name = "outmateriallsidtemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputMaterialLsidTemplate() {
         return this.outputMaterialLsidTemplate;
     }
 
@@ -240,9 +239,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputMaterialNameTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outmaterialnametemplate")
-    public SimpleTypeValue getOutputMaterialNameTemplate() {
+    @Column(name = "outmaterialnametemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputMaterialNameTemplate() {
         return this.outputMaterialNameTemplate;
     }
 
@@ -251,9 +250,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputDataLsidTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outdatalsidtemplate")
-    public SimpleTypeValue getOutputDataLsidTemplate() {
+    @Column(name = "outdatalsidtemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputDataLsidTemplate() {
         return this.outputDataLsidTemplate;
     }
 
@@ -262,9 +261,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputDataNameTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outdatanametemplate")
-    public SimpleTypeValue getOutputDataNameTemplate() {
+    @Column(name = "outdatanametemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputDataNameTemplate() {
         return this.outputDataNameTemplate;
     }
 
@@ -273,9 +272,9 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputDataFileTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outdatafiletemplate")
-    public SimpleTypeValue getOutputDataFileTemplate() {
+    @Column(name = "outdatafiletemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputDataFileTemplate() {
         return this.outputDataFileTemplate;
     }
 
@@ -284,30 +283,10 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @return the outputDataDirTemplate.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "outdatadirtemplate")
-    public SimpleTypeValue getOutputDataDirTemplate() {
+    @Column(name = "outdatadirtemplate")
+    @Length(max = PARAM_LENGTH)
+    public String getOutputDataDirTemplate() {
         return this.outputDataDirTemplate;
-    }
-
-    /**
-     * Gets the protocol.
-     *
-     * @return the protocol.
-     */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "protocol_id")
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Sets the protocol.
-     *
-     * @param protocol the protocol to set.
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
     }
 
     /**
@@ -315,7 +294,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param appLsidTemplate the appLsidTemplate to set.
      */
-    public void setAppLsidTemplate(SimpleTypeValue appLsidTemplate) {
+    public void setAppLsidTemplate(String appLsidTemplate) {
         this.appLsidTemplate = appLsidTemplate;
     }
 
@@ -324,7 +303,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param appNameTemplate the appNameTemplate to set.
      */
-    public void setAppNameTemplate(SimpleTypeValue appNameTemplate) {
+    public void setAppNameTemplate(String appNameTemplate) {
         this.appNameTemplate = appNameTemplate;
     }
 
@@ -333,7 +312,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputMaterialLsidTemplate the outputMaterialLsidTemplate to set.
      */
-    public void setOutputMaterialLsidTemplate(SimpleTypeValue outputMaterialLsidTemplate) {
+    public void setOutputMaterialLsidTemplate(String outputMaterialLsidTemplate) {
         this.outputMaterialLsidTemplate = outputMaterialLsidTemplate;
     }
 
@@ -342,7 +321,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputMaterialNameTemplate the outputMaterialNameTemplate to set.
      */
-    public void setOutputMaterialNameTemplate(SimpleTypeValue outputMaterialNameTemplate) {
+    public void setOutputMaterialNameTemplate(String outputMaterialNameTemplate) {
         this.outputMaterialNameTemplate = outputMaterialNameTemplate;
     }
 
@@ -351,7 +330,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputDataLsidTemplate the outputDataLsidTemplate to set.
      */
-    public void setOutputDataLsidTemplate(SimpleTypeValue outputDataLsidTemplate) {
+    public void setOutputDataLsidTemplate(String outputDataLsidTemplate) {
         this.outputDataLsidTemplate = outputDataLsidTemplate;
     }
 
@@ -360,7 +339,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputDataNameTemplate the outputDataNameTemplate to set.
      */
-    public void setOutputDataNameTemplate(SimpleTypeValue outputDataNameTemplate) {
+    public void setOutputDataNameTemplate(String outputDataNameTemplate) {
         this.outputDataNameTemplate = outputDataNameTemplate;
     }
 
@@ -369,7 +348,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputDataFileTemplate the outputDataFileTemplate to set.
      */
-    public void setOutputDataFileTemplate(SimpleTypeValue outputDataFileTemplate) {
+    public void setOutputDataFileTemplate(String outputDataFileTemplate) {
         this.outputDataFileTemplate = outputDataFileTemplate;
     }
 
@@ -378,7 +357,7 @@ public class ProtocolParameters implements Serializable, Persistent {
      *
      * @param outputDataDirTemplate the outputDataDirTemplate to set.
      */
-    public void setOutputDataDirTemplate(SimpleTypeValue outputDataDirTemplate) {
+    public void setOutputDataDirTemplate(String outputDataDirTemplate) {
         this.outputDataDirTemplate = outputDataDirTemplate;
     }
 }
