@@ -1,10 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <html>
 <head>
-<s:head theme="ajax" debug="true" />
 </head>
 <body>
 
@@ -22,20 +21,37 @@
         <h2>${experimentRun.name}</h2>
     </s:else>
 
-    <c:url value="/ajax/experimentRun/management/load/overview.action" var="overviewUrl">
-        <c:param name="experiment.id" value="${experiment.id}" />
-        <c:param name="experimentRun.id" value="${experimentRun.id}" />
-    </c:url>
-    <c:url value="/ajax/experimentRun/management/load/protocolApplications.action" var="protocolApplicationsUrl">
-        <c:param name="experimentRun.id" value="${experimentRun.id}" />
-    </c:url>
+    <s:if test="experimentRun != null && experimentRun.id != null">
+        <c:url value="/ajax/experimentRun/management/load/overview.action" var="overviewUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="experimentRun.id" value="${experimentRun.id}" />
+        </c:url>
+        <c:url value="/ajax/experimentRun/management/load/protocolApplications.action" var="protocolApplicationsUrl">
+            <c:param name="experimentRun.id" value="${experimentRun.id}" />
+        </c:url>
 
-    <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/experimentRun/overview.jsp">
-        <protExpress:tab tabHeaderKey="experimentRun.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
-        <s:if test="experimentRun != null && experimentRun.id != null">
-            <protExpress:tab tabHeaderKey="experimentRun.tabs.protocolApplications" tabUrl="${protocolApplicationsUrl}" id="protocolApplicationsLink" />
-        </s:if>
-    </protExpress:tabbedPanel>
+        <fmt:message key="experimentRun.tabs.overview" var="overviewTitle" />
+        <fmt:message key="experimentRun.tabs.protocolApplications" var="protocolApplicationTitle" />
+
+        <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
+                postFunction="setSelectedTab">
+            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
+            <ajax:tab caption="${protocolApplicationTitle}" baseUrl="${protocolApplicationsUrl}" />
+        </ajax:tabPanel>
+    </s:if>
+    <s:else>
+        <c:url var="createExpRunUrl" value="/experimentRun/management/load.action">
+            <c:param name="experimentId" value="${experimentId}" />
+        </c:url>
+        <div id="tabbed">
+            <ul>
+                <li class="active"><a href="${createExpRunUrl}"><fmt:message key="experimentRun.tabs.overview" /></a></li>
+            </ul>
+        </div>
+        <div id="selectedtabbox" class="selectedtabbox">
+            <jsp:include page="/WEB-INF/jsp/experimentRun/overview.jsp" />
+        </div>
+    </s:else>
 </div>
 </body>
 </html>

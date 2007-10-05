@@ -22,7 +22,7 @@
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="7"><fmt:message key="copy" /></a>
         </s:if>
         <s:else>
-            <s:a onclick="showSubmittingText();" formId="protocolForm" targets="boxinner" theme="ajax" cssClass="save" showLoadingText="false" tabindex="7"><fmt:message key="save" /></s:a>
+            <a href="javascript:ajaxSubmit('protocolForm', 'selectedtabbox');" class="save" tabindex="7"><fmt:message key="save" /></a>
         </s:else>
     </div>
 </protExpress:tabPane>

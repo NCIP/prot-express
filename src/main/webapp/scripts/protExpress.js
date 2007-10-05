@@ -35,3 +35,28 @@ function setActiveMenu(appContext) {
         }
     }
 }
+
+function setSelectedTab() {
+    tabMenuItems = document.getElementById('tabbed').getElementsByTagName('li');
+    for(var i = 0; i < tabMenuItems.length; i++) {
+        tabLink = tabMenuItems[i].getElementsByTagName('a')[0];
+        if(tabLink.className == 'current') {
+            tabMenuItems[i].className = 'active';
+        } else {
+            tabMenuItems[i].className = '';
+        }
+        tabLink.blur();
+    }
+}
+
+function showSubmittingText() {
+    document.getElementById('submittingText').style.display = 'block';
+    document.getElementById('theForm').style.display = 'none';
+}
+
+ajaxSubmit = function(formId, divId) {
+    showSubmittingText();
+    formData = Form.serialize(formId);
+    url = $(formId).action;
+    new Ajax.Updater(divId, url, {parameters: formData, evalScripts: true} );
+}

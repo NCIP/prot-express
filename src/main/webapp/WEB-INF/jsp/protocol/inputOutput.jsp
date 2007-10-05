@@ -19,12 +19,11 @@
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
         <a href="${cancelUrl}" class="cancel" tabindex="7"><fmt:message key="cancel" /></a>
-
         <s:if test="${isReadOnly}">
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="8"><fmt:message key="copy" /></a>
         </s:if>
         <s:else>
-            <s:a onclick="showSubmittingText();" formId="protocolForm" targets="boxinner" theme="ajax" cssClass="save" showLoadingText="false" tabindex="8"><fmt:message key="save" /></s:a>
+            <a href="javascript:ajaxSubmit('protocolForm', 'selectedtabbox');" class="save" tabindex="8"><fmt:message key="save" /></a>
         </s:else>
     </div>
 </protExpress:tabPane>

@@ -16,9 +16,7 @@
         <div class="confirm_msg">${successMessage}</div>
     </c:if>
 
-    <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="sortUrl">
-        <c:param name="initialTab" value="experimentRun" />
-    </c:url>
+    <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="sortUrl" />
     <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="searchresults">
         <display:table class="searchresults" cellspacing="0" defaultsort="1" excludedParams="ajax"
             requestURI="${sortUrl}" list="${experiment.experimentRuns}" pagesize="5" sort="list" id="row">
@@ -36,7 +34,7 @@
                         <c:param name="experimentRun.id" value="${row.id}" />
                         <c:param name="experiment.id" value="${experiment.id}" />
                     </c:url>
-                    <ajax:anchors target="boxinner" ajaxFlag="false">
+                    <ajax:anchors target="selectedtabbox" ajaxFlag="false">
                         <a href="${deleteUrl}"><fmt:message key="delete" /></a>
                     </ajax:anchors>
                 </c:if>

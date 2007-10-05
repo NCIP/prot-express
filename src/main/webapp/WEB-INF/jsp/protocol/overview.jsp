@@ -32,7 +32,7 @@
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="8"><fmt:message key="copy" /></a>
         </s:if>
         <s:elseif test="${protocol.id != null}">
-            <s:a onclick="showSubmittingText();" formId="protocolForm" targets="boxinner" theme="ajax" cssClass="save" showLoadingText="false" tabindex="8"><fmt:message key="save" /></s:a>
+            <a href="javascript:ajaxSubmit('protocolForm', 'selectedtabbox');" class="save" tabindex="8"><fmt:message key="save" /></a>
         </s:elseif>
         <s:else>
             <a href="javascript:document.getElementById('protocolForm').submit();" class="save" tabindex="8"><fmt:message key="save" /></a>

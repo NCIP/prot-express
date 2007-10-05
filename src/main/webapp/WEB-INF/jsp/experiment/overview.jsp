@@ -10,7 +10,7 @@
     <c:set var="formAction" value="experiment/management/save"/>
 </s:else>
 <protExpress:tabPane paneTitleKey="experiment.overview">
-    <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
+    <s:form action="${formAction}" id="experimentForm" method="post" disabled="${isReadOnly}">
         <s:textfield name="experiment.lsid" key="experiment.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
         <s:textfield name="experiment.name" key="experiment.name" size="40" tabindex="2" disabled="${isReadOnly}" />
         <s:textfield name="experiment.comments" key="experiment.comments" size="40" tabindex="3" disabled="${isReadOnly}" />
@@ -29,10 +29,10 @@
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="7"><fmt:message key="copy" /></a>
         </s:if>
         <s:elseif test="${experiment.id != null}">
-            <s:a onclick="showSubmittingText();" formId="overviewForm" targets="boxinner" theme="ajax" cssClass="save" showLoadingText="false" tabindex="7"><fmt:message key="save" /></s:a>
+            <a href="javascript:ajaxSubmit('experimentForm', 'selectedtabbox');" class="save" tabindex="7"><fmt:message key="save" /></a>
         </s:elseif>
         <s:else>
-            <a href="javascript:document.getElementById('overviewForm').submit();" class="save" tabindex="7"><fmt:message key="save" /></a>
+            <a href="javascript:document.getElementById('experimentForm').submit();" class="save" tabindex="7"><fmt:message key="save" /></a>
         </s:else>
     </div>
 </protExpress:tabPane>
