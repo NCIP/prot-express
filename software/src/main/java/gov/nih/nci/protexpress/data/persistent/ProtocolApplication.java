@@ -224,7 +224,7 @@ public class ProtocolApplication implements Serializable {
      * @return the actionSequence
      */
     @Column(name = "action_sequence")
-    @NotEmpty
+    @NotNull
     public int getActionSequence() {
         return this.actionSequence;
     }
@@ -327,7 +327,7 @@ public class ProtocolApplication implements Serializable {
      */
     @Embedded
     public ProtocolParameters getParameters() {
-        return parameters;
+        return this.parameters;
     }
 
     /**
@@ -347,7 +347,7 @@ public class ProtocolApplication implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prop_collection_id")
     public PropertyCollection getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**
