@@ -125,7 +125,7 @@ public class SimpleTypeValue implements Serializable, Persistent {
     /**
      * protected default constructor for hibernate only.
      */
-    protected SimpleTypeValue() {
+    public SimpleTypeValue() {
     }
 
     /**
@@ -263,11 +263,11 @@ public class SimpleTypeValue implements Serializable, Persistent {
         }
 
         return new EqualsBuilder()
-        .append(getName(), stv.getName())
-        .append(getOntologyEntryURI(), stv.getOntologyEntryURI())
-        .append(getValue(), stv.getValue())
-        .append(getValueType(), stv.getValueType())
-        .isEquals();
+            .append(getName(), stv.getName())
+            .append(getOntologyEntryURI(), stv.getOntologyEntryURI())
+            .append(getValue(), stv.getValue())
+            .append(getValueType(), stv.getValueType())
+            .isEquals();
     }
 
     /**
@@ -276,10 +276,10 @@ public class SimpleTypeValue implements Serializable, Persistent {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-        .append(getName())
-        .append(getOntologyEntryURI())
-        .append(getValue())
-        .append(getValueType())
-        .toHashCode();
+            .append(getName())
+            .append(getOntologyEntryURI())
+            .append(getValue())
+            .append(getValueType())
+            .toHashCode();
     }
 }

@@ -148,7 +148,7 @@ public class PropertyCollection implements Serializable, Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prop_collection_id")
     public List<SimpleTypeValue> getSimpleTypeValues() {
-        return simpleTypeValues;
+        return this.simpleTypeValues;
     }
 
     /**
@@ -183,9 +183,7 @@ public class PropertyCollection implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder()
-        .append(getId(), propCol.getId())
-        .isEquals();
+        return new EqualsBuilder().append(getId(), propCol.getId()).isEquals();
     }
 
     /**
@@ -193,8 +191,6 @@ public class PropertyCollection implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-        .append(getId())
-        .toHashCode();
+        return new HashCodeBuilder().append(getId()).toHashCode();
     }
 }
