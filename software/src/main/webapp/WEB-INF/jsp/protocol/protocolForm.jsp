@@ -1,10 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <html>
 <head>
-<s:head theme="ajax" debug="true" />
 </head>
 <body>
 
@@ -22,26 +21,43 @@
         <h2>${protocol.name}</h2>
     </s:else>
 
-    <c:url value="/ajax/protocol/management/load/overview.action" var="overviewUrl">
-        <c:param name="protocol.id" value="${protocol.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-    <c:url value="/ajax/protocol/management/load/inputOutput.action" var="inputOutputUrl">
-        <c:param name="protocol.id" value="${protocol.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-    <c:url value="/ajax/protocol/management/load/contact.action" var="contactUrl">
-        <c:param name="protocol.id" value="${protocol.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
+    <s:if test="protocol != null && protocol.id != null">
+        <c:url value="/ajax/protocol/management/load/overview.action" var="overviewUrl">
+            <c:param name="protocol.id" value="${protocol.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+        <c:url value="/ajax/protocol/management/load/inputOutput.action" var="inputOutputUrl">
+            <c:param name="protocol.id" value="${protocol.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+        <c:url value="/ajax/protocol/management/load/contact.action" var="contactUrl">
+            <c:param name="protocol.id" value="${protocol.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
 
-    <protExpress:tabbedPanel initialFile="/WEB-INF/jsp/protocol/overview.jsp">
-        <protExpress:tab tabHeaderKey="protocol.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="true" />
-        <s:if test="protocol != null && protocol.id != null">
-            <protExpress:tab tabHeaderKey="protocol.tabs.inputOutput" tabUrl="${inputOutputUrl}" id="inputOutputLink" />
-            <protExpress:tab tabHeaderKey="protocol.tabs.contact" tabUrl="${contactUrl}" id="contactLink" />
-        </s:if>
-    </protExpress:tabbedPanel>
+        <fmt:message key="protocol.tabs.overview" var="overviewTitle" />
+        <fmt:message key="protocol.tabs.inputOutput" var="inputOutputTitle" />
+        <fmt:message key="protocol.tabs.contact" var="contactTitle" />
+        <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" postFunction="setSelectedTab"
+            contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox">
+            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
+            <ajax:tab caption="${inputOutputTitle}" baseUrl="${inputOutputUrl}" />
+            <ajax:tab caption="${contactTitle}" baseUrl="${contactUrl}" />
+        </ajax:tabPanel>
+    </s:if>
+    <s:else>
+        <c:url value="/protocol/management/load.action" var="addProtocolUrl">
+            <c:param name="cancelResult" value="${cancelResult}"/>
+        </c:url>
+        <div id="tabbed">
+            <ul>
+                <li class="active"><a href="${addProtocolUrl}"><fmt:message key="protocol.tabs.overview" /></a></li>
+            </ul>
+        </div>
+        <div id="selectedtabbox" class="selectedtabbox">
+            <jsp:include page="/WEB-INF/jsp/protocol/overview.jsp" />
+        </div>
+    </s:else>
 </div>
 </body>
 </html>

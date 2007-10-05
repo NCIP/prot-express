@@ -1,10 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <html>
 <head>
-<s:head theme="ajax" debug="true" />
 </head>
 <body>
 
@@ -22,53 +21,50 @@
         <h2>${experiment.name}</h2>
     </s:else>
 
-    <c:set var="overviewActive" value="false" />
-    <c:set var="experimentRunActive" value="false" />
-    <c:set var="contactActive" value="false" />
-    <c:set var="exportActive" value="false" />
+    <s:if test="experiment != null && experiment.id != null">
+        <c:url value="/ajax/experiment/management/load/overview.action" var="overviewUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+        <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="experimentRunsUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+        <c:url value="/ajax/experiment/management/load/contact.action" var="contactUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+        <c:url value="/ajax/experiment/management/load/export.action" var="exportUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
 
-    <s:if test="${param.initialTab == null || param.initialTab == 'overview'}">
-        <c:set var="overviewActive" value="true" />
-        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/overview.jsp" />
+        <fmt:message key="experiment.tabs.overview" var="overviewTitle" />
+        <fmt:message key="experiment.tabs.experimentRuns" var="experimentRunsTitle" />
+        <fmt:message key="experiment.tabs.contact" var="contactTitle" />
+        <fmt:message key="experiment.tabs.export" var="exportTitle" />
+
+        <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
+                postFunction="setSelectedTab">
+            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
+            <ajax:tab caption="${experimentRunsTitle}" baseUrl="${experimentRunsUrl}" defaultTab="${param.initialTab == 'experimentRuns'}" />
+            <ajax:tab caption="${contactTitle}" baseUrl="${contactUrl}" defaultTab="${param.initialTab == 'contact'}" />
+            <ajax:tab caption="${exportTitle}" baseUrl="${exportUrl}" defaultTab="${param.initialTab == 'export'}" />
+        </ajax:tabPanel>
     </s:if>
-    <s:elseif test="${param.initialTab == 'experimentRun'}">
-        <c:set var="experimentRunActive" value="true" />
-        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/experimentRuns.jsp" />
-    </s:elseif>
-    <s:elseif test="${param.initialTab == 'contact'}">
-        <c:set var="contactActive" value="true" />
-        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/contact.jsp" />
-    </s:elseif>
-    <s:elseif test="${param.initialTab == 'export'}">
-        <c:set var="exportActive" value="true" />
-        <c:set var="initialPage" value="/WEB-INF/jsp/experiment/export.jsp" />
-    </s:elseif>
-
-    <c:url value="/ajax/experiment/management/load/overview.action" var="overviewUrl">
-        <c:param name="experiment.id" value="${experiment.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-    <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="experimentRunsUrl">
-        <c:param name="experiment.id" value="${experiment.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-    <c:url value="/ajax/experiment/management/load/contact.action" var="contactUrl">
-        <c:param name="experiment.id" value="${experiment.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-    <c:url value="/ajax/experiment/management/load/export.action" var="exportUrl">
-        <c:param name="experiment.id" value="${experiment.id}" />
-        <c:param name="cancelResult" value="${cancelResult}" />
-    </c:url>
-
-    <protExpress:tabbedPanel initialFile="${initialPage}">
-        <protExpress:tab tabHeaderKey="experiment.tabs.overview" tabUrl="${overviewUrl}" id="overviewLink" isActive="${overviewActive}" />
-        <s:if test="experiment != null && experiment.id != null">
-            <protExpress:tab tabHeaderKey="experiment.tabs.experimentRuns" tabUrl="${experimentRunsUrl}" id="expRunLink" isActive="${experimentRunActive}" />
-            <protExpress:tab tabHeaderKey="experiment.tabs.contact" tabUrl="${contactUrl}" id="contactLink" isActive="${contactActive}" />
-            <protExpress:tab tabHeaderKey="experiment.tabs.export" tabUrl="${exportUrl}" id="exportLink" isActive="${exportActive}" />
-        </s:if>
-    </protExpress:tabbedPanel>
+    <s:else>
+        <c:url value="/experiment/management/load.action" var="addExperimentUrl">
+            <c:param name="cancelResult" value="${cancelResult}"/>
+        </c:url>
+        <div id="tabbed">
+            <ul>
+                <li class="active"><a href="${addExperimentUrl}"><fmt:message key="experiment.tabs.overview" /></a></li>
+            </ul>
+        </div>
+        <div id="selectedtabbox" class="selectedtabbox">
+            <jsp:include page="/WEB-INF/jsp/experiment/overview.jsp" />
+        </div>
+    </s:else>
 </div>
 </body>
 </html>

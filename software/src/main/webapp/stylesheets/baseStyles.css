@@ -534,7 +534,7 @@ TABLE.login TD.value {
 }
 
 /* Tabbed Navigation (NEW) */
-#tabbed {
+#tabbed UL {
     float: left;
     padding-left: 10px;
     font-size: 92%;

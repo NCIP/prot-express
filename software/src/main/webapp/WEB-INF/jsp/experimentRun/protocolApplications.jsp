@@ -8,7 +8,7 @@
     <div class="actions">
         <c:url value="/experiment/management/load.action" var="cancelUrl">
             <c:param name="experiment.id" value="${experimentRun.experiment.id}" />
-            <c:param name="initialTab" value="experimentRun" />
+            <c:param name="initialTab" value="experimentRuns" />
         </c:url>
         <a href="${cancelUrl}" class="cancel" tabindex="4"><fmt:message key="cancel" /></a>
     </div>

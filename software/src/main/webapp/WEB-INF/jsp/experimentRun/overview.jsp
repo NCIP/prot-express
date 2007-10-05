@@ -20,7 +20,7 @@
     <div class="actions">
         <c:url value="/experiment/management/load.action" var="cancelUrl">
             <c:param name="experiment.id" value="${experimentRun.experiment.id}" />
-            <c:param name="initialTab" value="experimentRun" />
+            <c:param name="initialTab" value="experimentRuns" />
         </c:url>
         <a href="${cancelUrl}" class="cancel" tabindex="4"><fmt:message key="cancel" /></a>
 
@@ -28,7 +28,7 @@
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="5"><fmt:message key="copy" /></a>
         </s:if>
         <s:elseif test="${experimentRun.id != null}">
-            <s:a onclick="showSubmittingText();" formId="overviewForm" targets="boxinner" theme="ajax" cssClass="save" showLoadingText="false" tabindex="5"><fmt:message key="save" /></s:a>
+            <a href="javascript:ajaxSubmit('overviewForm', 'selectedtabbox');" class="save" tabindex="5"><fmt:message key="save" /></a>
         </s:elseif>
         <s:else>
             <a href="javascript:document.getElementById('overviewForm').submit();" class="save" tabindex="5"><fmt:message key="save" /></a>

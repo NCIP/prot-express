@@ -8,9 +8,6 @@
     <title><fmt:message key="protexpress" /> - <decorator:title default="Welcome" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
-    <link rel="stylesheet" href="<c:url value="/stylesheets/baseStyles.css"/>" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
-    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/prototype.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/scriptaculous.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/builder.js"/>"></script>
@@ -21,6 +18,9 @@
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_controls.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_parser.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
+    <link rel="stylesheet" href="<c:url value="/stylesheets/baseStyles.css"/>" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
 </head>
 
 <body onload="<decorator:getProperty property="body.onload" />">
