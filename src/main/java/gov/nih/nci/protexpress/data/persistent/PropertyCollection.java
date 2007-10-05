@@ -96,6 +96,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -154,7 +156,45 @@ public class PropertyCollection implements Serializable, Persistent {
      *
      * @param simpleTypeValues the simpleTypeValues to set.
      */
-    public void setSimpleTypeValues(List<SimpleTypeValue> simpleTypeValues) {
+    protected void setSimpleTypeValues(List<SimpleTypeValue> simpleTypeValues) {
         this.simpleTypeValues = simpleTypeValues;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof PropertyCollection)) {
+            return false;
+        }
+
+        PropertyCollection propCol = (PropertyCollection) o;
+
+        if (this.id == null) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+        .append(getId(), propCol.getId())
+        .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+        .append(getId())
+        .toHashCode();
     }
 }
