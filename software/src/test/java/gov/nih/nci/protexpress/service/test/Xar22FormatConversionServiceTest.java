@@ -272,9 +272,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         propCol.getSimpleTypeValues().add(simpleTypeVal);
         protApp1.setProperties(propCol);
 
-        List<ProtocolApplication> protApplications = new ArrayList<ProtocolApplication>();
-        protApplications.add(protApp1);
-        expRun.setProtocolApplications(protApplications);
+        expRun.getProtocolApplications().add(protApp1);
 
         currentExperiment.getExperimentRuns().add(expRun);
 
@@ -315,7 +313,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     private void assertExperiment1Values(Experiment unmarshalledExperiment) {
         assertNotNull(unmarshalledExperiment);
         unmarshalledExperiment.setId(400L);
-        assertEquals(unmarshalledExperiment, experiments.get(0));
+        assertEquals(unmarshalledExperiment, this.experiments.get(0));
         assertEquals(unmarshalledExperiment.getLsid(), "${FolderLSIDBase}:IPAS14");
         assertEquals(unmarshalledExperiment.getName(), "IPAS14 Experiment");
         assertEquals(unmarshalledExperiment.getHypothesis(), "Cancer can kill a mouse too.");
@@ -340,7 +338,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         Person person = unmarshalledExperiment.getPrimaryContact();
         person.setId(420L);
         assertNotNull(person);
-        assertEquals(person, experiments.get(0).getPrimaryContact());
+        assertEquals(person, this.experiments.get(0).getPrimaryContact());
         assertEquals(person.getContactId(), "Jim's Laboratory");
         assertEquals(person.getFirstName(), "Jim");
         assertEquals(person.getLastName(), "Smith");
@@ -363,7 +361,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
         unmarshalledExperimentRun.setId(430L);
         assertNotNull(unmarshalledExperimentRun);
-        assertEquals(unmarshalledExperimentRun, experiments.get(0).getExperimentRuns().get(0));
+        assertEquals(unmarshalledExperimentRun, this.experiments.get(0).getExperimentRuns().get(0));
         assertEquals(unmarshalledExperimentRun.getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
         assertEquals(unmarshalledExperimentRun.getName(), "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
         assertEquals(unmarshalledExperimentRun.getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
@@ -385,7 +383,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         ProtocolApplication unmarshalledProtApp1 = protApplications.get(0);
         unmarshalledProtApp1.setId(440L);
         assertNotNull(unmarshalledProtApp1);
-        assertEquals(unmarshalledProtApp1, experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
+        assertEquals(unmarshalledProtApp1, this.experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
         assertEquals(unmarshalledProtApp1.getActionSequence(), 1);
         assertEquals(unmarshalledProtApp1.getActivityDate(), DatatypeConverter.parseDate("2006-08-31-07:00"));
         assertEquals(unmarshalledProtApp1.getComments(), null);
@@ -411,7 +409,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         Protocol prot1 = unmarshalledProtApp1.getProtocol();
         assertNotNull(prot1);
         prot1.setId(100L);
-        assertEquals(prot1, protocols.get(0));
+        assertEquals(prot1, this.protocols.get(0));
         assertEquals(prot1.getLsid(), "${FolderLSIDBase}:Process.IPAS14");
         assertEquals(prot1.getType(), ProtocolType.valueOf("ExperimentRun"));
         assertEquals(prot1.getName(), "IPAS14 Process");
@@ -438,7 +436,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         Person prot1Contact = prot1.getPrimaryContact();
         assertNotNull(prot1Contact);
         prot1Contact.setId(110L);
-        assertEquals(prot1Contact, protocols.get(0).getPrimaryContact());
+        assertEquals(prot1Contact, this.protocols.get(0).getPrimaryContact());
         assertEquals(prot1Contact.getContactId(), "Dr. Tabb's Research Center' for Protocols");
         assertEquals(prot1Contact.getFirstName(), "John");
         assertEquals(prot1Contact.getLastName(), "Tabb");
