@@ -286,7 +286,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      *
      * @param protocolApplications the protocolApplications to set.
      */
-    public void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
+    protected void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
         this.protocolApplications = protocolApplications;
     }
 
@@ -298,7 +298,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prop_collection_id")
     public PropertyCollection getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**
@@ -315,12 +315,16 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ExperimentRun)) {
+        if (obj == null) {
             return false;
         }
 
-        if (this == obj) {
+        if (obj == this) {
             return true;
+        }
+
+        if (!(obj instanceof ExperimentRun)) {
+            return false;
         }
 
         ExperimentRun experimentRun = (ExperimentRun) obj;

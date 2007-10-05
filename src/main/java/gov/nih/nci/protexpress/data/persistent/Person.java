@@ -262,7 +262,7 @@ public class Person implements Serializable, Persistent {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prop_collection_id")
     public PropertyCollection getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**
@@ -279,12 +279,16 @@ public class Person implements Serializable, Persistent {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Person)) {
+        if (obj == null) {
             return false;
         }
 
-        if (this == obj) {
+        if (obj == this) {
             return true;
+        }
+
+        if (!(obj instanceof Person)) {
+            return false;
         }
 
         Person person = (Person) obj;
