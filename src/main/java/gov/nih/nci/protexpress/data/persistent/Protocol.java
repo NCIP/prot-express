@@ -98,6 +98,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -147,6 +148,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private AuditInfo auditInfo = new AuditInfo();
     private Person primaryContact;
     private ProtocolParameters parameters = new ProtocolParameters();
+    private PropertyCollection properties = new PropertyCollection();
 
     /**
      * protected default constructor for hibernate only.
@@ -305,6 +307,26 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     public void setSoftware(String software) {
         this.software = software;
+    }
+
+    /**
+     * Gets the properties.
+     *
+     * @return the properties.
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prop_collection_id")
+    public PropertyCollection getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets the properties.
+     *
+     * @param properties the properties to set.
+     */
+    public void setProperties(PropertyCollection properties) {
+        this.properties = properties;
     }
 
     /**

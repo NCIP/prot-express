@@ -99,6 +99,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -110,7 +111,7 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 
 /**
- * Class representing an experiment.
+ * Class representing an experiment run.
  *
  * @author Krishna Kanchinadam
  */
@@ -132,6 +133,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
     private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
+    private PropertyCollection properties = new PropertyCollection();
 
     /**
      * protected default constructor for hibernate only.
@@ -286,6 +288,26 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     public void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
         this.protocolApplications = protocolApplications;
+    }
+
+    /**
+     * Gets the properties.
+     *
+     * @return the properties.
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prop_collection_id")
+    public PropertyCollection getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets the properties.
+     *
+     * @param properties the properties to set.
+     */
+    public void setProperties(PropertyCollection properties) {
+        this.properties = properties;
     }
 
     /**

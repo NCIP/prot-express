@@ -10,7 +10,14 @@
 			<FirstName>Jim</FirstName>
 			<LastName>Smith</LastName>
 			<Email>jim@smiths.net</Email>
+			<Properties>
+				<SimpleVal Name="Contact Type" OntologyEntryURI="http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType" ValueType="String">Contractor</SimpleVal>
+			</Properties>
 		</Contact>
+		<Properties>
+			<SimpleVal Name="AnExperimentProperty" OntologyEntryURI="terms.fhcrc.org#ExpProp.Something" ValueType="String">Some property</SimpleVal>
+			<SimpleVal Name="Category" OntologyEntryURI="terms.fhcrc.org#ExpProp.Category" ValueType="Integer">210</SimpleVal>
+		</Properties>
 	</Experiment>
 	<Experiment rdf:about="${FolderLSIDBase}:MS-MS-Searches">
 		<Name>MS-MS Searches on N-Linked Glycopeptide Purified Aliquots</Name>
@@ -44,13 +51,15 @@
 			</ParameterDeclarations>
 			<Properties>
 				<SimpleVal Name="TreatAsFractions" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.TreatAsFractions" ValueType="String">true</SimpleVal>
-				<SimpleVal Name="Category" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Category" ValueType="String">mass_spec</SimpleVal>
 			</Properties>
 			<Contact>
 				<ContactId>Dr. Tabb's Research Center' for Protocols</ContactId>
 				<FirstName>John</FirstName>
 				<LastName>Tabb</LastName>
 				<Email>tabb@research-center.com</Email>
+				<Properties>
+					<SimpleVal Name="Contact Type" OntologyEntryURI="http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType" ValueType="String">Principal Investigator</SimpleVal>
+				</Properties>			
 			</Contact>
 		</Protocol>
 	</ProtocolDefinitions>
@@ -62,6 +71,9 @@
 			<ProtocolLSID>${FolderLSIDBase}:Process.IPAS14</ProtocolLSID>
 			<ExperimentLSID>${FolderLSIDBase}:IPAS14</ExperimentLSID>
 			<Comments>Profiling of Proteins in Lung Adenocarcinoma Cell Surface</Comments>
+			<Properties>
+				<SimpleVal Name="ExpRunType" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Something" ValueType="String">Some Experiment Run Property</SimpleVal>
+			</Properties>
 			<ProtocolApplications>
 				<ProtocolApplication rdf:about="${RunLSIDBase}:IPAS14">
 					<Name>Do IPAS 14 protocol</Name>
@@ -79,6 +91,9 @@
 						<SimpleVal Name="OutputDataFileTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">Out Data File Template</SimpleVal>
 						<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Do IPAS 14 protocol</SimpleVal>
 					</ProtocolApplicationParameters>
+					<Properties>
+						<SimpleVal Name="ProtAppFactorsCount" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Category" ValueType="Integer">2</SimpleVal>
+					</Properties>
 					<OutputMaterials/>
 					<OutputDataObjects/>
 				</ProtocolApplication>

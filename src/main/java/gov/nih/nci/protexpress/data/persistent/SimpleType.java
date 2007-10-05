@@ -82,227 +82,51 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.Email;
-import org.hibernate.validator.Length;
-
 /**
- * Class representing a Person.
- *
  * @author Krishna Kanchinadam
+ *
  */
-@Entity
-@Table(name = "person")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Person implements Serializable, Persistent {
-
-    private static final long serialVersionUID = 1L;
-
-    private static final int CONTACT_ID_LENGTH = 255;
-    private static final int NAME_LENGTH = 255;
-    private static final int EMAIL_LENGTH = 255;;
-    private static final int COMMENTS_LENGTH = 255;
-
-    private Long id;
-    private String contactId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String comments;
-    private PropertyCollection properties = new PropertyCollection();
-
+public enum SimpleType {
     /**
-     * Constructor to create the object and populate all required fields.
+     * The String type.
      */
-    public Person() {
-    }
+    String("String"),
+    /**
+     * The PropertyURI type.
+     */
+    PropertyURI("Property URI"),
+    /**
+     * The Integer type.
+     */
+    Integer("Integer"),
+    /**
+     * The FileLink type.
+     */
+    FileLink("File Link"),
+    /**
+     * The DateTime type.
+     */
+    DateTime("Date Time"),
+    /**
+     * The Double type.
+     */
+    Double("Double");
+
+    private String displayName;
 
     /**
-     * The id of the object.
+     * Constructor for ProtocolType.
      *
-     * @return the id, null for new objects
+     * @param displayname the display name
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
+    private SimpleType(String displayname) {
+        this.displayName = displayname;
     }
 
     /**
-     * Sets the id.
-     *
-     * @param id the id to set
+     * @return the displayName
      */
-    public void setId(Long id) {
-        this.id = id;
+    public String getDisplayName() {
+        return this.displayName;
     }
-
-    /**
-     * Gets the firstName.
-     *
-     * @return the firstName
-     */
-    @Column(name = "first_name")
-    @Length(max = NAME_LENGTH)
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    /**
-     * Sets the firstName.
-     *
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets the lastName.
-     *
-     * @return the lastName
-     */
-    @Column(name = "last_name")
-    @Length(max = NAME_LENGTH)
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    /**
-     * Sets the lastName.
-     *
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets the email.
-     *
-     * @return the email
-     */
-    @Column(name = "email")
-    @Length(max = EMAIL_LENGTH)
-    @Email()
-    public String getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Sets the email.
-     *
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets the contactId.
-     *
-     * @return the contactId
-     */
-    @Column(name = "contact_id")
-    @Length(max = CONTACT_ID_LENGTH)
-    public String getContactId() {
-        return this.contactId;
-    }
-
-    /**
-     * Sets the contactId.
-     *
-     * @param contactId the contactId to set
-     */
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
-    }
-
-    /**
-     * Gets the comments.
-     *
-     * @return the comments
-     */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
-    }
-
-    /**
-     * Sets the comments.
-     *
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prop_collection_id")
-    public PropertyCollection getProperties() {
-        return properties;
-    }
-
-    /**
-     * Sets the properties.
-     *
-     * @param properties the properties to set.
-     */
-    public void setProperties(PropertyCollection properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Person)) {
-            return false;
-        }
-
-        if (this == obj) {
-            return true;
-        }
-
-        Person person = (Person) obj;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getId(), person.getId()).append(getFirstName(), person.getFirstName())
-                .append(getLastName(), person.getLastName()).isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getFirstName()).append(getLastName()).toHashCode();
-    }
-
 }
