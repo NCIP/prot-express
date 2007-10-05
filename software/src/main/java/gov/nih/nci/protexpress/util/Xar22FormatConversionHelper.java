@@ -86,15 +86,19 @@ package gov.nih.nci.protexpress.util;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Person;
+import gov.nih.nci.protexpress.data.persistent.PropertyCollection;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.data.persistent.SimpleType;
+import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
+import gov.nih.nci.protexpress.xml.xar2_2.PropertyCollectionType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleTypeNames;
@@ -203,6 +207,9 @@ public class Xar22FormatConversionHelper {
             // Set the Contact Person.
             xarExperimentType.setContact(getContactType(exp.getPrimaryContact()));
 
+            // Set the properties
+            xarExperimentType.setProperties(getPropertyCollectionType(exp.getProperties()));
+
             //Add to experiment archive
             xarExperimentArchiveType.getExperiment().add(xarExperimentType);
         }
@@ -227,13 +234,37 @@ public class Xar22FormatConversionHelper {
         Person experimentPrimaryContact = getPerson(xarExperimentType.getContact());
         experiment.setPrimaryContact(experimentPrimaryContact);
 
+        // Set the Properties
+        if (xarExperimentType.getProperties() != null) {
+            experiment.setProperties(getPropertyCollection(xarExperimentType.getProperties()));
+        }
+
         return experiment;
     }
 
+    private PropertyCollection getPropertyCollection(PropertyCollectionType xarPropertyCollectionType) {
+        PropertyCollection propCol = new PropertyCollection();
+        List<SimpleTypeValue> simpleTypeValues = new ArrayList<SimpleTypeValue>();
+        if (xarPropertyCollectionType != null) {
+            for (SimpleValueType xarSimpleVal : xarPropertyCollectionType.getSimpleVal()) {
+                SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                        xarSimpleVal.getName(),
+                        xarSimpleVal.getOntologyEntryURI(),
+                        SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                simpleTypeValues.add(simpleTypeVal);
+            }
+            propCol.setSimpleTypeValues(simpleTypeValues);
+        }
+        return propCol;
+    }
+
     /**
-     * Given a XAR 2.2 ExperimentArchiveType, returns a list of Experiments.
+     * Given a XAR 2.2 ExperimentArchiveType, returns a list of Experiment Runs.
      *
      * @param experimentArchive the experiment archive
+     * @return the list of Experiment Runs
      */
     private void setExperimentRunsForExperiment(ExperimentArchiveType experimentArchive) {
         for (ExperimentRunType xarExpRunType : experimentArchive.getExperimentRuns().getExperimentRun()) {
@@ -310,6 +341,9 @@ public class Xar22FormatConversionHelper {
                 xarExperimentRunType.setComments(expRun.getComments());
                 xarExperimentRunType.setName(expRun.getName());
 
+             // Set the properties
+                xarExperimentRunType.setProperties(getPropertyCollectionType(expRun.getProperties()));
+
                 // Get Protocol Applications.
                 ExperimentRunType.ProtocolApplications xarProtocolApplications = objectFactory
                 .createExperimentRunTypeProtocolApplications();
@@ -353,6 +387,9 @@ public class Xar22FormatConversionHelper {
      // Get the protocol application parameters.
         xarProtocolApplicationBaseType.setProtocolApplicationParameters(getProtocolApplicationParameters(protApp));
 
+        // Set the properties
+        xarProtocolApplicationBaseType.setProperties(getPropertyCollectionType(protApp.getProperties()));
+
         return xarProtocolApplicationBaseType;
     }
 
@@ -388,6 +425,9 @@ public class Xar22FormatConversionHelper {
 
             // Get the contact
             xarProtocolBaseType.setContact(getContactType(protApp.getProtocol().getPrimaryContact()));
+
+         // Set the properties
+            xarProtocolBaseType.setProperties(getPropertyCollectionType(protApp.getProtocol().getProperties()));
 
             // Get the protocol parameters.
             xarProtocolBaseType.setParameterDeclarations(getProtocolParameterDeclarations(protApp.getProtocol()));
@@ -517,6 +557,11 @@ public class Xar22FormatConversionHelper {
     private ExperimentRun getExperimentRun(ExperimentRunType xarExperimentRunType) {
         ExperimentRun expRun = new ExperimentRun(xarExperimentRunType.getAbout(), xarExperimentRunType.getName());
         expRun.setComments(xarExperimentRunType.getComments());
+
+        // Set the Properties
+        if (xarExperimentRunType.getProperties() != null) {
+            expRun.setProperties(getPropertyCollection(xarExperimentRunType.getProperties()));
+        }
         return expRun;
     }
 
@@ -538,6 +583,11 @@ public class Xar22FormatConversionHelper {
         // Get the protocol parameters, if any.
         protocol.setParameters(getProtocolParameters(xarProtocolBaseType.getParameterDeclarations()));
 
+     // Set the Properties
+        if (xarProtocolBaseType.getProperties() != null) {
+            protocol.setProperties(getPropertyCollection(xarProtocolBaseType.getProperties()));
+        }
+
         return protocol;
     }
 
@@ -555,6 +605,11 @@ public class Xar22FormatConversionHelper {
                 xarProtAppBaseType.getActivityDate(), protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
+
+        // Set the Properties
+        if (xarProtAppBaseType.getProperties() != null) {
+            protApplication.setProperties(getPropertyCollection(xarProtAppBaseType.getProperties()));
+        }
 
         // Get the protocol application parameters, if any.
         protApplication.setParameters(getProtocolParameters(xarProtAppBaseType.getProtocolApplicationParameters()));
@@ -608,14 +663,20 @@ public class Xar22FormatConversionHelper {
      * @return the person
      */
     private Person getPerson(ContactType xarContactType) {
-        Person experimentPrimaryContact = new Person();
+        Person primaryContact = new Person();
         if (xarContactType != null) {
-            experimentPrimaryContact.setFirstName(xarContactType.getFirstName());
-            experimentPrimaryContact.setLastName(xarContactType.getLastName());
-            experimentPrimaryContact.setContactId(xarContactType.getContactId());
-            experimentPrimaryContact.setEmail(xarContactType.getEmail());
+            primaryContact.setFirstName(xarContactType.getFirstName());
+            primaryContact.setLastName(xarContactType.getLastName());
+            primaryContact.setContactId(xarContactType.getContactId());
+            primaryContact.setEmail(xarContactType.getEmail());
+
+            // Set the Properties
+            if (xarContactType.getProperties() != null) {
+                primaryContact.setProperties(getPropertyCollection(xarContactType.getProperties()));
+            }
         }
-        return experimentPrimaryContact;
+
+        return primaryContact;
     }
 
     /**
@@ -631,7 +692,33 @@ public class Xar22FormatConversionHelper {
             xarContactType.setEmail(person.getEmail());
             xarContactType.setFirstName(person.getFirstName());
             xarContactType.setLastName(person.getLastName());
+
+         // Set the properties
+            xarContactType.setProperties(getPropertyCollectionType(person.getProperties()));
         }
         return xarContactType;
+    }
+
+    /**
+     * Given a PropertyCollection, returns the XAR 2.2 PropertyCollectionType object.
+     *
+     * @param propCol the property collection
+     * @return the XAR 2.2 PropertyCollectionType
+     */
+    private PropertyCollectionType getPropertyCollectionType(PropertyCollection propCol) {
+        PropertyCollectionType xarPropCollection = objectFactory.createPropertyCollectionType();
+        if (propCol != null) {
+            for (SimpleTypeValue simpleTypeVal : propCol.getSimpleTypeValues()) {
+                SimpleValueType xarSimpleVal = objectFactory.createSimpleValueType();
+                xarSimpleVal.setName(simpleTypeVal.getName());
+                xarSimpleVal.setOntologyEntryURI(simpleTypeVal.getOntologyEntryURI());
+                xarSimpleVal.setValue(simpleTypeVal.getValue());
+                xarSimpleVal.setValueType(SimpleTypeNames.fromValue(simpleTypeVal.getValueType().name()));
+
+                xarPropCollection.getSimpleVal().add(xarSimpleVal);
+            }
+        }
+
+        return xarPropCollection;
     }
 }

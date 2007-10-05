@@ -82,80 +82,61 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.Valid;
 
 /**
- * Class representing an experiment.
+ * Class representing a Simple Value Type (name, value, valueType and a URI).
  *
  * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "experiment")
+@Table(name = "simple_type_value")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Experiment implements Serializable, Persistent, Auditable {
+public class SimpleTypeValue implements Serializable, Persistent {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int LSID_LENGTH = 255;
-    private static final int COMMENTS_LENGTH = 255;
-    private static final int HYPOTHESIS_LENGTH = 255;
-    private static final int URL_LENGTH = 255;
+    private static final int NAME_LENGTH = 255;
+    private static final int TYPE_LENGTH = 255;
+    private static final int VALUE_LENGTH = 255;
+    private static final int URI_LENGTH = 255;
 
     private Long id;
-    private String lsid;
     private String name;
-    private String hypothesis;
-    private String url;
-    private String comments;
-    private AuditInfo auditInfo = new AuditInfo();
-    private Person primaryContact;
-    private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
-    private PropertyCollection properties = new PropertyCollection();
+    private SimpleType valueType;
+    private String ontologyEntryURI;
+    private String value;
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected Experiment() {
+    protected SimpleTypeValue() {
     }
 
     /**
-     * Constructor to create the object and populate all required fields.
+     * Constructor to create the object with a short name and a fully-qualified name (ontology entry uri).
      *
-     * @param lsid the lsid of the experiment
-     * @param name the name of the experiment
-     *
+     * @param name the short name
+     * @param uri the ontology entry uri
+     * @param valueType the value type
      */
-    public Experiment(String lsid, String name) {
-        setLsid(lsid);
+    public SimpleTypeValue(String name, String uri, SimpleType valueType) {
         setName(name);
+        setOntologyEntryURI(uri);
+        setValueType(valueType);
     }
 
     /**
@@ -177,36 +158,12 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
      * Gets the name.
      *
-     * @return the name
+     * @return the name.
      */
     @Column(name = "name")
     @Length(max = NAME_LENGTH)
-    @NotEmpty
-    @Index(name = "experiment_name_idx")
     public String getName() {
         return this.name;
     }
@@ -214,180 +171,69 @@ public class Experiment implements Serializable, Persistent, Auditable {
     /**
      * Sets the name.
      *
-     * @param name the name to set
+     * @param name the name to set.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Gets the comments.
+     * Gets the valueType.
      *
-     * @return the comments
+     * @return the valueType.
      */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    @Index(name = "experiment_comments_idx")
-    public String getComments() {
-        return this.comments;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "value_type", length = TYPE_LENGTH)
+    public SimpleType getValueType() {
+        return this.valueType;
     }
 
     /**
-     * Sets the comments.
+     * Sets the valueType.
      *
-     * @param comments the comments to set
+     * @param valueType the valueType to set.
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setValueType(SimpleType valueType) {
+        this.valueType = valueType;
     }
 
     /**
-     * Gets the hypothesis.
+     * Gets the ontologyEntryURI.
      *
-     * @return the hypothesis
+     * @return the ontologyEntryURI.
      */
-    @Column(name = "hypothesis")
-    @Length(max = HYPOTHESIS_LENGTH)
-    public String getHypothesis() {
-        return this.hypothesis;
+    @Column(name = "ontology_uri")
+    @Length(max = URI_LENGTH)
+    public String getOntologyEntryURI() {
+        return this.ontologyEntryURI;
     }
 
     /**
-     * Sets the hypothesis.
+     * Sets the ontologyEntryURI.
      *
-     * @param hypothesis the hypothesis to set
+     * @param ontologyEntryURI the ontologyEntryURI to set.
      */
-    public void setHypothesis(String hypothesis) {
-        this.hypothesis = hypothesis;
+    public void setOntologyEntryURI(String ontologyEntryURI) {
+        this.ontologyEntryURI = ontologyEntryURI;
     }
 
     /**
-     * Sets the url.
+     * Gets the value.
      *
-     * @param url the url to set
+     * @return the value.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    @Column(name = "value")
+    @Length(max = VALUE_LENGTH)
+    public String getValue() {
+        return this.value;
     }
 
     /**
-     * Gets the url.
+     * Sets the value.
      *
-     * @return the url
+     * @param value the value to set.
      */
-    @Column(name = "url")
-    @Length(max = URL_LENGTH)
-    public String getUrl() {
-        return this.url;
+    public void setValue(String value) {
+        this.value = value;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Embedded
-    public AuditInfo getAuditInfo() {
-        return this.auditInfo;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setAuditInfo(AuditInfo auditInfo) {
-        this.auditInfo = auditInfo;
-    }
-
-    /**
-     * Gets the primaryContact.
-     *
-     * @return the primaryContact.
-     */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", nullable = true)
-    @Valid
-    public Person getPrimaryContact() {
-        return this.primaryContact;
-    }
-
-    /**
-     * Sets the primaryContact.
-     *
-     * @param primaryContact the primaryContact to set.
-     */
-    public void setPrimaryContact(Person primaryContact) {
-        this.primaryContact = primaryContact;
-    }
-
-    /**
-     * Gets the experimentRuns.
-     *
-     * @return the experimentRuns.
-     */
-    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<ExperimentRun> getExperimentRuns() {
-        return this.experimentRuns;
-    }
-
-    /**
-     * Sets the experimentRuns.
-     *
-     * @param experimentRuns the experimentRuns to set.
-     */
-    public void setExperimentRuns(List<ExperimentRun> experimentRuns) {
-        this.experimentRuns = experimentRuns;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prop_collection_id")
-    public PropertyCollection getProperties() {
-        return properties;
-    }
-
-    /**
-     * Sets the properties.
-     *
-     * @param properties the properties to set.
-     */
-    public void setProperties(PropertyCollection properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof Experiment)) {
-            return false;
-        }
-
-        Experiment exp = (Experiment) o;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getLsid(), exp.getLsid()).isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
-    }
-
 }

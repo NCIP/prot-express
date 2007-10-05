@@ -95,6 +95,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -132,7 +133,7 @@ public class ProtocolApplication implements Serializable {
     private ExperimentRun experimentRun;
     private Protocol protocol;
     private ProtocolParameters parameters = new ProtocolParameters();
-
+    private PropertyCollection properties = new PropertyCollection();
 
     /**
      * protected default constructor for hibernate only.
@@ -336,6 +337,26 @@ public class ProtocolApplication implements Serializable {
      */
     public void setParameters(ProtocolParameters parameters) {
         this.parameters = parameters;
+    }
+
+    /**
+     * Gets the properties.
+     *
+     * @return the properties.
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prop_collection_id")
+    public PropertyCollection getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets the properties.
+     *
+     * @param properties the properties to set.
+     */
+    public void setProperties(PropertyCollection properties) {
+        this.properties = properties;
     }
 
     /**

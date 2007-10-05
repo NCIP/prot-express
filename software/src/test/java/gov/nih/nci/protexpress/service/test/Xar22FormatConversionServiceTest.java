@@ -86,10 +86,13 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Person;
+import gov.nih.nci.protexpress.data.persistent.PropertyCollection;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.data.persistent.SimpleType;
+import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
 
@@ -170,16 +173,33 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          this.protocols = new ArrayList<Protocol>();
 
          Protocol prot1 = new Protocol("${FolderLSIDBase}:Process.IPAS14", "IPAS14 Process", ProtocolType.valueOf("ExperimentRun"));
+         prot1.setId(100L);
          prot1.setDescription("Prepare and run LCMS, including fractionation of the input sample.  Produces one mzXML file per fraction in a single directory.");
          prot1.setSoftware("this is the software....");
          prot1.setInstrument("This is the instrument.");
 
+      // Properties for protocol.
+         PropertyCollection propCol = new PropertyCollection();
+         SimpleTypeValue simpleTypeVal = new SimpleTypeValue("TreatAsFractions", "terms.fhcrc.org#RunProtocolTypes.TreatAsFractions", SimpleType.valueOf("String"));
+         simpleTypeVal.setValue("true");
+         propCol.getSimpleTypeValues().add(simpleTypeVal);
+         prot1.setProperties(propCol);
+
          Person person = new Person();
+         person.setId(110L);
          person.setContactId("Dr. Tabb's Research Center' for Protocols");
          person.setFirstName("John");
          person.setLastName("Tabb");
          person.setEmail("tabb@research-center.com");
          person.setComments("Comment for a Person attached to Protocol Process.IPAS14");
+
+       //Person Properties
+         propCol = new PropertyCollection();
+         simpleTypeVal = new SimpleTypeValue("Contact Type", "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType", SimpleType.valueOf("String"));
+         simpleTypeVal.setValue("Principal Investigator");
+         propCol.getSimpleTypeValues().add(simpleTypeVal);
+         person.setProperties(propCol);
+
          prot1.setPrimaryContact(person);
 
          ProtocolParameters protParams = new ProtocolParameters();
@@ -194,29 +214,63 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     private Experiment getExperiment1() {
         // Setup first experiment.
         Experiment currentExperiment = new Experiment("${FolderLSIDBase}:IPAS14", "IPAS14 Experiment");
+        currentExperiment.setId(400L);
         currentExperiment.setComments("Mouse Pancreatic Cancer Research");
         currentExperiment.setHypothesis("Cancer can kill a mouse too.");
         currentExperiment.setUrl("http://testUrl1:8080/index.html");
 
+        // Properties for experiment.
+        PropertyCollection propCol = new PropertyCollection();
+        SimpleTypeValue simpleTypeVal = new SimpleTypeValue("AnExperimentProperty", "terms.fhcrc.org#ExpProp.Something", SimpleType.valueOf("String"));
+        simpleTypeVal.setValue("Some property");
+        propCol.getSimpleTypeValues().add(simpleTypeVal);
+        simpleTypeVal = new SimpleTypeValue("Category", "terms.fhcrc.org#ExpProp.Category", SimpleType.valueOf("Integer"));
+        simpleTypeVal.setValue("210");
+        propCol.getSimpleTypeValues().add(simpleTypeVal);
+        currentExperiment.setProperties(propCol);
+
      // Set Primary Contact
         Person person = new Person();
+        person.setId(420L);
         person.setContactId("Jim's Laboratory");
         person.setFirstName("Jim");
         person.setLastName("Smith");
         person.setEmail("jim@smiths.net");
+
+        //Person Properties
+        propCol = new PropertyCollection();
+        simpleTypeVal = new SimpleTypeValue("Contact Type", "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType", SimpleType.valueOf("String"));
+        simpleTypeVal.setValue("Contractor");
+        propCol.getSimpleTypeValues().add(simpleTypeVal);
+        person.setProperties(propCol);
+
         currentExperiment.setPrimaryContact(person);
 
         // Set Experiment Runs
         ExperimentRun expRun = new ExperimentRun("${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02", "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
+        expRun.setId(430L);
         expRun.setExperiment(currentExperiment);
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
+        propCol = new PropertyCollection();
+        simpleTypeVal = new SimpleTypeValue("ExpRunType", "terms.fhcrc.org#RunProtocolTypes.Something", SimpleType.valueOf("String"));
+        simpleTypeVal.setValue("Some Experiment Run Property");
+        propCol.getSimpleTypeValues().add(simpleTypeVal);
+        expRun.setProperties(propCol);
+
         // Set a Protocol Application
         ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), this.protocols.get(0));
+        protApp1.setId(440L);
         ProtocolParameters protParams = new ProtocolParameters();
         protParams.setOutputDataFileTemplate("Out Data File Template");
         protParams.setAppNameTemplate("Do IPAS 14 protocol");
         protApp1.setParameters(protParams);
+
+        propCol = new PropertyCollection();
+        simpleTypeVal = new SimpleTypeValue("ProtAppFactorsCount", "terms.fhcrc.org#RunProtocolTypes.Category", SimpleType.valueOf("Integer"));
+        simpleTypeVal.setValue("2");
+        propCol.getSimpleTypeValues().add(simpleTypeVal);
+        protApp1.setProperties(propCol);
 
         List<ProtocolApplication> protApplications = new ArrayList<ProtocolApplication>();
         protApplications.add(protApp1);
@@ -260,19 +314,46 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
     private void assertExperiment1Values(Experiment unmarshalledExperiment) {
         assertNotNull(unmarshalledExperiment);
+        unmarshalledExperiment.setId(400L);
+        assertEquals(unmarshalledExperiment, experiments.get(0));
         assertEquals(unmarshalledExperiment.getLsid(), "${FolderLSIDBase}:IPAS14");
         assertEquals(unmarshalledExperiment.getName(), "IPAS14 Experiment");
         assertEquals(unmarshalledExperiment.getHypothesis(), "Cancer can kill a mouse too.");
         assertEquals(unmarshalledExperiment.getUrl(), "http://testUrl1:8080/index.html");
         assertEquals(unmarshalledExperiment.getComments(), "Mouse Pancreatic Cancer Research");
 
+        // Get the Properties
+        assertNotNull(unmarshalledExperiment.getProperties());
+        List<SimpleTypeValue> simpleTypeValues = unmarshalledExperiment.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(2, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "AnExperimentProperty");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "terms.fhcrc.org#ExpProp.Something");
+        assertEquals(simpleTypeValues.get(0).getValue(), "Some property");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
+        assertEquals(simpleTypeValues.get(1).getName(), "Category");
+        assertEquals(simpleTypeValues.get(1).getOntologyEntryURI(), "terms.fhcrc.org#ExpProp.Category");
+        assertEquals(simpleTypeValues.get(1).getValue(), "210");
+        assertEquals(simpleTypeValues.get(1).getValueType(), SimpleType.valueOf("Integer"));
+
         // Contact person for the experiment
         Person person = unmarshalledExperiment.getPrimaryContact();
+        person.setId(420L);
         assertNotNull(person);
+        assertEquals(person, experiments.get(0).getPrimaryContact());
         assertEquals(person.getContactId(), "Jim's Laboratory");
         assertEquals(person.getFirstName(), "Jim");
         assertEquals(person.getLastName(), "Smith");
         assertEquals(person.getEmail(), "jim@smiths.net");
+        // Person Properties
+        assertNotNull(person.getProperties());
+        simpleTypeValues = person.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(1, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "Contact Type");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType");
+        assertEquals(simpleTypeValues.get(0).getValue(), "Contractor");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
 
         List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
         assertNotNull(unmarshalledExperimentRuns);
@@ -280,18 +361,31 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
         //Experiment Runs
         ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
+        unmarshalledExperimentRun.setId(430L);
         assertNotNull(unmarshalledExperimentRun);
+        assertEquals(unmarshalledExperimentRun, experiments.get(0).getExperimentRuns().get(0));
         assertEquals(unmarshalledExperimentRun.getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
         assertEquals(unmarshalledExperimentRun.getName(), "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
         assertEquals(unmarshalledExperimentRun.getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
         assertEquals(unmarshalledExperimentRun.getComments(), "Profiling of Proteins in Lung " +
                 "Adenocarcinoma Cell Surface");
 
+        assertNotNull(unmarshalledExperimentRun.getProperties());
+        simpleTypeValues = unmarshalledExperimentRun.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(1, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "ExpRunType");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "terms.fhcrc.org#RunProtocolTypes.Something");
+        assertEquals(simpleTypeValues.get(0).getValue(), "Some Experiment Run Property");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
+
         List<ProtocolApplication> protApplications = unmarshalledExperimentRun.getProtocolApplications();
         assertEquals(protApplications.size(), 1);
 
         ProtocolApplication unmarshalledProtApp1 = protApplications.get(0);
+        unmarshalledProtApp1.setId(440L);
         assertNotNull(unmarshalledProtApp1);
+        assertEquals(unmarshalledProtApp1, experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
         assertEquals(unmarshalledProtApp1.getActionSequence(), 1);
         assertEquals(unmarshalledProtApp1.getActivityDate(), DatatypeConverter.parseDate("2006-08-31-07:00"));
         assertEquals(unmarshalledProtApp1.getComments(), null);
@@ -301,12 +395,23 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(unmarshalledProtApp1.getParameters().getOutputDataFileTemplate(), "Out Data File Template");
         assertEquals(unmarshalledProtApp1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
 
+        assertNotNull(unmarshalledProtApp1.getProperties());
+        simpleTypeValues = unmarshalledProtApp1.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(1, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "ProtAppFactorsCount");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "terms.fhcrc.org#RunProtocolTypes.Category");
+        assertEquals(simpleTypeValues.get(0).getValue(), "2");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("Integer"));
+
         assertNotNull(unmarshalledProtApp1.getExperimentRun());
         assertEquals(unmarshalledProtApp1.getExperimentRun().getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
         assertEquals(unmarshalledProtApp1.getExperimentRun().getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
 
         Protocol prot1 = unmarshalledProtApp1.getProtocol();
         assertNotNull(prot1);
+        prot1.setId(100L);
+        assertEquals(prot1, protocols.get(0));
         assertEquals(prot1.getLsid(), "${FolderLSIDBase}:Process.IPAS14");
         assertEquals(prot1.getType(), ProtocolType.valueOf("ExperimentRun"));
         assertEquals(prot1.getName(), "IPAS14 Process");
@@ -316,17 +421,37 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(prot1.getOutputDataType(), "Data");
         assertEquals(prot1.getOutputMaterialType(), "Material");
 
+        // Get the Properties
+        assertNotNull(prot1.getProperties());
+        simpleTypeValues = prot1.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(1, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "TreatAsFractions");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "terms.fhcrc.org#RunProtocolTypes.TreatAsFractions");
+        assertEquals(simpleTypeValues.get(0).getValue(), "true");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
+
         assertEquals(prot1.getParameters().getAppLsidTemplate(), "${RunLSIDBase}:IPAS14");
         assertEquals(prot1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
         assertEquals(prot1.getParameters().getOutputDataNameTemplate(), "OUT DATANAMETEMPLATE");
 
         Person prot1Contact = prot1.getPrimaryContact();
         assertNotNull(prot1Contact);
+        prot1Contact.setId(110L);
+        assertEquals(prot1Contact, protocols.get(0).getPrimaryContact());
         assertEquals(prot1Contact.getContactId(), "Dr. Tabb's Research Center' for Protocols");
         assertEquals(prot1Contact.getFirstName(), "John");
         assertEquals(prot1Contact.getLastName(), "Tabb");
         assertEquals(prot1Contact.getEmail(), "tabb@research-center.com");
-        // TODO: Check to see if a property COMMENTS is in the output XML File
+        // Person Properties
+        assertNotNull(prot1Contact.getProperties());
+        simpleTypeValues = prot1Contact.getProperties().getSimpleTypeValues();
+        assertNotNull(simpleTypeValues);
+        assertEquals(1, simpleTypeValues.size());
+        assertEquals(simpleTypeValues.get(0).getName(), "Contact Type");
+        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType");
+        assertEquals(simpleTypeValues.get(0).getValue(), "Principal Investigator");
+        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
     }
 
     private void assertExperiment2Values(Experiment unmarshalledExperiment) {
