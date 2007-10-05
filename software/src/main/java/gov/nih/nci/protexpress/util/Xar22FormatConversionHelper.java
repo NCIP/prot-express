@@ -244,7 +244,6 @@ public class Xar22FormatConversionHelper {
 
     private PropertyCollection getPropertyCollection(PropertyCollectionType xarPropertyCollectionType) {
         PropertyCollection propCol = new PropertyCollection();
-        List<SimpleTypeValue> simpleTypeValues = new ArrayList<SimpleTypeValue>();
         if (xarPropertyCollectionType != null) {
             for (SimpleValueType xarSimpleVal : xarPropertyCollectionType.getSimpleVal()) {
                 SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
@@ -253,9 +252,8 @@ public class Xar22FormatConversionHelper {
                         SimpleType.valueOf(xarSimpleVal.getValueType().value()));
                 simpleTypeVal.setValue(xarSimpleVal.getValue());
 
-                simpleTypeValues.add(simpleTypeVal);
+                propCol.getSimpleTypeValues().add(simpleTypeVal);
             }
-            propCol.setSimpleTypeValues(simpleTypeValues);
         }
         return propCol;
     }

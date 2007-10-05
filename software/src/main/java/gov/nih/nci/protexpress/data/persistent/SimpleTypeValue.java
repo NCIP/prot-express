@@ -93,6 +93,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
@@ -235,5 +237,49 @@ public class SimpleTypeValue implements Serializable, Persistent {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof SimpleTypeValue)) {
+            return false;
+        }
+
+        SimpleTypeValue stv = (SimpleTypeValue) o;
+
+        if (this.id == null) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+        .append(getName(), stv.getName())
+        .append(getOntologyEntryURI(), stv.getOntologyEntryURI())
+        .append(getValue(), stv.getValue())
+        .append(getValueType(), stv.getValueType())
+        .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+        .append(getName())
+        .append(getOntologyEntryURI())
+        .append(getValue())
+        .append(getValueType())
+        .toHashCode();
     }
 }
