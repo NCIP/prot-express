@@ -81,6 +81,12 @@
             <result name="input">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
         </action>
 
+        <action name="ajax/protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
+            method="{1}">
+            <result name="success">/WEB-INF/jsp/protocol/protocolSearchResults.jsp</result>
+            <result name="input">/WEB-INF/jsp/protocol/protocolSearchResults.jsp</result>
+        </action>
+
         <action name="protocol/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
@@ -110,6 +116,12 @@
             method="{1}">
             <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
             <result name="input">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
+        </action>
+
+        <action name="ajax/experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
+            method="{1}">
+            <result name="success">/WEB-INF/jsp/experiment/experimentSearchResults.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/experimentSearchResults.jsp</result>
         </action>
 
         <action name="experiment/management/*"
