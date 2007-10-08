@@ -45,7 +45,7 @@
         <fmt:message key="experiment.tabs.export" var="exportTitle" />
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
-                postFunction="setSelectedTab">
+                postFunction="setSelectedTab" preFunction="showLoadingText">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
             <ajax:tab caption="${experimentRunsTitle}" baseUrl="${experimentRunsUrl}" defaultTab="${param.initialTab == 'experimentRuns'}" />
             <ajax:tab caption="${contactTitle}" baseUrl="${contactUrl}" defaultTab="${param.initialTab == 'contact'}" />

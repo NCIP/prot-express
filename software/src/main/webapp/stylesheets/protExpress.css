@@ -113,3 +113,16 @@ div.hidesubmit {
 .confirm_msg {
     margin: 5px;
 }
+
+.pagelinks,.pagebanner {
+    color: #000000;
+}
+
+h1 A.add {
+    padding: 3px 3px 3px 22px;
+    font-size: 75%;
+}
+
+h1 A.add:hover {
+    background: #ffffff url("../images/ico_add.gif") no-repeat 6px 3px;
+}

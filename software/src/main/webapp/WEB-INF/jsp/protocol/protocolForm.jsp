@@ -38,7 +38,7 @@
         <fmt:message key="protocol.tabs.overview" var="overviewTitle" />
         <fmt:message key="protocol.tabs.inputOutput" var="inputOutputTitle" />
         <fmt:message key="protocol.tabs.contact" var="contactTitle" />
-        <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" postFunction="setSelectedTab"
+        <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" postFunction="setSelectedTab" preFunction="showLoadingText"
             contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
             <ajax:tab caption="${inputOutputTitle}" baseUrl="${inputOutputUrl}" />

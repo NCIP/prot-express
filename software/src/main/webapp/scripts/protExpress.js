@@ -50,8 +50,17 @@ function setSelectedTab() {
 }
 
 function showSubmittingText() {
-    document.getElementById('submittingText').style.display = 'block';
-    document.getElementById('theForm').style.display = 'none';
+    if (document.getElementById('submittingText') != null) {
+        document.getElementById('submittingText').style.display = 'block';
+        document.getElementById('theForm').style.display = 'none';
+    }
+}
+
+function showLoadingText() {
+    if (document.getElementById('loadingText') != null) {
+        document.getElementById('loadingText').style.display = 'block';
+        document.getElementById('theForm').style.display = 'none';
+    }
 }
 
 ajaxSubmit = function(formId, divId) {

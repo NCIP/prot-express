@@ -2,56 +2,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <html>
 <head>
 </head>
 <body>
 
-<fmt:message key="protocols" /> | <a href="<c:url value="/protocol/management/load.action" />"><fmt:message key="protocol.add" /></a>
+<!--Page Help-->
+<a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
+<!--/Page Help-->
+
+<h1><fmt:message key="protocols.search" /> | <a href="<c:url value="/protocol/management/load.action" />" class="add"><fmt:message key="protocol.add" /></a></h1>
 
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
 </c:if>
 
-<h2><fmt:message key="protocols.search" /></h2>
-
 <s:form action="protocol/search/doSearch" method="post">
     <s:hidden name="protocols.sortDirection" />
     <s:hidden name="protocols.sortCriterion" />
-    <s:textfield name="searchParameters.name" key="protocol.name" size="40" />
-    <s:textfield name="searchParameters.description" key="protocol.description" size="40" />
+    <s:textfield name="searchParameters.name" key="protocol.name" size="40" tabindex="1" />
+    <s:textfield name="searchParameters.description" key="protocol.description" size="40" tabindex="2" />
     <s:select name="searchParameters.types" key="protocol.type"
         list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName" headerKey=""
-        multiple="true" />
-    <s:submit value="%{getText('search')}" />
-    <s:submit value="%{getText('cancel')}" name="redirect-action:protocol/search/loadSearch" />
+        multiple="true" tabindex="3" />
+    <s:submit value="%{getText('search')}" tabindex="4" />
 </s:form>
 
 <c:if test="${protocols.list != null}">
-    <c:url var="sortUrl" value="/protocol/search/doSearch.action" />
-    <c:url var="loadUrlBase" value="/protocol/management/load.action" />
-    <display:table list="${protocols}" requestURI="${sortUrl}" id="row">
-        <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
-        <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
-        <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
-        <display:column property="name" titleKey="protocol.name" sortable="true" href="${loadUrlBase}" paramId="protocol.id" paramProperty="id" />
-        <display:column property="description" titleKey="protocol.description" sortable="true" />
-        <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
-
-        <display:column titleKey="actions" sortable="false">
-            <c:if test="${row.auditInfo.creator == currentUser.loginName}">
-                <c:url var="loadUrl" value="/protocol/management/load.action">
-                    <c:param name="protocol.id" value="${row.id}" />
-                </c:url>
-                <a href="${loadUrl}"><fmt:message key="edit" /></a>
-                <c:url var="deleteUrl" value="/protocol/management/delete.action">
-                    <c:param name="protocol.id" value="${row.id}" />
-                </c:url>
-                <a href="${deleteUrl}"><fmt:message key="delete" /></a>
-            </c:if>
-        </display:column>
-    </display:table>
+    <div class="box">
+        <div class="formbox">
+            <div id="boxinner">
+                <h3><fmt:message key="search.results" /></h3>
+                <jsp:include page="/WEB-INF/jsp/protocol/protocolSearchResults.jsp" />
+            </div>
+        </div>
+    </div>
 </c:if>
-
 </body>
 </html>
