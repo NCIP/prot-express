@@ -86,7 +86,6 @@ package gov.nih.nci.protexpress.util;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Person;
-import gov.nih.nci.protexpress.data.persistent.PropertyCollection;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
@@ -236,26 +235,18 @@ public class Xar22FormatConversionHelper {
 
         // Set the Properties
         if (xarExperimentType.getProperties() != null) {
-            experiment.setProperties(getPropertyCollection(xarExperimentType.getProperties()));
-        }
-
-        return experiment;
-    }
-
-    private PropertyCollection getPropertyCollection(PropertyCollectionType xarPropertyCollectionType) {
-        PropertyCollection propCol = new PropertyCollection();
-        if (xarPropertyCollectionType != null) {
-            for (SimpleValueType xarSimpleVal : xarPropertyCollectionType.getSimpleVal()) {
+            for (SimpleValueType xarSimpleVal : xarExperimentType.getProperties().getSimpleVal()) {
                 SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
                         xarSimpleVal.getName(),
                         xarSimpleVal.getOntologyEntryURI(),
                         SimpleType.valueOf(xarSimpleVal.getValueType().value()));
                 simpleTypeVal.setValue(xarSimpleVal.getValue());
 
-                propCol.getSimpleTypeValues().add(simpleTypeVal);
+                experiment.getProperties().add(simpleTypeVal);
             }
         }
-        return propCol;
+
+        return experiment;
     }
 
     /**
@@ -558,7 +549,15 @@ public class Xar22FormatConversionHelper {
 
         // Set the Properties
         if (xarExperimentRunType.getProperties() != null) {
-            expRun.setProperties(getPropertyCollection(xarExperimentRunType.getProperties()));
+            for (SimpleValueType xarSimpleVal : xarExperimentRunType.getProperties().getSimpleVal()) {
+                SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                        xarSimpleVal.getName(),
+                        xarSimpleVal.getOntologyEntryURI(),
+                        SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                expRun.getProperties().add(simpleTypeVal);
+            }
         }
         return expRun;
     }
@@ -583,7 +582,15 @@ public class Xar22FormatConversionHelper {
 
      // Set the Properties
         if (xarProtocolBaseType.getProperties() != null) {
-            protocol.setProperties(getPropertyCollection(xarProtocolBaseType.getProperties()));
+            for (SimpleValueType xarSimpleVal : xarProtocolBaseType.getProperties().getSimpleVal()) {
+                SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                        xarSimpleVal.getName(),
+                        xarSimpleVal.getOntologyEntryURI(),
+                        SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                protocol.getProperties().add(simpleTypeVal);
+            }
         }
 
         return protocol;
@@ -606,7 +613,15 @@ public class Xar22FormatConversionHelper {
 
         // Set the Properties
         if (xarProtAppBaseType.getProperties() != null) {
-            protApplication.setProperties(getPropertyCollection(xarProtAppBaseType.getProperties()));
+            for (SimpleValueType xarSimpleVal : xarProtAppBaseType.getProperties().getSimpleVal()) {
+                SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                        xarSimpleVal.getName(),
+                        xarSimpleVal.getOntologyEntryURI(),
+                        SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                protApplication.getProperties().add(simpleTypeVal);
+            }
         }
 
         // Get the protocol application parameters, if any.
@@ -670,7 +685,15 @@ public class Xar22FormatConversionHelper {
 
             // Set the Properties
             if (xarContactType.getProperties() != null) {
-                primaryContact.setProperties(getPropertyCollection(xarContactType.getProperties()));
+                for (SimpleValueType xarSimpleVal : xarContactType.getProperties().getSimpleVal()) {
+                    SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                            xarSimpleVal.getName(),
+                            xarSimpleVal.getOntologyEntryURI(),
+                            SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                    simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                    primaryContact.getProperties().add(simpleTypeVal);
+                }
             }
         }
 
@@ -700,13 +723,13 @@ public class Xar22FormatConversionHelper {
     /**
      * Given a PropertyCollection, returns the XAR 2.2 PropertyCollectionType object.
      *
-     * @param propCol the property collection
+     * @param propCol the simple value type collection
      * @return the XAR 2.2 PropertyCollectionType
      */
-    private PropertyCollectionType getPropertyCollectionType(PropertyCollection propCol) {
+    private PropertyCollectionType getPropertyCollectionType(List<SimpleTypeValue> simpleTypeValues) {
         PropertyCollectionType xarPropCollection = objectFactory.createPropertyCollectionType();
-        if (propCol != null) {
-            for (SimpleTypeValue simpleTypeVal : propCol.getSimpleTypeValues()) {
+        if (simpleTypeValues != null) {
+            for (SimpleTypeValue simpleTypeVal : simpleTypeValues) {
                 SimpleValueType xarSimpleVal = objectFactory.createSimpleValueType();
                 xarSimpleVal.setName(simpleTypeVal.getName());
                 xarSimpleVal.setOntologyEntryURI(simpleTypeVal.getOntologyEntryURI());
