@@ -9,7 +9,6 @@
         <mapping class="gov.nih.nci.protexpress.data.persistent.Person" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.Protocol" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.ProtocolApplication" />
-        <mapping class="gov.nih.nci.protexpress.data.persistent.PropertyCollection" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.ProtocolParameters" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.SimpleTypeValue" />
     </session-factory>

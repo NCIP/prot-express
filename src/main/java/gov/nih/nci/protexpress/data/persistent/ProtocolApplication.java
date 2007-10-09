@@ -83,7 +83,9 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -95,7 +97,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -133,7 +135,7 @@ public class ProtocolApplication implements Serializable {
     private ExperimentRun experimentRun;
     private Protocol protocol;
     private ProtocolParameters parameters = new ProtocolParameters();
-    private PropertyCollection properties = new PropertyCollection();
+    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
      * protected default constructor for hibernate only.
@@ -344,10 +346,10 @@ public class ProtocolApplication implements Serializable {
      *
      * @return the properties.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prop_collection_id")
-    public PropertyCollection getProperties() {
-        return this.properties;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prot_application_id")
+    public List<SimpleTypeValue> getProperties() {
+        return properties;
     }
 
     /**
@@ -355,7 +357,7 @@ public class ProtocolApplication implements Serializable {
      *
      * @param properties the properties to set.
      */
-    public void setProperties(PropertyCollection properties) {
+    protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
     }
 

@@ -99,7 +99,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -133,7 +132,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
     private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
-    private PropertyCollection properties = new PropertyCollection();
+    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
      * protected default constructor for hibernate only.
@@ -295,10 +294,10 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      *
      * @return the properties.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prop_collection_id")
-    public PropertyCollection getProperties() {
-        return this.properties;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "exprun_id")
+    public List<SimpleTypeValue> getProperties() {
+        return properties;
     }
 
     /**
@@ -306,7 +305,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      *
      * @param properties the properties to set.
      */
-    public void setProperties(PropertyCollection properties) {
+    protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
     }
 

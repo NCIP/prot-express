@@ -85,6 +85,8 @@ package gov.nih.nci.protexpress.data.persistent;
 import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -98,7 +100,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -148,7 +150,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private AuditInfo auditInfo = new AuditInfo();
     private Person primaryContact;
     private ProtocolParameters parameters = new ProtocolParameters();
-    private PropertyCollection properties = new PropertyCollection();
+    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
      * protected default constructor for hibernate only.
@@ -314,9 +316,9 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @return the properties.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prop_collection_id")
-    public PropertyCollection getProperties() {
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "protocol_id")
+    public List<SimpleTypeValue> getProperties() {
         return properties;
     }
 
@@ -325,7 +327,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @param properties the properties to set.
      */
-    public void setProperties(PropertyCollection properties) {
+    protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
     }
 
