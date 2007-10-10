@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
@@ -182,6 +183,13 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     /**
      * {@inheritDoc}
      */
+    public ProtocolApplication getProtocolApplicationById(Long id) {
+        return (ProtocolApplication) getHibernateTemplate().load(ProtocolApplication.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteExperiment(Experiment experiment) {
         getHibernateTemplate().delete(experiment);
@@ -193,5 +201,13 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteExperimentRun(ExperimentRun experimentRun) {
         getHibernateTemplate().delete(experimentRun);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteProtocolApplication(ProtocolApplication protocolApplication) {
+        getHibernateTemplate().delete(protocolApplication);
     }
 }

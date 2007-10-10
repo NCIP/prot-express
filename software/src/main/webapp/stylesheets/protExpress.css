@@ -126,3 +126,23 @@ h1 A.add {
 h1 A.add:hover {
     background: #ffffff url("../images/ico_add.gif") no-repeat 6px 3px;
 }
+
+.addProtocolApp {
+    font-size: 92%;
+    font-weight: bold;
+    float: right;
+    margin-top: -2.2em;
+    width: 20em
+}
+
+#content .addProtocolApp A.add {
+    color: #fff;
+    display: block;
+    height: 1.4em;
+    padding: 3px 3px 3px 22px
+}
+
+#content .addProtocolApp A.add:hover {
+    color: #333;
+    text-decoration: none
+}

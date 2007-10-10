@@ -80,63 +80,41 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.converters;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
-import java.util.List;
+import org.apache.struts2.util.StrutsTypeConverter;
 
-import org.displaytag.properties.SortOrderEnum;
+import com.opensymphony.xwork2.util.XWorkBasicConverter;
 
 /**
- * Service to handle the manipulation of protocols.
- *
+ * Type converter to handle converting to a Calendar.
  * @author Scott Miller
+ *
  */
-public interface ProtocolService {
+public class CalendarConverter extends StrutsTypeConverter {
+    private final XWorkBasicConverter converter = new XWorkBasicConverter();
 
     /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of protocols that match the search
+     * {@inheritDoc}
      */
-    int countMatchingProtocols(ProtocolSearchParameters params);
+    @Override
+    public Object convertFromString(Map context, String[] values, Class toClass) {
+        Date dt = (Date) this.converter.convertValue(context, null, null, null, values[0], Date.class);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        return cal;
+    }
 
     /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the protocols that match the search
+     * {@inheritDoc}
      */
-    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
-
-    /**
-     * Get the protocols the user has edited most recently.
-     *
-     * @param username the username of the user
-     * @param numberOfProtocols the number of protocols to return
-     * @return the protocols
-     */
-    List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
-
-    /**
-     * Retrieve the protocol ith the given identifier.
-     *
-     * @param id the id of the protocol to retrive
-     * @return the protocol to retrieve
-     */
-    Protocol getProtocolById(Long id);
-
-    /**
-     * delete the given protocol.
-     *
-     * @param protocol the protocol to delete
-     */
-    void deleteProtocol(Protocol protocol);
+    @Override
+    public String convertToString(Map context, Object o) {
+        Calendar cal = (Calendar) o;
+        return (String) this.converter.convertValue(context, null, null, null, cal.getTime(), String.class);
+    }
 }

@@ -284,6 +284,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * {@inheritDoc}
      */
     @Embedded
+    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }
@@ -343,7 +344,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "experiment_id")
     public List<SimpleTypeValue> getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**
@@ -388,5 +389,4 @@ public class Experiment implements Serializable, Persistent, Auditable {
     public int hashCode() {
         return new HashCodeBuilder().append(getLsid()).toHashCode();
     }
-
 }

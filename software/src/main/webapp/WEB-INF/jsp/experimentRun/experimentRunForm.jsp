@@ -35,8 +35,8 @@
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
                 postFunction="setSelectedTab">
-            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
-            <ajax:tab caption="${protocolApplicationTitle}" baseUrl="${protocolApplicationsUrl}" />
+            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
+            <ajax:tab caption="${protocolApplicationTitle}" baseUrl="${protocolApplicationsUrl}" defaultTab="${param.initialTab == 'protocolApplications'}" />
         </ajax:tabPanel>
     </s:if>
     <s:else>

@@ -80,63 +80,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.converters.test;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import java.util.Calendar;
 
-import java.util.List;
+import junit.framework.TestCase;
 
-import org.displaytag.properties.SortOrderEnum;
+import gov.nih.nci.protexpress.ui.converters.CalendarConverter;
 
 /**
- * Service to handle the manipulation of protocols.
- *
  * @author Scott Miller
+ *
  */
-public interface ProtocolService {
+public class CalendarConverterTest extends TestCase {
 
-    /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of protocols that match the search
-     */
-    int countMatchingProtocols(ProtocolSearchParameters params);
-
-    /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the protocols that match the search
-     */
-    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
-
-    /**
-     * Get the protocols the user has edited most recently.
-     *
-     * @param username the username of the user
-     * @param numberOfProtocols the number of protocols to return
-     * @return the protocols
-     */
-    List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
-
-    /**
-     * Retrieve the protocol ith the given identifier.
-     *
-     * @param id the id of the protocol to retrive
-     * @return the protocol to retrieve
-     */
-    Protocol getProtocolById(Long id);
-
-    /**
-     * delete the given protocol.
-     *
-     * @param protocol the protocol to delete
-     */
-    void deleteProtocol(Protocol protocol);
+    public void testCalendarConversion() {
+        String srcDateString = "4/28/79";
+        CalendarConverter converter = new CalendarConverter();
+        Calendar cal = (Calendar) converter.convertFromString(null, new String[] { srcDateString }, Calendar.class);
+        String str = converter.convertToString(null, cal);
+        assertEquals(srcDateString, str);
+    }
 }
