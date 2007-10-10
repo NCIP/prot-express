@@ -122,6 +122,7 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
         if (getProtocolId() != null) {
             Protocol p = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
             getProtocolApplication().setProtocol(p);
+            getProtocolApplication().setParameters(p.getParameters());
         }
     }
 
