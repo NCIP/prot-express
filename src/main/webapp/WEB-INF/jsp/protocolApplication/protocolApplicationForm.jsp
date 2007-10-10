@@ -26,7 +26,7 @@
             <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
         </c:url>
         <c:url value="/ajax/protocolApplication/management/load/parameters.action" var="parametersUrl">
-            <c:param name="protocolApplication.id" value="${experimentRun.id}" />
+            <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
         </c:url>
 
         <fmt:message key="protocolApplication.tabs.overview" var="overviewTitle" />

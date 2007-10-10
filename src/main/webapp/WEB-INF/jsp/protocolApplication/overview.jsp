@@ -16,7 +16,9 @@
         <s:textfield name="protocolApplication.actionSequence" key="protocolApplication.actionSequence" size="40" tabindex="3" disabled="${isReadOnly}" />
         <s:textfield name="protocolApplication.activityDate" key="protocolApplication.activityDate" size="40" tabindex="4" disabled="${isReadOnly}" />
         <s:textfield name="protocolApplication.comments" key="protocolApplication.comments" size="40" tabindex="5" disabled="${isReadOnly}" />
-        <s:textfield name="protocolId" key="protocolApplication.protocol" size="40" tabindex="6" disabled="${isReadOnly}" />
+        <c:if test="${protocolApplication.id == null}">
+            <s:textfield name="protocolId" key="protocolApplication.protocol" size="40" tabindex="6" disabled="${isReadOnly}" />
+        </c:if>
         <s:hidden name="protocolApplication.id" />
         <s:hidden name="experimentRunId" />
     </s:form>
@@ -30,7 +32,7 @@
         <s:if test="${isReadOnly}">
             <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="8"><fmt:message key="copy" /></a>
         </s:if>
-        <s:elseif test="${experimentRun.id != null}">
+        <s:elseif test="${protocolApplication.id != null}">
             <a href="javascript:ajaxSubmit('overviewForm', 'selectedtabbox');" class="save" tabindex="8"><fmt:message key="save" /></a>
         </s:elseif>
         <s:else>
