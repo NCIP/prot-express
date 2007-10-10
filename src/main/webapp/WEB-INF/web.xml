@@ -147,6 +147,46 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Experiment Run Functionality</web-resource-name>
+            <url-pattern>/experimentRun/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Ajax Experiment Run Functionality</web-resource-name>
+            <url-pattern>/ajax/experimentRun/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protocol Application Functionality</web-resource-name>
+            <url-pattern>/protocolApplication/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Ajax Protocol Application Functionality</web-resource-name>
+            <url-pattern>/ajax/protocolApplication/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>protExpress</realm-name>

@@ -80,63 +80,146 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.protocolapplication;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.util.List;
+import java.text.MessageFormat;
 
-import org.displaytag.properties.SortOrderEnum;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+
 
 /**
- * Service to handle the manipulation of protocols.
- *
  * @author Scott Miller
+ *
  */
-public interface ProtocolService {
+public class ProtocolApplicationManagementAction extends ActionSupport implements Preparable {
+
+    private static final long serialVersionUID = 1L;
+    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, 0, null, null, null);
+    private Long experimentRunId;
+    private Long protocolId;
+    private String successMessage = null;
 
     /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of protocols that match the search
+     * {@inheritDoc}
      */
-    int countMatchingProtocols(ProtocolSearchParameters params);
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        if (getProtocolApplication().getId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplication().getId()));
+        } else if (getExperimentRunId() != null) {
+            getProtocolApplication().setExperimentRun(es.getExperimentRunById(getExperimentRunId()));
+        }
+
+        if (getProtocolId() != null) {
+            Protocol p = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+            getProtocolApplication().setProtocol(p);
+        }
+    }
 
     /**
-     * Searches for protocols that match the given criteria.
+     * loads the {@link ProtocolApplication}.
      *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the protocols that match the search
+     * @return the directive for the next action / page to be directed to
      */
-    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
 
     /**
-     * Get the protocols the user has edited most recently.
+     * Saves the {@link ProtocolApplication}.
      *
-     * @param username the username of the user
-     * @param numberOfProtocols the number of protocols to return
-     * @return the protocols
+     * @return the directive for the next action / page to be directed to
      */
-    List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
+    public String save() {
+        if (getProtocolApplication().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                    .getString("protocolApplication.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
+                    "protocolApplication.update.success"));
+        }
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * Retrieve the protocol ith the given identifier.
+     * delete the {@link ProtocolApplication}.
      *
-     * @param id the id of the protocol to retrive
-     * @return the protocol to retrieve
+     * @return the directive for the next action / page to be directed to
      */
-    Protocol getProtocolById(Long id);
+    @SkipValidation
+    public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().
+            getString("protocolApplication.delete.success");
+        setSuccessMessage(MessageFormat.format(msg, getProtocolApplication().getName()));
+        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(getProtocolApplication());
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * delete the given protocol.
-     *
-     * @param protocol the protocol to delete
+     * @return the protocolApplication
      */
-    void deleteProtocol(Protocol protocol);
+    @CustomValidator(type = "hibernate")
+    public ProtocolApplication getProtocolApplication() {
+        return this.protocolApplication;
+    }
+
+    /**
+     * @param protocolApplication the protocolApplication to set
+     */
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        this.protocolApplication = protocolApplication;
+    }
+
+    /**
+     * @return the experimentRunId
+     */
+    public Long getExperimentRunId() {
+        return this.experimentRunId;
+    }
+
+    /**
+     * @param experimentRunId the experimentRunId to set
+     */
+    public void setExperimentRunId(Long experimentRunId) {
+        this.experimentRunId = experimentRunId;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    /**
+     * @return the protocol id
+     */
+    public Long getProtocolId() {
+        return this.protocolId;
+    }
+
+    /**
+     * @param protocolId the protocol id
+     */
+    public void setProtocolId(Long protocolId) {
+        this.protocolId = protocolId;
+    }
 }

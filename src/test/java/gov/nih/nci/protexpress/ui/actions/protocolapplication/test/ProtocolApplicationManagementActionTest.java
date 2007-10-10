@@ -80,63 +80,85 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.protocolapplication.test;
 
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
 
-import java.util.List;
+import java.util.Calendar;
 
-import org.displaytag.properties.SortOrderEnum;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * Service to handle the manipulation of protocols.
- *
  * @author Scott Miller
+ *
  */
-public interface ProtocolService {
+public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibernateTest {
+    ProtocolApplicationManagementAction action;
+    ProtocolApplication protocolApplication;
+    ExperimentRun experimentRun;
+    Protocol protocol;
 
     /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of protocols that match the search
+     * {@inheritDoc}
      */
-    int countMatchingProtocols(ProtocolSearchParameters params);
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new ProtocolApplicationManagementAction();
 
-    /**
-     * Searches for protocols that match the given criteria.
-     *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the protocols that match the search
-     */
-    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
+        this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.theSession.save(this.protocol);
 
-    /**
-     * Get the protocols the user has edited most recently.
-     *
-     * @param username the username of the user
-     * @param numberOfProtocols the number of protocols to return
-     * @return the protocols
-     */
-    List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
+        Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        experiment.setComments("Description - Test Experiment 1");
+        experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        experiment.setUrl("URL - Test Experiment 1");
 
-    /**
-     * Retrieve the protocol ith the given identifier.
-     *
-     * @param id the id of the protocol to retrive
-     * @return the protocol to retrieve
-     */
-    Protocol getProtocolById(Long id);
+        this.theSession.saveOrUpdate(experiment);
 
-    /**
-     * delete the given protocol.
-     *
-     * @param protocol the protocol to delete
-     */
-    void deleteProtocol(Protocol protocol);
+        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun.setComments("test comments");
+        this.experimentRun.setExperiment(experiment);
+
+        this.theSession.saveOrUpdate(this.experimentRun);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", 1, Calendar.getInstance(), this.experimentRun, this.protocol);
+    }
+
+    public void testLoadByExperimentRunId() throws Exception {
+        this.action.setExperimentRunId(this.experimentRun.getId());
+        this.action.setProtocolId(this.protocol.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.INPUT, this.action.load());
+        assertEquals(this.experimentRun, this.action.getProtocolApplication().getExperimentRun());
+        assertEquals(this.protocol, this.action.getProtocolApplication().getProtocol());
+    }
+
+    public void testAddAndDeleteProtocolApplication() throws Exception {
+        this.action.setProtocolApplication(this.protocolApplication);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Protocol Application successfully created.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolApplicationManagementAction();
+        this.action.getProtocolApplication().setId(this.protocolApplication.getId());
+        this.action.prepare();
+        this.action.getProtocolApplication().setName("new name");
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Protocol Application successfully updated.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolApplicationManagementAction();
+        this.action.getProtocolApplication().setId(this.protocolApplication.getId());
+        this.action.prepare();
+        assertEquals("success", this.action.delete());
+        assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
+    }
 }

@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
 import java.util.List;
 
@@ -122,7 +123,7 @@ public interface ExperimentService {
      *
      * @param username the username of the user
      * @param numberOfExperiments the number of experiments to return
-     * @return the experiments
+     * @return the list of {@link Experiment}
      */
     List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
 
@@ -130,7 +131,7 @@ public interface ExperimentService {
      * Retrieve the experiment with the given identifier.
      *
      * @param id the id of the experiment to retrive
-     * @return the experiment to retrieve
+     * @return the {@link Experiment}
      */
     Experiment getExperimentById(Long id);
 
@@ -138,9 +139,17 @@ public interface ExperimentService {
      * Retrieve the experiment with the given identifier.
      *
      * @param id the id of the experiment run.
-     * @return the experiment run.
+     * @return the {@link ExperimentRun}
      */
     ExperimentRun getExperimentRunById(Long id);
+
+    /**
+     * Retrieve the protocol application with the given id.
+     *
+     * @param id the identifier of the protocol application.
+     * @return the {@link ProtocolApplication}
+     */
+    ProtocolApplication getProtocolApplicationById(Long id);
 
     /**
      * delete the given experiment.
@@ -155,4 +164,11 @@ public interface ExperimentService {
      * @param experimentRun the experiment run to delete.
      */
     void deleteExperimentRun(ExperimentRun experimentRun);
+
+    /**
+     * delete the {@link ProtocolApplication}.
+     *
+     * @param protocolApplication the protocol application to delete
+     */
+    void deleteProtocolApplication(ProtocolApplication protocolApplication);
 }

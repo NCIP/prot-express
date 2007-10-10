@@ -118,15 +118,13 @@ public class Person implements Serializable, Persistent {
 
     private static final int CONTACT_ID_LENGTH = 255;
     private static final int NAME_LENGTH = 255;
-    private static final int EMAIL_LENGTH = 255;;
-    private static final int COMMENTS_LENGTH = 255;
+    private static final int EMAIL_LENGTH = 255;
 
     private Long id;
     private String contactId;
     private String firstName;
     private String lastName;
     private String email;
-    private String comments;
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
@@ -237,26 +235,6 @@ public class Person implements Serializable, Persistent {
     }
 
     /**
-     * Gets the comments.
-     *
-     * @return the comments
-     */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
-    }
-
-    /**
-     * Sets the comments.
-     *
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    /**
      * Gets the properties.
      *
      * @return the properties.
@@ -264,7 +242,7 @@ public class Person implements Serializable, Persistent {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     public List<SimpleTypeValue> getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**

@@ -109,6 +109,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Valid;
 
 /**
  * Class representing a protocol application.
@@ -118,7 +119,7 @@ import org.hibernate.validator.NotNull;
 @Entity
 @Table(name = "protocol_application")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolApplication implements Serializable {
+public class ProtocolApplication implements Serializable, Auditable, Persistent {
 
     private static final long serialVersionUID = 1L;
 
@@ -136,6 +137,7 @@ public class ProtocolApplication implements Serializable {
     private Protocol protocol;
     private ProtocolParameters parameters = new ProtocolParameters();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
+    private AuditInfo auditInfo = new AuditInfo();
 
     /**
      * protected default constructor for hibernate only.
@@ -150,13 +152,16 @@ public class ProtocolApplication implements Serializable {
      * @param name the name of the protocol application
      * @param actionSequence the action sequence
      * @param activityDate the activity date
+     * @param expRun the experiment run
      * @param protocol the protocol being applied
      */
-    public ProtocolApplication(String lsid, String name, int actionSequence, Calendar activityDate, Protocol protocol) {
+    public ProtocolApplication(String lsid, String name, int actionSequence, Calendar activityDate,
+            ExperimentRun expRun, Protocol protocol) {
         setLsid(lsid);
         setName(name);
         setActionSequence(actionSequence);
         setActivityDate(activityDate);
+        setExperimentRun(expRun);
         setProtocol(protocol);
     }
 
@@ -267,7 +272,6 @@ public class ProtocolApplication implements Serializable {
      * @return the comments
      */
     @Column(name = "comments")
-    @NotEmpty
     @Length(max = COMMENTS_LENGTH)
     public String getComments() {
         return this.comments;
@@ -287,7 +291,8 @@ public class ProtocolApplication implements Serializable {
      *
      * @return the protocol.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     @JoinColumn(name = "protocol_id")
     public Protocol getProtocol() {
         return this.protocol;
@@ -308,7 +313,8 @@ public class ProtocolApplication implements Serializable {
      * @return the experimentRun.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_run_id", nullable = false)
+    @NotNull
+    @JoinColumn(name = "experiment_run_id")
     public ExperimentRun getExperimentRun() {
         return this.experimentRun;
     }
@@ -349,7 +355,7 @@ public class ProtocolApplication implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prot_application_id")
     public List<SimpleTypeValue> getProperties() {
-        return properties;
+        return this.properties;
     }
 
     /**
@@ -359,6 +365,22 @@ public class ProtocolApplication implements Serializable {
      */
     protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Embedded
+    @Valid
+    public AuditInfo getAuditInfo() {
+        return this.auditInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setAuditInfo(AuditInfo auditInfo) {
+        this.auditInfo = auditInfo;
     }
 
     /**

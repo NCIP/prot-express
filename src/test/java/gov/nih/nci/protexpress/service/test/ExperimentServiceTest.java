@@ -3,10 +3,14 @@ package gov.nih.nci.protexpress.service.test;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.displaytag.properties.SortOrderEnum;
@@ -294,6 +298,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(exp1.hashCode(), new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1").hashCode());
     }
 
+    @SuppressWarnings("unchecked")
     public void testAddAndDeleteExperimentRun() throws Exception {
         Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
         exp.setComments("bar 123");
@@ -318,5 +323,45 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
         List<ExperimentRun> experimentRuns = this.theSession.createQuery("from " + ExperimentRun.class.getName()).list();
         assertEquals(0, experimentRuns.size());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testAddAndDeleteProtocolApplication() throws Exception {
+        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        p.setInstrument("foo");
+        p.setDescription("bar");
+        p.setSoftware("baz");
+
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
+
+        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        exp.setComments("bar 123");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ExperimentRun experimentRun = new ExperimentRun("test er1", "test er1");
+        experimentRun.setExperiment(exp);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(experimentRun);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ProtocolApplication pa = new ProtocolApplication("pa lsid 1", "protocol application name", 1, Calendar.getInstance(), experimentRun, p);
+        pa.setComments("bar 123");
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ProtocolApplication retrevedProtocolApplication = ProtExpressRegistry.getExperimentService().getProtocolApplicationById(pa.getId());
+        assertEquals(retrevedProtocolApplication, pa);
+
+        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(retrevedProtocolApplication);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        List<ProtocolApplication> protocolApplications = this.theSession.createQuery("from " + ProtocolApplication.class.getName()).list();
+        assertEquals(0, protocolApplications.size());
     }
 }

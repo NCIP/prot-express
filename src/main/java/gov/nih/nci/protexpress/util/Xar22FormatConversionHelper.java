@@ -121,10 +121,10 @@ public class Xar22FormatConversionHelper {
     private final ObjectFactory objectFactory = new ObjectFactory();
 
     private List<Experiment> experiments = new ArrayList<Experiment>();
-    private HashMap<String, Experiment> experimentMap = new HashMap<String, Experiment>();
-    private HashMap<String, ExperimentRun> expRunMap = new HashMap<String, ExperimentRun>();
-    private HashMap<String, Protocol> protocolMap = new HashMap<String, Protocol>();
-    private HashMap<String, ProtocolBaseType> xarProtocolBaseTypeMap = new HashMap<String, ProtocolBaseType>();
+    private final HashMap<String, Experiment> experimentMap = new HashMap<String, Experiment>();
+    private final HashMap<String, ExperimentRun> expRunMap = new HashMap<String, ExperimentRun>();
+    private final HashMap<String, Protocol> protocolMap = new HashMap<String, Protocol>();
+    private final HashMap<String, ProtocolBaseType> xarProtocolBaseTypeMap = new HashMap<String, ProtocolBaseType>();
 
     /**
      * Default constructor.
@@ -144,7 +144,7 @@ public class Xar22FormatConversionHelper {
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
 
-       return experiments;
+       return this.experiments;
     }
 
     /**
@@ -159,12 +159,12 @@ public class Xar22FormatConversionHelper {
         ExperimentArchiveType xarExperimentArchiveType = getExperimentTypes();
         xarExperimentArchiveType.setExperimentRuns(getExperimentRuns());
         //set protocol definitions.
-        ExperimentArchiveType.ProtocolDefinitions xarProtocolDefinitions = objectFactory
+        ExperimentArchiveType.ProtocolDefinitions xarProtocolDefinitions = this.objectFactory
         .createExperimentArchiveTypeProtocolDefinitions();
 
-        Iterator<ProtocolBaseType> iter = (Iterator<ProtocolBaseType>) xarProtocolBaseTypeMap.values().iterator();
+        Iterator<ProtocolBaseType> iter = this.xarProtocolBaseTypeMap.values().iterator();
         while (iter.hasNext()) {
-            ProtocolBaseType xarProtocolBaseType = (ProtocolBaseType) iter.next();
+            ProtocolBaseType xarProtocolBaseType = iter.next();
             if (xarProtocolBaseType != null) {
                 xarProtocolDefinitions.getProtocol().add(xarProtocolBaseType);
             }
@@ -182,9 +182,9 @@ public class Xar22FormatConversionHelper {
     private void getExperimentList(ExperimentArchiveType experimentArchive) {
         for (ExperimentType xarExperimentType : experimentArchive.getExperiment()) {
             Experiment experiment = getExperiment(xarExperimentType);
-            experiments.add(experiment);
+            this.experiments.add(experiment);
             // Add to Map
-            experimentMap.put(experiment.getLsid(), experiment);
+            this.experimentMap.put(experiment.getLsid(), experiment);
         }
     }
 
@@ -194,9 +194,9 @@ public class Xar22FormatConversionHelper {
      * @return the ExperimentArchiveType
      */
     private ExperimentArchiveType getExperimentTypes() {
-        ExperimentArchiveType xarExperimentArchiveType = objectFactory.createExperimentArchiveType();
-        for (Experiment exp : experiments) {
-            ExperimentType xarExperimentType = objectFactory.createExperimentType();
+        ExperimentArchiveType xarExperimentArchiveType = this.objectFactory.createExperimentArchiveType();
+        for (Experiment exp : this.experiments) {
+            ExperimentType xarExperimentType = this.objectFactory.createExperimentType();
             xarExperimentType.setAbout(exp.getLsid());
             xarExperimentType.setComments(exp.getComments());
             xarExperimentType.setExperimentDescriptionURL(exp.getUrl());
@@ -259,16 +259,16 @@ public class Xar22FormatConversionHelper {
         for (ExperimentRunType xarExpRunType : experimentArchive.getExperimentRuns().getExperimentRun()) {
             ExperimentRun expRun = getExperimentRun(xarExpRunType);
             // Add to Map
-            expRunMap.put(expRun.getLsid(), expRun);
+            this.expRunMap.put(expRun.getLsid(), expRun);
 
 
             // If ExperimentLSID specified, then set the experiment. Else...
             Experiment exp = null;
             if ((xarExpRunType.getExperimentLSID() != null) && (xarExpRunType.getExperimentLSID().length() != 0)) {
-                exp = experimentMap.get(xarExpRunType.getExperimentLSID());
+                exp = this.experimentMap.get(xarExpRunType.getExperimentLSID());
            } else {
-                if (experiments.size() == 1) {
-                    exp = experiments.get(0);
+                if (this.experiments.size() == 1) {
+                    exp = this.experiments.get(0);
                 }
             }
 
@@ -291,21 +291,20 @@ public class Xar22FormatConversionHelper {
             for (ProtocolBaseType xarProtocolBaseType : xarProtocolDefinitions.getProtocol()) {
                 Protocol protocol = getProtocol(xarProtocolBaseType);
                 //Add to Map
-                protocolMap.put(protocol.getLsid(), protocol);
+                this.protocolMap.put(protocol.getLsid(), protocol);
             }
         }
 
         // Iterate through the XAR Experiment Runs, get protocol applications and set accordingly.
         for (ExperimentRunType xarExpRunType : experimentArchive.getExperimentRuns().getExperimentRun()) {
-            ExperimentRun expRun = expRunMap.get(xarExpRunType.getAbout());
+            ExperimentRun expRun = this.expRunMap.get(xarExpRunType.getAbout());
             //Loop through the XAR Protocol Applications, set protocol values, set to Experiment Run
            ProtocolApplications xarProtApplications = xarExpRunType.getProtocolApplications();
            if (xarProtApplications != null) {
                for (ProtocolApplicationBaseType xarProtAppBaseType : xarProtApplications.getProtocolApplication()) {
                    // Get the protocol corresponding to the LSID and set the properties.
-                   Protocol protocol = protocolMap.get(xarProtAppBaseType.getProtocolLSID());
-                   ProtocolApplication protApplication = getProtocolApplication(xarProtAppBaseType, protocol);
-                   protApplication.setExperimentRun(expRun);
+                   Protocol protocol = this.protocolMap.get(xarProtAppBaseType.getProtocolLSID());
+                   ProtocolApplication protApplication = getProtocolApplication(xarProtAppBaseType, expRun, protocol);
                    expRun.getProtocolApplications().add(protApplication);
                }
            }
@@ -320,11 +319,11 @@ public class Xar22FormatConversionHelper {
      */
     private ExperimentArchiveType.ExperimentRuns getExperimentRuns() {
         ExperimentArchiveType.ExperimentRuns xarExperimentRuns =
-            objectFactory.createExperimentArchiveTypeExperimentRuns();
+            this.objectFactory.createExperimentArchiveTypeExperimentRuns();
 
-        for (Experiment exp : experiments) {
+        for (Experiment exp : this.experiments) {
             for (ExperimentRun expRun : exp.getExperimentRuns()) {
-                ExperimentRunType xarExperimentRunType = objectFactory.createExperimentRunType();
+                ExperimentRunType xarExperimentRunType = this.objectFactory.createExperimentRunType();
                 xarExperimentRunType.setAbout(expRun.getLsid());
                 xarExperimentRunType.setExperimentLSID(expRun.getExperiment().getLsid());
                 xarExperimentRunType.setComments(expRun.getComments());
@@ -334,7 +333,7 @@ public class Xar22FormatConversionHelper {
                 xarExperimentRunType.setProperties(getPropertyCollectionType(expRun.getProperties()));
 
                 // Get Protocol Applications.
-                ExperimentRunType.ProtocolApplications xarProtocolApplications = objectFactory
+                ExperimentRunType.ProtocolApplications xarProtocolApplications = this.objectFactory
                 .createExperimentRunTypeProtocolApplications();
                 for (ProtocolApplication protApp : expRun.getProtocolApplications()) {
                     ProtocolApplicationBaseType xarProtocolApplicationBaseType =
@@ -345,8 +344,8 @@ public class Xar22FormatConversionHelper {
                     xarProtocolApplications.getProtocolApplication().add(xarProtocolApplicationBaseType);
 
                     // Set the protocol in the map.
-                    if (xarProtocolBaseTypeMap.get(xarProtocolBaseType.getAbout()) == null) {
-                        xarProtocolBaseTypeMap.put(xarProtocolBaseType.getAbout(), xarProtocolBaseType);
+                    if (this.xarProtocolBaseTypeMap.get(xarProtocolBaseType.getAbout()) == null) {
+                        this.xarProtocolBaseTypeMap.put(xarProtocolBaseType.getAbout(), xarProtocolBaseType);
                     }
                     xarExperimentRunType.setProtocolApplications(xarProtocolApplications);
                 }
@@ -363,7 +362,8 @@ public class Xar22FormatConversionHelper {
      * @return the protocol application base type
      */
     private ProtocolApplicationBaseType getProtocolApplicationBaseType(ProtocolApplication protApp) {
-        ProtocolApplicationBaseType xarProtocolApplicationBaseType = objectFactory.createProtocolApplicationBaseType();
+        ProtocolApplicationBaseType xarProtocolApplicationBaseType =
+            this.objectFactory.createProtocolApplicationBaseType();
 
         xarProtocolApplicationBaseType.setAbout(protApp.getLsid());
         xarProtocolApplicationBaseType.setActionSequence(protApp.getActionSequence());
@@ -389,7 +389,7 @@ public class Xar22FormatConversionHelper {
      * @return the protocol base type
      */
     private ProtocolBaseType getProtocolBaseType(ProtocolApplication protApp) {
-        ProtocolBaseType xarProtocolBaseType = objectFactory.createProtocolBaseType();
+        ProtocolBaseType xarProtocolBaseType = this.objectFactory.createProtocolBaseType();
         if (protApp != null) {
             xarProtocolBaseType.setAbout(protApp.getProtocol().getLsid());
             xarProtocolBaseType.setApplicationType(protApp.getProtocol().getType().name());
@@ -400,15 +400,16 @@ public class Xar22FormatConversionHelper {
 
             xarProtocolBaseType.setOutputMaterialType(protApp.getProtocol().getOutputMaterialType());
             xarProtocolBaseType.setOutputDataType(protApp.getProtocol().getOutputDataType());
-            xarProtocolBaseType.setMaxInputDataPerInstance(objectFactory.createProtocolBaseTypeMaxInputDataPerInstance(
-                    protApp.getProtocol().getMaxInputDataPerInstance()));
-            xarProtocolBaseType.setMaxInputMaterialPerInstance(objectFactory.
+            xarProtocolBaseType.setMaxInputDataPerInstance(this.objectFactory.
+                    createProtocolBaseTypeMaxInputDataPerInstance(protApp.getProtocol().
+                            getMaxInputDataPerInstance()));
+            xarProtocolBaseType.setMaxInputMaterialPerInstance(this.objectFactory.
                     createProtocolBaseTypeMaxInputMaterialPerInstance(
                             protApp.getProtocol().getMaxInputMaterialPerInstance()));
-            xarProtocolBaseType.setOutputDataPerInstance(objectFactory.
+            xarProtocolBaseType.setOutputDataPerInstance(this.objectFactory.
                     createProtocolBaseTypeOutputDataPerInstance(
                     protApp.getProtocol().getOutputDataPerInstance()));
-            xarProtocolBaseType.setOutputMaterialPerInstance(objectFactory.
+            xarProtocolBaseType.setOutputMaterialPerInstance(this.objectFactory.
                     createProtocolBaseTypeOutputMaterialPerInstance(
                     protApp.getProtocol().getOutputMaterialPerInstance()));
 
@@ -452,7 +453,7 @@ public class Xar22FormatConversionHelper {
      * @return the XAR 2.2 SimpleValueCollectionType element
      */
     private SimpleValueCollectionType getParameterDeclarations(ProtocolParameters protocolParam) {
-        SimpleValueCollectionType xarSimpleValueCollectionType = objectFactory.createSimpleValueCollectionType();
+        SimpleValueCollectionType xarSimpleValueCollectionType = this.objectFactory.createSimpleValueCollectionType();
         if (protocolParam != null) {
             if (protocolParam.getAppLsidTemplate() != null) {
                 xarSimpleValueCollectionType.getSimpleVal().add(getSimpleValueTypeElement(
@@ -528,7 +529,7 @@ public class Xar22FormatConversionHelper {
      * @param type the type
      */
     private SimpleValueType getSimpleValueTypeElement(String value, String paramName, String uri, String type) {
-        SimpleValueType xarSimpleValType = objectFactory.createSimpleValueType();
+        SimpleValueType xarSimpleValType = this.objectFactory.createSimpleValueType();
         xarSimpleValType.setValue(value);
         xarSimpleValType.setName(paramName);
         xarSimpleValType.setOntologyEntryURI(uri);
@@ -604,10 +605,10 @@ public class Xar22FormatConversionHelper {
      * @return the protocol application
      */
     private ProtocolApplication getProtocolApplication(ProtocolApplicationBaseType xarProtAppBaseType,
-            Protocol protocol) {
+            ExperimentRun expRun, Protocol protocol) {
         ProtocolApplication protApplication = new ProtocolApplication(xarProtAppBaseType.getAbout(),
                 xarProtAppBaseType.getName(), xarProtAppBaseType.getActionSequence(),
-                xarProtAppBaseType.getActivityDate(), protocol);
+                xarProtAppBaseType.getActivityDate(), expRun, protocol);
 
         protApplication.setComments(xarProtAppBaseType.getComments());
 
@@ -727,10 +728,10 @@ public class Xar22FormatConversionHelper {
      * @return the XAR 2.2 PropertyCollectionType
      */
     private PropertyCollectionType getPropertyCollectionType(List<SimpleTypeValue> simpleTypeValues) {
-        PropertyCollectionType xarPropCollection = objectFactory.createPropertyCollectionType();
+        PropertyCollectionType xarPropCollection = this.objectFactory.createPropertyCollectionType();
         if (simpleTypeValues != null) {
             for (SimpleTypeValue simpleTypeVal : simpleTypeValues) {
-                SimpleValueType xarSimpleVal = objectFactory.createSimpleValueType();
+                SimpleValueType xarSimpleVal = this.objectFactory.createSimpleValueType();
                 xarSimpleVal.setName(simpleTypeVal.getName());
                 xarSimpleVal.setOntologyEntryURI(simpleTypeVal.getOntologyEntryURI());
                 xarSimpleVal.setValue(simpleTypeVal.getValue());

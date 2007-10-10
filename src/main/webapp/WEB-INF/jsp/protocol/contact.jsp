@@ -9,7 +9,6 @@
         <s:textfield name="protocol.primaryContact.lastName" key="protocol.primaryContact.lastName" size="40" tabindex="2" disabled="${isReadOnly}" />
         <s:textfield name="protocol.primaryContact.email" key="protocol.primaryContact.email" size="40" tabindex="3" disabled="${isReadOnly}" />
         <s:textfield name="protocol.primaryContact.contactId" key="protocol.primaryContact.contactId" size="40" tabindex="4" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.primaryContact.comments" key="protocol.primaryContact.comments" size="40" tabindex="5" disabled="${isReadOnly}" />
         <s:hidden name="protocol.id" />
         <s:hidden name="cancelResult" />
     </s:form>
@@ -17,12 +16,12 @@
         <c:url value="/protocol/management/cancel.action" var="cancelUrl">
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
-        <a href="${cancelUrl}" class="cancel" tabindex="6"><fmt:message key="cancel" /></a>
+        <a href="${cancelUrl}" class="cancel" tabindex="5"><fmt:message key="cancel" /></a>
         <s:if test="${isReadOnly}">
-            <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="7"><fmt:message key="copy" /></a>
+            <a href="<c:url value="/notYetImplemented.html"/>" class="save" tabindex="6"><fmt:message key="copy" /></a>
         </s:if>
         <s:else>
-            <a href="javascript:ajaxSubmit('protocolForm', 'selectedtabbox');" class="save" tabindex="7"><fmt:message key="save" /></a>
+            <a href="javascript:ajaxSubmit('protocolForm', 'selectedtabbox');" class="save" tabindex="6"><fmt:message key="save" /></a>
         </s:else>
     </div>
 </protExpress:tabPane>

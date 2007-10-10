@@ -188,7 +188,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          person.setFirstName("John");
          person.setLastName("Tabb");
          person.setEmail("tabb@research-center.com");
-         person.setComments("Comment for a Person attached to Protocol Process.IPAS14");
 
        //Person Properties
          simpleTypeVal = new SimpleTypeValue("Contact Type", "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType", SimpleType.valueOf("String"));
@@ -207,6 +206,8 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
      }
 
     private Experiment getExperiment1() {
+        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+
         // Setup first experiment.
         Experiment currentExperiment = new Experiment("${FolderLSIDBase}:IPAS14", "IPAS14 Experiment");
         currentExperiment.setId(400L);
@@ -248,7 +249,8 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.getProperties().add(simpleTypeVal);
 
         // Set a Protocol Application
-        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), this.protocols.get(0));
+        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, p);
+        protApp1.setProtocol(this.protocols.get(0));
         protApp1.setId(440L);
         ProtocolParameters protParams = new ProtocolParameters();
         protParams.setOutputDataFileTemplate("Out Data File Template");
