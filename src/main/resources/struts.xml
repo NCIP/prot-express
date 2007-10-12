@@ -180,6 +180,11 @@
             class="gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/protocolApplication/{2}.jsp</result>
             <result name="success">/WEB-INF/jsp/protocolApplication/{2}.jsp</result>
+            <result name="xmlProtocolList" type="stream">
+                <param name="contentType">text/xml;charset=UTF-8</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">4096</param>
+            </result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

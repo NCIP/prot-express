@@ -90,7 +90,10 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
 
+import java.io.ByteArrayInputStream;
 import java.util.Calendar;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.ActionValidatorManager;
@@ -164,10 +167,17 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
     }
 
-    public void testRetrieveProtocols() {
+    public void testRetrieveProtocols() throws Exception {
         this.action.setProtocolName("test");
-        assertEquals(ActionSupport.SUCCESS, this.action.retrieveProtocols());
+        assertEquals("xmlProtocolList", this.action.retrieveProtocols());
         assertEquals(1, this.action.getProtocols().size());
+        ByteArrayInputStream is = (ByteArrayInputStream) this.action.getInputStream();
+        byte[] buffer = new byte[is.available()];
+        String xmlBuffer = new String();
+        while(is.read(buffer) != -1) {
+            xmlBuffer += new String(buffer, "UTF-8");
+        }
+        assertTrue(StringUtils.contains(xmlBuffer, "test"));
     }
 
     public void testValidate() throws Exception {

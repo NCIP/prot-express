@@ -190,7 +190,9 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     @SuppressWarnings("unchecked")
     public List<Protocol> getProtocolsForCurrentUserByName(String protocolName) {
         String protocolNameParam = protocolName + "%";
-        String hql = "from " + Protocol.class.getName()  + " where name like ? and creator = ? order by name asc";
-        return getHibernateTemplate().find(hql, new Object[] {protocolNameParam, UserHolder.getUsername()});
+        String hql = "from " + Protocol.class.getName()  + " where lower(name) like ? "
+                + "and creator = ? order by name asc";
+        return getHibernateTemplate().find(hql, new Object[] {protocolNameParam.toLowerCase(),
+                UserHolder.getUsername()});
     }
 }
