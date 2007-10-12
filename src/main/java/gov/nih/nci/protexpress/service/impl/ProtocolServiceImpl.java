@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.service.impl;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.service.ProtocolService;
+import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.util.List;
 
@@ -181,5 +182,15 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteProtocol(Protocol protocol) {
         getHibernateTemplate().delete(protocol);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public List<Protocol> getProtocolsForCurrentUserByName(String protocolName) {
+        String protocolNameParam = protocolName + "%";
+        String hql = "from " + Protocol.class.getName()  + " where name like ? and creator = ? order by name asc";
+        return getHibernateTemplate().find(hql, new Object[] {protocolNameParam, UserHolder.getUsername()});
     }
 }

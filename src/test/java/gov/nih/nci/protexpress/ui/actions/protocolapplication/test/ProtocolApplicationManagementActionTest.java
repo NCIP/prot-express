@@ -87,18 +87,20 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
 
 import java.util.Calendar;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.ActionValidatorManager;
+import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
 
 /**
  * @author Scott Miller
  *
  */
-public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibernateTest {
+public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
     ProtocolApplicationManagementAction action;
     ProtocolApplication protocolApplication;
     ExperimentRun experimentRun;
@@ -160,5 +162,21 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.action.prepare();
         assertEquals("success", this.action.delete());
         assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
+    }
+
+    public void testRetrieveProtocols() {
+        this.action.setProtocolName("test");
+        assertEquals(ActionSupport.SUCCESS, this.action.retrieveProtocols());
+        assertEquals(1, this.action.getProtocols().size());
+    }
+
+    public void testValidate() throws Exception {
+        this.action.setProtocolName("test");
+        this.action.setProtocolApplication(this.protocolApplication);
+        this.action.getProtocolApplication().setProtocol(null);
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(this.action, null);
+        this.action.validate();
+        assertEquals(1, this.action.getProtocols().size());
     }
 }

@@ -88,7 +88,10 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -107,6 +110,9 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     private Long experimentRunId;
     private Long protocolId;
     private String successMessage = null;
+
+    private List<Protocol> protocols = new ArrayList<Protocol>();
+    private String protocolName;
 
     /**
      * {@inheritDoc}
@@ -168,6 +174,27 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
+     * Action to return the list of protocols.
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String retrieveProtocols() {
+        setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (this.hasErrors() && StringUtils.isNotEmpty(getProtocolName())) {
+            setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
+        }
+    }
+
+    /**
      * @return the protocolApplication
      */
     @CustomValidator(type = "hibernate")
@@ -222,5 +249,33 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
      */
     public void setProtocolId(Long protocolId) {
         this.protocolId = protocolId;
+    }
+
+    /**
+     * @return the protocols
+     */
+    public List<Protocol> getProtocols() {
+        return this.protocols;
+    }
+
+    /**
+     * @param protocols the protocols to set
+     */
+    public void setProtocols(List<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    /**
+     * @return the protocolName
+     */
+    public String getProtocolName() {
+        return this.protocolName;
+    }
+
+    /**
+     * @param protocolName the protocolName to set
+     */
+    public void setProtocolName(String protocolName) {
+        this.protocolName = protocolName;
     }
 }

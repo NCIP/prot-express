@@ -14,10 +14,10 @@
 <div id="boxinner">
     <h3><fmt:message key="${paneTitleKey}" /></h3>
     <div id="loadingText" style="display: none;">
-        <div class="padme5"><fmt:message key="${loadingPaneMessageKey}" /></div>
+        <div class="padme5"><img alt="Indicator" src="<c:url value="/images/indicator.gif"/>" /> <fmt:message key="${loadingPaneMessageKey}" /></div>
     </div>
     <div id="submittingText" style="display: none;">
-        <div class="padme5"><fmt:message key="${submittingPaneMessageKey}" /></div>
+        <div class="padme5"> <img alt="Indicator" src="<c:url value="/images/indicator.gif"/>" /><fmt:message key="${submittingPaneMessageKey}" /></div>
     </div>
     <div id="theForm">
         <c:if test="${not empty successMessage && ignoreSuccessMessage != 'true'}">

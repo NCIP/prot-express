@@ -117,6 +117,13 @@ public interface ProtocolService {
             String sortProperty, SortOrderEnum sortDir);
 
     /**
+     * return the list of protocols owned by the current user with the given protocol name start.
+     * @param protocolName the start of the name of the protocol
+     * @return the protocols
+     */
+    List<Protocol> getProtocolsForCurrentUserByName(String protocolName);
+
+    /**
      * Get the protocols the user has edited most recently.
      *
      * @param username the username of the user
