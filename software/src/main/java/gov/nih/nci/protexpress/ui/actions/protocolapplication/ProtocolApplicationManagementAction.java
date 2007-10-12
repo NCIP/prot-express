@@ -87,10 +87,15 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ajaxtags.xml.AjaxXmlBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -180,7 +185,21 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     @SkipValidation
     public String retrieveProtocols() {
         setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
-        return ActionSupport.SUCCESS;
+        return "xmlProtocolList";
+    }
+
+    /**
+     * Get the inpur stream.
+     * @return the stream
+     * @throws IllegalAccessException on error
+     * @throws NoSuchMethodException on error
+     * @throws InvocationTargetException on error
+     * @throws UnsupportedEncodingException on error
+     */
+    public InputStream getInputStream() throws IllegalAccessException, NoSuchMethodException,
+        InvocationTargetException, UnsupportedEncodingException {
+        AjaxXmlBuilder xmlBuilder = new AjaxXmlBuilder().addItems(getProtocols(), "name", "id");
+        return new ByteArrayInputStream(xmlBuilder.toString().getBytes("UTF-8"));
     }
 
     /**
