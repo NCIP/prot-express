@@ -301,6 +301,30 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(0, protocols.size());
     }
 
+    public void testGetUsersProtocolsByProtocolName() {
+
+        Protocol protocol1 = new Protocol("ex1", "test name 1", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol1);
+
+        Protocol protocol2 = new Protocol("ex2", "test name 2", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol2);
+
+        Protocol protocol3 = new Protocol("ex3", "A second test protocol", ProtocolType.ExperimentRun);
+        this.theSession.save(protocol3);
+
+        this.theSession.flush();
+        this.theSession.clear();
+
+        List<Protocol> retrievedProtocols = ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName("test name");
+        assertEquals(2, retrievedProtocols.size());
+
+        retrievedProtocols = ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName("A seco");
+        assertEquals(1, retrievedProtocols.size());
+
+        retrievedProtocols = ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName("nonexistent test name");
+        assertEquals(0, retrievedProtocols.size());
+    }
+
     public void testEqualsAndHashCode() {
         assertFalse(new Protocol("test", "test", ProtocolType.ExperimentRun).equals(new Protocol("test", "test",
                 ProtocolType.ExperimentRun)));

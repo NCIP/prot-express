@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
+import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -188,8 +190,9 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @return the lsid
      */
-    @Column(name = "lsid", unique = true)
+    @Column(name = "lsid")
     @NotEmpty
+    @UniqueConstraint(propertyName = "lsid")
     @Length(max = LSID_LENGTH)
     public String getLsid() {
         return this.lsid;
