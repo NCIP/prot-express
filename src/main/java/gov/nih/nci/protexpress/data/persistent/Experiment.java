@@ -97,6 +97,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -138,6 +140,9 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private Person primaryContact;
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
+
+    private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
+    private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
 
     /**
      * protected default constructor for hibernate only.
@@ -354,6 +359,51 @@ public class Experiment implements Serializable, Persistent, Auditable {
      */
     protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Gets the inputMaterialObjects.
+     *
+     * @return the inputMaterialObjects.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "exp_input_materials",
+            joinColumns = { @JoinColumn(name = "exp_id") },
+            inverseJoinColumns = { @JoinColumn(name = "material_id") })
+    public List<MaterialObject> getInputMaterialObjects() {
+        return inputMaterialObjects;
+    }
+
+    /**
+     * Sets the inputMaterialObjects.
+     *
+     * @param inputMaterialObjects the inputMaterialObjects to set.
+     */
+    protected void setInputMaterialObjects(List<MaterialObject> inputMaterialObjects) {
+        this.inputMaterialObjects = inputMaterialObjects;
+    }
+
+    /**
+     * Gets the inputDataObjects.
+     *
+     * @return the inputDataObjects.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "exp_input_dataobjs",
+            joinColumns = { @JoinColumn(name = "exp_id") },
+            inverseJoinColumns = { @JoinColumn(name = "dataobj_id") })
+
+    public List<DataObject> getInputDataObjects() {
+        return inputDataObjects;
+    }
+
+    /**
+     * Sets the inputDataObjects.
+     *
+     * @param inputDataObjects the inputDataObjects to set.
+     */
+    protected void setInputDataObjects(List<DataObject> inputDataObjects) {
+        this.inputDataObjects = inputDataObjects;
     }
 
     /**

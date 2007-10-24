@@ -86,25 +86,19 @@ import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -113,65 +107,47 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
-import org.hibernate.validator.Valid;
 
 /**
- * Class representing a protocol application.
+ * Class representing a Material object - a biological sample or a processed
+ * derivative of a sample.
  *
  * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol_application")
+@Table(name = "data_object")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolApplication implements Serializable, Auditable, Persistent {
-
+public class DataObject implements Serializable, Persistent {
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
     private static final int LSID_LENGTH = 255;
-    private static final int COMMENTS_LENGTH = 255;
+    private static final int NAME_LENGTH = 255;
+    private static final int CPAS_TYPE_LENGTH = 25;
+    private static final int DATA_FILE_URL_LENGTH = 255;
 
     private Long id;
     private String lsid;
     private String name;
-    private int actionSequence;
-    private Calendar activityDate;
-    private String comments;
-    private ExperimentRun experimentRun;
-    private Protocol protocol;
-    private ProtocolParameters parameters = new ProtocolParameters();
+    private String cpasType = "Data";
+    private String dataFileURL;
+    private ProtocolApplication protocolApplication;;
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
-    private AuditInfo auditInfo = new AuditInfo();
-
-    private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
-    private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
-    private List<MaterialObject> outputMaterialObjects = new ArrayList<MaterialObject>();
-    private List<DataObject> outputDataObjects = new ArrayList<DataObject>();
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected ProtocolApplication() {
+    protected DataObject() {
     }
 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param lsid the lsid of the protocol application
-     * @param name the name of the protocol application
-     * @param actionSequence the action sequence
-     * @param activityDate the activity date
-     * @param expRun the experiment run
-     * @param protocol the protocol being applied
+     * @param lsid the lsid to set.
+     * @param name the name of the data object.
      */
-    public ProtocolApplication(String lsid, String name, int actionSequence, Calendar activityDate,
-            ExperimentRun expRun, Protocol protocol) {
+    public DataObject(String lsid, String name) {
         setLsid(lsid);
         setName(name);
-        setActionSequence(actionSequence);
-        setActivityDate(activityDate);
-        setExperimentRun(expRun);
-        setProtocol(protocol);
     }
 
     /**
@@ -206,15 +182,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
      * Gets the name.
      *
      * @return the name
@@ -224,6 +191,38 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     @Length(max = NAME_LENGTH)
     public String getName() {
         return this.name;
+    }
+
+
+    /**
+     * Gets the properties.
+     *
+     * @return the properties.
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dataobj_id")
+    public List<SimpleTypeValue> getProperties() {
+        return properties;
+    }
+
+    /**
+     * Gets the cpasType.
+     *
+     * @return the cpasType.
+     */
+    @Column(name = "cpas_type")
+    @Length(max = CPAS_TYPE_LENGTH)
+    public String getCpasType() {
+        return this.cpasType;
+    }
+
+    /**
+     * Sets the lsid.
+     *
+     * @param lsid the lsid to set
+     */
+    public void setLsid(String lsid) {
+        this.lsid = lsid;
     }
 
     /**
@@ -236,244 +235,62 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the actionSequence.
-     *
-     * @return the actionSequence
-     */
-    @Column(name = "action_sequence")
-    @NotNull
-    public int getActionSequence() {
-        return this.actionSequence;
-    }
-
-    /**
-     * Sets the actionSequence.
-     *
-     * @param actionSequence the actionSequence to set
-     */
-    public void setActionSequence(int actionSequence) {
-        this.actionSequence = actionSequence;
-    }
-
-    /**
-     * Gets the activityDate.
-     *
-     * @return the activityDate
-     */
-    @Column(name = "activity_date")
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    public Calendar getActivityDate() {
-        return this.activityDate;
-    }
-
-    /**
-     * Sets the activityDate.
-     *
-     * @param activityDate the activityDate to set
-     */
-    public void setActivityDate(Calendar activityDate) {
-        this.activityDate = activityDate;
-    }
-
-    /**
-     * Gets the comments.
-     *
-     * @return the comments
-     */
-    @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
-    }
-
-    /**
-     * Sets the comments.
-     *
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    /**
-     * Gets the protocol.
-     *
-     * @return the protocol.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "protocol_id")
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Sets the protocol.
-     *
-     * @param protocol the protocol to set.
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
-
-    /**
-     * Gets the experimentRun.
-     *
-     * @return the experimentRun.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "experiment_run_id")
-    public ExperimentRun getExperimentRun() {
-        return this.experimentRun;
-    }
-
-    /**
-     * Sets the experimentRun.
-     *
-     * @param experimentRun the experimentRun to set.
-     */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @return the parameters.
-     */
-    @Embedded
-    public ProtocolParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Sets the parameters.
-     *
-     * @param parameters the parameters to set.
-     */
-    public void setParameters(ProtocolParameters parameters) {
-        this.parameters = parameters;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prot_application_id")
-    public List<SimpleTypeValue> getProperties() {
-        return this.properties;
-    }
-
-    /**
      * Sets the properties.
      *
-     * @param properties the properties to set.
+     * @param properties  the properties to set.
      */
     protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
     }
 
     /**
-     * Gets the inputMaterialObjects.
+     * Sets the cpasType.
      *
-     * @return the inputMaterialObjects.
+     * @param cpasType the cpasType to set.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_input_materials",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "material_id") })
-    public List<MaterialObject> getInputMaterialObjects() {
-        return inputMaterialObjects;
+    public void setCpasType(String cpasType) {
+        this.cpasType = cpasType;
     }
 
     /**
-     * Sets the inputMaterialObjects.
+     * Gets the dataFileURL.
      *
-     * @param inputMaterialObjects the inputMaterialObjects to set.
+     * @return the dataFileURL.
      */
-    protected void setInputMaterialObjects(List<MaterialObject> inputMaterialObjects) {
-        this.inputMaterialObjects = inputMaterialObjects;
+    @Column(name = "data_file_url")
+    @Length(max = DATA_FILE_URL_LENGTH)
+    public String getDataFileURL() {
+        return dataFileURL;
     }
 
     /**
-     * Gets the inputDataObjects.
+     * Sets the dataFileURL.
      *
-     * @return the inputDataObjects.
+     * @param dataFileURL the dataFileURL to set.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_input_dataobjs",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "dataobj_id") })
-
-    public List<DataObject> getInputDataObjects() {
-        return inputDataObjects;
+    public void setDataFileURL(String dataFileURL) {
+        this.dataFileURL = dataFileURL;
     }
 
     /**
-     * Sets the inputDataObjects.
+     * Gets the protocol application.
      *
-     * @param inputDataObjects the inputDataObjects to set.
+     * @return the protocol application.
      */
-    protected void setInputDataObjects(List<DataObject> inputDataObjects) {
-        this.inputDataObjects = inputDataObjects;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(name = "protapp_id")
+    public ProtocolApplication getProtocolApplication() {
+        return this.protocolApplication;
     }
 
     /**
-     * Gets the outputMaterialObjects.
+     * Sets the protocol application.
      *
-     * @return the outputMaterialObjects.
+     * @param protocolApplication the protocol application to set.
      */
-    @OneToMany(mappedBy = "protocolApplication", fetch = FetchType.LAZY)
-    public List<MaterialObject> getOutputMaterialObjects() {
-        return outputMaterialObjects;
-    }
-
-    /**
-     * Sets the outputMaterialObjects.
-     *
-     * @param outputMaterialObjects the outputMaterialObjects to set.
-     */
-    protected void setOutputMaterialObjects(List<MaterialObject> outputMaterialObjects) {
-        this.outputMaterialObjects = outputMaterialObjects;
-    }
-
-    /**
-     * Gets the outputDataObjects.
-     *
-     * @return the outputDataObjects.
-     */
-    @OneToMany(mappedBy = "protocolApplication", fetch = FetchType.LAZY)
-    public List<DataObject> getOutputDataObjects() {
-        return outputDataObjects;
-    }
-
-    /**
-     * Sets the outputDataObjects.
-     *
-     * @param outputDataObjects the outputDataObjects to set.
-     */
-    protected void setOutputDataObjects(List<DataObject> outputDataObjects) {
-        this.outputDataObjects = outputDataObjects;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Embedded
-    @Valid
-    public AuditInfo getAuditInfo() {
-        return this.auditInfo;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setAuditInfo(AuditInfo auditInfo) {
-        this.auditInfo = auditInfo;
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        this.protocolApplication = protocolApplication;
     }
 
     /**
@@ -489,17 +306,18 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
             return true;
         }
 
-        if (!(o instanceof ProtocolApplication)) {
+        if (!(o instanceof DataObject)) {
             return false;
         }
 
-        ProtocolApplication p = (ProtocolApplication) o;
+        DataObject dobj = (DataObject) o;
 
         if (this.id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
+        return new EqualsBuilder().append(getLsid(), dobj.getLsid()).append(
+                getName(), dobj.getName()).isEquals();
     }
 
     /**
@@ -507,6 +325,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder().append(getLsid()).append(getName())
+                .toHashCode();
     }
 }

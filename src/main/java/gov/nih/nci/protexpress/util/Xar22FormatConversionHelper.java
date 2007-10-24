@@ -83,8 +83,10 @@
 
 package gov.nih.nci.protexpress.util;
 
+import gov.nih.nci.protexpress.data.persistent.DataObject;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
@@ -93,9 +95,11 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
+import gov.nih.nci.protexpress.xml.xar2_2.DataBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
+import gov.nih.nci.protexpress.xml.xar2_2.MaterialBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
 import gov.nih.nci.protexpress.xml.xar2_2.PropertyCollectionType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType;
@@ -103,6 +107,7 @@ import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleTypeNames;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueCollectionType;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueType;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.StartingInputDefinitions;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType.ProtocolApplications;
 
 import java.util.ArrayList;
@@ -141,6 +146,7 @@ public class Xar22FormatConversionHelper {
      */
     public List<Experiment> parseExperimentArchiveData(ExperimentArchiveType experimentArchive) {
         getExperimentList(experimentArchive);
+        setStartingInputDefinitions(experimentArchive);
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
 
@@ -170,6 +176,9 @@ public class Xar22FormatConversionHelper {
             }
         }
         xarExperimentArchiveType.setProtocolDefinitions(xarProtocolDefinitions);
+
+        // Set StartingInputDefinitions, if applicable
+        xarExperimentArchiveType.setStartingInputDefinitions(getStartingInputDefinitions());
 
         return xarExperimentArchiveType;
     }
@@ -245,15 +254,142 @@ public class Xar22FormatConversionHelper {
                 experiment.getProperties().add(simpleTypeVal);
             }
         }
-
         return experiment;
+    }
+
+    /**
+     * Given a XAR 2.2 ExperimentArchiveType, sets the input data and material objects on the experiments.
+     *
+     * @param experimentArchive the experiment archive
+     */
+    private void setStartingInputDefinitions(ExperimentArchiveType experimentArchive) {
+        List<MaterialBaseType> xarMaterialBaseTypes = experimentArchive.getStartingInputDefinitions().getMaterial();
+        List<DataBaseType> xarDataBaseTypes = experimentArchive.getStartingInputDefinitions().getData();
+
+        for (Experiment exp : experiments) {
+            if (xarMaterialBaseTypes != null) {
+                for (MaterialBaseType xarMaterialBaseType : xarMaterialBaseTypes) {
+                    MaterialObject mobj = getMaterialObject(xarMaterialBaseType);
+                    exp.getInputMaterialObjects().add(mobj);
+                }
+            }
+            if (xarDataBaseTypes != null) {
+                for (DataBaseType xarDataBaseType : xarDataBaseTypes) {
+                    DataObject dobj = getDataObject(xarDataBaseType);
+                    exp.getInputDataObjects().add(dobj);
+                }
+            }
+        }
+    }
+
+    /**
+     * Given a XAR 2.2 MaterialBaseType, returns a MaterialObject.
+     *
+     * @param xarMaterialBaseType the Material Base Type
+     * @return materialObj the MaterialObject
+     */
+    private MaterialObject getMaterialObject(MaterialBaseType xarMaterialBaseType) {
+        MaterialObject materialObj = null;
+        if (xarMaterialBaseType != null) {
+            materialObj = new MaterialObject(xarMaterialBaseType.getAbout(), xarMaterialBaseType.getName());
+            materialObj.setCpasType(xarMaterialBaseType.getCpasType());
+
+            // Set the Properties
+            if (xarMaterialBaseType.getProperties() != null) {
+                for (SimpleValueType xarSimpleVal : xarMaterialBaseType.getProperties().getSimpleVal()) {
+                    SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                            xarSimpleVal.getName(),
+                            xarSimpleVal.getOntologyEntryURI(),
+                            SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                    simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                    materialObj.getProperties().add(simpleTypeVal);
+                }
+            }
+        }
+
+        return materialObj;
+    }
+
+    /**
+     * Given a MaterialObject, returns a XAR 2.2 MaterialBaseType.
+     *
+     * @param mobj the MaterialObject.
+     * @return the XAR 2.2 MaterialBaseType object.
+     */
+    private MaterialBaseType getMaterialBaseType(MaterialObject mobj) {
+        MaterialBaseType xarMaterialBaseType = this.objectFactory.createMaterialBaseType();
+        if (mobj != null) {
+            xarMaterialBaseType.setAbout(mobj.getLsid());
+            xarMaterialBaseType.setCpasType(mobj.getCpasType());
+            xarMaterialBaseType.setName(mobj.getName());
+            if (mobj.getProtocolApplication() != null) {
+                xarMaterialBaseType.setSourceProtocolLSID(mobj.getProtocolApplication().getProtocol().getLsid());
+            }
+            // Set the properties
+            xarMaterialBaseType.setProperties(getPropertyCollectionType(mobj.getProperties()));
+
+        }
+        return xarMaterialBaseType;
+    }
+
+    /**
+     * Given a DataObject, returns a XAR 2.2 DataBaseType.
+     *
+     * @param dobj the DataObject.
+     * @return the XAR 2.2 DataBaseType object.
+     */
+    private DataBaseType getDataBaseType(DataObject dobj) {
+        DataBaseType xarDataBaseType = this.objectFactory.createDataBaseType();
+        if (dobj != null) {
+            xarDataBaseType.setAbout(dobj.getLsid());
+            xarDataBaseType.setCpasType(dobj.getCpasType());
+            xarDataBaseType.setName(dobj.getName());
+            xarDataBaseType.setDataFileUrl(dobj.getDataFileURL());
+            if (dobj.getProtocolApplication() != null) {
+                xarDataBaseType.setSourceProtocolLSID(dobj.getProtocolApplication().getProtocol().getLsid());
+            }
+            // Set the properties
+            xarDataBaseType.setProperties(getPropertyCollectionType(dobj.getProperties()));
+
+        }
+        return xarDataBaseType;
+    }
+
+    /**
+     * Given a XAR 2.2 DataBaseType, returns a DataObject.
+     *
+     * @param xarDataBaseType the Data Base Type
+     * @return dataObj the DataObject
+     */
+    private DataObject getDataObject(DataBaseType xarDataBaseType) {
+        DataObject dataObj = null;
+        if (xarDataBaseType != null) {
+            dataObj = new DataObject(xarDataBaseType.getAbout(), xarDataBaseType.getName());
+            dataObj.setCpasType(xarDataBaseType.getCpasType());
+            dataObj.setDataFileURL(xarDataBaseType.getDataFileUrl());
+
+            // Set the Properties
+            if (xarDataBaseType.getProperties() != null) {
+                for (SimpleValueType xarSimpleVal : xarDataBaseType.getProperties().getSimpleVal()) {
+                    SimpleTypeValue simpleTypeVal = new SimpleTypeValue(
+                            xarSimpleVal.getName(),
+                            xarSimpleVal.getOntologyEntryURI(),
+                            SimpleType.valueOf(xarSimpleVal.getValueType().value()));
+                    simpleTypeVal.setValue(xarSimpleVal.getValue());
+
+                    dataObj.getProperties().add(simpleTypeVal);
+                }
+            }
+        }
+
+        return dataObj;
     }
 
     /**
      * Given a XAR 2.2 ExperimentArchiveType, returns a list of Experiment Runs.
      *
      * @param experimentArchive the experiment archive
-     * @return the list of Experiment Runs
      */
     private void setExperimentRunsForExperiment(ExperimentArchiveType experimentArchive) {
         for (ExperimentRunType xarExpRunType : experimentArchive.getExperimentRuns().getExperimentRun()) {
@@ -312,9 +448,32 @@ public class Xar22FormatConversionHelper {
     }
 
     /**
+     *  Given a list of experiment objects, returns the ExperimentArchiveType.StartingInputDefintions.
+     *
+     *  @return the ExperimentArchiveType.StartingInputDefintions object.
+     */
+    private StartingInputDefinitions getStartingInputDefinitions() {
+        StartingInputDefinitions xarStartingInputDefns = this.objectFactory.
+        createExperimentArchiveTypeStartingInputDefinitions();
+
+        for (Experiment exp : this.experiments) {
+            for (MaterialObject mobj : exp.getInputMaterialObjects()) {
+                MaterialBaseType xarMaterialBaseType = getMaterialBaseType(mobj);
+                xarStartingInputDefns.getMaterial().add(xarMaterialBaseType);
+            }
+
+            for (DataObject dobj : exp.getInputDataObjects()) {
+                DataBaseType xarDataBaseType = getDataBaseType(dobj);
+                xarStartingInputDefns.getData().add(xarDataBaseType);
+            }
+        }
+
+        return xarStartingInputDefns;
+    }
+
+    /**
      * Given a list of Experiment objects, returns ExperimentArchiveType.ExperimentRuns.
      *
-     * @param experiments the list of Experiment
      * @return the ExperimentArchiveType.ExperimentRuns object
      */
     private ExperimentArchiveType.ExperimentRuns getExperimentRuns() {
@@ -620,11 +779,9 @@ public class Xar22FormatConversionHelper {
                         xarSimpleVal.getOntologyEntryURI(),
                         SimpleType.valueOf(xarSimpleVal.getValueType().value()));
                 simpleTypeVal.setValue(xarSimpleVal.getValue());
-
                 protApplication.getProperties().add(simpleTypeVal);
             }
         }
-
         // Get the protocol application parameters, if any.
         protApplication.setParameters(getProtocolParameters(xarProtAppBaseType.getProtocolApplicationParameters()));
 
@@ -722,7 +879,7 @@ public class Xar22FormatConversionHelper {
     }
 
     /**
-     * Given a PropertyCollection, returns the XAR 2.2 PropertyCollectionType object.
+     * Given a list of SimpleTypeValue objects, returns the XAR 2.2 PropertyCollectionType object.
      *
      * @param propCol the simple value type collection
      * @return the XAR 2.2 PropertyCollectionType
