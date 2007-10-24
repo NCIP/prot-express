@@ -59,12 +59,31 @@
 				<Email>tabb@research-center.com</Email>
 				<Properties>
 					<SimpleVal Name="Contact Type" OntologyEntryURI="http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType" ValueType="String">Principal Investigator</SimpleVal>
-				</Properties>			
+				</Properties>
 			</Contact>
 		</Protocol>
 	</ProtocolDefinitions>
 	<ProtocolActionDefinitions/>
-	<StartingInputDefinitions/>
+	<StartingInputDefinitions>
+		<Material rdf:about="${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+			<Name>Cancer</Name>
+			<CpasType>Material</CpasType>
+		</Material>
+		<Material rdf:about="${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+			<Name>Case</Name>
+			<CpasType>Material</CpasType>
+		</Material>
+		<Data rdf:about="${FolderLSIDBase}-Xar${XarFileId}-1:tandem.xml" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+			<Name>Tandem Settings</Name>
+			<CpasType>Data</CpasType>
+			<DataFileUrl>Run5469/tandem.xml</DataFileUrl>
+		</Data>
+		<Data rdf:about="${FolderLSIDBase}-Xar${XarFileId}-2:IPI_Mouse.fasta" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+			<Name>IPI Mouse</Name>
+			<CpasType>Data</CpasType>
+			<DataFileUrl>Run5469/databases/ipi.MOUSE.fasta.20060111</DataFileUrl>
+		</Data>
+	</StartingInputDefinitions>
 	<ExperimentRuns>
 		<ExperimentRun rdf:about="${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02">
 			<Name>IP0014_AX02 (Mouse Pancreatic Cancer Study)</Name>

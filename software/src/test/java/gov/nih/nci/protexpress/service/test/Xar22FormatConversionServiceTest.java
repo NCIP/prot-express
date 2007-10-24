@@ -83,8 +83,10 @@
 package gov.nih.nci.protexpress.service.test;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.DataObject;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
@@ -238,6 +240,23 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
         currentExperiment.setPrimaryContact(person);
 
+        // Set Starting Input Definitions.
+        MaterialObject inputMaterialObject = new MaterialObject("${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer", "Cancer");
+        inputMaterialObject.setId(501L);
+        currentExperiment.getInputMaterialObjects().add(inputMaterialObject);
+        inputMaterialObject = new MaterialObject("${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase", "Case");
+        inputMaterialObject.setId(502L);
+        currentExperiment.getInputMaterialObjects().add(inputMaterialObject);
+
+        DataObject inputDataObject = new DataObject("${FolderLSIDBase}-Xar${XarFileId}-1:tandem.xml", "Tandem Settings");
+        inputDataObject.setId(503L);
+        inputDataObject.setDataFileURL("Run5469/tandem.xml");
+        currentExperiment.getInputDataObjects().add(inputDataObject);
+        inputDataObject = new DataObject("${FolderLSIDBase}-Xar${XarFileId}-2:IPI_Mouse.fasta", "IPI Mouse");
+        inputDataObject.setId(504L);
+        inputDataObject.setDataFileURL("Run5469/databases/ipi.MOUSE.fasta.20060111");
+        currentExperiment.getInputDataObjects().add(inputDataObject);
+
         // Set Experiment Runs
         ExperimentRun expRun = new ExperimentRun("${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02", "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
         expRun.setId(430L);
@@ -342,11 +361,54 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(simpleTypeValues.get(0).getValue(), "Contractor");
         assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
 
+        // Starting Input Definition values
+        List<MaterialObject> unmarshalledMaterialObjects = unmarshalledExperiment.getInputMaterialObjects();
+        assertNotNull(unmarshalledMaterialObjects);
+        assertEquals(2, unmarshalledMaterialObjects.size());
+
+        MaterialObject mobj1 = unmarshalledMaterialObjects.get(0);
+        mobj1.setId(501L);
+        assertNotNull(mobj1);
+        assertEquals(mobj1, this.experiments.get(0).getInputMaterialObjects().get(0));
+        assertEquals("${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer", mobj1.getLsid());
+        assertEquals("Cancer", mobj1.getName());
+        assertEquals("Material", mobj1.getCpasType());
+
+        mobj1 = unmarshalledMaterialObjects.get(1);
+        mobj1.setId(502L);
+        assertNotNull(mobj1);
+        assertEquals(mobj1, this.experiments.get(0).getInputMaterialObjects().get(1));
+        assertEquals("${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase", mobj1.getLsid());
+        assertEquals("Case", mobj1.getName());
+        assertEquals("Material", mobj1.getCpasType());
+
+        List<DataObject> unmarshalledDataObjects = unmarshalledExperiment.getInputDataObjects();
+        assertNotNull(unmarshalledDataObjects);
+        assertEquals(2, unmarshalledDataObjects.size());
+
+        DataObject dobj = unmarshalledDataObjects.get(0);
+        dobj.setId(503L);
+        assertNotNull(dobj);
+        assertEquals(dobj, this.experiments.get(0).getInputDataObjects().get(0));
+        assertEquals("${FolderLSIDBase}-Xar${XarFileId}-1:tandem.xml", dobj.getLsid());
+        assertEquals("Tandem Settings", dobj.getName());
+        assertEquals("Run5469/tandem.xml", dobj.getDataFileURL());
+        assertEquals("Data", dobj.getCpasType());
+
+        dobj = unmarshalledDataObjects.get(1);
+        dobj.setId(504L);
+        assertNotNull(dobj);
+        assertEquals(dobj, this.experiments.get(0).getInputDataObjects().get(1));
+        assertEquals("${FolderLSIDBase}-Xar${XarFileId}-2:IPI_Mouse.fasta", dobj.getLsid());
+        assertEquals("IPI Mouse", dobj.getName());
+        assertEquals("Run5469/databases/ipi.MOUSE.fasta.20060111", dobj.getDataFileURL());
+        assertEquals("Data", dobj.getCpasType());
+
+        //Experiment Runs
         List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
         assertNotNull(unmarshalledExperimentRuns);
         assertEquals(1, unmarshalledExperimentRuns.size());
 
-        //Experiment Runs
         ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
         unmarshalledExperimentRun.setId(430L);
         assertNotNull(unmarshalledExperimentRun);
