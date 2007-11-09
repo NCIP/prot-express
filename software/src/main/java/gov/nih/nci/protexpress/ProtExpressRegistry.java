@@ -119,7 +119,7 @@ public final class ProtExpressRegistry {
     private ProtExpressRegistry() {
         try {
             setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
+            //this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -192,6 +192,14 @@ public final class ProtExpressRegistry {
      * @return the userProvisioningManager
      */
     public static UserProvisioningManager getUserProvisioningManager() {
+        if (ProtExpressRegistry.getInstance().userProvisioningManager == null) {
+            try {
+                ProtExpressRegistry.getInstance().userProvisioningManager =
+                    SecurityServiceProvider.getUserProvisioningManager("protExpress");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         return ProtExpressRegistry.getInstance().userProvisioningManager;
     }
 

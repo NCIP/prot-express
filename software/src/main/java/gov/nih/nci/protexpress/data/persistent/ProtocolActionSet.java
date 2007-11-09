@@ -80,52 +80,174 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.security.test;
+package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.security.RolePrincipal;
-import gov.nih.nci.protexpress.security.UserPrincipal;
-import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
-import gov.nih.nci.security.authentication.callback.CSMCallbackHandler;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.Iterator;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.NotNull;
 
 /**
- * Tests the custom jaas login modules.
+ * Class representing the sequence in which a protocol is applied in an experiment.
  *
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  */
-public abstract class LoginModuleTest extends ProtExpressBaseCsmTest {
+@Entity
+@Table(name = "protocol_action_set")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ProtocolActionSet implements Serializable, Persistent {
 
-    protected void validateFailedLogin(String username, String password) throws LoginException {
-        CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler(username, password);
-        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
-        try {
-            loginContext.login();
-            fail("Invalid login did not cause exception.");
-        } catch (LoginException e) {
-            // expected
-        }
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+    private ProtocolAction rootProtocolAction;
+    private List<ProtocolAction> childProtocolActions = new ArrayList<ProtocolAction>();
+    private Experiment experiment;
+
+    /**
+     * protected default constructor for hibernate only.
+     */
+    protected ProtocolActionSet() {
     }
 
-    protected void validateSuccessfulLogin(String username, String password, boolean hasRole) throws LoginException {
-        CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler(username, password);
-        LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
-        //loginContext.login();
+    /**
+     * Constructor to create the object and populate all required fields.
+     *
+     * @param rootProtocolAction the protocol action
+     */
+    public ProtocolActionSet(ProtocolAction rootProtocolAction) {
+        setRootProtocolAction(rootProtocolAction);
+    }
 
-        if ((loginContext != null) && (loginContext.getSubject() != null)) {
-            Iterator principals = loginContext.getSubject().getPrincipals().iterator();
-            UserPrincipal up = (UserPrincipal) principals.next();
-            assertEquals(username, up.getName());
+    /**
+     * The id of the object.
+     *
+     * @return the id, null for new objects
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return this.id;
+    }
 
-            if (hasRole) {
-                RolePrincipal rp = (RolePrincipal) principals.next();
-                assertEquals("protExpressUser", rp.getName());
-            }
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-            loginContext.logout();
+    /**
+     * Gets the rootProtocolAction.
+     *
+     * @return the rootProtocolAction
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(name = "rootprotaction_id")
+    public ProtocolAction getRootProtocolAction() {
+        return this.rootProtocolAction;
+    }
+
+    /**
+     * Sets the rootProtocolAction.
+     *
+     * @param rootProtocolAction the rootProtocolAction to set
+     */
+    public void setRootProtocolAction(ProtocolAction rootProtocolAction) {
+        this.rootProtocolAction = rootProtocolAction;
+    }
+
+    /**
+     * Gets the childProtocolActions.
+     *
+     * @return the childProtocolActions.
+     */
+    @OneToMany(mappedBy = "protocolActionSet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("sequenceNumber")
+    public List<ProtocolAction> getChildProtocolActions() {
+        return this.childProtocolActions;
+    }
+
+    /**
+     * Sets the childProtocolActions.
+     *
+     * @param childProtocolActions the childProtocolActions to set.
+     */
+    protected void setChildProtocolActions(List<ProtocolAction> childProtocolActions) {
+        this.childProtocolActions = childProtocolActions;
+    }
+
+    /**
+     * Gets the experiment.
+     *
+     * @return the experiment.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(name = "experiment_id")
+    public Experiment getExperiment() {
+        return experiment;
+    }
+
+    /**
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set.
+     */
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
         }
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof ProtocolActionSet)) {
+            return false;
+        }
+
+        ProtocolActionSet p = (ProtocolActionSet) o;
+
+        if (this.id == null) {
+            return false;
+        }
+
+        return new EqualsBuilder().append(getId(), p.getId()).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getId()).toHashCode();
     }
 }

@@ -101,6 +101,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -143,6 +144,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
     private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
+    private ProtocolActionSet protocolActionSet;
 
     /**
      * protected default constructor for hibernate only.
@@ -404,6 +406,25 @@ public class Experiment implements Serializable, Persistent, Auditable {
      */
     protected void setInputDataObjects(List<DataObject> inputDataObjects) {
         this.inputDataObjects = inputDataObjects;
+    }
+
+    /**
+     * Gets the protocolActionSet.
+     *
+     * @return the protocolActionSet.
+     */
+    @OneToOne(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public ProtocolActionSet getProtocolActionSet() {
+        return protocolActionSet;
+    }
+
+    /**
+     * Sets the protocolActionSet.
+     *
+     * @param protocolActionSet the protocolActionSet to set.
+     */
+    public void setProtocolActionSet(ProtocolActionSet protocolActionSet) {
+        this.protocolActionSet = protocolActionSet;
     }
 
     /**
