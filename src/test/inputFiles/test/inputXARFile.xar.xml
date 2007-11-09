@@ -19,18 +19,6 @@
 			<SimpleVal Name="Category" OntologyEntryURI="terms.fhcrc.org#ExpProp.Category" ValueType="Integer">210</SimpleVal>
 		</Properties>
 	</Experiment>
-	<Experiment rdf:about="${FolderLSIDBase}:MS-MS-Searches">
-		<Name>MS-MS Searches on N-Linked Glycopeptide Purified Aliquots</Name>
-		<Hypothesis>Individual digests of identical aliquots will yield similar search results.</Hypothesis>
-		<ExperimentDescriptionURL>http://testUrl2:8080/index.html</ExperimentDescriptionURL>
-		<Comments>X!Comet scoring.  Jan 2005 Human IPI fasta.</Comments>
-		<Contact>
-			<ContactId>John's Research Center'</ContactId>
-			<FirstName>Jonathan</FirstName>
-			<LastName>Doe</LastName>
-			<Email>jdoe@research-center.com</Email>
-		</Contact>
-	</Experiment>
 	<ProtocolDefinitions>
 		<Protocol rdf:about="${FolderLSIDBase}:Process.IPAS14">
 			<Name>IPAS14 Process</Name>
@@ -62,26 +50,64 @@
 				</Properties>
 			</Contact>
 		</Protocol>
+		<Protocol rdf:about="${FolderLSIDBase}:SamplePrep.IPAS14">
+			<Name>Sample Prep</Name>
+			<ProtocolDescription>unspecified</ProtocolDescription>
+			<ApplicationType>ProtocolApplication</ApplicationType>
+			<MaxInputMaterialPerInstance>2</MaxInputMaterialPerInstance>
+			<MaxInputDataPerInstance>0</MaxInputDataPerInstance>
+			<OutputMaterialPerInstance>1</OutputMaterialPerInstance>
+			<OutputDataPerInstance>0</OutputDataPerInstance>
+			<OutputMaterialType>Material</OutputMaterialType>
+			<OutputDataType>Data</OutputDataType>
+			<ParameterDeclarations>
+				<SimpleVal Name="OutputMaterialLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialLSID" ValueType="String">${RunLSIDBase}:Combined</SimpleVal>
+				<SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:SamplePrep.Combine</SimpleVal>
+				<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Sample Preparation</SimpleVal>
+				<SimpleVal Name="OutputMaterialNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialName" ValueType="String">Combined tagged sample</SimpleVal>
+			</ParameterDeclarations>
+		</Protocol>
 	</ProtocolDefinitions>
-	<ProtocolActionDefinitions/>
+	<ProtocolActionDefinitions>
+		<ProtocolActionSet ParentProtocolLSID="${FolderLSIDBase}:Process.IPAS14">
+			<ProtocolAction ActionSequence="1" ChildProtocolLSID="${FolderLSIDBase}:Process.IPAS14">
+				<PredecessorAction ActionSequenceRef="1"/>
+			</ProtocolAction>
+			<ProtocolAction ActionSequence="2" ChildProtocolLSID="${FolderLSIDBase}:SamplePrep.IPAS14">
+				<PredecessorAction ActionSequenceRef="1"/>
+			</ProtocolAction>
+		</ProtocolActionSet>
+	</ProtocolActionDefinitions>
 	<StartingInputDefinitions>
 		<Material rdf:about="${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 			<Name>Cancer</Name>
 			<CpasType>Material</CpasType>
+			<Properties>
+				<SimpleVal Name="MaterialProp1" OntologyEntryURI="http://vocabulary.myorg.org/materialProp/materialProp#1" ValueType="String">Material Property 1</SimpleVal>
+			</Properties>
 		</Material>
 		<Material rdf:about="${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 			<Name>Case</Name>
 			<CpasType>Material</CpasType>
+			<Properties>
+				<SimpleVal Name="MaterialProp2" OntologyEntryURI="http://vocabulary.myorg.org/materialProp/materialProp#2" ValueType="String">Material Property 2</SimpleVal>
+			</Properties>
 		</Material>
 		<Data rdf:about="${FolderLSIDBase}-Xar${XarFileId}-1:tandem.xml" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 			<Name>Tandem Settings</Name>
 			<CpasType>Data</CpasType>
 			<DataFileUrl>Run5469/tandem.xml</DataFileUrl>
+			<Properties>
+				<SimpleVal Name="DataProp1" OntologyEntryURI="http://vocabulary.myorg.org/dataProp/dataProp#1" ValueType="String">Data Property 1</SimpleVal>
+			</Properties>
 		</Data>
 		<Data rdf:about="${FolderLSIDBase}-Xar${XarFileId}-2:IPI_Mouse.fasta" xmlrdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 			<Name>IPI Mouse</Name>
 			<CpasType>Data</CpasType>
 			<DataFileUrl>Run5469/databases/ipi.MOUSE.fasta.20060111</DataFileUrl>
+			<Properties>
+				<SimpleVal Name="DataProp2" OntologyEntryURI="http://vocabulary.myorg.org/dataProp/dataProp#2" ValueType="String">Data Property 2</SimpleVal>
+			</Properties>
 		</Data>
 	</StartingInputDefinitions>
 	<ExperimentRuns>
@@ -114,6 +140,31 @@
 						<SimpleVal Name="ProtAppFactorsCount" OntologyEntryURI="terms.fhcrc.org#RunProtocolTypes.Category" ValueType="Integer">2</SimpleVal>
 					</Properties>
 					<OutputMaterials/>
+					<OutputDataObjects/>
+				</ProtocolApplication>
+				<ProtocolApplication rdf:about="${RunLSIDBase}:SamplePrep.Combine">
+					<Name>Sample Preparation</Name>
+					<CpasType>ProtocolApplication</CpasType>
+					<ProtocolLSID>${FolderLSIDBase}:SamplePrep.IPAS14</ProtocolLSID>
+					<ActionSequence>2</ActionSequence>
+					<ActivityDate>2006-08-31-07:00</ActivityDate>
+					<InputRefs>
+						<MaterialLSID>${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer</MaterialLSID>
+						<MaterialLSID>${FolderLSIDBase}-Xar${XarFileId}-2:UnspecifiedCase</MaterialLSID>
+					</InputRefs>
+					<ProtocolApplicationParameters>
+						<SimpleVal Name="ApplicationLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationLSID" ValueType="String">${RunLSIDBase}:SamplePrep.Combine</SimpleVal>
+						<SimpleVal Name="ApplicationNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.ApplicationName" ValueType="String">Sample Preparation</SimpleVal>
+						<SimpleVal Name="OutputMaterialLSIDTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialLSID" ValueType="String">${RunLSIDBase}:Combined</SimpleVal>
+						<SimpleVal Name="OutputMaterialNameTemplate" OntologyEntryURI="terms.fhcrc.org#XarTemplate.OutputMaterialName" ValueType="String">Combined tagged sample</SimpleVal>
+					</ProtocolApplicationParameters>
+					<OutputMaterials>
+						<Material rdf:about="${FolderLSIDBase}-Xar${XarFileId}-1:Combined">
+							<Name>Combined tagged sample</Name>
+							<CpasType>Material</CpasType>
+							<SourceProtocolLSID>${FolderLSIDBase}:SamplePrep.IPAS14</SourceProtocolLSID>
+						</Material>
+					</OutputMaterials>
 					<OutputDataObjects/>
 				</ProtocolApplication>
 			</ProtocolApplications>

@@ -89,13 +89,14 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
+import gov.nih.nci.protexpress.data.persistent.ProtocolActionSet;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -105,12 +106,14 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import junit.framework.TestCase;
+
 /**
  * Class to test the xar 22 conversion service.
  *
  * @author Scott Miller
  */
-public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
+public class Xar22FormatConversionServiceTest extends TestCase {
     private List<Experiment> experiments;
     private List<Protocol> protocols;
     private FormatConversionService fcs;
@@ -126,12 +129,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     protected void setUp() throws Exception {
         super.setUp();
         this.fcs = ProtExpressRegistry.getXar22FormatConversionService();
-
         setupProtocols();
 
         this.experiments = new ArrayList<Experiment>();
         this.experiments.add(getExperiment1());
-        this.experiments.add(getExperiment2());
     }
 
     /**
@@ -154,11 +155,9 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          File outFile = new File(this.outputXARFile2);
          List<Experiment> exp = new ArrayList<Experiment>();
          exp.add(getExperiment1());
-         exp.add(getExperiment2());
          this.fcs.marshallExperiments(exp, outFile);
 
          List<Experiment> unmarshalledExperiments = this.fcs.unmarshallExperiments(outFile);
-         assertEquals(2, unmarshalledExperiments.size());
          assertExperiments(unmarshalledExperiments);
      }
 
@@ -168,6 +167,15 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          this.fcs.marshallExperiments(this.experiments, os);
          List<Experiment> unmarshalledExperiments = this.fcs.unmarshallExperiments(new ByteArrayInputStream(os.toByteArray()));
          assertExperiments(unmarshalledExperiments);
+     }
+
+     private Experiment getMinimumExperiment() {
+         Experiment exp1 = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+         exp1.setComments("Description - Test Experiment 1");
+         exp1.setHypothesis("Hypothesis - Test Experiment 1");
+         exp1.setUrl("URL - Test Experiment 1");
+
+         return exp1;
      }
 
      private void setupProtocols() {
@@ -205,11 +213,22 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
          prot1.setParameters(protParams);
 
          this.protocols.add(prot1);
+
+         prot1 = new Protocol("${FolderLSIDBase}:SamplePrep.IPAS14", "Sample Prep", ProtocolType.valueOf("ProtocolApplication"));
+         prot1.setId(101L);
+         prot1.setDescription("unspecified");
+         // Parameter declarations.
+         protParams = new ProtocolParameters();
+         protParams.setAppLsidTemplate("${RunLSIDBase}:SamplePrep.Combine");
+         protParams.setAppNameTemplate("Sample Preparation");
+         protParams.setOutputMaterialLsidTemplate("${RunLSIDBase}:Combined");
+         protParams.setOutputMaterialNameTemplate("Combined tagged sample");
+         prot1.setParameters(protParams);
+         this.protocols.add(prot1);
+
      }
 
     private Experiment getExperiment1() {
-        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
-
         // Setup first experiment.
         Experiment currentExperiment = new Experiment("${FolderLSIDBase}:IPAS14", "IPAS14 Experiment");
         currentExperiment.setId(400L);
@@ -240,6 +259,24 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
         currentExperiment.setPrimaryContact(person);
 
+        // protocol action set.
+        ProtocolAction rootProtocolAction = new ProtocolAction(this.protocols.get(1), 1);
+        rootProtocolAction.setId(600L);
+        rootProtocolAction.getPredecessors().add(rootProtocolAction);
+        ProtocolAction childProtAction1 = rootProtocolAction;
+        ProtocolAction childProtAction2 = new ProtocolAction(this.protocols.get(1), 2);
+        childProtAction2.setId(601L);
+        childProtAction2.getPredecessors().add(rootProtocolAction);
+
+        ProtocolActionSet protActionSet = new ProtocolActionSet(rootProtocolAction);
+        protActionSet.setId(700L);
+        rootProtocolAction.setProtocolActionSet(protActionSet);
+        childProtAction2.setProtocolActionSet(protActionSet);
+        protActionSet.getChildProtocolActions().add(childProtAction1);
+        protActionSet.getChildProtocolActions().add(childProtAction2);
+        protActionSet.setExperiment(currentExperiment);
+        currentExperiment.setProtocolActionSet(protActionSet);
+
         // Set Starting Input Definitions.
         MaterialObject inputMaterialObject = new MaterialObject("${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer", "Cancer");
         inputMaterialObject.setId(501L);
@@ -268,54 +305,41 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.getProperties().add(simpleTypeVal);
 
         // Set a Protocol Application
-        ProtocolApplication protApp1 = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, p);
-        protApp1.setProtocol(this.protocols.get(0));
-        protApp1.setId(440L);
+        ProtocolApplication protApp = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(0));
+        protApp.setProtocol(this.protocols.get(0));
+        protApp.setId(440L);
         ProtocolParameters protParams = new ProtocolParameters();
         protParams.setOutputDataFileTemplate("Out Data File Template");
         protParams.setAppNameTemplate("Do IPAS 14 protocol");
-        protApp1.setParameters(protParams);
+        protApp.setParameters(protParams);
 
         simpleTypeVal = new SimpleTypeValue("ProtAppFactorsCount", "terms.fhcrc.org#RunProtocolTypes.Category", SimpleType.valueOf("Integer"));
         simpleTypeVal.setValue("2");
-        protApp1.getProperties().add(simpleTypeVal);
+        protApp.getProperties().add(simpleTypeVal);
 
-        expRun.getProtocolApplications().add(protApp1);
+        expRun.getProtocolApplications().add(protApp);
 
-        currentExperiment.getExperimentRuns().add(expRun);
+        // Another protocol application.
+        protApp = new ProtocolApplication("${RunLSIDBase}:SamplePrep.Combine", "Sample Preparation", 2, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(1));
+        protApp.setId(441L);
 
-        return currentExperiment;
-    }
+        protParams = new ProtocolParameters();
+        protParams.setAppLsidTemplate("${RunLSIDBase}:SamplePrep.Combine");
+        protParams.setAppNameTemplate("Sample Preparation");
+        protParams.setOutputMaterialLsidTemplate("${RunLSIDBase}:Combined");
+        protParams.setOutputMaterialNameTemplate("Combined tagged sample");
+        protApp.setParameters(protParams);
 
-    private Experiment getExperiment2() {
-        // Setup second experiment.
-        Experiment currentExperiment = new Experiment("${FolderLSIDBase}:MS-MS-Searches", "MS-MS Searches on N-Linked Glycopeptide Purified Aliquots");
-        currentExperiment.setComments("X!Comet scoring.  Jan 2005 Human IPI fasta.");
-        currentExperiment.setHypothesis("Individual digests of identical aliquots will yield similar search results.");
-        currentExperiment.setUrl("http://testUrl2:8080/index.html");
-
-     // Set Experiment Runs
-        ExperimentRun expRun = new ExperimentRun("${FolderLSIDBase}:MS2.aliquot_01", "MS2 Peptide Search Aliquot 01");
-        expRun.setExperiment(currentExperiment);
-        expRun.setComments("Profiling of Proteins in MS2 Peptide Search Aliquot 01");
+        expRun.getProtocolApplications().add(protApp);
 
         currentExperiment.getExperimentRuns().add(expRun);
-
-        // Set Primary Contact
-        Person person = new Person();
-        person.setContactId("John's Research Center'");
-        person.setFirstName("Jonathan");
-        person.setLastName("Doe");
-        person.setEmail("jdoe@research-center.com");
-        currentExperiment.setPrimaryContact(person);
 
         return currentExperiment;
     }
 
     private void assertExperiments(List<Experiment> experiments) {
-        assertEquals(2, experiments.size());
+        assertEquals(1, experiments.size());
         assertExperiment1Values(experiments.get(0));
-        assertExperiment2Values(experiments.get(1));
     }
 
     private void assertExperiment1Values(Experiment unmarshalledExperiment) {
@@ -360,6 +384,25 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType");
         assertEquals(simpleTypeValues.get(0).getValue(), "Contractor");
         assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
+
+        // Protocol Action set and protocol actions
+        ProtocolActionSet protActionSet = unmarshalledExperiment.getProtocolActionSet();
+        protActionSet.setId(700L);
+        assertNotNull(protActionSet);
+        assertEquals(this.experiments.get(0).getProtocolActionSet(), protActionSet);
+        ProtocolAction rootProtAction = protActionSet.getRootProtocolAction();
+        rootProtAction.setId(600L);
+        assertNotNull(rootProtAction);
+        assertEquals(this.experiments.get(0).getProtocolActionSet().getRootProtocolAction(), rootProtAction);
+        assertNotNull(protActionSet.getChildProtocolActions());
+        assertEquals(2, protActionSet.getChildProtocolActions().size());
+        ProtocolAction child1 = protActionSet.getChildProtocolActions().get(0);
+        ProtocolAction child2 = protActionSet.getChildProtocolActions().get(1);
+        assertNotNull(child1);
+        assertNotNull(child2);
+        assertNotNull(child1.getProtocolActionSet());
+        assertNotNull(child2.getProtocolActionSet());
+        assertEquals(child1.getProtocolActionSet(), child2.getProtocolActionSet());
 
         // Starting Input Definition values
         List<MaterialObject> unmarshalledMaterialObjects = unmarshalledExperiment.getInputMaterialObjects();
@@ -429,7 +472,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
 
         List<ProtocolApplication> protApplications = unmarshalledExperimentRun.getProtocolApplications();
-        assertEquals(protApplications.size(), 1);
+        assertEquals(protApplications.size(), 2);
 
         ProtocolApplication unmarshalledProtApp1 = protApplications.get(0);
         unmarshalledProtApp1.setId(440L);
@@ -502,40 +545,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(simpleTypeValues.get(0).getValue(), "Principal Investigator");
         assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
     }
-
-    private void assertExperiment2Values(Experiment unmarshalledExperiment) {
-        assertNotNull(unmarshalledExperiment);
-        assertEquals(unmarshalledExperiment.getLsid(), "${FolderLSIDBase}:MS-MS-Searches");
-        assertEquals(unmarshalledExperiment.getName(), "MS-MS Searches on N-Linked Glycopeptide Purified Aliquots");
-        assertEquals(unmarshalledExperiment.getHypothesis(), "Individual digests of identical aliquots will yield " +
-                "similar search results.");
-        assertEquals(unmarshalledExperiment.getUrl(), "http://testUrl2:8080/index.html");
-        assertEquals(unmarshalledExperiment.getComments(), "X!Comet scoring.  Jan 2005 Human IPI fasta.");
-
-        //Person
-        Person person = unmarshalledExperiment.getPrimaryContact();
-        assertNotNull(person);
-        assertEquals(person.getContactId(), "John's Research Center'");
-        assertEquals(person.getFirstName(), "Jonathan");
-        assertEquals(person.getLastName(), "Doe");
-        assertEquals(person.getEmail(), "jdoe@research-center.com");
-
-        List<ExperimentRun> unmarshalledExperimentRuns = unmarshalledExperiment.getExperimentRuns();
-        assertNotNull(unmarshalledExperimentRuns);
-        assertEquals(1, unmarshalledExperimentRuns.size());
-
-        // Experiment Runs
-        ExperimentRun unmarshalledExperimentRun = unmarshalledExperimentRuns.get(0);
-        assertNotNull(unmarshalledExperimentRun);
-        assertEquals(unmarshalledExperimentRun.getLsid(), "${FolderLSIDBase}:MS2.aliquot_01");
-        assertEquals(unmarshalledExperimentRun.getName(), "MS2 Peptide Search Aliquot 01");
-        assertEquals(unmarshalledExperimentRun.getExperiment().getLsid(), "${FolderLSIDBase}:MS-MS-Searches");
-        assertEquals(unmarshalledExperimentRun.getComments(), "Profiling of Proteins in MS2 Peptide Search Aliquot 01");
-
-        List<ProtocolApplication> protApplications = unmarshalledExperimentRun.getProtocolApplications();
-        assertEquals(protApplications.size(), 0);
-    }
-
 
     @SuppressWarnings("unchecked")
     public void testLoadExampleFiles() throws Exception {

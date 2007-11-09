@@ -89,6 +89,8 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
+import gov.nih.nci.protexpress.data.persistent.ProtocolActionSet;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
@@ -102,13 +104,17 @@ import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
 import gov.nih.nci.protexpress.xml.xar2_2.MaterialBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
 import gov.nih.nci.protexpress.xml.xar2_2.PropertyCollectionType;
+import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionSetType;
+import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleTypeNames;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueCollectionType;
 import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueType;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.ProtocolActionDefinitions;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.StartingInputDefinitions;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType.ProtocolApplications;
+import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionType.PredecessorAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,6 +155,7 @@ public class Xar22FormatConversionHelper {
         setStartingInputDefinitions(experimentArchive);
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
+        setProtocolActionDefinitions(experimentArchive);
 
        return this.experiments;
     }
@@ -179,6 +186,9 @@ public class Xar22FormatConversionHelper {
 
         // Set StartingInputDefinitions, if applicable
         xarExperimentArchiveType.setStartingInputDefinitions(getStartingInputDefinitions());
+
+        // Set protocol action definitions.
+        xarExperimentArchiveType.setProtocolActionDefinitions(getProtocolActionDefinitions());
 
         return xarExperimentArchiveType;
     }
@@ -307,7 +317,6 @@ public class Xar22FormatConversionHelper {
                 }
             }
         }
-
         return materialObj;
     }
 
@@ -447,6 +456,56 @@ public class Xar22FormatConversionHelper {
         }
     }
 
+    private void setProtocolActionDefinitions(ExperimentArchiveType experimentArchive) {
+        HashMap<Integer, ProtocolAction> childProtocolActions = new HashMap<Integer, ProtocolAction>();
+
+        // Get the Action Definitions. Get the corresponding protocol and set the values.
+        ExperimentArchiveType.ProtocolActionDefinitions xarProtocolActionDefns =
+            experimentArchive.getProtocolActionDefinitions();
+
+        if ((xarProtocolActionDefns != null) && (xarProtocolActionDefns.getProtocolActionSet().size() > 0)) {
+            ProtocolActionSetType xarProtocolActionSetType = xarProtocolActionDefns.getProtocolActionSet().get(0);
+            String parentProtocolLsid = xarProtocolActionSetType.getParentProtocolLSID();
+            ProtocolAction rootProtAction = null;
+
+            if (xarProtocolActionSetType != null) {
+                for (ProtocolActionType xarProtocolActionType : xarProtocolActionSetType.getProtocolAction()) {
+                    String childProtocolLsid = xarProtocolActionType.getChildProtocolLSID();
+                    Protocol protocol = this.protocolMap.get(xarProtocolActionType.getChildProtocolLSID());
+                    ProtocolAction protocolAction = new ProtocolAction(protocol,
+                            xarProtocolActionType.getActionSequence());
+                    childProtocolActions.put(protocolAction.getSequenceNumber(), protocolAction);
+                    if (parentProtocolLsid.equals(childProtocolLsid)) {
+                        rootProtAction = protocolAction;
+                    }
+                }
+
+                // Set the predecessors for all protocol action objects.
+                for (ProtocolActionType xarProtocolActionType : xarProtocolActionSetType.getProtocolAction()) {
+                    ProtocolAction protAction = childProtocolActions.get(xarProtocolActionType.getActionSequence());
+                    for (PredecessorAction xarPredecessorAction : xarProtocolActionType.getPredecessorAction()) {
+                        ProtocolAction predecessor = childProtocolActions.get(xarPredecessorAction
+                                .getActionSequenceRef());
+                        protAction.getPredecessors().add(predecessor);
+                    }
+                }
+
+                for (Experiment exp : experiments) {
+                    if (rootProtAction != null) {
+                        ProtocolActionSet protActionSet = new ProtocolActionSet(rootProtAction);
+                        Iterator<ProtocolAction> iter = childProtocolActions.values().iterator();
+                        while (iter.hasNext()) {
+                            ProtocolAction protAction = iter.next();
+                            protAction.setProtocolActionSet(protActionSet);
+                            protActionSet.getChildProtocolActions().add(protAction);
+                        }
+                        exp.setProtocolActionSet(protActionSet);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      *  Given a list of experiment objects, returns the ExperimentArchiveType.StartingInputDefintions.
      *
@@ -469,6 +528,52 @@ public class Xar22FormatConversionHelper {
         }
 
         return xarStartingInputDefns;
+    }
+
+    /**
+     *  Given a list of experiment objects, returns the ExperimentArchiveType.ProtocolActionDefinitons.
+     *
+     *  @return the ExperimentArchiveType.StartingInputDefintions object.
+     */
+    private ProtocolActionDefinitions getProtocolActionDefinitions() {
+        ProtocolActionDefinitions xarProtActionDefns =
+            this.objectFactory.createExperimentArchiveTypeProtocolActionDefinitions();
+
+        for (Experiment exp : this.experiments) {
+            xarProtActionDefns.getProtocolActionSet().add(getProtocolActionSetType(exp));
+        }
+
+        return xarProtActionDefns;
+    }
+
+    /**
+     * Given a Experiment, returns a XAR 2.2 ProtocolActionSetType.
+     *
+     * @param exp the experiment.
+     * @return the XAR 2.2 ProtocolActionSetType object.
+     */
+    private ProtocolActionSetType getProtocolActionSetType(Experiment exp) {
+        ProtocolActionSetType xarPASetType = this.objectFactory.createProtocolActionSetType();
+        ProtocolActionSet protActionSet = exp.getProtocolActionSet();
+        if (protActionSet != null) {
+            xarPASetType.setParentProtocolLSID(protActionSet.getRootProtocolAction().getProtocol().getLsid());
+
+             // Child protocol actions.
+            for (ProtocolAction protAction : protActionSet.getChildProtocolActions()) {
+                ProtocolActionType xarProtActionType = this.objectFactory.createProtocolActionType();
+                xarProtActionType.setActionSequence(protAction.getSequenceNumber());
+                xarProtActionType.setChildProtocolLSID(protAction.getProtocol().getLsid());
+
+                for (ProtocolAction predecessor : protAction.getPredecessors()) {
+                    PredecessorAction xarPredecessorAction = this.objectFactory.
+                    createProtocolActionTypePredecessorAction();
+                    xarPredecessorAction.setActionSequenceRef(predecessor.getSequenceNumber());
+                    xarProtActionType.getPredecessorAction().add(xarPredecessorAction);
+                }
+                xarPASetType.getProtocolAction().add(xarProtActionType);
+            }
+        }
+        return xarPASetType;
     }
 
     /**
