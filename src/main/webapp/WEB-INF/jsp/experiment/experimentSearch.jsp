@@ -19,23 +19,25 @@
     <div class="confirm_msg">${successMessage}</div>
 </c:if>
 
-<s:form action="experiment/search/doSearch" method="post">
-    <s:hidden name="experiments.sortDirection" />
-    <s:hidden name="experiments.sortCriterion" />
-    <s:textfield name="searchParameters.name" key="experiment.name" size="40" tabindex="1" />
-    <s:textfield name="searchParameters.comments" key="experiment.comments" size="40" tabindex="2" />
-    <s:submit value="%{getText('search')}" tabindex="3" />
-</s:form>
-
-<c:if test="${experiments.list != null}">
     <div class="box">
         <div class="formbox">
+        <s:form action="experiment/search/doSearch" method="post">
+            <div id="boxinner">
+                <h3><fmt:message key="search.criteria" /></h3>
+                <s:hidden name="experiments.sortDirection" />
+                <s:hidden name="experiments.sortCriterion" />
+                <s:textfield name="searchParameters.name" key="experiment.name" size="40" tabindex="1" />
+                <s:textfield name="searchParameters.comments" key="experiment.comments" size="40" tabindex="2" />
+                <s:submit value="%{getText('search')}" tabindex="3" />
+            </div>
+        </s:form>
+        <c:if test="${experiments.list != null}">
             <div id="boxinner">
                 <h3><fmt:message key="search.results" /></h3>
                 <jsp:include page="/WEB-INF/jsp/experiment/experimentSearchResults.jsp" />
             </div>
+        </c:if>
         </div>
     </div>
-</c:if>
 </body>
 </html>

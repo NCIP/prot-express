@@ -795,6 +795,23 @@ TABLE.searchresults {
     margin: 0
 }
 
+TABLE.searchresults th.order1 a {
+    background-image: url(../images/arrow_down.png);
+    background-position: right;
+}
+
+TABLE.searchresults th.order2 a {
+    background-image: url(../images/arrow_up.png);
+    background-position: left;
+}
+
+TABLE.searchresults th.sorted a, TABLE.searchresults th.sortable a {
+    background-position: right;
+    background-repeat: no-repeat;
+    display: block;
+    padding-right: 15px;
+}
+
 TABLE.searchresults TH {
     padding: 4px 5px;
     border-top: 1px solid #eef3fa;
@@ -814,6 +831,14 @@ TABLE.searchresults TR.odd {
 TABLE.searchresults TD {
     padding: 5px;
     border-bottom: 2px solid #BDD4F9
+}
+
+TABLE.searchresults tr.over, TABLE.searchresults tr:hover {
+    border-bottom: 1px solid #C0C0C0;
+    border-top: 1px solid #C0C0C0;
+    color: #000000;
+    cursor: pointer;
+    background: #cacaca;
 }
 
 .selectedtabbox TABLE.searchresults TD {

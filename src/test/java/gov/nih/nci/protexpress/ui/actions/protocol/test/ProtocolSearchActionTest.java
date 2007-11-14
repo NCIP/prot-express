@@ -110,7 +110,7 @@ public class ProtocolSearchActionTest extends ProtExpressBaseHibernateTest {
         super.onSetUp();
         action = new ProtocolSearchAction();
 
-        Protocol protocol = new Protocol("lsid_a_test_protocol", "a test protocol", ProtocolType.SamplePrep);
+        Protocol protocol = new Protocol("lsid_a_test_protocol", "a test protocol", ProtocolType.ProtocolApplication);
         protocol.setInstrument("foo");
         protocol.setDescription("z bar");
         protocol.setSoftware("baz");
