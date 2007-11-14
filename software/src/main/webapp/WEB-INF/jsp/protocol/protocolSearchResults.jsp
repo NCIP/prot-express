@@ -17,7 +17,7 @@
         <display:column property="description" titleKey="protocol.description" sortable="true" />
         <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
 
-        <display:column titleKey="actions" sortable="false">
+        <display:column titleKey="actions" sortable="false" >
             <c:if test="${row.auditInfo.creator == currentUser.loginName}">
                 <c:url var="loadUrl" value="/protocol/management/load.action">
                     <c:param name="protocol.id" value="${row.id}" />

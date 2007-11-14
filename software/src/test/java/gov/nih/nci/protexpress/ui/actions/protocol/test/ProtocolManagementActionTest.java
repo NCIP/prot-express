@@ -141,14 +141,14 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testSaveOrUpdate() throws Exception {
-        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
+        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.ProtocolApplication));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
     }
 
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
         this.action.setCancelResult("dashboard");
-        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.SamplePrep));
+        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.ProtocolApplication));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
         assertEquals("Protocol successfully created.", this.action.getSuccessMessage());

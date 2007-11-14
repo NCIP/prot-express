@@ -77,7 +77,6 @@
             <layout>legacy</layout>
         </repository>
     </repositories>
-
     <pluginRepositories>
         <pluginRepository>
             <id>repo1.maven.org</id>

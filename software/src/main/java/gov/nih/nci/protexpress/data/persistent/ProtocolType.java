@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.data.persistent;
 
 /**
  * @author Scott Miller
- * 
+ *
  */
 public enum ProtocolType {
     /**
@@ -98,17 +98,13 @@ public enum ProtocolType {
     /**
      * The ExperimentRunOutput type.
      */
-    ExperimentRunOutput("Experiment Run Output"),
-    /**
-     * The simplePrep type.
-     */
-    SamplePrep("Sample Prep");
+    ExperimentRunOutput("Experiment Run Output");
 
     private String displayName;
 
     /**
      * Constructor for ProtocolType.
-     * 
+     *
      * @param displayname the display name
      */
     private ProtocolType(String displayname) {

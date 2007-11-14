@@ -134,7 +134,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         p.setDescription("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        p = new Protocol("test_protocol_123", "test protocol 123", ProtocolType.SamplePrep);
+        p = new Protocol("test_protocol_123", "test protocol 123", ProtocolType.ProtocolApplication);
         p.setDescription("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
@@ -220,7 +220,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         List<ProtocolType> types = new ArrayList<ProtocolType>();
         types.add(ProtocolType.ExperimentRun);
         types.add(ProtocolType.ExperimentRunOutput);
-        types.add(ProtocolType.SamplePrep);
+        types.add(ProtocolType.ProtocolApplication);
         params.setTypes(types);
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
@@ -236,7 +236,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
         types = new ArrayList<ProtocolType>();
         types.add(ProtocolType.ExperimentRun);
-        types.add(ProtocolType.SamplePrep);
+        types.add(ProtocolType.ProtocolApplication);
         params.setTypes(types);
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(0, protocolList.size());
@@ -295,7 +295,6 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(protocol1, protocols.get(0));
         assertEquals(protocol3, protocols.get(1));
         assertEquals(protocol2, protocols.get(2));
-
 
         protocols = ProtExpressRegistry.getProtocolService().getMostRecentProtocolsforUser("unuseduser", 3);
         assertEquals(0, protocols.size());

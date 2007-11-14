@@ -11,16 +11,16 @@
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
 
-<h1><fmt:message key="protocols" /></h1>
-
-<div class="box">
+<h1>
     <s:if test="protocol == null || protocol.id == null">
-        <h2><fmt:message key="protocol.add" /></h2>
+        <fmt:message key="protocol.add" />
     </s:if>
     <s:else>
-        <h2>${protocol.name}</h2>
+        <fmt:message key="protocol.edit" />: ${protocol.name}
     </s:else>
+</h1>
 
+<div class="box">
     <s:if test="protocol != null && protocol.id != null">
         <c:url value="/ajax/protocol/management/load/overview.action" var="overviewUrl">
             <c:param name="protocol.id" value="${protocol.id}" />
