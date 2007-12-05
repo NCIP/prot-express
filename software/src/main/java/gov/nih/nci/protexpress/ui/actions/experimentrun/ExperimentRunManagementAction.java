@@ -146,7 +146,7 @@ public class ExperimentRunManagementAction extends ActionSupport implements Prep
     }
 
     /**
-     * delete the experiments.
+     * delete the experiment run.
      *
      * @return the directive for the next action / page to be directed to
      */

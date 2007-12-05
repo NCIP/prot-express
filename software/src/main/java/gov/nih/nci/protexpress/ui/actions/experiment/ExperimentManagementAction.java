@@ -82,10 +82,10 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
-import java.text.MessageFormat;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+
+import java.text.MessageFormat;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 

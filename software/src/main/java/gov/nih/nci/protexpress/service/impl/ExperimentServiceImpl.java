@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.service.ExperimentService;
@@ -136,11 +137,11 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
 
         if (params != null) {
             if (StringUtils.isNotEmpty(params.getName())) {
-                crit.add(Restrictions.like("name", "%" + params.getName() + "%"));
+                crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
             }
 
             if (StringUtils.isNotEmpty(params.getComments())) {
-                crit.add(Restrictions.like("comments", "%" + params.getComments() + "%"));
+                crit.add(Restrictions.like("comments", "%" + params.getComments() + "%").ignoreCase());
             }
         }
 
@@ -183,6 +184,13 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     /**
      * {@inheritDoc}
      */
+    public ProtocolAction getProtocolActionById(Long id) {
+        return (ProtocolAction) getHibernateTemplate().load(ProtocolAction.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ProtocolApplication getProtocolApplicationById(Long id) {
         return (ProtocolApplication) getHibernateTemplate().load(ProtocolApplication.class, id);
     }
@@ -201,6 +209,14 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteExperimentRun(ExperimentRun experimentRun) {
         getHibernateTemplate().delete(experimentRun);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteProtocolAction(ProtocolAction protocolAction) {
+        getHibernateTemplate().delete(protocolAction);
     }
 
     /**

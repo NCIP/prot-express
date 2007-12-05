@@ -194,5 +194,32 @@
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
         <!-- End Protocol Applications -->
+
+        <!-- ProtocolAction Actions -->
+        <action name="protocolAction/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/protocolAction/protocolActionForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocolAction/protocolActionForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/protocolAction/management/*/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/protocolAction/{2}.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocolAction/{2}.jsp</result>
+            <result name="xmlProtocolList" type="stream">
+                <param name="contentType">text/xml;charset=UTF-8</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">4096</param>
+            </result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/protocolAction/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction" method="delete">
+            <result name="success" type="chain">ajax/experiment/management/load/protocolActions</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End ProtocolAction Actions -->
     </package>
 </struts>

@@ -80,18 +80,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplication;
+package gov.nih.nci.protexpress.ui.actions.protocolaction;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,14 +104,14 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
 
 /**
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  *
  */
-public class ProtocolApplicationManagementAction extends ActionSupport implements Preparable {
+public class ProtocolActionManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, 0, null, null, null);
-    private Long experimentRunId;
+    private ProtocolAction protocolAction = new ProtocolAction(null, 0);
+    private Long experimentId;
     private Long protocolId;
     private String successMessage = null;
 
@@ -124,21 +123,20 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
      */
     public void prepare() throws Exception {
         ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getProtocolApplication().getId() != null) {
-            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplication().getId()));
-        } else if (getExperimentRunId() != null) {
-            getProtocolApplication().setExperimentRun(es.getExperimentRunById(getExperimentRunId()));
+        if (getProtocolAction().getId() != null) {
+            setProtocolAction(es.getProtocolActionById(getProtocolAction().getId()));
+        } else if (getExperimentId() != null) {
+            getProtocolAction().setExperiment(es.getExperimentById(getExperimentId()));
         }
 
         if (getProtocolId() != null) {
             Protocol p = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
-            getProtocolApplication().setProtocol(p);
-            getProtocolApplication().setParameters(p.getParameters());
+            getProtocolAction().setProtocol(p);
         }
     }
 
     /**
-     * loads the {@link ProtocolApplication}.
+     * loads the {@link ProtocolAction}.
      *
      * @return the directive for the next action / page to be directed to
      */
@@ -148,44 +146,33 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
-     * Saves the {@link ProtocolApplication}.
+     * Saves the Protocol Action.
      *
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        if (getProtocolApplication().getId() == null) {
+        if (getProtocolAction().getId() == null) {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
-                    .getString("protocolApplication.save.success"));
+                    .getString("protocolAction.save.success"));
         } else {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
-                    "protocolApplication.update.success"));
+                    "protocolAction.update.success"));
         }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolAction());
         return ActionSupport.SUCCESS;
     }
 
     /**
-     * delete the {@link ProtocolApplication}.
+     * delete the Protocol Action.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
     public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle().
-            getString("protocolApplication.delete.success");
-        setSuccessMessage(MessageFormat.format(msg, getProtocolApplication().getName()));
-        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(getProtocolApplication());
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("protocolAction.delete.success");
+        setSuccessMessage(msg);
+        ProtExpressRegistry.getExperimentService().deleteProtocolAction(getProtocolAction());
         return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * Action to return the list of protocols.
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String retrieveProtocols() {
-        setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
-        return "xmlProtocolList";
     }
 
     /**
@@ -203,6 +190,24 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
+     * Action to return the list of protocols.
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String retrieveProtocols() {
+        setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
+        return "xmlProtocolList";
+    }
+
+    /**
+     * @return the ProtocolAction
+     */
+    @CustomValidator(type = "hibernate")
+    public ProtocolAction getProtocolAction() {
+        return this.protocolAction;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -214,32 +219,10 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
-     * @return the protocolApplication
+     * @param experimentId the experimentId to set
      */
-    @CustomValidator(type = "hibernate")
-    public ProtocolApplication getProtocolApplication() {
-        return this.protocolApplication;
-    }
-
-    /**
-     * @param protocolApplication the protocolApplication to set
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        this.protocolApplication = protocolApplication;
-    }
-
-    /**
-     * @return the experimentRunId
-     */
-    public Long getExperimentRunId() {
-        return this.experimentRunId;
-    }
-
-    /**
-     * @param experimentRunId the experimentRunId to set
-     */
-    public void setExperimentRunId(Long experimentRunId) {
-        this.experimentRunId = experimentRunId;
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
     }
 
     /**
@@ -248,12 +231,18 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     public String getSuccessMessage() {
         return this.successMessage;
     }
+    /**
+     * @param protocolAction the protocolAction to set
+     */
+    public void setProtocolAction(ProtocolAction protocolAction) {
+        this.protocolAction = protocolAction;
+    }
 
     /**
-     * @param successMessage the successMessage to set
+     * @return the experimentId
      */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+    public Long getExperimentId() {
+        return this.experimentId;
     }
 
     /**
@@ -271,18 +260,12 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
-     * @return the protocols
+     * @param successMessage the successMessage to set
      */
-    public List<Protocol> getProtocols() {
-        return this.protocols;
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 
-    /**
-     * @param protocols the protocols to set
-     */
-    public void setProtocols(List<Protocol> protocols) {
-        this.protocols = protocols;
-    }
 
     /**
      * @return the protocolName
@@ -297,4 +280,20 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     public void setProtocolName(String protocolName) {
         this.protocolName = protocolName;
     }
+
+    /**
+     * @return the protocols
+     */
+    public List<Protocol> getProtocols() {
+        return this.protocols;
+    }
+
+    /**
+     * @param protocols the protocols to set
+     */
+    public void setProtocols(List<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+
 }

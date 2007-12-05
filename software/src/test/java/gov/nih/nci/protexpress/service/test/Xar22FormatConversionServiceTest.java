@@ -90,7 +90,6 @@ import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolActionSet;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
@@ -107,6 +106,7 @@ import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 import junit.framework.TestCase;
+
 
 /**
  * Class to test the xar 22 conversion service.
@@ -260,22 +260,16 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         currentExperiment.setPrimaryContact(person);
 
         // protocol action set.
-        ProtocolAction rootProtocolAction = new ProtocolAction(this.protocols.get(1), 1);
-        rootProtocolAction.setId(600L);
-        rootProtocolAction.getPredecessors().add(rootProtocolAction);
-        ProtocolAction childProtAction1 = rootProtocolAction;
+        ProtocolAction childProtAction1 = new ProtocolAction(this.protocols.get(1), 1);
+        childProtAction1.setId(600L);
+   // kk     childProtAction1.getPredecessors().add(childProtAction1);
         ProtocolAction childProtAction2 = new ProtocolAction(this.protocols.get(1), 2);
         childProtAction2.setId(601L);
-        childProtAction2.getPredecessors().add(rootProtocolAction);
-
-        ProtocolActionSet protActionSet = new ProtocolActionSet(rootProtocolAction);
-        protActionSet.setId(700L);
-        rootProtocolAction.setProtocolActionSet(protActionSet);
-        childProtAction2.setProtocolActionSet(protActionSet);
-        protActionSet.getChildProtocolActions().add(childProtAction1);
-        protActionSet.getChildProtocolActions().add(childProtAction2);
-        protActionSet.setExperiment(currentExperiment);
-        currentExperiment.setProtocolActionSet(protActionSet);
+   // kk     childProtAction2.getPredecessors().add(childProtAction1);
+        childProtAction1.setExperiment(currentExperiment);
+        childProtAction2.setExperiment(currentExperiment);
+        currentExperiment.getProtocolActions().add(childProtAction1);
+        currentExperiment.getProtocolActions().add(childProtAction2);
 
         // Set Starting Input Definitions.
         MaterialObject inputMaterialObject = new MaterialObject("${FolderLSIDBase}-Xar${XarFileId}-1:UnspecifiedCancer", "Cancer");
@@ -385,24 +379,18 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         assertEquals(simpleTypeValues.get(0).getValue(), "Contractor");
         assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
 
-        // Protocol Action set and protocol actions
-        ProtocolActionSet protActionSet = unmarshalledExperiment.getProtocolActionSet();
-        protActionSet.setId(700L);
-        assertNotNull(protActionSet);
-        assertEquals(this.experiments.get(0).getProtocolActionSet(), protActionSet);
-        ProtocolAction rootProtAction = protActionSet.getRootProtocolAction();
-        rootProtAction.setId(600L);
-        assertNotNull(rootProtAction);
-        assertEquals(this.experiments.get(0).getProtocolActionSet().getRootProtocolAction(), rootProtAction);
-        assertNotNull(protActionSet.getChildProtocolActions());
-        assertEquals(2, protActionSet.getChildProtocolActions().size());
-        ProtocolAction child1 = protActionSet.getChildProtocolActions().get(0);
-        ProtocolAction child2 = protActionSet.getChildProtocolActions().get(1);
-        assertNotNull(child1);
-        assertNotNull(child2);
-        assertNotNull(child1.getProtocolActionSet());
-        assertNotNull(child2.getProtocolActionSet());
-        assertEquals(child1.getProtocolActionSet(), child2.getProtocolActionSet());
+        Experiment exp1 = this.experiments.get(0);
+        exp1.setId(400L);
+        assertNotNull(exp1);
+        // Protocol Actions
+        assertNotNull(exp1.getProtocolActions());
+        assertEquals(2, exp1.getProtocolActions().size());
+        ProtocolAction protAction1 = exp1.getProtocolActions().get(0);
+        ProtocolAction protAction2 = exp1.getProtocolActions().get(1);
+        assertNotNull(protAction1);
+        assertNotNull(protAction2);
+        assertEquals(exp1, protAction1.getExperiment());
+        assertEquals(exp1, protAction2.getExperiment());
 
         // Starting Input Definition values
         List<MaterialObject> unmarshalledMaterialObjects = unmarshalledExperiment.getInputMaterialObjects();

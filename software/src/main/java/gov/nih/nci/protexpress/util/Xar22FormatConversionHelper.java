@@ -90,7 +90,6 @@ import gov.nih.nci.protexpress.data.persistent.MaterialObject;
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolActionSet;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
@@ -114,7 +113,6 @@ import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.ProtocolActionDefinitions;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType.StartingInputDefinitions;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType.ProtocolApplications;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionType.PredecessorAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -475,31 +473,19 @@ public class Xar22FormatConversionHelper {
                     ProtocolAction protocolAction = new ProtocolAction(protocol,
                             xarProtocolActionType.getActionSequence());
                     childProtocolActions.put(protocolAction.getSequenceNumber(), protocolAction);
-                    if (parentProtocolLsid.equals(childProtocolLsid)) {
+                    if ((parentProtocolLsid != null) && (parentProtocolLsid.equals(childProtocolLsid))) {
                         rootProtAction = protocolAction;
-                    }
-                }
-
-                // Set the predecessors for all protocol action objects.
-                for (ProtocolActionType xarProtocolActionType : xarProtocolActionSetType.getProtocolAction()) {
-                    ProtocolAction protAction = childProtocolActions.get(xarProtocolActionType.getActionSequence());
-                    for (PredecessorAction xarPredecessorAction : xarProtocolActionType.getPredecessorAction()) {
-                        ProtocolAction predecessor = childProtocolActions.get(xarPredecessorAction
-                                .getActionSequenceRef());
-                        protAction.getPredecessors().add(predecessor);
                     }
                 }
 
                 for (Experiment exp : experiments) {
                     if (rootProtAction != null) {
-                        ProtocolActionSet protActionSet = new ProtocolActionSet(rootProtAction);
                         Iterator<ProtocolAction> iter = childProtocolActions.values().iterator();
                         while (iter.hasNext()) {
                             ProtocolAction protAction = iter.next();
-                            protAction.setProtocolActionSet(protActionSet);
-                            protActionSet.getChildProtocolActions().add(protAction);
+                            protAction.setExperiment(exp);
+                            exp.getProtocolActions().add(protAction);
                         }
-                        exp.setProtocolActionSet(protActionSet);
                     }
                 }
             }
@@ -554,22 +540,16 @@ public class Xar22FormatConversionHelper {
      */
     private ProtocolActionSetType getProtocolActionSetType(Experiment exp) {
         ProtocolActionSetType xarPASetType = this.objectFactory.createProtocolActionSetType();
-        ProtocolActionSet protActionSet = exp.getProtocolActionSet();
-        if (protActionSet != null) {
-            xarPASetType.setParentProtocolLSID(protActionSet.getRootProtocolAction().getProtocol().getLsid());
+        if (exp != null) {
+            // set parent protocol lsid
+            //xarPASetType.setParentProtocolLSID(exp.getProtocolActions().get(0).getProtocol().getLsid());
 
              // Child protocol actions.
-            for (ProtocolAction protAction : protActionSet.getChildProtocolActions()) {
+            for (ProtocolAction protAction : exp.getProtocolActions()) {
                 ProtocolActionType xarProtActionType = this.objectFactory.createProtocolActionType();
                 xarProtActionType.setActionSequence(protAction.getSequenceNumber());
                 xarProtActionType.setChildProtocolLSID(protAction.getProtocol().getLsid());
 
-                for (ProtocolAction predecessor : protAction.getPredecessors()) {
-                    PredecessorAction xarPredecessorAction = this.objectFactory.
-                    createProtocolActionTypePredecessorAction();
-                    xarPredecessorAction.setActionSequenceRef(predecessor.getSequenceNumber());
-                    xarProtActionType.getPredecessorAction().add(xarPredecessorAction);
-                }
                 xarPASetType.getProtocolAction().add(xarProtActionType);
             }
         }

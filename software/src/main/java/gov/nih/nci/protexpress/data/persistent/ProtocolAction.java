@@ -83,8 +83,6 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -93,8 +91,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -119,8 +115,7 @@ public class ProtocolAction implements Serializable, Persistent {
     private Long id;
     private Protocol protocol;
     private int sequenceNumber;
-    private List<ProtocolAction> predecessors = new ArrayList<ProtocolAction>();
-    private ProtocolActionSet protocolActionSet;
+    private Experiment experiment;
 
     /**
      * protected default constructor for hibernate only.
@@ -199,46 +194,23 @@ public class ProtocolAction implements Serializable, Persistent {
     }
 
     /**
-     * Gets the predecessors.
+     * Gets the experiment.
      *
-     * @return the predecessors.
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protaction_predecessor",
-            joinColumns = { @JoinColumn(name = "protaction_id") },
-            inverseJoinColumns = { @JoinColumn(name = "predecessor_id") })
-    public List<ProtocolAction> getPredecessors() {
-        return this.predecessors;
-    }
-
-    /**
-     * Sets the predecessors.
-     *
-     * @param predecessors the predecessors to set.
-     */
-    protected void setPredecessors(List<ProtocolAction> predecessors) {
-        this.predecessors = predecessors;
-    }
-
-    /**
-     * Gets the protocolActionSet.
-     *
-     * @return the protocolActionSet.
+     * @return the experiment.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "protactionset_id")
-    public ProtocolActionSet getProtocolActionSet() {
-        return protocolActionSet;
+    @JoinColumn(name = "experiment_id", nullable = false)
+    public Experiment getExperiment() {
+        return this.experiment;
     }
 
     /**
-     * Sets the protocolActionSet.
+     * Sets the experiment.
      *
-     * @param protocolActionSet the protocolActionSet to set.
+     * @param experiment the experiment to set.
      */
-    public void setProtocolActionSet(ProtocolActionSet protocolActionSet) {
-        this.protocolActionSet = protocolActionSet;
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
     }
 
     /**
