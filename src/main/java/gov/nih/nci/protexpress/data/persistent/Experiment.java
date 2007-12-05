@@ -101,7 +101,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -144,7 +144,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
     private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
-    private ProtocolActionSet protocolActionSet;
+    private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
     /**
      * protected default constructor for hibernate only.
@@ -409,22 +409,23 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the protocolActionSet.
+     * Gets the protocolActions.
      *
-     * @return the protocolActionSet.
+     * @return the protocolActions.
      */
-    @OneToOne(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public ProtocolActionSet getProtocolActionSet() {
-        return protocolActionSet;
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("sequenceNumber")
+    public List<ProtocolAction> getProtocolActions() {
+        return this.protocolActions;
     }
 
     /**
-     * Sets the protocolActionSet.
+     * Sets the protocolActions.
      *
-     * @param protocolActionSet the protocolActionSet to set.
+     * @param protocolActions the protocolActions to set.
      */
-    public void setProtocolActionSet(ProtocolActionSet protocolActionSet) {
-        this.protocolActionSet = protocolActionSet;
+    protected void setProtocolActions(List<ProtocolAction> protocolActions) {
+        this.protocolActions = protocolActions;
     }
 
     /**

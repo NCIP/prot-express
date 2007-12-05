@@ -146,3 +146,26 @@ h1 A.add:hover {
     color: #333;
     text-decoration: none
 }
+
+.addNewLink {
+    font-size: 92%;
+    font-weight: bold;
+    float: right;
+    margin-top: -2.2em;
+    width: 20em
+}
+
+#content .addNewLink A.add {
+    color: #fff;
+    display: block;
+    height: 1.4em;
+    padding: 3px 3px 3px 22px
+}
+
+#content .addNewLink A.add:hover {
+    color: #333;
+    text-decoration: none
+}
+
+
+

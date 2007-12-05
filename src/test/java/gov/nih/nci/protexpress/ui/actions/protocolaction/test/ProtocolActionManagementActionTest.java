@@ -80,174 +80,106 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.ui.actions.protocolaction.test;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
+import gov.nih.nci.protexpress.data.persistent.ProtocolType;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
+import gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import java.io.ByteArrayInputStream;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.NotNull;
+import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.ActionValidatorManager;
+import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
 
 /**
- * Class representing the sequence in which a protocol is applied in an experiment.
- *
  * @author Krishna Kanchinadam
+ *
  */
-@Entity
-@Table(name = "protocol_action_set")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolActionSet implements Serializable, Persistent {
-
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-    private ProtocolAction rootProtocolAction;
-    private List<ProtocolAction> childProtocolActions = new ArrayList<ProtocolAction>();
-    private Experiment experiment;
-
-    /**
-     * protected default constructor for hibernate only.
-     */
-    protected ProtocolActionSet() {
-    }
-
-    /**
-     * Constructor to create the object and populate all required fields.
-     *
-     * @param rootProtocolAction the protocol action
-     */
-    public ProtocolActionSet(ProtocolAction rootProtocolAction) {
-        setRootProtocolAction(rootProtocolAction);
-    }
-
-    /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the rootProtocolAction.
-     *
-     * @return the rootProtocolAction
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "rootprotaction_id")
-    public ProtocolAction getRootProtocolAction() {
-        return this.rootProtocolAction;
-    }
-
-    /**
-     * Sets the rootProtocolAction.
-     *
-     * @param rootProtocolAction the rootProtocolAction to set
-     */
-    public void setRootProtocolAction(ProtocolAction rootProtocolAction) {
-        this.rootProtocolAction = rootProtocolAction;
-    }
-
-    /**
-     * Gets the childProtocolActions.
-     *
-     * @return the childProtocolActions.
-     */
-    @OneToMany(mappedBy = "protocolActionSet", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("sequenceNumber")
-    public List<ProtocolAction> getChildProtocolActions() {
-        return this.childProtocolActions;
-    }
-
-    /**
-     * Sets the childProtocolActions.
-     *
-     * @param childProtocolActions the childProtocolActions to set.
-     */
-    protected void setChildProtocolActions(List<ProtocolAction> childProtocolActions) {
-        this.childProtocolActions = childProtocolActions;
-    }
-
-    /**
-     * Gets the experiment.
-     *
-     * @return the experiment.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "experiment_id")
-    public Experiment getExperiment() {
-        return experiment;
-    }
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set.
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
+public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
+    ProtocolActionManagementAction action;
+    ProtocolAction protocolAction;
+    Experiment experiment;
+    Protocol protocol;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new ProtocolActionManagementAction();
 
-        if (o == this) {
-            return true;
-        }
+        this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.theSession.save(this.protocol);
 
-        if (!(o instanceof ProtocolActionSet)) {
-            return false;
-        }
+        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        experiment.setComments("Description - Test Experiment 1");
+        experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        experiment.setUrl("URL - Test Experiment 1");
 
-        ProtocolActionSet p = (ProtocolActionSet) o;
+        this.theSession.saveOrUpdate(experiment);
 
-        if (this.id == null) {
-            return false;
-        }
+        this.theSession.flush();
+        this.theSession.clear();
 
-        return new EqualsBuilder().append(getId(), p.getId()).isEquals();
+        this.protocolAction = new ProtocolAction(this.protocol, 1);
+        this.protocolAction.setExperiment(experiment);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getId()).toHashCode();
+    public void testLoadByExperimentId() throws Exception {
+        this.action.setExperimentId(this.experiment.getId());
+        this.action.setProtocolId(this.protocol.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.INPUT, this.action.load());
+        assertEquals(this.experiment, this.action.getProtocolAction().getExperiment());
+        assertEquals(this.protocol, this.action.getProtocolAction().getProtocol());
+    }
+
+    public void testAddAndDeleteProtocolAction() throws Exception {
+        this.action.setProtocolAction(this.protocolAction);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Protocol Action successfully created.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolActionManagementAction();
+        this.action.getProtocolAction().setId(this.protocolAction.getId());
+        this.action.prepare();
+        this.action.getProtocolAction().setSequenceNumber(3);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Protocol Action successfully updated.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolActionManagementAction();
+        this.action.getProtocolAction().setId(this.protocolAction.getId());
+        this.action.prepare();
+        assertEquals("success", this.action.delete());
+        assertEquals("Protocol Action successfully deleted.", this.action.getSuccessMessage());
+    }
+
+    public void testRetrieveProtocols() throws Exception {
+        this.action.setProtocolName("test");
+        assertEquals("xmlProtocolList", this.action.retrieveProtocols());
+        assertEquals(1, this.action.getProtocols().size());
+        ByteArrayInputStream is = (ByteArrayInputStream) this.action.getInputStream();
+        byte[] buffer = new byte[is.available()];
+        String xmlBuffer = new String();
+        while(is.read(buffer) != -1) {
+            xmlBuffer += new String(buffer, "UTF-8");
+        }
+        assertTrue(StringUtils.contains(xmlBuffer, "test"));
+    }
+
+    public void testValidate() throws Exception {
+        this.action.setProtocolName("test");
+        this.action.setProtocolAction(this.protocolAction);
+        this.action.getProtocolAction().setProtocol(null);
+        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
+        avm.validate(this.action, null);
+        this.action.validate();
+        assertEquals(1, this.action.getProtocols().size());
     }
 }

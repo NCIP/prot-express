@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.service;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
 import java.util.List;
@@ -144,6 +145,14 @@ public interface ExperimentService {
     ExperimentRun getExperimentRunById(Long id);
 
     /**
+     * Retrieve the protocol action with the given identifier.
+     *
+     * @param id the id of the protocol action.
+     * @return the {@link ProtocolAction}
+     */
+    ProtocolAction getProtocolActionById(Long id);
+
+    /**
      * Retrieve the protocol application with the given id.
      *
      * @param id the identifier of the protocol application.
@@ -164,6 +173,13 @@ public interface ExperimentService {
      * @param experimentRun the experiment run to delete.
      */
     void deleteExperimentRun(ExperimentRun experimentRun);
+
+    /**
+     * delete the given protocol action.
+     *
+     * @param protocolAction the protocol action to delete.
+     */
+    void deleteProtocolAction(ProtocolAction protocolAction);
 
     /**
      * delete the {@link ProtocolApplication}.

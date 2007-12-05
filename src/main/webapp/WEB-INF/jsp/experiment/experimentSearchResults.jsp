@@ -13,9 +13,9 @@
         <display:setProperty name="pagination.sort.param" value="experiments.sortCriterion" />
         <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
         <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
-        <display:column property="name" titleKey="experiment.name" sortable="true" href="${loadUrlBase}" paramId="experiment.id" paramProperty="id" />
-        <display:column property="comments" titleKey="experiment.comments" sortable="true" />
-        <display:column property="url" titleKey="experiment.url" sortable="true" />
+        <display:column property="name" titleKey="experiment.name" sortable="true" href="${loadUrlBase}" paramId="experiment.id" paramProperty="id"  maxLength="20" maxWords="4"/>
+        <display:column property="comments" titleKey="experiment.comments" sortable="true"  maxLength="20" maxWords="4"/>
+        <display:column property="url" titleKey="experiment.url" sortable="true"  maxLength="20" maxWords="4"/>
 
         <display:column titleKey="actions" sortable="false">
             <c:if test="${row.auditInfo.creator == currentUser.loginName}">
