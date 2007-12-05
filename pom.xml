@@ -519,7 +519,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <jdbc.url>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/postgres</jdbc.url>
+                <jdbc.url>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/protexpress</jdbc.url>
                 <jdbc.username>gpsxar</jdbc.username>
                 <jdbc.password>gpsxar456</jdbc.password>
                 <tomcat.manager.url>http://protexpress-dev.nci.nih.gov:18080/manager</tomcat.manager.url>
