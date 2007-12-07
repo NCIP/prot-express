@@ -1,0 +1,24 @@
+function FileData_Pairs(x)
+{
+x.t("protocols","managing");
+x.t("managing","protocols");
+x.t("managing","experiments");
+x.t("experiments","working");
+x.t("outputs","importing");
+x.t("working","outputs");
+x.t("working","protexpress");
+x.t("working","inputs");
+x.t("protexpress","working");
+x.t("protexpress","section");
+x.t("includes","following");
+x.t("dashboard","managing");
+x.t("importing","data");
+x.t("section","includes");
+x.t("exporting","experiment");
+x.t("experiment","data");
+x.t("data","exporting");
+x.t("topics","using");
+x.t("following","topics");
+x.t("using","dashboard");
+x.t("inputs","working");
+}
