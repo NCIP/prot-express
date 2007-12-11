@@ -13,7 +13,7 @@
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
         <s:textfield name="experimentRun.lsid" key="experimentRun.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
         <s:textfield name="experimentRun.name" key="experimentRun.name" size="40" tabindex="2" disabled="${isReadOnly}" />
-        <s:textfield name="experimentRun.comments" key="experimentRun.comments" size="40" tabindex="3" disabled="${isReadOnly}" />
+        <s:textarea name="experimentRun.comments" key="experimentRun.comments" rows="4" cols="37" tabindex="3" disabled="${isReadOnly}" />
         <s:hidden name="experimentRun.id" />
         <s:hidden name="experimentId" />
     </s:form>

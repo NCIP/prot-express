@@ -22,11 +22,11 @@
                 <c:url var="loadUrl" value="/protocol/management/load.action">
                     <c:param name="protocol.id" value="${row.id}" />
                 </c:url>
-                <a href="${loadUrl}"><fmt:message key="edit" /></a>
+                <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a>
                 <c:url var="deleteUrl" value="/protocol/management/delete.action">
                     <c:param name="protocol.id" value="${row.id}" />
                 </c:url>
-                <a href="${deleteUrl}"><fmt:message key="delete" /></a>
+                <a href="${deleteUrl}"><img src="<c:url value="/images/ico_delete.gif" />" alt="<fmt:message key="icon.delete.alt" />" /> <fmt:message key="delete" /></a>
             </c:if>
         </display:column>
     </display:table>
