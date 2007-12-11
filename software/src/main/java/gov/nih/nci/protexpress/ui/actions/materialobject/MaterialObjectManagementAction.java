@@ -80,250 +80,122 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.ui.actions.materialobject;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.MaterialObject;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
 
 /**
- * Class representing a Material object - a biological sample or a processed
- * derivative of a sample.
- *
  * @author Krishna Kanchinadam
+ *
  */
-@Entity
-@Table(name = "material_object")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MaterialObject implements Serializable, Persistent {
+public class MaterialObjectManagementAction extends ActionSupport implements Preparable {
+
     private static final long serialVersionUID = 1L;
-
-    private static final int LSID_LENGTH = 255;
-    private static final int NAME_LENGTH = 255;
-    private static final int CPAS_TYPE_LENGTH = 25;
-
-    private Long id;
-    private String lsid;
-    private String name;
-    private String cpasType = "Material";
-    private Experiment experiment;
-    private ProtocolApplication protocolApplication;;
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
-
-    /**
-     * protected default constructor for hibernate only.
-     */
-    protected MaterialObject() {
-    }
-
-    /**
-     * Constructor to create the object and populate all required fields.
-     *
-     * @param lsid the lsid of the material object.
-     * @param name the name of the material object.
-     */
-    public MaterialObject(String lsid, String name) {
-        setLsid(lsid);
-        setName(name);
-    }
-
-    /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
-    public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Gets the cpasType.
-     *
-     * @return the cpasType.
-     */
-    @Column(name = "cpas_type")
-    @Length(max = CPAS_TYPE_LENGTH)
-    public String getCpasType() {
-        return this.cpasType;
-    }
-
-    /**
-     * Sets the cpasType.
-     *
-     * @param cpasType the cpasType to set.
-     */
-    public void setCpasType(String cpasType) {
-        this.cpasType = cpasType;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "materialobj_id")
-    public List<SimpleTypeValue> getProperties() {
-        return properties;
-    }
-
-    /**
-     * Sets the properties.
-     *
-     * @param properties the properties to set.
-     */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the experiment.
-     *
-     * @return the experiment.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_id")
-    public Experiment getExperiment() {
-        return this.experiment;
-    }
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set.
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-    /**
-     * Gets the protocol application.
-     *
-     * @return the protocol application.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "protapp_id")
-    public ProtocolApplication getProtocolApplication() {
-        return this.protocolApplication;
-    }
-
-    /**
-     * Sets the protocol application.
-     *
-     * @param protocolApplication the protocol application to set.
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        this.protocolApplication = protocolApplication;
-    }
-
-
+    private MaterialObject materialObject = new MaterialObject(null, null);
+    private Long experimentId;
+    private String successMessage = null;
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        if (getMaterialObject().getId() != null) {
+            setMaterialObject(es.getMaterialObjectById(getMaterialObject().getId()));
+        } else if (getExperimentId() != null) {
+            getMaterialObject().setExperiment(es.getExperimentById(getExperimentId()));
         }
-
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof MaterialObject)) {
-            return false;
-        }
-
-        MaterialObject mo = (MaterialObject) o;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder().append(getLsid(), mo.getLsid()).append(
-                getName(), mo.getName()).isEquals();
     }
 
     /**
-     * {@inheritDoc}
+     * loads the {@link MaterialObject}.
+     *
+     * @return the directive for the next action / page to be directed to
      */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).append(getName())
-                .toHashCode();
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Saves the MaterialObject.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String save() {
+        if (getMaterialObject().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                    .getString("materialObject.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
+                    "materialObject.update.success"));
+        }
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getMaterialObject());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * delete the materialObject.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("materialObject.delete.success");
+        setSuccessMessage(msg);
+        ProtExpressRegistry.getExperimentService().deleteMaterialObject(getMaterialObject());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * @return the materialObject.
+     */
+    @CustomValidator(type = "hibernate")
+    public MaterialObject getMaterialObject() {
+        return this.materialObject;
+    }
+
+    /**
+     * @param materialObject the materialObject to set
+     */
+    public void setMaterialObject(MaterialObject materialObject) {
+        this.materialObject = materialObject;
+    }
+
+    /**
+     * @param experimentId the experimentId to set
+     */
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
+    }
+
+    /**
+     * @return the experimentId
+     */
+    public Long getExperimentId() {
+        return this.experimentId;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

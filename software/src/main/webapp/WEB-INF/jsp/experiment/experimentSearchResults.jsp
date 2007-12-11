@@ -13,15 +13,19 @@
         <display:setProperty name="pagination.sort.param" value="experiments.sortCriterion" />
         <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
         <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
-        <display:column property="name" titleKey="experiment.name" sortable="true" href="${loadUrlBase}" paramId="experiment.id" paramProperty="id"  maxLength="20" maxWords="4"/>
+        <display:column property="name" titleKey="experiment.name" sortable="true" maxLength="20" maxWords="4"/>
         <display:column property="comments" titleKey="experiment.comments" sortable="true"  maxLength="20" maxWords="4"/>
         <display:column property="url" titleKey="experiment.url" sortable="true"  maxLength="20" maxWords="4"/>
 
         <display:column titleKey="actions" sortable="false">
-            <c:if test="${row.auditInfo.creator == currentUser.loginName}">
-                <c:url var="loadUrl" value="/experiment/management/load.action">
-                    <c:param name="experiment.id" value="${row.id}" />
-                </c:url>
+            <c:set var="isEditable" value="${row.auditInfo.creator == currentUser.loginName}" />
+            <c:url var="loadUrl" value="/experiment/management/load.action">
+                <c:param name="experiment.id" value="${row.id}" />
+            </c:url>
+            <c:if test="${!isEditable}">
+                <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.view.alt" />" /> <fmt:message key="view" /></a>
+            </c:if>
+            <c:if test="${isEditable}">
                 <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a>
                 <c:url var="deleteUrl" value="/experiment/management/delete.action">
                     <c:param name="experiment.id" value="${row.id}" />

@@ -221,5 +221,27 @@
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
         <!-- End ProtocolAction Actions -->
+
+        <!-- Material Object Actions -->
+        <action name="materialObject/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/materialObject/materialObjectForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/materialObject/materialObjectForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/materialObject/management/*/*"
+            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/materialObject/{2}.jsp</result>
+            <result name="success">/WEB-INF/jsp/materialObject/{2}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/materialObject/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="delete">
+            <result name="success" type="chain">ajax/experiment/management/load/materialObjects</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End ProtocolAction Actions -->
     </package>
 </struts>

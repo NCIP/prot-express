@@ -130,6 +130,7 @@ public class DataObject implements Serializable, Persistent {
     private String name;
     private String cpasType = "Data";
     private String dataFileURL;
+    private Experiment experiment;
     private ProtocolApplication protocolApplication;;
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
@@ -291,6 +292,27 @@ public class DataObject implements Serializable, Persistent {
      */
     public void setProtocolApplication(ProtocolApplication protocolApplication) {
         this.protocolApplication = protocolApplication;
+    }
+
+    /**
+     * Gets the experiment.
+     *
+     * @return the experiment.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(name = "experiment_id")
+    public Experiment getExperiment() {
+        return this.experiment;
+    }
+
+    /**
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set.
+     */
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
     }
 
     /**
