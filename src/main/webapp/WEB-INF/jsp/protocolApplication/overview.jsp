@@ -16,7 +16,7 @@
         <s:textfield name="protocolApplication.name" key="protocolApplication.name" size="40" tabindex="2" disabled="${isReadOnly}" />
         <s:textfield name="protocolApplication.actionSequence" key="protocolApplication.actionSequence" size="40" tabindex="3" disabled="${isReadOnly}" />
         <s:textfield name="protocolApplication.activityDate" key="protocolApplication.activityDate" size="40" tabindex="4" disabled="${isReadOnly}" />
-        <s:textfield name="protocolApplication.comments" key="protocolApplication.comments" size="40" tabindex="5" disabled="${isReadOnly}" />
+        <s:textarea name="protocolApplication.comments" key="protocolApplication.comments" rows="4" cols="37" tabindex="5" disabled="${isReadOnly}" />
         <c:if test="${protocolApplication.id == null}">
             <s:if test="fieldErrors.get('protocolApplication.protocol').size() > 0">
             <tr errorFor="overviewForm_protocolApplication_protocol">

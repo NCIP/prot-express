@@ -45,7 +45,7 @@
                     <tr>
                         <td><a href="${loadUrl}">${protocol.name}</a></td>
                         <td><fmt:formatDate dateStyle="short" value="${protocol.auditInfo.lastModifiedDate.time}"/></td>
-                        <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="Edit" /></a></td>
+                        <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a></td>
                     </tr>
                 </c:forEach>
             </s:else>
@@ -79,7 +79,7 @@
                     <tr>
                         <td><a href="${loadUrl}">${experiment.name}</a></td>
                         <td><fmt:formatDate dateStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}"/></td>
-                        <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="Edit" /></a></td>
+                        <td><a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a></td>
                     </tr>
                 </c:forEach>
             </s:else>

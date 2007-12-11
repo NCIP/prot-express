@@ -27,7 +27,7 @@
                     <s:hidden name="protocols.sortDirection" />
                     <s:hidden name="protocols.sortCriterion" />
                     <s:textfield name="searchParameters.name" key="protocol.name" size="40" tabindex="1" />
-                    <s:textfield name="searchParameters.description" key="protocol.description" size="40" tabindex="2" />
+                    <s:textarea name="searchParameters.description" key="protocol.description" rows="4" cols="37" tabindex="2" />
                     <s:select name="searchParameters.types" key="protocol.type"
                         list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName" headerKey=""
                         multiple="true" tabindex="3" />
