@@ -27,7 +27,7 @@
                 <s:hidden name="experiments.sortDirection" />
                 <s:hidden name="experiments.sortCriterion" />
                 <s:textfield name="searchParameters.name" key="experiment.name" size="40" tabindex="1" />
-                <s:textfield name="searchParameters.comments" key="experiment.comments" size="40" tabindex="2" />
+                <s:textarea name="searchParameters.comments" key="experiment.comments" rows="4" cols="37" tabindex="2" />
                 <s:submit value="%{getText('search')}" tabindex="3" />
             </div>
         </s:form>
