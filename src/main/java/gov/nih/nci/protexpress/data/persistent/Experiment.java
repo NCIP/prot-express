@@ -97,8 +97,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -368,10 +366,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      *
      * @return the inputMaterialObjects.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "exp_input_materials",
-            joinColumns = { @JoinColumn(name = "exp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "material_id") })
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<MaterialObject> getInputMaterialObjects() {
         return inputMaterialObjects;
     }
@@ -390,11 +385,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      *
      * @return the inputDataObjects.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "exp_input_dataobjs",
-            joinColumns = { @JoinColumn(name = "exp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "dataobj_id") })
-
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<DataObject> getInputDataObjects() {
         return inputDataObjects;
     }

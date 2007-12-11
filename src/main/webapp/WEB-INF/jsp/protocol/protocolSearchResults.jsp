@@ -13,15 +13,18 @@
         <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
         <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
         <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
-        <display:column property="name" titleKey="protocol.name" sortable="true" href="${loadUrlBase}" paramId="protocol.id" paramProperty="id" maxLength="20" maxWords="4"/>
+        <display:column property="name" titleKey="protocol.name" sortable="true" maxLength="20" maxWords="4"/>
         <display:column property="description" titleKey="protocol.description" sortable="true"  maxLength="20" maxWords="4"/>
         <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
-
         <display:column titleKey="actions" sortable="false" >
-            <c:if test="${row.auditInfo.creator == currentUser.loginName}">
-                <c:url var="loadUrl" value="/protocol/management/load.action">
-                    <c:param name="protocol.id" value="${row.id}" />
-                </c:url>
+            <c:set var="isEditable" value="${row.auditInfo.creator == currentUser.loginName}" />
+            <c:url var="loadUrl" value="/protocol/management/load.action">
+                <c:param name="protocol.id" value="${row.id}" />
+            </c:url>
+            <c:if test="${!isEditable}">
+                <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.view.alt" />" /> <fmt:message key="view" /></a>
+            </c:if>
+            <c:if test="${isEditable}">
                 <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a>
                 <c:url var="deleteUrl" value="/protocol/management/delete.action">
                     <c:param name="protocol.id" value="${row.id}" />
