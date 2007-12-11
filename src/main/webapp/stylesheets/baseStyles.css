@@ -697,9 +697,44 @@ A.import {
     color: #ccc
 }
 
+A.view {
+    margin: 0 auto;
+    display: block;
+    width: 5.5em;
+    height: 16px;
+    background: url("../images/ico_view.gif") no-repeat;
+}
+
+A.viewedit {
+    margin: 0 auto;
+    display: block;
+    width: 5.5em;
+    height: 16px;
+    background: url("../images/ico_view_edit.gif") no-repeat;
+}
+
 A.edit {
+    margin: 0 auto;
+    display: block;
+    width: 5.5em;
+    height: 16px;
     background: url("../images/ico_edit.gif") no-repeat;
-    padding-left: 19px
+}
+
+A.copy {
+    margin: 0 auto;
+    display: block;
+    width: 5.5em;
+    height: 16px;
+    background: url("../images/ico_copy.gif") no-repeat;
+}
+
+A.delete {
+    margin: 0 auto;
+    display: block;
+    width: 5.5em;
+    height: 16px;
+    background: url("../images/ico_delete.gif") no-repeat;
 }
 
 A.save {
@@ -717,6 +752,7 @@ A.cancel {
     height: 16px;
     background: url("../images/ico_cancel.gif") no-repeat;
 }
+
 
 SPAN.bar {
     padding: 0 3px
@@ -789,6 +825,7 @@ TABLE.searchresults {
     width: 99.9%;
     clear: both;
     background: #fff;
+    border: 1px solid #666;
 }
 
 .selectedtabbox TABLE.searchresults {
