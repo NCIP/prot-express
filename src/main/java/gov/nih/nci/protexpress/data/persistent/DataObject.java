@@ -106,7 +106,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
  * Class representing a Material object - a biological sample or a processed
@@ -279,7 +278,6 @@ public class DataObject implements Serializable, Persistent {
      * @return the protocol application.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
     @JoinColumn(name = "protapp_id")
     public ProtocolApplication getProtocolApplication() {
         return this.protocolApplication;
@@ -300,7 +298,6 @@ public class DataObject implements Serializable, Persistent {
      * @return the experiment.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
     @JoinColumn(name = "experiment_id")
     public Experiment getExperiment() {
         return this.experiment;
