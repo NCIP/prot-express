@@ -34,6 +34,10 @@
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
+        <c:url value="/ajax/experiment/management/load/dataObjects.action" var="dataObjectsUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
         <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="experimentRunsUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
@@ -50,6 +54,7 @@
         <fmt:message key="experiment.tabs.overview" var="overviewTitle" />
         <fmt:message key="experiment.tabs.protocolActions" var="protocolActionsTitle" />
         <fmt:message key="experiment.tabs.materialObjects" var="materialObjectsTitle" />
+        <fmt:message key="experiment.tabs.dataObjects" var="dataObjectsTitle" />
         <fmt:message key="experiment.tabs.experimentRuns" var="experimentRunsTitle" />
         <fmt:message key="experiment.tabs.contact" var="contactTitle" />
         <fmt:message key="experiment.tabs.export" var="exportTitle" />
@@ -59,6 +64,7 @@
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
             <ajax:tab caption="${protocolActionsTitle}" baseUrl="${protocolActionsUrl}" defaultTab="${param.initialTab == 'protocolActions'}" />
             <ajax:tab caption="${materialObjectsTitle}" baseUrl="${materialObjectsUrl}" defaultTab="${param.initialTab == 'materialObjects'}" />
+            <ajax:tab caption="${dataObjectsTitle}" baseUrl="${dataObjectsUrl}" defaultTab="${param.initialTab == 'dataObjects'}" />
             <ajax:tab caption="${experimentRunsTitle}" baseUrl="${experimentRunsUrl}" defaultTab="${param.initialTab == 'experimentRuns'}" />
             <ajax:tab caption="${contactTitle}" baseUrl="${contactUrl}" defaultTab="${param.initialTab == 'contact'}" />
             <ajax:tab caption="${exportTitle}" baseUrl="${exportUrl}" defaultTab="${param.initialTab == 'export'}" />

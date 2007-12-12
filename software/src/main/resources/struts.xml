@@ -222,7 +222,7 @@
         </action>
         <!-- End ProtocolAction Actions -->
 
-        <!-- Material Object Actions -->
+        <!-- MaterialObject Actions -->
         <action name="materialObject/management/*"
             class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/materialObject/materialObjectForm.jsp</result>
@@ -242,6 +242,28 @@
             <result name="success" type="chain">ajax/experiment/management/load/materialObjects</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
-        <!-- End ProtocolAction Actions -->
+        <!-- End MaterialObject Actions -->
+
+        <!-- DataObject Actions -->
+        <action name="dataObject/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/dataObject/dataObjectForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/dataObject/dataObjectForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/dataObject/management/*/*"
+            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/dataObject/{2}.jsp</result>
+            <result name="success">/WEB-INF/jsp/dataObject/{2}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/dataObject/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="delete">
+            <result name="success" type="chain">ajax/experiment/management/load/dataObjects</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End DataObject Actions -->
     </package>
 </struts>

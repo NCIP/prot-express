@@ -80,143 +80,122 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.dataobject;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.DataObject;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.MaterialObject;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.util.List;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
-import org.displaytag.properties.SortOrderEnum;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+
 
 /**
- * Service to handle the manipulation of experiments.
+ * @author Krishna Kanchinadam
  *
- * @author Scott Miller, Krishna Kanchinadam
  */
-public interface ExperimentService {
+public class DataObjectManagementAction extends ActionSupport implements Preparable {
+
+    private static final long serialVersionUID = 1L;
+    private DataObject dataObject = new DataObject(null, null);
+    private Long experimentId;
+    private String successMessage = null;
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of experiments that match the search
+     * {@inheritDoc}
      */
-    int countMatchingExperiments(ExperimentSearchParameters params);
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        if (getDataObject().getId() != null) {
+            setDataObject(es.getDataObjectById(getDataObject().getId()));
+        } else if (getExperimentId() != null) {
+            getDataObject().setExperiment(es.getExperimentById(getExperimentId()));
+        }
+    }
 
     /**
-     * Searches for experiments that match the given criteria.
+     * loads the {@link DataObject}.
      *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the experiments that match the search
+     * @return the directive for the next action / page to be directed to
      */
-    List<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
 
     /**
-     * Get the experiments the user has edited most recently.
+     * Saves the dataObject.
      *
-     * @param username the username of the user
-     * @param numberOfExperiments the number of experiments to return
-     * @return the list of {@link Experiment}
+     * @return the directive for the next action / page to be directed to
      */
-    List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
+    public String save() {
+        if (getDataObject().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                    .getString("dataObject.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
+                    "dataObject.update.success"));
+        }
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getDataObject());
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * Retrieve the experiment with the given identifier.
+     * delete the dataObject.
      *
-     * @param id the id of the experiment to retrive
-     * @return the {@link Experiment}
+     * @return the directive for the next action / page to be directed to
      */
-    Experiment getExperimentById(Long id);
+    @SkipValidation
+    public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("dataObject.delete.success");
+        setSuccessMessage(msg);
+        ProtExpressRegistry.getExperimentService().deleteDataObject(getDataObject());
+        return ActionSupport.SUCCESS;
+    }
 
     /**
-     * Retrieve the experiment with the given identifier.
-     *
-     * @param id the id of the experiment run.
-     * @return the {@link ExperimentRun}
+     * @return the dataObject.
      */
-    ExperimentRun getExperimentRunById(Long id);
+    @CustomValidator(type = "hibernate")
+    public DataObject getDataObject() {
+        return this.dataObject;
+    }
 
     /**
-     * Retrieve the protocol action with the given identifier.
-     *
-     * @param id the id of the protocol action.
-     * @return the {@link ProtocolAction}
+     * @param dataObject the dataObject to set
      */
-    ProtocolAction getProtocolActionById(Long id);
+    public void setDataObject(DataObject dataObject) {
+        this.dataObject = dataObject;
+    }
 
     /**
-     * Retrieve the material object with the given identifier.
-     *
-     * @param id the id of the material object.
-     * @return the {@link MaterialObject}
+     * @param experimentId the experimentId to set
      */
-    MaterialObject getMaterialObjectById(Long id);
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
+    }
 
     /**
-     * Retrieve the data object with the given identifier.
-     *
-     * @param id the id of the data object.
-     * @return the {@link DataObject}
+     * @return the experimentId
      */
-    DataObject getDataObjectById(Long id);
+    public Long getExperimentId() {
+        return this.experimentId;
+    }
 
     /**
-     * Retrieve the protocol application with the given id.
-     *
-     * @param id the identifier of the protocol application.
-     * @return the {@link ProtocolApplication}
+     * @return the successMessage
      */
-    ProtocolApplication getProtocolApplicationById(Long id);
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
 
     /**
-     * delete the given experiment.
-     *
-     * @param experiment the experiment to delete
+     * @param successMessage the successMessage to set
      */
-    void deleteExperiment(Experiment experiment);
-
-    /**
-     * delete the given experiment run.
-     *
-     * @param experimentRun the experiment run to delete.
-     */
-    void deleteExperimentRun(ExperimentRun experimentRun);
-
-    /**
-     * delete the given protocol action.
-     *
-     * @param protocolAction the protocol action to delete.
-     */
-    void deleteProtocolAction(ProtocolAction protocolAction);
-
-    /**
-     * delete the given material object.
-     *
-     * @param materialObject the material object to delete.
-     */
-    void deleteMaterialObject(MaterialObject materialObject);
-
-    /**
-     * delete the given data object.
-     *
-     * @param dataObject the data object to delete.
-     */
-    void deleteDataObject(DataObject dataObject);
-
-    /**
-     * delete the {@link ProtocolApplication}.
-     *
-     * @param protocolApplication the protocol application to delete
-     */
-    void deleteProtocolApplication(ProtocolApplication protocolApplication);
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
 }
