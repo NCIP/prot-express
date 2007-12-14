@@ -24,6 +24,7 @@
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="protocolAction.id" value="${protocolAction.id}" />
         </c:url>
+
         <fmt:message key="protocolAction.tabs.overview" var="overviewTitle" />
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox" postFunction="setSelectedTab">

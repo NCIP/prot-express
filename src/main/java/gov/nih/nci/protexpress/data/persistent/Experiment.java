@@ -140,8 +140,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
-    private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
-    private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
+    private List<InputOutputObject> inputOutputObjects = new ArrayList<InputOutputObject>();
     private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
     /**
@@ -362,41 +361,22 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the inputMaterialObjects.
+     * Gets the inputOutputObjects.
      *
-     * @return the inputMaterialObjects.
+     * @return the inputOutputObjects.
      */
     @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<MaterialObject> getInputMaterialObjects() {
-        return inputMaterialObjects;
+    public List<InputOutputObject> getInputOutputObjects() {
+        return inputOutputObjects;
     }
 
     /**
-     * Sets the inputMaterialObjects.
+     * Sets the inputOutputObjects.
      *
-     * @param inputMaterialObjects the inputMaterialObjects to set.
+     * @param inputOutputObjects the inputOutputObjects to set.
      */
-    protected void setInputMaterialObjects(List<MaterialObject> inputMaterialObjects) {
-        this.inputMaterialObjects = inputMaterialObjects;
-    }
-
-    /**
-     * Gets the inputDataObjects.
-     *
-     * @return the inputDataObjects.
-     */
-    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<DataObject> getInputDataObjects() {
-        return inputDataObjects;
-    }
-
-    /**
-     * Sets the inputDataObjects.
-     *
-     * @param inputDataObjects the inputDataObjects to set.
-     */
-    protected void setInputDataObjects(List<DataObject> inputDataObjects) {
-        this.inputDataObjects = inputDataObjects;
+    protected void setInputOutputObjects(List<InputOutputObject> inputOutputObjects) {
+        this.inputOutputObjects = inputOutputObjects;
     }
 
     /**

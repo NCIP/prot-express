@@ -83,6 +83,8 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -91,6 +93,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -116,6 +120,8 @@ public class ProtocolAction implements Serializable, Persistent {
     private Protocol protocol;
     private int sequenceNumber;
     private Experiment experiment;
+
+    private List<ProtocolAction> predecessors = new ArrayList<ProtocolAction>();
 
     /**
      * protected default constructor for hibernate only.
@@ -212,6 +218,29 @@ public class ProtocolAction implements Serializable, Persistent {
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
     }
+
+    /**
+     * Gets the predecessors.
+     *
+     * @return the predecessors.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "protaction_predecessor",
+            joinColumns = { @JoinColumn(name = "protaction_id") },
+            inverseJoinColumns = { @JoinColumn(name = "predecessor_id") })
+    public List<ProtocolAction> getPredecessors() {
+        return this.predecessors;
+    }
+
+    /**
+     * Sets the predecessors.
+     *
+     * @param predecessors the predecessors to set.
+     */
+    protected void setPredecessors(List<ProtocolAction> predecessors) {
+        this.predecessors = predecessors;
+    }
+
 
     /**
      * {@inheritDoc}

@@ -21,7 +21,7 @@
         <c:param name="cancelResult" value="${cancelResult}" />
     </c:url>
     <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="searchresults">
-        <display:table class="searchresults" cellspacing="0" defaultsort="2" excludedParams="ajax"
+        <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
             requestURI="${sortUrl}" list="${experiment.protocolActions}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
                 <display:column property="protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
