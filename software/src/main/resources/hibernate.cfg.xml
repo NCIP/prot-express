@@ -4,10 +4,9 @@
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <mapping class="gov.nih.nci.protexpress.data.persistent.DataObject" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.Experiment" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.ExperimentRun" />
-        <mapping class="gov.nih.nci.protexpress.data.persistent.MaterialObject" />
+        <mapping class="gov.nih.nci.protexpress.data.persistent.InputOutputObject" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.Person" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.Protocol" />
         <mapping class="gov.nih.nci.protexpress.data.persistent.ProtocolAction" />

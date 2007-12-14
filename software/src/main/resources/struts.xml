@@ -222,48 +222,26 @@
         </action>
         <!-- End ProtocolAction Actions -->
 
-        <!-- MaterialObject Actions -->
-        <action name="materialObject/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/materialObject/materialObjectForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/materialObject/materialObjectForm.jsp</result>
+        <!-- InputOutputObject Actions -->
+        <action name="ioObject/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.inputoutputobject.InputOutputObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/ioObject/ioObjectForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/ioObject/ioObjectForm.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/materialObject/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/materialObject/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/materialObject/{2}.jsp</result>
+        <action name="ajax/ioObject/management/*/*"
+            class="gov.nih.nci.protexpress.ui.actions.inputoutputobject.InputOutputObjectManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/ioObject/{2}.jsp</result>
+            <result name="success">/WEB-INF/jsp/ioObject/{2}.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/materialObject/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.materialobject.MaterialObjectManagementAction" method="delete">
-            <result name="success" type="chain">ajax/experiment/management/load/materialObjects</result>
+        <action name="ajax/ioObject/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.inputoutputobject.InputOutputObjectManagementAction" method="delete">
+            <result name="success" type="chain">ajax/experiment/management/load/ioObjects</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
-        <!-- End MaterialObject Actions -->
-
-        <!-- DataObject Actions -->
-        <action name="dataObject/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/dataObject/dataObjectForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/dataObject/dataObjectForm.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/dataObject/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/dataObject/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/dataObject/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/dataObject/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.dataobject.DataObjectManagementAction" method="delete">
-            <result name="success" type="chain">ajax/experiment/management/load/dataObjects</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End DataObject Actions -->
+        <!-- End InputOutputObject Actions -->
     </package>
 </struts>

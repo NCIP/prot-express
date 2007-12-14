@@ -30,7 +30,11 @@
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
-        <c:url value="/ajax/experiment/management/load/materialObjects.action" var="materialObjectsUrl">
+        <c:url value="/ajax/experiment/management/load/ioObjects.action" var="ioObjectsUrl">
+            <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+         <c:url value="/ajax/experiment/management/load/materialObjects.action" var="materialObjectsUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
@@ -53,6 +57,7 @@
 
         <fmt:message key="experiment.tabs.overview" var="overviewTitle" />
         <fmt:message key="experiment.tabs.protocolActions" var="protocolActionsTitle" />
+        <fmt:message key="experiment.tabs.ioObjects" var="ioObjectsTitle" />
         <fmt:message key="experiment.tabs.materialObjects" var="materialObjectsTitle" />
         <fmt:message key="experiment.tabs.dataObjects" var="dataObjectsTitle" />
         <fmt:message key="experiment.tabs.experimentRuns" var="experimentRunsTitle" />
@@ -63,6 +68,7 @@
                 postFunction="setSelectedTab" preFunction="showLoadingText">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
             <ajax:tab caption="${protocolActionsTitle}" baseUrl="${protocolActionsUrl}" defaultTab="${param.initialTab == 'protocolActions'}" />
+            <ajax:tab caption="${ioObjectsTitle}" baseUrl="${ioObjectsUrl}" defaultTab="${param.initialTab == 'ioObjects'}" />
             <ajax:tab caption="${materialObjectsTitle}" baseUrl="${materialObjectsUrl}" defaultTab="${param.initialTab == 'materialObjects'}" />
             <ajax:tab caption="${dataObjectsTitle}" baseUrl="${dataObjectsUrl}" defaultTab="${param.initialTab == 'dataObjects'}" />
             <ajax:tab caption="${experimentRunsTitle}" baseUrl="${experimentRunsUrl}" defaultTab="${param.initialTab == 'experimentRuns'}" />

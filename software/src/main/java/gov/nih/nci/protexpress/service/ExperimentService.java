@@ -82,10 +82,9 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.DataObject;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.MaterialObject;
+import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
@@ -155,20 +154,12 @@ public interface ExperimentService {
     ProtocolAction getProtocolActionById(Long id);
 
     /**
-     * Retrieve the material object with the given identifier.
+     * Retrieve the input output object with the given identifier.
      *
-     * @param id the id of the material object.
-     * @return the {@link MaterialObject}
+     * @param id the id of the input output object.
+     * @return the {@link InputOutputObject}
      */
-    MaterialObject getMaterialObjectById(Long id);
-
-    /**
-     * Retrieve the data object with the given identifier.
-     *
-     * @param id the id of the data object.
-     * @return the {@link DataObject}
-     */
-    DataObject getDataObjectById(Long id);
+    InputOutputObject getInputOutputObjectById(Long id);
 
     /**
      * Retrieve the protocol application with the given id.
@@ -200,18 +191,11 @@ public interface ExperimentService {
     void deleteProtocolAction(ProtocolAction protocolAction);
 
     /**
-     * delete the given material object.
+     * delete the given input output object.
      *
-     * @param materialObject the material object to delete.
+     * @param inputOutputObject the input output object to delete.
      */
-    void deleteMaterialObject(MaterialObject materialObject);
-
-    /**
-     * delete the given data object.
-     *
-     * @param dataObject the data object to delete.
-     */
-    void deleteDataObject(DataObject dataObject);
+    void deleteInputOutputObject(InputOutputObject inputOutputObject);
 
     /**
      * delete the {@link ProtocolApplication}.

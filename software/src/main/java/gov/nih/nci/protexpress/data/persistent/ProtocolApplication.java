@@ -143,11 +143,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
     private AuditInfo auditInfo = new AuditInfo();
 
-    private List<MaterialObject> inputMaterialObjects = new ArrayList<MaterialObject>();
-    private List<DataObject> inputDataObjects = new ArrayList<DataObject>();
-    private List<MaterialObject> outputMaterialObjects = new ArrayList<MaterialObject>();
-    private List<DataObject> outputDataObjects = new ArrayList<DataObject>();
-
     /**
      * protected default constructor for hibernate only.
      */
@@ -375,89 +370,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Gets the inputMaterialObjects.
-     *
-     * @return the inputMaterialObjects.
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_input_materials",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "material_id") })
-    public List<MaterialObject> getInputMaterialObjects() {
-        return inputMaterialObjects;
-    }
-
-    /**
-     * Sets the inputMaterialObjects.
-     *
-     * @param inputMaterialObjects the inputMaterialObjects to set.
-     */
-    protected void setInputMaterialObjects(List<MaterialObject> inputMaterialObjects) {
-        this.inputMaterialObjects = inputMaterialObjects;
-    }
-
-    /**
-     * Gets the inputDataObjects.
-     *
-     * @return the inputDataObjects.
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_input_dataobjs",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "dataobj_id") })
-
-    public List<DataObject> getInputDataObjects() {
-        return inputDataObjects;
-    }
-
-    /**
-     * Sets the inputDataObjects.
-     *
-     * @param inputDataObjects the inputDataObjects to set.
-     */
-    protected void setInputDataObjects(List<DataObject> inputDataObjects) {
-        this.inputDataObjects = inputDataObjects;
-    }
-
-    /**
-     * Gets the outputMaterialObjects.
-     *
-     * @return the outputMaterialObjects.
-     */
-    @OneToMany(mappedBy = "protocolApplication", fetch = FetchType.LAZY)
-    public List<MaterialObject> getOutputMaterialObjects() {
-        return outputMaterialObjects;
-    }
-
-    /**
-     * Sets the outputMaterialObjects.
-     *
-     * @param outputMaterialObjects the outputMaterialObjects to set.
-     */
-    protected void setOutputMaterialObjects(List<MaterialObject> outputMaterialObjects) {
-        this.outputMaterialObjects = outputMaterialObjects;
-    }
-
-    /**
-     * Gets the outputDataObjects.
-     *
-     * @return the outputDataObjects.
-     */
-    @OneToMany(mappedBy = "protocolApplication", fetch = FetchType.LAZY)
-    public List<DataObject> getOutputDataObjects() {
-        return outputDataObjects;
-    }
-
-    /**
-     * Sets the outputDataObjects.
-     *
-     * @param outputDataObjects the outputDataObjects to set.
-     */
-    protected void setOutputDataObjects(List<DataObject> outputDataObjects) {
-        this.outputDataObjects = outputDataObjects;
     }
 
     /**
