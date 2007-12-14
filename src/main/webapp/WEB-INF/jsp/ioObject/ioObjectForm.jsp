@@ -10,13 +10,13 @@
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
-<h1><fmt:message key="experiment.ioObjects"><fmt:param value="${inputOutputObject.experiment.name}" /></fmt:message></h1>
+<h1><fmt:message key="experiment.inputOutputObjects"><fmt:param value="${inputOutputObject.experiment.name}" /></fmt:message></h1>
 <div class="box">
     <s:if test="inputOutputObject == null || inputOutputObject.id == null">
-        <h2><fmt:message key="ioObject.add" /></h2>
+        <h2><fmt:message key="inputOutputObject.add" /></h2>
     </s:if>
     <s:else>
-       <h2><fmt:message key="ioObject.edit" /></h2>
+       <h2><fmt:message key="inputOutputObject.edit" /></h2>
     </s:else>
 
     <s:if test="inputOutputObject != null && inputOutputObject.id != null">
@@ -24,7 +24,7 @@
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="inputOutputObject.id" value="${inputOutputObject.id}" />
         </c:url>
-        <fmt:message key="ioObject.tabs.overview" var="overviewTitle" />
+        <fmt:message key="inputOutputObject.tabs.overview" var="overviewTitle" />
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox" postFunction="setSelectedTab">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
@@ -36,7 +36,7 @@
         </c:url>
         <div id="tabbed">
             <ul>
-                <li class="active"><a href="${createIOObjectUrl}"><fmt:message key="ioObject.tabs.overview" /></a></li>
+                <li class="active"><a href="${createIOObjectUrl}"><fmt:message key="inputOutputObject.tabs.overview" /></a></li>
             </ul>
         </div>
         <div id="selectedtabbox" class="selectedtabbox">

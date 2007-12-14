@@ -134,10 +134,10 @@ public class InputOutputObjectManagementAction extends ActionSupport implements 
     public String save() {
         if (getInputOutputObject().getId() == null) {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
-                    .getString("ioObject.save.success"));
+                    .getString("inputOutputObject.save.success"));
         } else {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
-                    "ioObject.update.success"));
+                    "inputOutputObject.update.success"));
         }
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
         return ActionSupport.SUCCESS;
@@ -150,7 +150,7 @@ public class InputOutputObjectManagementAction extends ActionSupport implements 
      */
     @SkipValidation
     public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("ioObject.delete.success");
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("inputOutputObject.delete.success");
         setSuccessMessage(msg);
         ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInputOutputObject());
         return ActionSupport.SUCCESS;
