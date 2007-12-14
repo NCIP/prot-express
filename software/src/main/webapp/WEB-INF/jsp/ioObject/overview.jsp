@@ -11,14 +11,14 @@
     <c:set var="formAction" value="ioObject/management/save"/>
 </s:else>
 
-<protExpress:tabPane paneTitleKey="ioObject.overview">
+<protExpress:tabPane paneTitleKey="inputOutputObject.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="inputOutputObject.lsid" key="ioObject.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
-        <s:textfield name="inputOutputObject.name" key="ioObject.name" size="40" tabindex="2" disabled="${isReadOnly}" />
-        <s:radio name="inputOutputObject.cpasType" key="ioObject.cpasType"
+        <s:textfield name="inputOutputObject.lsid" key="inputOutputObject.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
+        <s:textfield name="inputOutputObject.name" key="inputOutputObject.name" size="40" tabindex="2" disabled="${isReadOnly}" />
+        <s:radio name="inputOutputObject.cpasType" key="inputOutputObject.cpasType"
             list="@gov.nih.nci.protexpress.data.persistent.InputOutputObjectType@values()" listValue="displayName"
             tabindex="3" disabled="${isReadOnly}" required="true"/>
-        <s:textfield name="inputOutputObject.dataFileURL" key="ioObject.dataFileUrl" size="40" tabindex="4" disabled="${isReadOnly}" />
+        <s:textfield name="inputOutputObject.dataFileURL" key="inputOutputObject.dataFileUrl" size="40" tabindex="4" disabled="${isReadOnly}" />
         <s:hidden name="inputOutputObject.id" />
         <s:hidden name="experimentId" />
     </s:form>

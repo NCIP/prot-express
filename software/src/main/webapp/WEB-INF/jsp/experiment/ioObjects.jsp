@@ -5,12 +5,12 @@
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <c:set var="isReadOnly" value="${experiment.id != null && experiment.auditInfo.creator != currentUser.loginName}" />
-<protExpress:tabPane paneTitleKey="experiment.tabs.ioObjects" submittingPaneMessageKey="deleting" ignoreSuccessMessage="true">
+<protExpress:tabPane paneTitleKey="experiment.tabs.inputOutputObjects" submittingPaneMessageKey="deleting" ignoreSuccessMessage="true">
     <div class="addNewLink">
         <c:url var="createInputOutputObjectUrl" value="/ioObject/management/load.action">
             <c:param name="experimentId" value="${experiment.id}" />
         </c:url>
-        <a href="${createInputOutputObjectUrl}" class="add"><fmt:message key="ioObject.add" /></a>
+        <a href="${createInputOutputObjectUrl}" class="add"><fmt:message key="inputOutputObject.add" /></a>
     </div>
     <c:if test="${not empty successMessage}">
         <div class="confirm_msg">${successMessage}</div>
@@ -24,9 +24,9 @@
         <display:table class="searchresults" cellspacing="0" defaultsort="2" excludedParams="ajax"
             requestURI="${sortUrl}" list="${experiment.inputOutputObjects}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
-            <display:column property="name" titleKey="ioObject.name" sortable="true" />
-            <display:column property="cpasType.displayName" titleKey="ioObject.cpasType" sortable="false" />
-            <display:column property="dataFileURL" titleKey="ioObject.dataFileUrl" sortable="false" />
+            <display:column property="name" titleKey="inputOutputObject.name" sortable="true" />
+            <display:column property="cpasType.displayName" titleKey="inputOutputObject.cpasType" sortable="false" />
+            <display:column property="dataFileURL" titleKey="inputOutputObject.dataFileUrl" sortable="false" />
             <display:column titleKey="actions" sortable="false">
                 <c:url var="loadUrl" value="/ioObject/management/load.action">
                     <c:param name="inputOutputObject.id" value="${row.id}" />
