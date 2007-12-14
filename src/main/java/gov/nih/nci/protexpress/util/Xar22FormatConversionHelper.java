@@ -272,16 +272,6 @@ public class Xar22FormatConversionHelper {
         List<MaterialBaseType> xarMaterialBaseTypes = experimentArchive.getStartingInputDefinitions().getMaterial();
         List<DataBaseType> xarDataBaseTypes = experimentArchive.getStartingInputDefinitions().getData();
 
-        for (Experiment exp : experiments) {
-            if (xarMaterialBaseTypes != null) {
-                for (MaterialBaseType xarMaterialBaseType : xarMaterialBaseTypes) {
-                }
-            }
-            if (xarDataBaseTypes != null) {
-                for (DataBaseType xarDataBaseType : xarDataBaseTypes) {
-                }
-            }
-        }
     }
 
     /**
