@@ -94,11 +94,9 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
-import gov.nih.nci.protexpress.xml.xar2_2.DataBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
-import gov.nih.nci.protexpress.xml.xar2_2.MaterialBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
 import gov.nih.nci.protexpress.xml.xar2_2.PropertyCollectionType;
 import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionSetType;
@@ -148,7 +146,6 @@ public class Xar22FormatConversionHelper {
      */
     public List<Experiment> parseExperimentArchiveData(ExperimentArchiveType experimentArchive) {
         getExperimentList(experimentArchive);
-        setStartingInputDefinitions(experimentArchive);
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
         setProtocolActionDefinitions(experimentArchive);
@@ -261,17 +258,6 @@ public class Xar22FormatConversionHelper {
             }
         }
         return experiment;
-    }
-
-    /**
-     * Given a XAR 2.2 ExperimentArchiveType, sets the input data and material objects on the experiments.
-     *
-     * @param experimentArchive the experiment archive
-     */
-    private void setStartingInputDefinitions(ExperimentArchiveType experimentArchive) {
-        List<MaterialBaseType> xarMaterialBaseTypes = experimentArchive.getStartingInputDefinitions().getMaterial();
-        List<DataBaseType> xarDataBaseTypes = experimentArchive.getStartingInputDefinitions().getData();
-
     }
 
     /**
