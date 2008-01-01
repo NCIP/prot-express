@@ -389,7 +389,7 @@
                     <check>
                         <haltOnFailure>true</haltOnFailure>
                         <totalBranchRate>80</totalBranchRate>
-                        <totalLineRate>90</totalLineRate>
+                        <totalLineRate>89</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>

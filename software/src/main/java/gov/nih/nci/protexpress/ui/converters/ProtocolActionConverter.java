@@ -80,115 +80,38 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolaction.test;
+package gov.nih.nci.protexpress.ui.converters;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction;
+import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.io.ByteArrayInputStream;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.ActionValidatorManager;
-import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
+import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
+ * Type converter to handle converting to a Calendar.
  * @author Krishna Kanchinadam
  *
  */
-public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    ProtocolActionManagementAction action;
-    ProtocolAction protocolAction;
-    Experiment experiment;
-    Protocol protocol;
+public class ProtocolActionConverter extends StrutsTypeConverter {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object convertFromString(Map context, String[] values, Class toClass) {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        ProtocolAction protAction = es.getProtocolActionById(Long.valueOf(values[0]));
+        return protAction;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        this.action = new ProtocolActionManagementAction();
-
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
-        this.theSession.save(this.protocol);
-
-        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
-        experiment.setComments("Description - Test Experiment 1");
-        experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(experiment);
-
-        this.theSession.flush();
-        this.theSession.clear();
-
-        ProtocolAction protAction1 = new ProtocolAction(this.protocol, 1);
-        ProtocolAction protAction2 = new ProtocolAction(this.protocol, 2);
-        protAction1.setExperiment(experiment);
-        protAction2.setExperiment(experiment);
-        this.theSession.saveOrUpdate(protAction1);
-        this.theSession.saveOrUpdate(protAction2);
-
-        this.protocolAction = new ProtocolAction(this.protocol, 3);
-        this.protocolAction.setExperiment(experiment);
-        this.protocolAction.getPredecessors().add(protAction1);
-        this.protocolAction.getPredecessors().add(protAction2);
-    }
-
-    public void testLoadByExperimentId() throws Exception {
-        this.action.setExperimentId(this.experiment.getId());
-        this.action.setProtocolId(this.protocol.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.INPUT, this.action.load());
-        assertEquals(this.experiment, this.action.getProtocolAction().getExperiment());
-        assertEquals(this.protocol, this.action.getProtocolAction().getProtocol());
-    }
-
-    public void testAddAndDeleteProtocolAction() throws Exception {
-        this.action.setProtocolAction(this.protocolAction);
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Protocol Action successfully created.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolActionManagementAction();
-        this.action.getProtocolAction().setId(this.protocolAction.getId());
-        this.action.prepare();
-        this.action.getProtocolAction().setSequenceNumber(3);
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Protocol Action successfully updated.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolActionManagementAction();
-        this.action.getProtocolAction().setId(this.protocolAction.getId());
-        this.action.prepare();
-        assertEquals("success", this.action.delete());
-        assertEquals("Protocol Action successfully deleted.", this.action.getSuccessMessage());
-    }
-
-    public void testRetrieveProtocols() throws Exception {
-        this.action.setProtocolName("test");
-        assertEquals("xmlProtocolList", this.action.retrieveProtocols());
-        assertEquals(1, this.action.getProtocols().size());
-        ByteArrayInputStream is = (ByteArrayInputStream) this.action.getInputStream();
-        byte[] buffer = new byte[is.available()];
-        String xmlBuffer = new String();
-        while(is.read(buffer) != -1) {
-            xmlBuffer += new String(buffer, "UTF-8");
-        }
-        assertTrue(StringUtils.contains(xmlBuffer, "test"));
-    }
-
-    public void testValidate() throws Exception {
-        this.action.setProtocolName("test");
-        this.action.setProtocolAction(this.protocolAction);
-        this.action.getProtocolAction().setProtocol(null);
-        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(this.action, null);
-        this.action.validate();
-        assertEquals(1, this.action.getProtocols().size());
+    public String convertToString(Map context, Object o) {
+        ProtocolAction protAction = (ProtocolAction) o;
+        return protAction.getId().toString();
     }
 }

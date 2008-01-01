@@ -119,7 +119,7 @@ public final class ProtExpressRegistry {
     private ProtExpressRegistry() {
         try {
             setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
-            //this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
+            this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

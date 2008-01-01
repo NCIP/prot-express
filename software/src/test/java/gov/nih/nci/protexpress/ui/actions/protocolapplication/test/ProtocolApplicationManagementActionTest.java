@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.ui.actions.protocolapplication.test;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
@@ -108,6 +109,7 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
     ProtocolApplication protocolApplication;
     ExperimentRun experimentRun;
     Protocol protocol;
+    ProtocolAction protocolAction;
 
     /**
      * {@inheritDoc}
@@ -119,6 +121,9 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
 
         this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
         this.theSession.save(this.protocol);
+
+        this.protocolAction = new ProtocolAction(this.protocol, 1);
+        this.theSession.save(this.protocolAction);
 
         Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
@@ -136,16 +141,17 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.theSession.flush();
         this.theSession.clear();
 
-        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", 1, Calendar.getInstance(), this.experimentRun, this.protocol);
+        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
     }
 
     public void testLoadByExperimentRunId() throws Exception {
         this.action.setExperimentRunId(this.experimentRun.getId());
-        this.action.setProtocolId(this.protocol.getId());
+        this.action.setProtocolActionId(this.protocolAction.getId());
         this.action.prepare();
         assertEquals(ActionSupport.INPUT, this.action.load());
         assertEquals(this.experimentRun, this.action.getProtocolApplication().getExperimentRun());
-        assertEquals(this.protocol, this.action.getProtocolApplication().getProtocol());
+        assertEquals(this.protocolAction, this.action.getProtocolApplication().getProtocolAction());
+        assertEquals(this.protocol, this.action.getProtocolApplication().getProtocolAction().getProtocol());
     }
 
     public void testAddAndDeleteProtocolApplication() throws Exception {
@@ -165,28 +171,5 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.action.prepare();
         assertEquals("success", this.action.delete());
         assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
-    }
-
-    public void testRetrieveProtocols() throws Exception {
-        this.action.setProtocolName("test");
-        assertEquals("xmlProtocolList", this.action.retrieveProtocols());
-        assertEquals(1, this.action.getProtocols().size());
-        ByteArrayInputStream is = (ByteArrayInputStream) this.action.getInputStream();
-        byte[] buffer = new byte[is.available()];
-        String xmlBuffer = new String();
-        while(is.read(buffer) != -1) {
-            xmlBuffer += new String(buffer, "UTF-8");
-        }
-        assertTrue(StringUtils.contains(xmlBuffer, "test"));
-    }
-
-    public void testValidate() throws Exception {
-        this.action.setProtocolName("test");
-        this.action.setProtocolApplication(this.protocolApplication);
-        this.action.getProtocolApplication().setProtocol(null);
-        ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
-        avm.validate(this.action, null);
-        this.action.validate();
-        assertEquals(1, this.action.getProtocols().size());
     }
 }

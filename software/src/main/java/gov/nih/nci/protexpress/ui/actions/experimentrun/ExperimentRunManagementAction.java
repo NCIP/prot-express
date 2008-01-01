@@ -84,9 +84,13 @@ package gov.nih.nci.protexpress.ui.actions.experimentrun;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -106,6 +110,8 @@ public class ExperimentRunManagementAction extends ActionSupport implements Prep
     private Long experimentId;
     private String successMessage = null;
 
+    private List<ProtocolAction> protocolsToApply = new ArrayList<ProtocolAction>();
+
     /**
      * {@inheritDoc}
      */
@@ -115,6 +121,10 @@ public class ExperimentRunManagementAction extends ActionSupport implements Prep
             setExperimentRun(es.getExperimentRunById(getExperimentRun().getId()));
         } else if (getExperimentId() != null) {
             getExperimentRun().setExperiment(es.getExperimentById(getExperimentId()));
+        }
+
+        if (getExperimentRun().getExperiment() != null) {
+            setProtocolsToApply();
         }
     }
 
@@ -199,5 +209,50 @@ public class ExperimentRunManagementAction extends ActionSupport implements Prep
      */
     public void setSuccessMessage(String successMessage) {
         this.successMessage = successMessage;
+    }
+
+    /**
+     * Gets the protocolsToApply.
+     *
+     * @return the protocolsToApply.
+     */
+    public List<ProtocolAction> getProtocolsToApply() {
+        return protocolsToApply;
+    }
+
+    /**
+     * Sets the protocolsToApply.
+     *
+     */
+    private void setProtocolsToApply() {
+        List<ProtocolAction> protocolActions = getExperimentRun().getExperiment().getProtocolActions();
+        if ((protocolActions != null) && (protocolActions.size() > 0)) {
+            List<ProtocolApplication> protocolApplications = getExperimentRun().getProtocolApplications();
+            for (ProtocolAction protAction : protocolActions) {
+                if (!isProtocolApplied(protAction, protocolApplications)) {
+                    this.getProtocolsToApply().add(protAction);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns a boolean value that determines if a protocol has been applied or not.
+     *
+     * @param protAction the protocol action to check.
+     * @param protocolApplications list of applied protocols.
+     */
+    private boolean isProtocolApplied(ProtocolAction protAction, List<ProtocolApplication> protocolApplications) {
+        boolean isApplied = false;
+        for (ProtocolApplication protApp : protocolApplications) {
+            ProtocolAction p1 = protApp.getProtocolAction();
+            boolean flag1 = protAction.equals(p1);
+            boolean flag2 = protAction.getProtocol().equals(p1.getProtocol());
+            boolean flag3 = protAction.getSequenceNumber() == p1.getSequenceNumber();
+            if (flag1 && flag2 && flag3) {
+                isApplied = true;
+            }
+        }
+        return isApplied;
     }
 }

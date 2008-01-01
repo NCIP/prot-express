@@ -98,6 +98,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -132,14 +134,19 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private Long id;
     private String lsid;
     private String name;
-    private int actionSequence;
     private Calendar activityDate;
     private String comments;
     private ExperimentRun experimentRun;
-    private Protocol protocol;
+    private ProtocolAction protocolAction;
     private ProtocolParameters parameters = new ProtocolParameters();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
     private AuditInfo auditInfo = new AuditInfo();
+
+
+    private List<InputOutputObject> inputObjects = new ArrayList<InputOutputObject>();
+
+
+    private List<InputOutputObject> outputObjects = new ArrayList<InputOutputObject>();
 
     /**
      * protected default constructor for hibernate only.
@@ -152,19 +159,17 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @param lsid the lsid of the protocol application
      * @param name the name of the protocol application
-     * @param actionSequence the action sequence
      * @param activityDate the activity date
      * @param expRun the experiment run
-     * @param protocol the protocol being applied
+     * @param protocolAction the protocol action being applied
      */
-    public ProtocolApplication(String lsid, String name, int actionSequence, Calendar activityDate,
-            ExperimentRun expRun, Protocol protocol) {
+    public ProtocolApplication(String lsid, String name, Calendar activityDate,
+            ExperimentRun expRun, ProtocolAction protocolAction) {
         setLsid(lsid);
         setName(name);
-        setActionSequence(actionSequence);
         setActivityDate(activityDate);
         setExperimentRun(expRun);
-        setProtocol(protocol);
+        setProtocolAction(protocolAction);
     }
 
     /**
@@ -229,26 +234,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the actionSequence.
-     *
-     * @return the actionSequence
-     */
-    @Column(name = "action_sequence")
-    @NotNull
-    public int getActionSequence() {
-        return this.actionSequence;
-    }
-
-    /**
-     * Sets the actionSequence.
-     *
-     * @param actionSequence the actionSequence to set
-     */
-    public void setActionSequence(int actionSequence) {
-        this.actionSequence = actionSequence;
-    }
-
-    /**
      * Gets the activityDate.
      *
      * @return the activityDate
@@ -290,24 +275,24 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the protocol.
+     * Gets the protocol action.
      *
-     * @return the protocol.
+     * @return the protocol action.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
-    @JoinColumn(name = "protocol_id")
-    public Protocol getProtocol() {
-        return this.protocol;
+    @JoinColumn(name = "prot_action_id")
+    public ProtocolAction getProtocolAction() {
+        return this.protocolAction;
     }
 
     /**
-     * Sets the protocol.
+     * Sets the protocol action.
      *
-     * @param protocol the protocol to set.
+     * @param protocolAction the protocolAction to set.
      */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
+    public void setProtocolAction(ProtocolAction protocolAction) {
+        this.protocolAction = protocolAction;
     }
 
     /**
@@ -368,6 +353,50 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     protected void setProperties(List<SimpleTypeValue> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Gets the inputObjects.
+     *
+     * @return the inputObjects.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "protapp_inputs",
+            joinColumns = { @JoinColumn(name = "protapp_id") },
+            inverseJoinColumns = { @JoinColumn(name = "input_id") })
+    public List<InputOutputObject> getInputObjects() {
+        return inputObjects;
+    }
+
+    /**
+     * Sets the inputObjects.
+     *
+     * @param inputObjects the inputObjects to set.
+     */
+    protected void setInputObjects(List<InputOutputObject> inputObjects) {
+        this.inputObjects = inputObjects;
+    }
+
+    /**
+     * Gets the outputObjects.
+     *
+     * @return the outputObjects.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "protapp_outputs",
+            joinColumns = { @JoinColumn(name = "protapp_id") },
+            inverseJoinColumns = { @JoinColumn(name = "output_id") })
+    public List<InputOutputObject> getOutputObjects() {
+        return outputObjects;
+    }
+
+    /**
+     * Sets the outputObjects.
+     *
+     * @param outputObjects the outputObjects to set.
+     */
+    protected void setOutputObjects(List<InputOutputObject> outputObjects) {
+        this.outputObjects = outputObjects;
     }
 
     /**

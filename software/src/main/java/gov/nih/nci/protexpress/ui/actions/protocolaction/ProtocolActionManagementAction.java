@@ -115,6 +115,7 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
     private Long protocolId;
     private String successMessage = null;
 
+    private List<ProtocolAction> potentialPredecessors = null;
     private List<Protocol> protocols = new ArrayList<Protocol>();
     private String protocolName;
 
@@ -125,6 +126,7 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
         ExperimentService es = ProtExpressRegistry.getExperimentService();
         if (getProtocolAction().getId() != null) {
             setProtocolAction(es.getProtocolActionById(getProtocolAction().getId()));
+            setPotentialPredecessors();
         } else if (getExperimentId() != null) {
             getProtocolAction().setExperiment(es.getExperimentById(getExperimentId()));
         }
@@ -158,6 +160,11 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
                     "protocolAction.update.success"));
         }
+
+        if (this.potentialPredecessors != null) {
+            getProtocolAction().getPredecessors().add(this.potentialPredecessors.get(0));
+        }
+
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolAction());
         return ActionSupport.SUCCESS;
     }
@@ -295,5 +302,39 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
         this.protocols = protocols;
     }
 
+    /**
+     * Gets the potentialPredecessors.
+     *
+     * @return the potentialPredecessors.
+     */
+    public List<ProtocolAction> getPotentialPredecessors() {
+        return potentialPredecessors;
+    }
 
+    /**
+     * Sets the potentialPredecessors.
+     *
+     */
+    private void setPotentialPredecessors() {
+        if ((this.protocolAction != null) && (this.protocolAction.getExperiment() != null)) {
+            List<ProtocolAction> expProtocolActions = this.protocolAction.getExperiment().getProtocolActions();
+            for (ProtocolAction predecessor : expProtocolActions) {
+                if (predecessor.getSequenceNumber() < this.protocolAction.getSequenceNumber()) {
+                    if (this.potentialPredecessors == null) {
+                        this.potentialPredecessors = new ArrayList<ProtocolAction>();
+                    }
+                    this.potentialPredecessors.add(predecessor);
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets the potentialPredecessors.
+     *
+     * @param potentialPredecessors the potentialPredecessors to set.
+     */
+    public void setPotentialPredecessors(List<ProtocolAction> potentialPredecessors) {
+        this.potentialPredecessors = potentialPredecessors;
+    }
 }
