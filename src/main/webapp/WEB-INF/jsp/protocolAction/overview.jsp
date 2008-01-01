@@ -19,18 +19,26 @@
                 <td class="tdLabel"><s:label cssClass="label" name="protocolAction.protocol.name" key="protocolAction.protocolName" ></s:label></td>
             </tr>
             <tr>
-                <td class="tdLabel"><s:label cssClass="label" name="protocolAction.protocol.type.displayName" key="protocolAction.protocolType" ></s:label></label></td>
+                <td class="tdLabel"><s:label cssClass="label" name="protocolAction.protocol.type.displayName" key="protocolAction.protocolType" ></s:label></td>
             </tr>
             <tr>
-                <s:select
-                    name="protocolAction.predecessors"
-                    key="protocolAction.predecessors"
-                    list="protocolAction.experiment.protocolActions"
-                    listValue="protocol.name"
-                    listKey="id"
-                    headerKey=""
-                    multiple="true"
-                    tabindex="3" />
+                <c:choose>
+                    <c:when test="${potentialPredecessors != null}">
+                        <s:select
+                        name="protocolAction.predecessors"
+                        key="protocolAction.potentialPredecessors"
+                        list="potentialPredecessors"
+                        listKey="id"
+                        listValue="id"
+                        headerKey=""
+                        multiple="true"
+                        tabindex="3" />
+                    </c:when>
+                    <c:otherwise>
+                        <td colspan="2"><fmt:message key="protocolAction.noPredecessors" /></td>
+                    </c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
         </c:if>
         <c:if test="${protocolAction.id == null}">

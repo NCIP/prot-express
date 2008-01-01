@@ -22,6 +22,7 @@
     <s:if test="inputOutputObject != null && inputOutputObject.id != null">
         <c:url value="/ajax/ioObject/management/load/overview.action" var="overviewUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
+            <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
             <c:param name="inputOutputObject.id" value="${inputOutputObject.id}" />
         </c:url>
         <fmt:message key="inputOutputObject.tabs.overview" var="overviewTitle" />

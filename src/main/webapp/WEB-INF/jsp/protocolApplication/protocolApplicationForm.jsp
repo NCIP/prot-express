@@ -4,6 +4,7 @@
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <html>
 <head>
+<s:head theme="ajax"/>
 </head>
 <body>
 
@@ -28,14 +29,26 @@
         <c:url value="/ajax/protocolApplication/management/load/parameters.action" var="parametersUrl">
             <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
         </c:url>
+        <c:url value="/ajax/protocolApplication/management/load/inputs.action" var="inputsUrl">
+            <c:param name="experiment.id" value="${protocolApplication.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
+       <c:url value="/ajax/protocolApplication/management/load/outputs.action" var="outputsUrl">
+            <c:param name="experiment.id" value="${protocolApplication.id}" />
+            <c:param name="cancelResult" value="${cancelResult}" />
+        </c:url>
 
         <fmt:message key="protocolApplication.tabs.overview" var="overviewTitle" />
         <fmt:message key="protocolApplication.tabs.parameters" var="parametersTitle" />
+        <fmt:message key="protocolApplication.tabs.inputs" var="inputsTitle" />
+        <fmt:message key="protocolApplication.tabs.outputs" var="outputsTitle" />
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
                 postFunction="setSelectedTab">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
             <ajax:tab caption="${parametersTitle}" baseUrl="${parametersUrl}" />
+            <ajax:tab caption="${inputsTitle}" baseUrl="${inputsUrl}" />
+            <ajax:tab caption="${outputsTitle}" baseUrl="${outputsUrl}" />
         </ajax:tabPanel>
     </s:if>
     <s:else>
@@ -52,5 +65,6 @@
         </div>
     </s:else>
 </div>
+
 </body>
 </html>

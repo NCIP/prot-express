@@ -99,7 +99,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -275,7 +274,6 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      * @return the protocolApplications.
      */
     @OneToMany(mappedBy = "experimentRun", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("actionSequence")
     public List<ProtocolApplication> getProtocolApplications() {
         return this.protocolApplications;
     }

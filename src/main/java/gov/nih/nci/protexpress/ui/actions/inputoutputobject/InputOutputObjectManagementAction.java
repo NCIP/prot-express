@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.inputoutputobject;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
+import gov.nih.nci.protexpress.data.persistent.InputOutputObjectType;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -100,8 +101,9 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class InputOutputObjectManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private InputOutputObject inputOutputObject = new InputOutputObject(null, null, null);
+    private InputOutputObject inputOutputObject = new InputOutputObject(null, null, InputOutputObjectType.Data);
     private Long experimentId;
+    private Long protocolApplicationId;
     private String successMessage = null;
 
     /**
@@ -113,6 +115,8 @@ public class InputOutputObjectManagementAction extends ActionSupport implements 
             setInputOutputObject(es.getInputOutputObjectById(getInputOutputObject().getId()));
         } else if (getExperimentId() != null) {
             getInputOutputObject().setExperiment(es.getExperimentById(getExperimentId()));
+        } else if (getProtocolApplicationId() != null) {
+            getInputOutputObject().setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
         }
     }
 
@@ -183,6 +187,24 @@ public class InputOutputObjectManagementAction extends ActionSupport implements 
      */
     public Long getExperimentId() {
         return this.experimentId;
+    }
+
+    /**
+     * Gets the protocolApplicationId.
+     *
+     * @return the protocolApplicationId.
+     */
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
+    }
+
+    /**
+     * Sets the protocolApplicationId.
+     *
+     * @param protocolApplicationId the protocolApplicationId to set.
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
     }
 
     /**

@@ -4,6 +4,7 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
@@ -333,6 +334,8 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         p.setSoftware("baz");
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
+        this.theSession.flush();
+        this.theSession.clear();
 
         Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
         exp.setComments("bar 123");
@@ -347,16 +350,21 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolApplication pa = new ProtocolApplication("pa lsid 1", "protocol application name", 1, Calendar.getInstance(), experimentRun, p);
+        ProtocolAction protAction = new ProtocolAction(p, 1);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(protAction);
+        this.theSession.flush();
+        this.theSession.clear();
+
+        ProtocolApplication pa = new ProtocolApplication("pa lsid 1", "protocol application name", Calendar.getInstance(), experimentRun, protAction);
         pa.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolApplication retrevedProtocolApplication = ProtExpressRegistry.getExperimentService().getProtocolApplicationById(pa.getId());
-        assertEquals(retrevedProtocolApplication, pa);
+        ProtocolApplication retrievedProtocolApplication = ProtExpressRegistry.getExperimentService().getProtocolApplicationById(pa.getId());
+        assertEquals(retrievedProtocolApplication, pa);
 
-        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(retrevedProtocolApplication);
+        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(retrievedProtocolApplication);
 
         this.theSession.flush();
         this.theSession.clear();

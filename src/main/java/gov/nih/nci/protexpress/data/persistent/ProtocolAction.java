@@ -205,7 +205,7 @@ public class ProtocolAction implements Serializable, Persistent {
      * @return the experiment.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_id", nullable = false)
+    @JoinColumn(name = "experiment_id")
     public Experiment getExperiment() {
         return this.experiment;
     }

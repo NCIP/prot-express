@@ -94,6 +94,7 @@ import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.service.FormatConversionService;
+import gov.nih.nci.protexpress.test.ProtExpressBaseCsmTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -103,15 +104,13 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
-import junit.framework.TestCase;
-
 
 /**
  * Class to test the xar 22 conversion service.
  *
  * @author Scott Miller
  */
-public class Xar22FormatConversionServiceTest extends TestCase {
+public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     private List<Experiment> experiments;
     private List<Protocol> protocols;
     private FormatConversionService fcs;
@@ -281,9 +280,12 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         simpleTypeVal.setValue("Some Experiment Run Property");
         expRun.getProperties().add(simpleTypeVal);
 
+        // Protocol Actions
+        ProtocolAction protAction1 = new ProtocolAction(this.protocols.get(0), 1);
+        ProtocolAction protAction2 = new ProtocolAction(this.protocols.get(1), 2);
+
         // Set a Protocol Application
-        ProtocolApplication protApp = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", 1, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(0));
-        protApp.setProtocol(this.protocols.get(0));
+        ProtocolApplication protApp = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, protAction1);
         protApp.setId(440L);
         ProtocolParameters protParams = new ProtocolParameters();
         protParams.setOutputDataFileTemplate("Out Data File Template");
@@ -297,7 +299,7 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         expRun.getProtocolApplications().add(protApp);
 
         // Another protocol application.
-        protApp = new ProtocolApplication("${RunLSIDBase}:SamplePrep.Combine", "Sample Preparation", 2, DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(1));
+        protApp = new ProtocolApplication("${RunLSIDBase}:SamplePrep.Combine", "Sample Preparation", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, protAction2);
         protApp.setId(441L);
 
         protParams = new ProtocolParameters();
@@ -408,12 +410,10 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         unmarshalledProtApp1.setId(440L);
         assertNotNull(unmarshalledProtApp1);
         assertEquals(unmarshalledProtApp1, this.experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
-        assertEquals(unmarshalledProtApp1.getActionSequence(), 1);
-        assertEquals(unmarshalledProtApp1.getActivityDate(), DatatypeConverter.parseDate("2006-08-31-07:00"));
         assertEquals(unmarshalledProtApp1.getComments(), null);
         assertEquals(unmarshalledProtApp1.getLsid(), "${RunLSIDBase}:IPAS14");
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
-        assertEquals(unmarshalledProtApp1.getProtocol().getLsid(), "${FolderLSIDBase}:Process.IPAS14");
+
         assertEquals(unmarshalledProtApp1.getParameters().getOutputDataFileTemplate(), "Out Data File Template");
         assertEquals(unmarshalledProtApp1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
 
@@ -430,50 +430,7 @@ public class Xar22FormatConversionServiceTest extends TestCase {
         assertEquals(unmarshalledProtApp1.getExperimentRun().getLsid(), "${FolderLSIDBase}.${XarFileId}:IPAS14.IP0014_AX02");
         assertEquals(unmarshalledProtApp1.getExperimentRun().getExperiment().getLsid(), "${FolderLSIDBase}:IPAS14");
 
-        Protocol prot1 = unmarshalledProtApp1.getProtocol();
-        assertNotNull(prot1);
-        prot1.setId(100L);
-        assertEquals(prot1, this.protocols.get(0));
-        assertEquals(prot1.getLsid(), "${FolderLSIDBase}:Process.IPAS14");
-        assertEquals(prot1.getType(), ProtocolType.valueOf("ExperimentRun"));
-        assertEquals(prot1.getName(), "IPAS14 Process");
-        assertEquals(prot1.getDescription(), "Prepare and run LCMS, including fractionation of the input sample.  Produces one mzXML file per fraction in a single directory.");
-        assertEquals(prot1.getInstrument(), "This is the instrument.");
-        assertEquals(prot1.getSoftware(), "this is the software....");
-        assertEquals(prot1.getOutputDataType(), "Data");
-        assertEquals(prot1.getOutputMaterialType(), "Material");
 
-        // Get the Properties
-        assertNotNull(prot1.getProperties());
-        simpleTypeValues = prot1.getProperties();
-        assertNotNull(simpleTypeValues);
-        assertEquals(1, simpleTypeValues.size());
-        assertEquals(simpleTypeValues.get(0).getName(), "TreatAsFractions");
-        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "terms.fhcrc.org#RunProtocolTypes.TreatAsFractions");
-        assertEquals(simpleTypeValues.get(0).getValue(), "true");
-        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
-
-        assertEquals(prot1.getParameters().getAppLsidTemplate(), "${RunLSIDBase}:IPAS14");
-        assertEquals(prot1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
-        assertEquals(prot1.getParameters().getOutputDataNameTemplate(), "OUT DATANAMETEMPLATE");
-
-        Person prot1Contact = prot1.getPrimaryContact();
-        assertNotNull(prot1Contact);
-        prot1Contact.setId(110L);
-        assertEquals(prot1Contact, this.protocols.get(0).getPrimaryContact());
-        assertEquals(prot1Contact.getContactId(), "Dr. Tabb's Research Center' for Protocols");
-        assertEquals(prot1Contact.getFirstName(), "John");
-        assertEquals(prot1Contact.getLastName(), "Tabb");
-        assertEquals(prot1Contact.getEmail(), "tabb@research-center.com");
-        // Person Properties
-        assertNotNull(prot1Contact.getProperties());
-        simpleTypeValues = prot1Contact.getProperties();
-        assertNotNull(simpleTypeValues);
-        assertEquals(1, simpleTypeValues.size());
-        assertEquals(simpleTypeValues.get(0).getName(), "Contact Type");
-        assertEquals(simpleTypeValues.get(0).getOntologyEntryURI(), "http://vocabulary.myorg.org/extendedContactInfo/contactProperty#contactType");
-        assertEquals(simpleTypeValues.get(0).getValue(), "Principal Investigator");
-        assertEquals(simpleTypeValues.get(0).getValueType(), SimpleType.valueOf("String"));
     }
 
     @SuppressWarnings("unchecked")

@@ -10,17 +10,53 @@
 <s:else>
     <c:set var="formAction" value="ioObject/management/save"/>
 </s:else>
+<script type="text/javascript">
+function toggleDataFileUrlElement() {
 
+    var divDataFileUrl = document.getElementById("inputOutputObject.dataFileURL");
+ alert("hi");
+    if (divDataFileUrl != null) {
+        var elementCpasType = document.getElementById("inputOutputObject.cpasType");
+        alert("1");
+        if (elementCpasType != null) {
+        alert("not null");
+            var selectedCpasType = elementCpasType.value;
+            if (selectedCpasType == "Data") {
+                alert("data");
+                divDataFileUrl.style.visibility = true;
+            }
+            else {
+                 alert("material");
+                var elementDataFileUrl = document.getElementByName("inputOutputObject.dataFileURL");
+                if (elementDataFileUrl != null) {
+                    alert("file not null");
+                    elementDataFileUrl.value = "";
+                }
+                divDataFileUrl.style.visibility = false;
+            }
+        }
+    }
+}
+</script>
 <protExpress:tabPane paneTitleKey="inputOutputObject.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="inputOutputObject.lsid" key="inputOutputObject.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
-        <s:textfield name="inputOutputObject.name" key="inputOutputObject.name" size="40" tabindex="2" disabled="${isReadOnly}" />
-        <s:radio name="inputOutputObject.cpasType" key="inputOutputObject.cpasType"
-            list="@gov.nih.nci.protexpress.data.persistent.InputOutputObjectType@values()" listValue="displayName"
-            tabindex="3" disabled="${isReadOnly}" required="true"/>
-        <s:textfield name="inputOutputObject.dataFileURL" key="inputOutputObject.dataFileUrl" size="40" tabindex="4" disabled="${isReadOnly}" />
+        <s:textfield name="inputOutputObject.lsid" key="inputOutputObject.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <s:textfield name="inputOutputObject.name" key="inputOutputObject.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
+        <s:radio
+            id="inputOutputObject.cpasType"
+            name="inputOutputObject.cpasType"
+            key="inputOutputObject.cpasType"
+            list="@gov.nih.nci.protexpress.data.persistent.InputOutputObjectType@values()"
+            listValue="displayName"
+            tabindex="3"
+            disabled="${isReadOnly}"
+            required="true" onchange="toggleDataFileUrlElement();"/>
+        <div id="divDataFileUrl">
+            <s:textfield name="inputOutputObject.dataFileURL" key="inputOutputObject.dataFileUrl" size="40" tabindex="4" disabled="${isReadOnly}" />
+        </div>
         <s:hidden name="inputOutputObject.id" />
         <s:hidden name="experimentId" />
+        <s:hidden name="protocolApplicationId" />
     </s:form>
 
     <div class="actions">

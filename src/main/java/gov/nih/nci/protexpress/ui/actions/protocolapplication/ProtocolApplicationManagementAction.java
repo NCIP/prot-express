@@ -83,20 +83,12 @@
 package gov.nih.nci.protexpress.ui.actions.protocolapplication;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.ajaxtags.xml.AjaxXmlBuilder;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -111,13 +103,10 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ProtocolApplicationManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, 0, null, null, null);
+    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, null, null, null);
     private Long experimentRunId;
-    private Long protocolId;
+    private Long protocolActionId;
     private String successMessage = null;
-
-    private List<Protocol> protocols = new ArrayList<Protocol>();
-    private String protocolName;
 
     /**
      * {@inheritDoc}
@@ -130,10 +119,11 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
             getProtocolApplication().setExperimentRun(es.getExperimentRunById(getExperimentRunId()));
         }
 
-        if (getProtocolId() != null) {
-            Protocol p = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
-            getProtocolApplication().setProtocol(p);
-            getProtocolApplication().setParameters(p.getParameters());
+        if (getProtocolActionId() != null) {
+            ProtocolAction protAction = ProtExpressRegistry.getExperimentService().
+            getProtocolActionById(getProtocolActionId());
+            getProtocolApplication().setProtocolAction(protAction);
+            getProtocolApplication().setParameters(protAction.getProtocol().getParameters());
         }
     }
 
@@ -176,41 +166,6 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
         setSuccessMessage(MessageFormat.format(msg, getProtocolApplication().getName()));
         ProtExpressRegistry.getExperimentService().deleteProtocolApplication(getProtocolApplication());
         return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * Action to return the list of protocols.
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String retrieveProtocols() {
-        setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
-        return "xmlProtocolList";
-    }
-
-    /**
-     * Get the input stream.
-     * @return the stream
-     * @throws IllegalAccessException on error
-     * @throws NoSuchMethodException on error
-     * @throws InvocationTargetException on error
-     * @throws UnsupportedEncodingException on error
-     */
-    public InputStream getInputStream() throws IllegalAccessException, NoSuchMethodException,
-        InvocationTargetException, UnsupportedEncodingException {
-        AjaxXmlBuilder xmlBuilder = new AjaxXmlBuilder().addItems(getProtocols(), "name", "id");
-        return new ByteArrayInputStream(xmlBuilder.toString().getBytes("UTF-8"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (this.hasErrors() && StringUtils.isNotEmpty(getProtocolName())) {
-            setProtocols(ProtExpressRegistry.getProtocolService().getProtocolsForCurrentUserByName(getProtocolName()));
-        }
     }
 
     /**
@@ -257,44 +212,16 @@ public class ProtocolApplicationManagementAction extends ActionSupport implement
     }
 
     /**
-     * @return the protocol id
+     * @return the protocol action id
      */
-    public Long getProtocolId() {
-        return this.protocolId;
+    public Long getProtocolActionId() {
+        return this.protocolActionId;
     }
 
     /**
-     * @param protocolId the protocol id
+     * @param protocolActionId the protocol action id
      */
-    public void setProtocolId(Long protocolId) {
-        this.protocolId = protocolId;
-    }
-
-    /**
-     * @return the protocols
-     */
-    public List<Protocol> getProtocols() {
-        return this.protocols;
-    }
-
-    /**
-     * @param protocols the protocols to set
-     */
-    public void setProtocols(List<Protocol> protocols) {
-        this.protocols = protocols;
-    }
-
-    /**
-     * @return the protocolName
-     */
-    public String getProtocolName() {
-        return this.protocolName;
-    }
-
-    /**
-     * @param protocolName the protocolName to set
-     */
-    public void setProtocolName(String protocolName) {
-        this.protocolName = protocolName;
+    public void setProtocolActionId(Long protocolActionId) {
+        this.protocolActionId = protocolActionId;
     }
 }
