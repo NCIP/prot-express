@@ -121,7 +121,6 @@ public class InputOutputObject implements Serializable, Persistent {
 
     private static final int LSID_LENGTH = 255;
     private static final int NAME_LENGTH = 255;
-    private static final int CPAS_TYPE_LENGTH = 25;
     private static final int DATA_FILE_URL_LENGTH = 255;
 
     private Long id;

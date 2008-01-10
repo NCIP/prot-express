@@ -187,8 +187,23 @@ public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBa
     }
 
     public void testAddProtocolApplicationOutput() throws Exception {
-        this.protocolApplication.getInputs().add(output1);
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(this.protocolApplication);
+        InputOutputObject output = new InputOutputObject("OUTPUT_LSID", "Output");
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setOutput(output);
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Output successfully created.", this.action.getSuccessMessage());
+
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.setOutput(this.output1);
+        this.action.prepare();
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.prepare();
+        assertEquals(2, this.action.getProtocolApplication().getOutputs().size());
 
     }
 }

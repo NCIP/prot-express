@@ -146,8 +146,8 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      * @param name the name of the experiment
      */
     public ExperimentRun(String lsid, String name) {
-        setLsid(lsid);
         setName(name);
+        setLsid(lsid);
     }
 
     /**
@@ -171,6 +171,27 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     }
 
     /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    @Column(name = "name")
+    @NotEmpty
+    @Length(max = NAME_LENGTH)
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Gets the lsid.
      *
      * @return the lsid
@@ -190,27 +211,6 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     public void setLsid(String lsid) {
         this.lsid = lsid;
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = NAME_LENGTH)
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**

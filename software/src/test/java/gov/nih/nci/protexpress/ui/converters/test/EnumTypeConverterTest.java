@@ -80,38 +80,24 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.converters;
+package gov.nih.nci.protexpress.ui.converters.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.service.ExperimentService;
-
-import java.util.Map;
-
-import org.apache.struts2.util.StrutsTypeConverter;
+import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportFileType;
+import gov.nih.nci.protexpress.ui.converters.EnumTypeConverter;
+import junit.framework.TestCase;
 
 /**
- * Type converter to handle converting to a Calendar.
- * @author Krishna Kanchinadam
- *
+ * Test case for the enum type converter.
+ * @author Scott Miller
  */
-public class ProtocolActionConverter extends StrutsTypeConverter {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object convertFromString(Map context, String[] values, Class toClass) {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
-        ProtocolAction protAction = es.getProtocolActionById(Long.valueOf(values[0]));
-        return protAction;
-    }
+public class EnumTypeConverterTest extends TestCase {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String convertToString(Map context, Object o) {
-        ProtocolAction protAction = (ProtocolAction) o;
-        return protAction.getId().toString();
+    public void testConversion() throws Exception {
+        EnumTypeConverter converter = new EnumTypeConverter();
+        Enum convertedValue = converter.convertFromString(null, ExperimentExportFileType.class);
+        assertEquals(null, convertedValue);
+
+        convertedValue = converter.convertFromString(ExperimentExportFileType.Xar2_2.name(), ExperimentExportFileType.class);
+        assertEquals(ExperimentExportFileType.Xar2_2, convertedValue);
     }
 }

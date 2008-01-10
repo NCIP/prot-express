@@ -147,7 +147,7 @@ public class Xar22FormatConversionHelper {
         getExperimentList(experimentArchive);
         setExperimentRunsForExperiment(experimentArchive);
         setProtocolApplications(experimentArchive);
-        setProtocolActionDefinitions(experimentArchive);
+
 
        return this.experiments;
     }
@@ -319,20 +319,7 @@ public class Xar22FormatConversionHelper {
         }
     }
 
-    private void setProtocolActionDefinitions(ExperimentArchiveType experimentArchive) {
-        HashMap<Integer, ProtocolAction> childProtocolActions = new HashMap<Integer, ProtocolAction>();
 
-        // Get the Action Definitions. Get the corresponding protocol and set the values.
-        ExperimentArchiveType.ProtocolActionDefinitions xarProtocolActionDefns =
-            experimentArchive.getProtocolActionDefinitions();
-
-        if ((xarProtocolActionDefns != null) && (xarProtocolActionDefns.getProtocolActionSet().size() > 0)) {
-            ProtocolActionSetType xarProtocolActionSetType = xarProtocolActionDefns.getProtocolActionSet().get(0);
-            String parentProtocolLsid = xarProtocolActionSetType.getParentProtocolLSID();
-            ProtocolAction rootProtAction = null;
-
-        }
-    }
 
     /**
      *  Given a list of experiment objects, returns the ExperimentArchiveType.StartingInputDefintions.
@@ -442,7 +429,6 @@ public class Xar22FormatConversionHelper {
         if (protApp.getProtocolAction() != null) {
             xarProtocolApplicationBaseType.setActivityDate(protApp.getActivityDate());
             xarProtocolApplicationBaseType.setComments(protApp.getComments());
-            // KK xarProtocolApplicationBaseType.setCpasType(protApp.getProtocolAction().getProtocol().getType().name());
             xarProtocolApplicationBaseType.setName(protApp.getName());
             xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocolAction().getProtocol().getLsid());
         }
