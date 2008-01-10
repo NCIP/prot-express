@@ -25,18 +25,9 @@
             requestURI="${sortUrl}" list="${experiment.protocolActions}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
                 <display:column property="protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
-                <display:column property="protocol.type.displayName" titleKey="protocolAction.protocolType" sortable="true" />
-                <display:column property="sequenceNumber" titleKey="protocolAction.sequenceNumber" sortable="true" />
+                <display:column property="protocol.description" titleKey="protocolAction.protocolDescription" sortable="true" />
                 <display:column titleKey="actions" sortable="false">
-                <c:url var="loadUrl" value="/protocolAction/management/load.action">
-                    <c:param name="protocolAction.id" value="${row.id}" />
-                </c:url>
-
-                <c:if test="${isReadOnly}">
-                    <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.view.alt" />" /> <fmt:message key="view" /></a>
-                </c:if>
                 <c:if test="${!isReadOnly}">
-                    <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a>
                     <c:url var="deleteUrl" value="/ajax/protocolAction/management/delete.action">
                         <c:param name="protocolAction.id" value="${row.id}" />
                         <c:param name="experiment.id" value="${experiment.id}" />

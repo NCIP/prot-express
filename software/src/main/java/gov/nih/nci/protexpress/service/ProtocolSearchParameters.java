@@ -82,9 +82,6 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-
-import java.util.List;
 
 /**
  * The parameters for protocol searches.
@@ -95,7 +92,6 @@ public class ProtocolSearchParameters {
 
     private String name;
     private String description;
-    private List<ProtocolType> types;
 
     /**
      * @return the description
@@ -123,19 +119,5 @@ public class ProtocolSearchParameters {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the types
-     */
-    public List<ProtocolType> getTypes() {
-        return this.types;
-    }
-
-    /**
-     * @param types the types to set
-     */
-    public void setTypes(List<ProtocolType> types) {
-        this.types = types;
     }
 }

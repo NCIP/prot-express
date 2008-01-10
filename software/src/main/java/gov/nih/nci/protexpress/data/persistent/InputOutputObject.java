@@ -91,8 +91,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -108,7 +106,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 
 /**
  * Class representing a Material object - a biological sample or a processed
@@ -130,10 +127,8 @@ public class InputOutputObject implements Serializable, Persistent {
     private Long id;
     private String lsid;
     private String name;
-    private InputOutputObjectType cpasType = InputOutputObjectType.Data;
     private String dataFileURL;
     private Experiment experiment;
-    private ProtocolApplication protocolApplication;;
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
@@ -147,12 +142,10 @@ public class InputOutputObject implements Serializable, Persistent {
      *
      * @param lsid the lsid to set.
      * @param name the name of the input output object.
-     * @param cpasType the cpasType to set.
      */
-    public InputOutputObject(String lsid, String name, InputOutputObjectType cpasType) {
+    public InputOutputObject(String lsid, String name) {
         setLsid(lsid);
         setName(name);
-        setCpasType(cpasType);
     }
 
     /**
@@ -210,27 +203,6 @@ public class InputOutputObject implements Serializable, Persistent {
     }
 
     /**
-     * Gets the cpasType.
-     *
-     * @return the cpasType.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cpasType", length = CPAS_TYPE_LENGTH)
-    @NotNull
-    public InputOutputObjectType getCpasType() {
-        return this.cpasType;
-    }
-
-    /**
-     * Sets the cpasType.
-     *
-     * @param cpasType the cpasType to set.
-     */
-    public void setCpasType(InputOutputObjectType cpasType) {
-        this.cpasType = cpasType;
-    }
-
-    /**
      * Sets the lsid.
      *
      * @param lsid the lsid to set
@@ -278,26 +250,6 @@ public class InputOutputObject implements Serializable, Persistent {
     }
 
     /**
-     * Gets the protocol application.
-     *
-     * @return the protocol application.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "protapp_id")
-    public ProtocolApplication getProtocolApplication() {
-        return this.protocolApplication;
-    }
-
-    /**
-     * Sets the protocol application.
-     *
-     * @param protocolApplication the protocol application to set.
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        this.protocolApplication = protocolApplication;
-    }
-
-    /**
      * Gets the experiment.
      *
      * @return the experiment.
@@ -340,8 +292,7 @@ public class InputOutputObject implements Serializable, Persistent {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), ioObj.getLsid()).append(
-                getName(), ioObj.getName()).append(getCpasType(), ioObj.getCpasType()).isEquals();
+        return new EqualsBuilder().append(getLsid(), ioObj.getLsid()).append(getName(), ioObj.getName()).isEquals();
     }
 
     /**
@@ -349,7 +300,6 @@ public class InputOutputObject implements Serializable, Persistent {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).append(getName()).append(getCpasType())
-                .toHashCode();
+        return new HashCodeBuilder().append(getLsid()).append(getName()).toHashCode();
     }
 }

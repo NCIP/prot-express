@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.ui.actions.protocol.test;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction;
 
@@ -109,7 +108,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         super.onSetUp();
         this.action = new ProtocolManagementAction();
 
-        this.protocol = new Protocol("lsid_test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.protocol = new Protocol("lsid_test_protocol_1", "test protocol 1");
         this.protocol.setInstrument("foo");
         this.protocol.setDescription("bar");
         this.protocol.setSoftware("baz");
@@ -124,7 +123,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         this.action.prepare();
         assertEquals(null, this.action.getProtocol());
 
-        Protocol p = new Protocol(null, null, null);
+        Protocol p = new Protocol(null, null);
         this.action.setProtocol(p);
         this.action.prepare();
         assertEquals(p, this.action.getProtocol());
@@ -141,14 +140,14 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testSaveOrUpdate() throws Exception {
-        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.ProtocolApplication));
+        this.action.setProtocol(new Protocol("lsid", "zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
     }
 
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
         this.action.setCancelResult("dashboard");
-        this.action.setProtocol(new Protocol("lsid", "zzz", ProtocolType.ProtocolApplication));
+        this.action.setProtocol(new Protocol("lsid", "zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
         assertEquals("Protocol successfully created.", this.action.getSuccessMessage());

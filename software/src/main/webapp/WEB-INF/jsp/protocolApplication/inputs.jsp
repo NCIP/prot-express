@@ -5,25 +5,21 @@
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <c:set var="isReadOnly" value="${protocolApplication.id != null && protocolApplication.auditInfo.creator != currentUser.loginName}" />
+
 <protExpress:tabPane paneTitleKey="protocolApplication.tabs.inputs" submittingPaneMessageKey="deleting" ignoreSuccessMessage="true">
-    <div class="addNewLink">
-        <c:url var="createInputObjectUrl" value="/ioObject/management/load.action">
-            <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
-        </c:url>
-        <a href="${createInputObjectUrl}" class="add"><fmt:message key="inputOutputObject.add" /></a>
-    </div>
     <c:if test="${not empty successMessage}">
         <div class="confirm_msg">${successMessage}</div>
     </c:if>
 
     <c:url value="/ajax/experiment/management/load/ioObject.action" var="sortUrl" />
     <c:url value="/experimentRun/management/load.action" var="cancelUrl">
-            <c:param name="experimentRun.id" value="${protocolApplication.experimentRun.id}" />
-            <c:param name="initialTab" value="protocolApplications" />
-        </c:url>
+        <c:param name="experimentRun.id" value="${protocolApplication.experimentRun.id}" />
+        <c:param name="initialTab" value="protocolApplications" />
+    </c:url>
+
     <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="searchresults">
-        <display:table class="searchresults" cellspacing="0" defaultsort="2" excludedParams="ajax"
-            requestURI="${sortUrl}" list="${protocolApplication.inputObjects}" pagesize="10" sort="list" id="row">
+        <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
+            requestURI="${sortUrl}" list="${protocolApplication.inputs}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
             <display:column property="name" titleKey="inputOutputObject.name" sortable="true" />
             <display:column property="cpasType.displayName" titleKey="inputOutputObject.cpasType" sortable="false" />
@@ -46,6 +42,28 @@
                     </ajax:anchors>
                   </c:if>
               </display:column>
+        </display:table>
+    </ajax:displayTag>
+</protExpress:tabPane>
+<br /><br /><br />
+<protExpress:tabPane paneTitleKey="protocolApplication.tabs.inputs.inputsToApply" submittingPaneMessageKey="deleting" ignoreSuccessMessage="true">
+    <c:url value="/ajax/protocolApplication/management/load/inputs.action" var="sortUrl" />
+    <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="searchresults">
+        <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
+            requestURI="${sortUrl}" list="${potentialInputs}" pagesize="10" sort="list" id="row">
+            <protExpress:displayTagProperties includeCancelButton="false" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
+            <display:column property="name" titleKey="inputOutputObject.name" sortable="true" />
+            <display:column property="cpasType.displayName" titleKey="inputOutputObject.cpasType" sortable="false" />
+            <display:column property="dataFileURL" titleKey="inputOutputObject.dataFileUrl" sortable="false" />
+            <display:column titleKey="actions" sortable="false">
+                  <c:if test="${!isReadOnly}">
+                    <c:url var="selectInputUrl" value="/ajax/protocolApplication/management/load/inputs.action">
+                        <c:param name="inputId" value="${row.id}" />
+                        <c:param name="experimentRunId" value="${protocolApplication.experimentRun.id}" />
+                    </c:url>
+                    <a href="${selectInputUrl}"><img src="<c:url value="/images/ico_view_edit.gif" />" alt="<fmt:message key="icon.selectInput.alt" />" /> <fmt:message key="selectInput" /></a>
+                  </c:if>
+            </display:column>
         </display:table>
     </ajax:displayTag>
 </protExpress:tabPane>

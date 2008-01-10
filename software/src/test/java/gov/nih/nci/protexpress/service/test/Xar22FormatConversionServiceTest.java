@@ -90,7 +90,6 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.service.FormatConversionService;
@@ -178,7 +177,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
      private void setupProtocols() {
          this.protocols = new ArrayList<Protocol>();
 
-         Protocol prot1 = new Protocol("${FolderLSIDBase}:Process.IPAS14", "IPAS14 Process", ProtocolType.valueOf("ExperimentRun"));
+         Protocol prot1 = new Protocol("${FolderLSIDBase}:Process.IPAS14", "IPAS14 Process");
          prot1.setId(100L);
          prot1.setDescription("Prepare and run LCMS, including fractionation of the input sample.  Produces one mzXML file per fraction in a single directory.");
          prot1.setSoftware("this is the software....");
@@ -211,7 +210,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
          this.protocols.add(prot1);
 
-         prot1 = new Protocol("${FolderLSIDBase}:SamplePrep.IPAS14", "Sample Prep", ProtocolType.valueOf("ProtocolApplication"));
+         prot1 = new Protocol("${FolderLSIDBase}:SamplePrep.IPAS14", "Sample Prep");
          prot1.setId(101L);
          prot1.setDescription("unspecified");
          // Parameter declarations.
@@ -257,12 +256,10 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         currentExperiment.setPrimaryContact(person);
 
         // protocol action set.
-        ProtocolAction childProtAction1 = new ProtocolAction(this.protocols.get(1), 1);
+        ProtocolAction childProtAction1 = new ProtocolAction(currentExperiment, this.protocols.get(1));
         childProtAction1.setId(600L);
-   // kk     childProtAction1.getPredecessors().add(childProtAction1);
-        ProtocolAction childProtAction2 = new ProtocolAction(this.protocols.get(1), 2);
+        ProtocolAction childProtAction2 = new ProtocolAction(currentExperiment, this.protocols.get(1));
         childProtAction2.setId(601L);
-   // kk     childProtAction2.getPredecessors().add(childProtAction1);
         childProtAction1.setExperiment(currentExperiment);
         childProtAction2.setExperiment(currentExperiment);
         currentExperiment.getProtocolActions().add(childProtAction1);
@@ -281,8 +278,8 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.getProperties().add(simpleTypeVal);
 
         // Protocol Actions
-        ProtocolAction protAction1 = new ProtocolAction(this.protocols.get(0), 1);
-        ProtocolAction protAction2 = new ProtocolAction(this.protocols.get(1), 2);
+        ProtocolAction protAction1 = new ProtocolAction(currentExperiment,this.protocols.get(0));
+        ProtocolAction protAction2 = new ProtocolAction(currentExperiment, this.protocols.get(1));
 
         // Set a Protocol Application
         ProtocolApplication protApp = new ProtocolApplication("${RunLSIDBase}:IPAS14", "Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, protAction1);

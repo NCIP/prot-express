@@ -85,7 +85,6 @@ package gov.nih.nci.protexpress.ui.actions.protocolaction.test;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction;
 
@@ -115,7 +114,7 @@ public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernate
         super.onSetUp();
         this.action = new ProtocolActionManagementAction();
 
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
         this.theSession.save(this.protocol);
 
         experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
@@ -128,17 +127,7 @@ public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernate
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolAction protAction1 = new ProtocolAction(this.protocol, 1);
-        ProtocolAction protAction2 = new ProtocolAction(this.protocol, 2);
-        protAction1.setExperiment(experiment);
-        protAction2.setExperiment(experiment);
-        this.theSession.saveOrUpdate(protAction1);
-        this.theSession.saveOrUpdate(protAction2);
-
-        this.protocolAction = new ProtocolAction(this.protocol, 3);
-        this.protocolAction.setExperiment(experiment);
-        this.protocolAction.getPredecessors().add(protAction1);
-        this.protocolAction.getPredecessors().add(protAction2);
+        this.protocolAction = new ProtocolAction(this.experiment, this.protocol);
     }
 
     public void testLoadByExperimentId() throws Exception {
@@ -158,7 +147,6 @@ public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernate
         this.action = new ProtocolActionManagementAction();
         this.action.getProtocolAction().setId(this.protocolAction.getId());
         this.action.prepare();
-        this.action.getProtocolAction().setSequenceNumber(3);
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals("Protocol Action successfully updated.", this.action.getSuccessMessage());
 

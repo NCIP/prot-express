@@ -84,7 +84,6 @@ package gov.nih.nci.protexpress.data.interceptor.test;
 
 import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.security.IllegalModificationException;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
@@ -97,7 +96,7 @@ import java.util.Calendar;
 public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
     public void testSaveAndUpdateAuditableObject() throws Exception {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("lsid1", "protocol1");
         assertEquals(null, p.getAuditInfo().getCreator());
         this.theSession.save(p);
         assertEquals(UserHolder.getUsername(), p.getAuditInfo().getCreator());
@@ -136,7 +135,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testIllegalUpdate() {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("lsid1", "protocol1");
         this.theSession.save(p);
         this.theSession.flush();
         this.theSession.clear();
@@ -153,7 +152,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testIllegalDeletee() {
-        Protocol p = new Protocol("lsid1", "protocol1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("lsid1", "protocol1");
         this.theSession.save(p);
         this.theSession.flush();
         this.theSession.clear();

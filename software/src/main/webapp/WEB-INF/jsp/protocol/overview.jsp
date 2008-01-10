@@ -14,11 +14,12 @@
         <s:textfield name="protocol.lsid" key="protocol.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="protocol.name" key="protocol.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textarea name="protocol.description" key="protocol.description" rows="4" cols="37" tabindex="3" disabled="${isReadOnly}"></s:textarea>
-        <s:select name="protocol.type" key="protocol.type"
-            list="@gov.nih.nci.protexpress.data.persistent.ProtocolType@values()" listValue="displayName"
-            headerKey="" headerValue="%{getText('protocol.type.select')}" tabindex="4" disabled="${isReadOnly}" required="true"/>
-        <s:textfield name="protocol.software" key="protocol.software" size="40" tabindex="5" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.instrument" key="protocol.instrument" size="40" tabindex="6" disabled="${isReadOnly}" />
+        <s:textfield name="protocol.software" key="protocol.software" size="40" tabindex="4" disabled="${isReadOnly}" />
+        <s:textfield name="protocol.instrument" key="protocol.instrument" size="40" tabindex="5" disabled="${isReadOnly}" />
+        <s:textfield name="protocol.primaryContact.firstName" key="protocol.primaryContact.firstName" size="40" tabindex="6" disabled="${isReadOnly}" />
+        <s:textfield name="protocol.primaryContact.lastName" key="protocol.primaryContact.lastName" size="40" tabindex="7" disabled="${isReadOnly}" />
+        <s:textfield name="protocol.primaryContact.email" key="protocol.primaryContact.email" size="40" tabindex="8" disabled="${isReadOnly}" />
+        <s:textarea name="protocol.primaryContact.contactId" key="protocol.primaryContact.contactId" rows="4" cols="37"  tabindex="9" disabled="${isReadOnly}" />
         <s:hidden name="protocol.id" />
         <s:hidden name="cancelResult" />
     </s:form>

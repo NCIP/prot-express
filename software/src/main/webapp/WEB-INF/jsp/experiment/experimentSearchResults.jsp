@@ -16,6 +16,10 @@
         <display:column property="name" titleKey="experiment.name" sortable="true" maxLength="20" maxWords="4"/>
         <display:column property="comments" titleKey="experiment.comments" sortable="true"  maxLength="20" maxWords="4"/>
         <display:column property="url" titleKey="experiment.url" sortable="true"  maxLength="20" maxWords="4"/>
+        <display:column property="auditInfo.creator" titleKey="experiment.auditInfo.creator" sortable="true"  maxLength="20" maxWords="4"/>
+        <display:column sortProperty="auditInfo.creationDate" titleKey="experiment.auditInfo.creationDate" sortable="true">
+            <fmt:formatDate value="${row.auditInfo.creationDate.time}" pattern="M/d/yyyy" />
+        </display:column>
 
         <display:column titleKey="actions" sortable="false">
             <c:set var="isEditable" value="${row.auditInfo.creator == currentUser.loginName}" />

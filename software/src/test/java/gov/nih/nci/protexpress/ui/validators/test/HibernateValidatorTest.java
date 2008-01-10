@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.ui.validators.test;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 
 import java.util.ArrayList;
@@ -111,8 +110,8 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     protected void onSetUp() throws Exception {
         super.onSetUp();
         this.action = new TestAction();
-        this.action.setProtocol(new Protocol("lsid_test_name_1", "test name 1", ProtocolType.ExperimentRun));
-        this.action.setProtocol2(new Protocol("lsid_test_name_2", "test name 2", ProtocolType.ExperimentRun));
+        this.action.setProtocol(new Protocol("lsid_test_name_1", "test name 1"));
+        this.action.setProtocol2(new Protocol("lsid_test_name_2", "test name 2"));
     }
 
     public void testHibernateValidatorWithNullObject() throws Exception {
@@ -126,16 +125,15 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     }
 
     public void testHibernateValidatorWithInvalidObject() throws Exception {
-        this.action.setProtocol(new Protocol(null, null, null));
+        this.action.setProtocol(new Protocol(null, null));
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
         avm.validate(this.action, null);
         Map fieldErrors = this.action.getFieldErrors();
 
         assertTrue(this.action.hasErrors());
-        assertEquals(3, fieldErrors.size());
+        assertEquals(2, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocol.lsid"));
         assertTrue(fieldErrors.containsKey("protocol.name"));
-        assertTrue(fieldErrors.containsKey("protocol.type"));
     }
 
     public void testHibernateValidatorWithValidObject() throws Exception {
@@ -148,35 +146,33 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     }
 
     public void testHibernateValidatorListProcessing() throws Exception {
-        this.action.getProtocolList().add(new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun));
-        this.action.getProtocolList().add(new Protocol(null, null, null));
+        this.action.getProtocolList().add(new Protocol("lsid_test_name_3", "test name 3"));
+        this.action.getProtocolList().add(new Protocol(null, null));
         this.action.getProtocolList().add(null);
-        this.action.getProtocolList().add(new Protocol("lsid_test_name_4", "test name 4", ProtocolType.ExperimentRun));
+        this.action.getProtocolList().add(new Protocol("lsid_test_name_4", "test name 4"));
 
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
         avm.validate(this.action, null);
         Map fieldErrors = this.action.getFieldErrors();
 
         assertTrue(this.action.hasErrors());
-        assertEquals(3, fieldErrors.size());
+        assertEquals(2, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocolList[1].lsid"));
         assertTrue(fieldErrors.containsKey("protocolList[1].name"));
-        assertTrue(fieldErrors.containsKey("protocolList[1].type"));
     }
 
     public void testHibernateValidatorArrayProcessing() throws Exception {
-        this.action.setProtocolArray(new Protocol[] { new Protocol("lsid_test_name_3", "test name 3", ProtocolType.ExperimentRun),
-                new Protocol(null, null, null), null, new Protocol("lsid_test_name_4", "test name 4", ProtocolType.ExperimentRun) });
+        this.action.setProtocolArray(new Protocol[] { new Protocol("lsid_test_name_3", "test name 3"),
+                new Protocol(null, null), null, new Protocol("lsid_test_name_4", "test name 4") });
 
         ActionValidatorManager avm = ActionValidatorManagerFactory.getInstance();
         avm.validate(this.action, null);
         Map fieldErrors = this.action.getFieldErrors();
 
         assertTrue(this.action.hasErrors());
-        assertEquals(3, fieldErrors.size());
+        assertEquals(2, fieldErrors.size());
         assertTrue(fieldErrors.containsKey("protocolArray[1].lsid"));
         assertTrue(fieldErrors.containsKey("protocolArray[1].name"));
-        assertTrue(fieldErrors.containsKey("protocolArray[1].type"));
     }
 
     /**
@@ -185,8 +181,8 @@ public class HibernateValidatorTest extends ProtExpressBaseHibernateAndStrutsTes
     class TestAction extends ActionSupport {
         private static final long serialVersionUID = 1L;
 
-        private Protocol protocol = new Protocol(null, null, null);
-        private Protocol protocol2 = new Protocol(null, null, null);
+        private Protocol protocol = new Protocol(null, null);
+        private Protocol protocol2 = new Protocol(null, null);
         private Protocol[] protocolArray = null;
         private List<Protocol> protocolList = new ArrayList<Protocol>();
 

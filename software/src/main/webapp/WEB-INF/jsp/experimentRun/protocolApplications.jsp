@@ -22,7 +22,7 @@
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
             <display:column property="lsid" titleKey="protocolApplication.lsid" sortable="true" />
             <display:column property="name" titleKey="protocolApplication.name" sortable="true" />
-            <display:column property="protocolAction.sequenceNumber" titleKey="protocolAction.sequenceNumber" sortable="true" />
+            <display:column property="protocolAction.protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
             <display:column sortProperty="activityDate" titleKey="protocolApplication.activityDate" sortable="true">
                 <fmt:formatDate value="${row.activityDate.time}" pattern="M/d/yyyy" />
             </display:column>
@@ -52,8 +52,7 @@
             requestURI="${sortUrl}" list="${protocolsToApply}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="false" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
             <display:column property="protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
-            <display:column property="protocol.type.displayName" titleKey="protocolAction.protocolType" sortable="true" />
-            <display:column property="sequenceNumber" titleKey="protocolAction.sequenceNumber" sortable="true" />
+            <display:column property="protocol.description" titleKey="protocolAction.protocolDescription" sortable="true" />
             <display:column titleKey="actions" sortable="false">
                   <c:if test="${!isReadOnly}">
                     <c:url var="applyProtocolUrl" value="/protocolApplication/management/load.action">

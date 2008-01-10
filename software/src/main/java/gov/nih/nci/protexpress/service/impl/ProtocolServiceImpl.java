@@ -141,10 +141,6 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
             if (StringUtils.isNotEmpty(params.getDescription())) {
                 crit.add(Restrictions.like("description", "%" + params.getDescription() + "%").ignoreCase());
             }
-
-            if (params.getTypes() != null && params.getTypes().size() > 0) {
-                crit.add(Restrictions.in("type", params.getTypes()));
-            }
         }
 
         if (!onlyCount && sortDir != null && StringUtils.isNotBlank(sortProperty)) {

@@ -82,10 +82,10 @@
  */
 package gov.nih.nci.protexpress.ui.actions.protocol;
 
-import java.text.MessageFormat;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
+
+import java.text.MessageFormat;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -103,7 +103,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public class ProtocolManagementAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private Protocol protocol = new Protocol(null, null, null);
+    private Protocol protocol = new Protocol(null, null);
     private String cancelResult = "search";
     private String successMessage = null;
 

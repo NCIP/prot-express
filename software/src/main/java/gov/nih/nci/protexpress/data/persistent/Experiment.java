@@ -99,7 +99,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -140,7 +139,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
-    private List<InputOutputObject> inputOutputObjects = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> globalInputs = new ArrayList<InputOutputObject>();
     private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
     /**
@@ -361,22 +360,22 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the inputOutputObjects.
+     * Gets the globalInputs.
      *
-     * @return the inputOutputObjects.
+     * @return the globalInputs.
      */
     @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<InputOutputObject> getInputOutputObjects() {
-        return inputOutputObjects;
+    public List<InputOutputObject> getGlobalInputs() {
+        return globalInputs;
     }
 
     /**
-     * Sets the inputOutputObjects.
+     * Sets the globalInputs.
      *
-     * @param inputOutputObjects the inputOutputObjects to set.
+     * @param globalInputs the globalInputs to set.
      */
-    protected void setInputOutputObjects(List<InputOutputObject> inputOutputObjects) {
-        this.inputOutputObjects = inputOutputObjects;
+    public void setGlobalInputs(List<InputOutputObject> globalInputs) {
+        this.globalInputs = globalInputs;
     }
 
     /**
@@ -385,7 +384,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the protocolActions.
      */
     @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("sequenceNumber")
     public List<ProtocolAction> getProtocolActions() {
         return this.protocolActions;
     }

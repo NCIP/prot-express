@@ -248,8 +248,7 @@ public class ExperimentRunManagementAction extends ActionSupport implements Prep
             ProtocolAction p1 = protApp.getProtocolAction();
             boolean flag1 = protAction.equals(p1);
             boolean flag2 = protAction.getProtocol().equals(p1.getProtocol());
-            boolean flag3 = protAction.getSequenceNumber() == p1.getSequenceNumber();
-            if (flag1 && flag2 && flag3) {
+            if (flag1 && flag2) {
                 isApplied = true;
             }
         }

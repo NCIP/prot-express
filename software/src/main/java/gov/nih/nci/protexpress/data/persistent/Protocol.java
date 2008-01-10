@@ -92,8 +92,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -110,7 +108,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
 /**
@@ -137,7 +134,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private Long id;
     private String lsid;
     private String name;
-    private ProtocolType type;
     private String description;
     private String software;
     private String instrument;
@@ -163,12 +159,10 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @param lsid the lsid of the protocol
      * @param name the name of the protocol
-     * @param type the type
      */
-    public Protocol(String lsid, String name, ProtocolType type) {
+    public Protocol(String lsid, String name) {
         setLsid(lsid);
         setName(name);
-        setType(type);
     }
 
     /**
@@ -231,24 +225,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the type
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = TYPE_LENGTH)
-    @NotNull
-    @Index(name = "protocol_type_idx")
-    public ProtocolType getType() {
-        return this.type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(ProtocolType type) {
-        this.type = type;
     }
 
     /**

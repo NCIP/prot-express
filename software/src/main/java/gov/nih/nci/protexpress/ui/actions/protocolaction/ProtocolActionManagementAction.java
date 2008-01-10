@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.protocolaction;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.service.ExperimentService;
@@ -102,7 +103,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
-
 /**
  * @author Krishna Kanchinadam
  *
@@ -110,12 +110,10 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ProtocolActionManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolAction protocolAction = new ProtocolAction(null, 0);
+    private ProtocolAction protocolAction = new ProtocolAction(null, null);
     private Long experimentId;
     private Long protocolId;
     private String successMessage = null;
-
-    private List<ProtocolAction> potentialPredecessors = null;
     private List<Protocol> protocols = new ArrayList<Protocol>();
     private String protocolName;
 
@@ -126,9 +124,9 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
         ExperimentService es = ProtExpressRegistry.getExperimentService();
         if (getProtocolAction().getId() != null) {
             setProtocolAction(es.getProtocolActionById(getProtocolAction().getId()));
-            setPotentialPredecessors();
         } else if (getExperimentId() != null) {
-            getProtocolAction().setExperiment(es.getExperimentById(getExperimentId()));
+            Experiment exp = es.getExperimentById(getExperimentId());
+            getProtocolAction().setExperiment(exp);
         }
 
         if (getProtocolId() != null) {
@@ -159,10 +157,6 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
         } else {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
                     "protocolAction.update.success"));
-        }
-
-        if (this.potentialPredecessors != null) {
-            getProtocolAction().getPredecessors().add(this.potentialPredecessors.get(0));
         }
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolAction());
@@ -300,41 +294,5 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
      */
     public void setProtocols(List<Protocol> protocols) {
         this.protocols = protocols;
-    }
-
-    /**
-     * Gets the potentialPredecessors.
-     *
-     * @return the potentialPredecessors.
-     */
-    public List<ProtocolAction> getPotentialPredecessors() {
-        return potentialPredecessors;
-    }
-
-    /**
-     * Sets the potentialPredecessors.
-     *
-     */
-    private void setPotentialPredecessors() {
-        if ((this.protocolAction != null) && (this.protocolAction.getExperiment() != null)) {
-            List<ProtocolAction> expProtocolActions = this.protocolAction.getExperiment().getProtocolActions();
-            for (ProtocolAction predecessor : expProtocolActions) {
-                if (predecessor.getSequenceNumber() < this.protocolAction.getSequenceNumber()) {
-                    if (this.potentialPredecessors == null) {
-                        this.potentialPredecessors = new ArrayList<ProtocolAction>();
-                    }
-                    this.potentialPredecessors.add(predecessor);
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets the potentialPredecessors.
-     *
-     * @param potentialPredecessors the potentialPredecessors to set.
-     */
-    public void setPotentialPredecessors(List<ProtocolAction> potentialPredecessors) {
-        this.potentialPredecessors = potentialPredecessors;
     }
 }

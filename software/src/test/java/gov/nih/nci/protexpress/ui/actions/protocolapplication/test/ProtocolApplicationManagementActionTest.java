@@ -87,18 +87,12 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
 
-import java.io.ByteArrayInputStream;
 import java.util.Calendar;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.ActionValidatorManager;
-import com.opensymphony.xwork2.validator.ActionValidatorManagerFactory;
 
 /**
  * @author Scott Miller
@@ -119,11 +113,8 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         super.onSetUp();
         this.action = new ProtocolApplicationManagementAction();
 
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
         this.theSession.save(this.protocol);
-
-        this.protocolAction = new ProtocolAction(this.protocol, 1);
-        this.theSession.save(this.protocolAction);
 
         Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
@@ -137,6 +128,9 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.experimentRun.setExperiment(experiment);
 
         this.theSession.saveOrUpdate(this.experimentRun);
+
+        this.protocolAction = new ProtocolAction(experiment, protocol);
+        this.theSession.saveOrUpdate(this.protocolAction);
 
         this.theSession.flush();
         this.theSession.clear();
