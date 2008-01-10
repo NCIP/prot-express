@@ -100,7 +100,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ExperimentInputManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private InputOutputObject inputOutputObject = new InputOutputObject(null, null);
+    private InputOutputObject input = new InputOutputObject(null, null);
     private Long experimentId;
     private String successMessage = null;
 
@@ -109,10 +109,10 @@ public class ExperimentInputManagementAction extends ActionSupport implements Pr
      */
     public void prepare() throws Exception {
         ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getInputOutputObject().getId() != null) {
-            setInputOutputObject(es.getInputOutputObjectById(getInputOutputObject().getId()));
+        if (getInput().getId() != null) {
+            setInput(es.getInputOutputObjectById(getInput().getId()));
         } else if (getExperimentId() != null) {
-            getInputOutputObject().setExperiment(es.getExperimentById(getExperimentId()));
+            getInput().setExperiment(es.getExperimentById(getExperimentId()));
         }
     }
 
@@ -132,14 +132,14 @@ public class ExperimentInputManagementAction extends ActionSupport implements Pr
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        if (getInputOutputObject().getId() == null) {
+        if (getInput().getId() == null) {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
                     .getString("experimentInput.save.success"));
         } else {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
                     "experimentInput.update.success"));
         }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInput());
         return ActionSupport.SUCCESS;
     }
 
@@ -152,23 +152,23 @@ public class ExperimentInputManagementAction extends ActionSupport implements Pr
     public String delete() {
         String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experimentInput.delete.success");
         setSuccessMessage(msg);
-        ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInputOutputObject());
+        ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInput());
         return ActionSupport.SUCCESS;
     }
 
     /**
-     * @return the inputOutputObject.
+     * @return the input.
      */
     @CustomValidator(type = "hibernate")
-    public InputOutputObject getInputOutputObject() {
-        return this.inputOutputObject;
+    public InputOutputObject getInput() {
+        return this.input;
     }
 
     /**
-     * @param inputOutputObject the inputOutputObject to set
+     * @param input the input to set
      */
-    public void setInputOutputObject(InputOutputObject inputOutputObject) {
-        this.inputOutputObject = inputOutputObject;
+    public void setInput(InputOutputObject input) {
+        this.input = input;
     }
 
     /**

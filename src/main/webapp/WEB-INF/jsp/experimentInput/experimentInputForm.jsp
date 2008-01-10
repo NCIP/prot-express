@@ -10,19 +10,19 @@
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
-<h1><fmt:message key="experiment.inputs"><fmt:param value="${inputOutputObject.experiment.name}" /></fmt:message></h1>
+<h1><fmt:message key="experiment.inputs"><fmt:param value="${input.experiment.name}" /></fmt:message></h1>
 <div class="box">
-    <s:if test="inputOutputObject == null || inputOutputObject.id == null">
+    <s:if test="input == null || input.id == null">
         <h2><fmt:message key="experimentInput.add" /></h2>
     </s:if>
     <s:else>
        <h2><fmt:message key="experimentInput.edit" /></h2>
     </s:else>
 
-    <s:if test="inputOutputObject != null && inputOutputObject.id != null">
+    <s:if test="input != null && input.id != null">
         <c:url value="/ajax/experimentInput/management/load/overview.action" var="overviewUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
-            <c:param name="inputOutputObject.id" value="${inputOutputObject.id}" />
+            <c:param name="input.id" value="${input.id}" />
         </c:url>
         <fmt:message key="experimentInput.tabs.overview" var="overviewTitle" />
 
