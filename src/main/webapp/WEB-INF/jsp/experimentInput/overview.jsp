@@ -16,7 +16,7 @@
         <s:textfield name="input.lsid" key="experimentInput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="input.name" key="experimentInput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="input.dataFileURL" key="experimentInput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
-        <s:hidden name="input.id" />
+        <s:hidden name="inputOutputObject.id" />
         <s:hidden name="experimentId" />
     </s:form>
 
