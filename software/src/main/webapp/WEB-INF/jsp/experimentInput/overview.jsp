@@ -13,20 +13,20 @@
 
 <protExpress:tabPane paneTitleKey="experimentInput.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="inputOutputObject.lsid" key="experimentInput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
-        <s:textfield name="inputOutputObject.name" key="experimentInput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
-        <s:textfield name="inputOutputObject.dataFileURL" key="experimentInput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
-        <s:hidden name="inputOutputObject.id" />
+        <s:textfield name="input.lsid" key="experimentInput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <s:textfield name="input.name" key="experimentInput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
+        <s:textfield name="input.dataFileURL" key="experimentInput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
+        <s:hidden name="input.id" />
         <s:hidden name="experimentId" />
     </s:form>
 
     <div class="actions">
         <c:url value="/experiment/management/load.action" var="cancelUrl">
-            <c:param name="experiment.id" value="${inputOutputObject.experiment.id}" />
+            <c:param name="experiment.id" value="${input.experiment.id}" />
             <c:param name="initialTab" value="experimentInputs" />
         </c:url>
         <a href="${cancelUrl}" class="cancel" tabindex="4"><fmt:message key="cancel" /></a>
-        <s:if test="${inputOutputObject.id != null}">
+        <s:if test="${input.id != null}">
             <a href="javascript:ajaxSubmit('overviewForm', 'selectedtabbox');" class="save" tabindex="5"><fmt:message key="save" /></a>
         </s:if>
         <s:else>
