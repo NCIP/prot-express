@@ -22,7 +22,7 @@
     <s:if test="input != null && input.id != null">
         <c:url value="/ajax/experimentInput/management/load/overview.action" var="overviewUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
-            <c:param name="input.id" value="${input.id}" />
+            <c:param name="inputOutputObject.id" value="${input.id}" />
         </c:url>
         <fmt:message key="experimentInput.tabs.overview" var="overviewTitle" />
 
