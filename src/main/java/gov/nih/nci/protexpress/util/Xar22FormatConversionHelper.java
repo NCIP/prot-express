@@ -90,7 +90,6 @@ import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
@@ -332,29 +331,6 @@ public class Xar22FormatConversionHelper {
             String parentProtocolLsid = xarProtocolActionSetType.getParentProtocolLSID();
             ProtocolAction rootProtAction = null;
 
-            if (xarProtocolActionSetType != null) {
-                for (ProtocolActionType xarProtocolActionType : xarProtocolActionSetType.getProtocolAction()) {
-                    String childProtocolLsid = xarProtocolActionType.getChildProtocolLSID();
-                    Protocol protocol = this.protocolMap.get(xarProtocolActionType.getChildProtocolLSID());
-                    ProtocolAction protocolAction = new ProtocolAction(protocol,
-                            xarProtocolActionType.getActionSequence());
-                    childProtocolActions.put(protocolAction.getSequenceNumber(), protocolAction);
-                    if ((parentProtocolLsid != null) && (parentProtocolLsid.equals(childProtocolLsid))) {
-                        rootProtAction = protocolAction;
-                    }
-                }
-
-                for (Experiment exp : experiments) {
-                    if (rootProtAction != null) {
-                        Iterator<ProtocolAction> iter = childProtocolActions.values().iterator();
-                        while (iter.hasNext()) {
-                            ProtocolAction protAction = iter.next();
-                            protAction.setExperiment(exp);
-                            exp.getProtocolActions().add(protAction);
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -401,7 +377,6 @@ public class Xar22FormatConversionHelper {
              // Child protocol actions.
             for (ProtocolAction protAction : exp.getProtocolActions()) {
                 ProtocolActionType xarProtActionType = this.objectFactory.createProtocolActionType();
-                xarProtActionType.setActionSequence(protAction.getSequenceNumber());
                 xarProtActionType.setChildProtocolLSID(protAction.getProtocol().getLsid());
 
                 xarPASetType.getProtocolAction().add(xarProtActionType);
@@ -465,10 +440,9 @@ public class Xar22FormatConversionHelper {
 
         xarProtocolApplicationBaseType.setAbout(protApp.getLsid());
         if (protApp.getProtocolAction() != null) {
-            xarProtocolApplicationBaseType.setActionSequence(protApp.getProtocolAction().getSequenceNumber());
             xarProtocolApplicationBaseType.setActivityDate(protApp.getActivityDate());
             xarProtocolApplicationBaseType.setComments(protApp.getComments());
-            xarProtocolApplicationBaseType.setCpasType(protApp.getProtocolAction().getProtocol().getType().name());
+            // KK xarProtocolApplicationBaseType.setCpasType(protApp.getProtocolAction().getProtocol().getType().name());
             xarProtocolApplicationBaseType.setName(protApp.getName());
             xarProtocolApplicationBaseType.setProtocolLSID(protApp.getProtocolAction().getProtocol().getLsid());
         }
@@ -492,7 +466,7 @@ public class Xar22FormatConversionHelper {
         ProtocolBaseType xarProtocolBaseType = this.objectFactory.createProtocolBaseType();
         if ((protApp != null) && (protApp.getProtocolAction() != null)) {
             xarProtocolBaseType.setAbout(protApp.getProtocolAction().getProtocol().getLsid());
-            xarProtocolBaseType.setApplicationType(protApp.getProtocolAction().getProtocol().getType().name());
+            // KK xarProtocolBaseType.setApplicationType(protApp.getProtocolAction().getProtocol().getType().name());
             xarProtocolBaseType.setInstrument(protApp.getProtocolAction().getProtocol().getInstrument());
             xarProtocolBaseType.setName(protApp.getProtocolAction().getProtocol().getName());
             xarProtocolBaseType.setProtocolDescription(protApp.getProtocolAction().getProtocol().getDescription());
@@ -674,8 +648,9 @@ public class Xar22FormatConversionHelper {
      * @return the protocol
      */
     private Protocol getProtocol(ProtocolBaseType xarProtocolBaseType) {
-        Protocol protocol = new Protocol(xarProtocolBaseType.getAbout(),
-                xarProtocolBaseType.getName(), ProtocolType.valueOf(xarProtocolBaseType.getApplicationType()));
+        // KK Protocol protocol = new Protocol(xarProtocolBaseType.getAbout(), xarProtocolBaseType.getName(),
+        // ProtocolType.valueOf(xarProtocolBaseType.getApplicationType()));
+        Protocol protocol = new Protocol(xarProtocolBaseType.getAbout(), xarProtocolBaseType.getName());
 
         protocol.setInstrument(xarProtocolBaseType.getInstrument());
         protocol.setSoftware(xarProtocolBaseType.getSoftware());

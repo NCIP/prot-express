@@ -142,11 +142,8 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
     private AuditInfo auditInfo = new AuditInfo();
 
-
-    private List<InputOutputObject> inputObjects = new ArrayList<InputOutputObject>();
-
-
-    private List<InputOutputObject> outputObjects = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> inputs = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> outputs = new ArrayList<InputOutputObject>();
 
     /**
      * protected default constructor for hibernate only.
@@ -356,47 +353,47 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the inputObjects.
+     * Gets the inputs.
      *
-     * @return the inputObjects.
+     * @return the inputs.
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "protapp_inputs",
             joinColumns = { @JoinColumn(name = "protapp_id") },
             inverseJoinColumns = { @JoinColumn(name = "input_id") })
-    public List<InputOutputObject> getInputObjects() {
-        return inputObjects;
+    public List<InputOutputObject> getInputs() {
+        return inputs;
     }
 
     /**
-     * Sets the inputObjects.
+     * Sets the inputs.
      *
-     * @param inputObjects the inputObjects to set.
+     * @param inputs the inputs to set.
      */
-    protected void setInputObjects(List<InputOutputObject> inputObjects) {
-        this.inputObjects = inputObjects;
+    public void setInputs(List<InputOutputObject> inputs) {
+        this.inputs = inputs;
     }
 
     /**
-     * Gets the outputObjects.
+     * Gets the outputs.
      *
-     * @return the outputObjects.
+     * @return the outputs.
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "protapp_outputs",
             joinColumns = { @JoinColumn(name = "protapp_id") },
             inverseJoinColumns = { @JoinColumn(name = "output_id") })
-    public List<InputOutputObject> getOutputObjects() {
-        return outputObjects;
+    public List<InputOutputObject> getOutputs() {
+        return outputs;
     }
 
     /**
-     * Sets the outputObjects.
+     * Sets the outputs.
      *
-     * @param outputObjects the outputObjects to set.
+     * @param outputs the outputs to set.
      */
-    protected void setOutputObjects(List<InputOutputObject> outputObjects) {
-        this.outputObjects = outputObjects;
+    protected void setOutputs(List<InputOutputObject> outputs) {
+        this.outputs = outputs;
     }
 
     /**

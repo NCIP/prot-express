@@ -84,7 +84,6 @@ package gov.nih.nci.protexpress.ui.actions.dashboard.test;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.dashboard.DashboardAction;
 
@@ -108,7 +107,7 @@ public class DashboardActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testLoad() {
-        Protocol p = new Protocol("p1", "p1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("p1", "p1");
         Experiment e = new Experiment("e1", "e1");
         this.theSession.save(p);
         this.theSession.save(e);

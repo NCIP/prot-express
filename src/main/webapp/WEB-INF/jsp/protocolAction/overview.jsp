@@ -13,32 +13,9 @@
 
 <protExpress:tabPane paneTitleKey="protocolAction.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="protocolAction.sequenceNumber" key="protocolAction.sequenceNumber" size="40" tabindex="2" disabled="${isReadOnly}" />
         <c:if test="${protocolAction.id != null}">
             <tr>
                 <td class="tdLabel"><s:label cssClass="label" name="protocolAction.protocol.name" key="protocolAction.protocolName" ></s:label></td>
-            </tr>
-            <tr>
-                <td class="tdLabel"><s:label cssClass="label" name="protocolAction.protocol.type.displayName" key="protocolAction.protocolType" ></s:label></td>
-            </tr>
-            <tr>
-                <c:choose>
-                    <c:when test="${potentialPredecessors != null}">
-                        <s:select
-                        name="protocolAction.predecessors"
-                        key="protocolAction.potentialPredecessors"
-                        list="potentialPredecessors"
-                        listKey="id"
-                        listValue="id"
-                        headerKey=""
-                        multiple="true"
-                        tabindex="3" />
-                    </c:when>
-                    <c:otherwise>
-                        <td colspan="2"><fmt:message key="protocolAction.noPredecessors" /></td>
-                    </c:otherwise>
-                    </c:choose>
-                </td>
             </tr>
         </c:if>
         <c:if test="${protocolAction.id == null}">

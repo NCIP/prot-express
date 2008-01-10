@@ -16,6 +16,10 @@
         <s:textarea name="experiment.comments" key="experiment.comments" rows="4" cols="37" tabindex="3" disabled="${isReadOnly}" />
         <s:textarea name="experiment.hypothesis" key="experiment.hypothesis" rows="4" cols="37" tabindex="4" disabled="${isReadOnly}" />
         <s:textfield name="experiment.url" key="experiment.url" size="40" tabindex="5" disabled="${isReadOnly}" />
+        <s:textfield name="experiment.primaryContact.firstName" key="experiment.primaryContact.firstName" size="40" tabindex="6" disabled="${isReadOnly}" />
+        <s:textfield name="experiment.primaryContact.lastName" key="experiment.primaryContact.lastName" size="40" tabindex="7" disabled="${isReadOnly}" />
+        <s:textfield name="experiment.primaryContact.email" key="experiment.primaryContact.email" size="40" tabindex="8" disabled="${isReadOnly}" />
+        <s:textarea name="experiment.primaryContact.contactId" key="experiment.primaryContact.contactId" rows="4" cols="37"  tabindex="9" disabled="${isReadOnly}" />
         <s:hidden name="experiment.id" />
         <s:hidden name="cancelResult" />
     </s:form>

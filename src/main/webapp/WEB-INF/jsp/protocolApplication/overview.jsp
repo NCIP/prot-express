@@ -12,13 +12,11 @@
 </s:else>
 <protExpress:tabPane paneTitleKey="protocolApplication.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="protocolApplication.lsid" key="protocolApplication.lsid" size="40" tabindex="1" disabled="${isReadOnly}" />
-        <s:textfield name="protocolApplication.name" key="protocolApplication.name" size="40" tabindex="2" disabled="${isReadOnly}" />
-        <s:datetimepicker name="protocolApplication.activityDate" key="protocolApplication.activityDate" tabindex="3" toggleType="fade" disabled="${isReadOnly}" displayFormat="MM/dd/yyyy" ></s:datetimepicker>
-        <s:textarea name="protocolApplication.comments" key="protocolApplication.comments" rows="4" cols="37" tabindex="4" disabled="${isReadOnly}" />
-        <td class="tdLabel"><s:label cssClass="label" name="protocolApplication.protocolAction.sequenceNumber" key="protocolAction.sequenceNumber" ></s:label></td>
         <td class="tdLabel"><s:label cssClass="label" name="protocolApplication.protocolAction.protocol.name" key="protocolAction.protocolName" ></s:label></td>
-        <td class="tdLabel"><s:label cssClass="label" name="protocolApplication.protocolAction.protocol.type.displayName" key="protocolAction.protocolType" ></s:label></td>
+        <s:textfield name="protocolApplication.lsid" key="protocolApplication.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <s:textfield name="protocolApplication.name" key="protocolApplication.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
+        <s:textfield name="protocolApplication.activityDate" key="protocolApplication.activityDate" maxlength="10" size="10" tabindex="4" disabled="${isReadOnly}" required="true"/>
+        <s:textarea name="protocolApplication.comments" key="protocolApplication.comments" rows="4" cols="37" tabindex="4" disabled="${isReadOnly}" />
         <s:hidden name="protocolApplication.id" />
         <s:hidden name="experimentRunId" />
         <s:hidden name="protocolActionId" />

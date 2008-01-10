@@ -30,11 +30,12 @@
             <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
         </c:url>
         <c:url value="/ajax/protocolApplication/management/load/inputs.action" var="inputsUrl">
-            <c:param name="experiment.id" value="${protocolApplication.id}" />
+            <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
+            <c:param name="experimentRunId" value="${experimentRun.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
        <c:url value="/ajax/protocolApplication/management/load/outputs.action" var="outputsUrl">
-            <c:param name="experiment.id" value="${protocolApplication.id}" />
+            <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
 
@@ -45,10 +46,10 @@
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
                 postFunction="setSelectedTab">
-            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="true"/>
-            <ajax:tab caption="${parametersTitle}" baseUrl="${parametersUrl}" />
-            <ajax:tab caption="${inputsTitle}" baseUrl="${inputsUrl}" />
-            <ajax:tab caption="${outputsTitle}" baseUrl="${outputsUrl}" />
+            <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}"/>
+            <ajax:tab caption="${parametersTitle}" baseUrl="${parametersUrl}" defaultTab="${param.initialTab == 'parameters'}" />
+            <ajax:tab caption="${inputsTitle}" baseUrl="${inputsUrl}" defaultTab="${param.initialTab == 'inputs'}" />
+            <ajax:tab caption="${outputsTitle}" baseUrl="${outputsUrl}" defaultTab="${param.initialTab == 'outputs'}" />
         </ajax:tabPanel>
     </s:if>
     <s:else>

@@ -14,22 +14,16 @@
 function toggleDataFileUrlElement() {
 
     var divDataFileUrl = document.getElementById("inputOutputObject.dataFileURL");
- alert("hi");
     if (divDataFileUrl != null) {
         var elementCpasType = document.getElementById("inputOutputObject.cpasType");
-        alert("1");
         if (elementCpasType != null) {
-        alert("not null");
             var selectedCpasType = elementCpasType.value;
             if (selectedCpasType == "Data") {
-                alert("data");
                 divDataFileUrl.style.visibility = true;
             }
             else {
-                 alert("material");
                 var elementDataFileUrl = document.getElementByName("inputOutputObject.dataFileURL");
                 if (elementDataFileUrl != null) {
-                    alert("file not null");
                     elementDataFileUrl.value = "";
                 }
                 divDataFileUrl.style.visibility = false;
@@ -60,10 +54,19 @@ function toggleDataFileUrlElement() {
     </s:form>
 
     <div class="actions">
-        <c:url value="/experiment/management/load.action" var="cancelUrl">
-            <c:param name="experiment.id" value="${inputOutputObject.experiment.id}" />
-            <c:param name="initialTab" value="ioObjects" />
-        </c:url>
+        <s:if test="${inputOutputObject.experiment.id != null}">
+            <c:url value="/experiment/management/load.action" var="cancelUrl">
+                <c:param name="experiment.id" value="${inputOutputObject.experiment.id}" />
+                <c:param name="initialTab" value="ioObjects" />
+            </c:url>
+        </s:if>
+        <s:else>
+            <c:url value="/experiment/management/load.action" var="cancelUrl">
+                <c:param name="protocolApplication.id" value="${inputOutputObject.protocolApplication.id}" />
+                <c:param name="initialTab" value="inputs" />
+            </c:url>
+        </s:else>
+
         <a href="${cancelUrl}" class="cancel" tabindex="8"><fmt:message key="cancel" /></a>
         <s:if test="${inputOutputObject.id != null}">
             <a href="javascript:ajaxSubmit('overviewForm', 'selectedtabbox');" class="save" tabindex="9"><fmt:message key="save" /></a>

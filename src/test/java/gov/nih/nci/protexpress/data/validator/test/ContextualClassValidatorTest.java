@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.data.validator.test;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 
@@ -104,8 +103,8 @@ public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
     protected void onSetUp() throws Exception {
         super.onSetUp();
 
-        this.protocol1 = new Protocol("lsid_test_name_1", "test name 1", ProtocolType.ExperimentRun);
-        this.protocol2 = new Protocol("lsid_test_name_2", "test name 2", ProtocolType.ExperimentRun);
+        this.protocol1 = new Protocol("lsid_test_name_1", "test name 1");
+        this.protocol2 = new Protocol("lsid_test_name_2", "test name 2");
         this.theSession.save(this.protocol1);
         this.theSession.save(this.protocol2);
         this.theSession.flush();
@@ -113,12 +112,12 @@ public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testValidObject() {
-        Protocol p = new Protocol("valid lsid", "valid name", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("valid lsid", "valid name");
         assertEquals(0, this.classValidator.getInvalidValues(p).length);
     }
 
     public void testInvalidObject() {
-        Protocol p = new Protocol("lsid_test_name_1", "valid name", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("lsid_test_name_1", "valid name");
         assertEquals(1, this.classValidator.getInvalidValues(p).length);
 
         assertEquals(0, this.classValidator.getInvalidValues(p, "name").length);

@@ -15,7 +15,10 @@
         <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
         <display:column property="name" titleKey="protocol.name" sortable="true" maxLength="20" maxWords="4"/>
         <display:column property="description" titleKey="protocol.description" sortable="true"  maxLength="20" maxWords="4"/>
-        <display:column property="type.displayName" titleKey="protocol.type" sortable="true" sortProperty="type" />
+        <display:column property="auditInfo.creator" titleKey="protocol.auditInfo.creator" sortable="true"  maxLength="20" maxWords="4"/>
+        <display:column sortProperty="auditInfo.creationDate" titleKey="protocol.auditInfo.creationDate" sortable="true">
+            <fmt:formatDate value="${row.auditInfo.creationDate.time}" pattern="M/d/yyyy" />
+        </display:column>
         <display:column titleKey="actions" sortable="false" >
             <c:set var="isEditable" value="${row.auditInfo.creator == currentUser.loginName}" />
             <c:url var="loadUrl" value="/protocol/management/load.action">

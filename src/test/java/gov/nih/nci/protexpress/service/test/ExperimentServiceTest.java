@@ -6,7 +6,6 @@ import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
@@ -328,7 +327,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testAddAndDeleteProtocolApplication() throws Exception {
-        Protocol p = new Protocol("test_protocol_1", "test protocol 1", ProtocolType.ExperimentRun);
+        Protocol p = new Protocol("test_protocol_1", "test protocol 1");
         p.setInstrument("foo");
         p.setDescription("bar");
         p.setSoftware("baz");
@@ -350,7 +349,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolAction protAction = new ProtocolAction(p, 1);
+        ProtocolAction protAction = new ProtocolAction(exp, p);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(protAction);
         this.theSession.flush();
         this.theSession.clear();

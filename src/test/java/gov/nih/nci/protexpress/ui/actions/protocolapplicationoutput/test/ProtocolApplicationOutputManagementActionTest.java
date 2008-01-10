@@ -80,13 +80,22 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.inputoutputobject.test;
+package gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.test;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObjectType;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.inputoutputobject.InputOutputObjectManagementAction;
+import gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction;
+import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
+import gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction;
+
+import java.util.Calendar;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -94,10 +103,14 @@ import com.opensymphony.xwork2.ActionSupport;
  * @author Krishna Kanchinadam
  *
  */
-public class InputOutputObjectManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    InputOutputObjectManagementAction action;
-    InputOutputObject inputOutputObject;
-    Experiment experiment;
+public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
+    ProtocolApplicationOutputManagementAction action;
+    ProtocolApplication protocolApplication;
+    ExperimentRun experimentRun;
+    Protocol protocol;
+    ProtocolAction protocolAction;
+    InputOutputObject output1;
+    InputOutputObject output2;
 
     /**
      * {@inheritDoc}
@@ -105,46 +118,77 @@ public class InputOutputObjectManagementActionTest extends ProtExpressBaseHibern
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        this.action = new InputOutputObjectManagementAction();
 
-        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
+        this.theSession.save(this.protocol);
+
+        Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
         this.theSession.saveOrUpdate(experiment);
 
+        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun.setComments("test comments");
+        this.experimentRun.setExperiment(experiment);
+
+        this.theSession.saveOrUpdate(this.experimentRun);
+
+        this.protocolAction = new ProtocolAction(experiment, protocol);
+        this.theSession.saveOrUpdate(this.protocolAction);
+
+        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+        this.protocolApplication.setActivityDate(Calendar.getInstance());
+        this.theSession.saveOrUpdate(this.protocolApplication);
+
+        this.output1 = new InputOutputObject("OUTPUT1_LSID", "Output 1");
+        this.theSession.saveOrUpdate(this.output1);
+
+        this.output2 = new InputOutputObject("OUTPUT2_LSID", "Output 2");
+        this.theSession.saveOrUpdate(this.output2);
+
         this.theSession.flush();
         this.theSession.clear();
-
-        this.inputOutputObject = new InputOutputObject("LSID_Data_Object", "Name-Data Object", InputOutputObjectType.Data);
-        this.inputOutputObject.setDataFileURL("abc.xml");
-        this.inputOutputObject.setExperiment(experiment);
     }
 
-    public void testLoadByExperimentId() throws Exception {
-        this.action.setExperimentId(this.experiment.getId());
+    public void testAddAndDeleteProtocolApplicationOutput() throws Exception {
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.setOutputId(this.output1.getId());
         this.action.prepare();
-        assertEquals(ActionSupport.INPUT, this.action.load());
-        assertEquals(this.experiment, this.action.getInputOutputObject().getExperiment());
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Output successfully updated.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.setOutputId(this.output2.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Output successfully updated.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.prepare();
+        assertEquals(2, this.action.getProtocolApplication().getOutputs().size());
+
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.setOutputId(this.output2.getId());
+        this.action.prepare();
+        assertEquals(ActionSupport.SUCCESS, this.action.delete());
+        assertEquals("Output successfully deleted.", this.action.getSuccessMessage());
+
+        this.action = new ProtocolApplicationOutputManagementAction();
+        this.action.setProtocolApplicationId(this.protocolApplication.getId());
+        this.action.prepare();
+        assertEquals(1, this.action.getProtocolApplication().getOutputs().size());
+
     }
 
-    public void testAddAndDeleteInputOutputObject() throws Exception {
-        this.action.setInputOutputObject(this.inputOutputObject);
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Input successfully created.", this.action.getSuccessMessage());
+    public void testAddProtocolApplicationOutput() throws Exception {
+        this.protocolApplication.getInputs().add(output1);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(this.protocolApplication);
 
-        this.action = new InputOutputObjectManagementAction();
-        this.action.getInputOutputObject().setId(this.inputOutputObject.getId());
-        this.action.prepare();
-        this.action.getInputOutputObject().setName("Modified Name");
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Input successfully updated.", this.action.getSuccessMessage());
-
-        this.action = new InputOutputObjectManagementAction();
-        this.action.getInputOutputObject().setId(this.inputOutputObject.getId());
-        this.action.prepare();
-        assertEquals("success", this.action.delete());
-        assertEquals("Input successfully deleted.", this.action.getSuccessMessage());
     }
 }

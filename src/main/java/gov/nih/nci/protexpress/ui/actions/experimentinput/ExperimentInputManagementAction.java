@@ -80,24 +80,122 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.converters.test;
+package gov.nih.nci.protexpress.ui.actions.experimentinput;
 
-import gov.nih.nci.protexpress.data.persistent.ProtocolType;
-import gov.nih.nci.protexpress.ui.converters.EnumTypeConverter;
-import junit.framework.TestCase;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
+import gov.nih.nci.protexpress.service.ExperimentService;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+
 
 /**
- * Test case for the enum type converter.
- * @author Scott Miller
+ * @author Krishna Kanchinadam
+ *
  */
-public class EnumTypeConverterTest extends TestCase {
+public class ExperimentInputManagementAction extends ActionSupport implements Preparable {
 
-    public void testConversion() throws Exception {
-        EnumTypeConverter converter = new EnumTypeConverter();
-        Enum convertedValue = converter.convertFromString(null, ProtocolType.class);
-        assertEquals(null, convertedValue);
+    private static final long serialVersionUID = 1L;
+    private InputOutputObject inputOutputObject = new InputOutputObject(null, null);
+    private Long experimentId;
+    private String successMessage = null;
 
-        convertedValue = converter.convertFromString(ProtocolType.ExperimentRun.name(), ProtocolType.class);
-        assertEquals(ProtocolType.ExperimentRun, convertedValue);
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        if (getInputOutputObject().getId() != null) {
+            setInputOutputObject(es.getInputOutputObjectById(getInputOutputObject().getId()));
+        } else if (getExperimentId() != null) {
+            getInputOutputObject().setExperiment(es.getExperimentById(getExperimentId()));
+        }
+    }
+
+    /**
+     * loads the {@link InputOutputObject}.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Saves the inputOutputObject.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String save() {
+        if (getInputOutputObject().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                    .getString("experimentInput.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(
+                    "experimentInput.update.success"));
+        }
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * delete the dataObject.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String delete() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experimentInput.delete.success");
+        setSuccessMessage(msg);
+        ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInputOutputObject());
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * @return the inputOutputObject.
+     */
+    @CustomValidator(type = "hibernate")
+    public InputOutputObject getInputOutputObject() {
+        return this.inputOutputObject;
+    }
+
+    /**
+     * @param inputOutputObject the inputOutputObject to set
+     */
+    public void setInputOutputObject(InputOutputObject inputOutputObject) {
+        this.inputOutputObject = inputOutputObject;
+    }
+
+    /**
+     * @param experimentId the experimentId to set
+     */
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
+    }
+
+    /**
+     * @return the experimentId
+     */
+    public Long getExperimentId() {
+        return this.experimentId;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

@@ -30,15 +30,11 @@
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
-        <c:url value="/ajax/experiment/management/load/ioObjects.action" var="ioObjectsUrl">
+        <c:url value="/ajax/experiment/management/load/experimentInputs.action" var="experimentInputsUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
         <c:url value="/ajax/experiment/management/load/experimentRuns.action" var="experimentRunsUrl">
-            <c:param name="experiment.id" value="${experiment.id}" />
-            <c:param name="cancelResult" value="${cancelResult}" />
-        </c:url>
-        <c:url value="/ajax/experiment/management/load/contact.action" var="contactUrl">
             <c:param name="experiment.id" value="${experiment.id}" />
             <c:param name="cancelResult" value="${cancelResult}" />
         </c:url>
@@ -49,18 +45,16 @@
 
         <fmt:message key="experiment.tabs.overview" var="overviewTitle" />
         <fmt:message key="experiment.tabs.protocolActions" var="protocolActionsTitle" />
-        <fmt:message key="experiment.tabs.inputOutputObjects" var="ioObjectsTitle" />
+        <fmt:message key="experiment.tabs.experimentInputs" var="experimentInputsTitle" />
         <fmt:message key="experiment.tabs.experimentRuns" var="experimentRunsTitle" />
-        <fmt:message key="experiment.tabs.contact" var="contactTitle" />
         <fmt:message key="experiment.tabs.export" var="exportTitle" />
 
         <ajax:tabPanel panelStyleId="tabbed" currentStyleClass="current" contentStyleId="selectedtabbox" contentStyleClass="selectedtabbox"
                 postFunction="setSelectedTab" preFunction="showLoadingText">
             <ajax:tab caption="${overviewTitle}" baseUrl="${overviewUrl}" defaultTab="${param.initialTab == null || param.initialTab == 'overview'}" />
             <ajax:tab caption="${protocolActionsTitle}" baseUrl="${protocolActionsUrl}" defaultTab="${param.initialTab == 'protocolActions'}" />
-            <ajax:tab caption="${ioObjectsTitle}" baseUrl="${ioObjectsUrl}" defaultTab="${param.initialTab == 'ioObjects'}" />
+            <ajax:tab caption="${experimentInputsTitle}" baseUrl="${experimentInputsUrl}" defaultTab="${param.initialTab == 'experimentInputs'}" />
             <ajax:tab caption="${experimentRunsTitle}" baseUrl="${experimentRunsUrl}" defaultTab="${param.initialTab == 'experimentRuns'}" />
-            <ajax:tab caption="${contactTitle}" baseUrl="${contactUrl}" defaultTab="${param.initialTab == 'contact'}" />
             <ajax:tab caption="${exportTitle}" baseUrl="${exportUrl}" defaultTab="${param.initialTab == 'export'}" />
         </ajax:tabPanel>
     </s:if>
