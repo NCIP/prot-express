@@ -126,7 +126,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private static final int DESCRIPTION_LENGTH = 255;
     private static final int SOFTWARE_LENGTH = 255;
     private static final int INSTRUMENT_LENGTH = 255;
-    private static final int TYPE_LENGTH = 20;
     private static final int LSID_LENGTH = 255;
     private static final int OUTPUT_MATERIAL_TYPE_LENGTH = 25;
     private static final int OUTPUT_DATA_TYPE_LENGTH = 25;
@@ -166,9 +165,9 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * The id of the object.
+     * The id of the protocol.
      *
-     * @return the id, null for new objects
+     * @return the id, null for new protocols
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -177,14 +176,14 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * @param id the id to set
+     * @param id the id of protocol to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Gets the lsid.
+     * Gets the lsid for the protocol.
      *
      * @return the lsid
      */
@@ -197,7 +196,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Sets the lsid.
+     * Sets the lsid for the protocol.
      *
      * @param lsid the lsid to set
      */
@@ -206,7 +205,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the name.
+     * Gets the name of the protocol.
      *
      * @return the name
      */
@@ -219,7 +218,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Sets the name.
+     * Sets the name of the protocol.
      *
      * @param name the name to set
      */
