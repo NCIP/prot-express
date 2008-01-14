@@ -19,7 +19,7 @@
        <h2><fmt:message key="protocolApplicationOutput.edit" /></h2>
     </s:else>
 
-    <s:if test="inputOutputObject != null && inputOutputObject.id != null">
+    <s:if test="output != null && output.id != null">
         <c:url value="/ajax/protocolApplicationOutput/management/load/overview.action" var="overviewUrl">
             <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
             <c:param name="outputId" value="${output.id}" />

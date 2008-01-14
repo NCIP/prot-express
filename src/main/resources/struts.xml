@@ -244,6 +244,28 @@
         </action>
         <!-- End ExperimentInput Actions -->
 
+        <!-- ProtocolApplicationInput Actions -->
+        <action name="protocolApplicationInput/management/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/protocolApplicationInput/protocolApplicationInputForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocolApplicationInput/protocolApplicationInputForm.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/protocolApplicationInput/management/*/*"
+            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/protocolApplicationInput/{2}.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocolApplicationInput/{2}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/protocolApplicationInput/management/delete"
+            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="delete">
+            <result name="success" type="chain">ajax/protocolApplication/management/load/inputs</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- End ProtocolApplicationOutput Actions -->
+
         <!-- ProtocolApplicationOutput Actions -->
         <action name="protocolApplicationOutput/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction" method="{1}">
