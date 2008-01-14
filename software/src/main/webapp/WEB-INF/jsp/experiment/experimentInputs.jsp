@@ -28,7 +28,7 @@
             <display:column property="dataFileURL" titleKey="experimentInput.dataFileUrl" sortable="false" />
             <display:column titleKey="actions" sortable="false">
                 <c:url var="loadUrl" value="/experimentInput/management/load.action">
-                    <c:param name="inputOutputObject.id" value="${row.id}" />
+                    <c:param name="input.id" value="${row.id}" />
                 </c:url>
                 <c:if test="${isReadOnly}">
                     <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.view.alt" />" /> <fmt:message key="view" /></a>
@@ -36,7 +36,7 @@
                 <c:if test="${!isReadOnly}">
                     <a href="${loadUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="icon.edit.alt" />" /> <fmt:message key="edit" /></a>
                     <c:url var="deleteUrl" value="/ajax/experimentInput/management/delete.action">
-                        <c:param name="inputOutputObject.id" value="${row.id}" />
+                        <c:param name="input.id" value="${row.id}" />
                         <c:param name="experiment.id" value="${experiment.id}" />
                     </c:url>
                     <ajax:anchors target="selectedtabbox" ajaxFlag="false">

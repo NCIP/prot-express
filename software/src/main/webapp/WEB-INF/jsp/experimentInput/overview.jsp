@@ -3,8 +3,8 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
-<c:set var="isReadOnly" value="${inputOutputObject.id != null && inputOutputObject.experiment.auditInfo.creator != currentUser.loginName}" />
-<s:if test="${inputOutputObject.id != null}">
+<c:set var="isReadOnly" value="${input.id != null && input.experiment.auditInfo.creator != currentUser.loginName}" />
+<s:if test="${input.id != null}">
     <c:set var="formAction" value="ajax/experimentInput/management/save/overview"/>
 </s:if>
 <s:else>
@@ -16,7 +16,7 @@
         <s:textfield name="input.lsid" key="experimentInput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="input.name" key="experimentInput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="input.dataFileURL" key="experimentInput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
-        <s:hidden name="inputOutputObject.id" />
+        <s:hidden name="input.id" />
         <s:hidden name="experimentId" />
     </s:form>
 

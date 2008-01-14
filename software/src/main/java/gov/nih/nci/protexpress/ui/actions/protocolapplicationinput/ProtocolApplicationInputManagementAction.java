@@ -80,18 +80,12 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplication;
+package gov.nih.nci.protexpress.ui.actions.protocolapplicationinput;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -100,108 +94,36 @@ import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
 /**
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  *
  */
-public class ProtocolApplicationManagementAction extends ActionSupport
-        implements Preparable {
+public class ProtocolApplicationInputManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(
-            null, null, null, null, null);
-    private Long experimentRunId;
-    private Long protocolActionId;
+    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, null, null, null);
+    private InputOutputObject input = new InputOutputObject(null, null);
+    private Long protocolApplicationId;
+    private Long inputId;
     private String successMessage = null;
-
-    private List<InputOutputObject> potentialInputs = new ArrayList<InputOutputObject>();
 
     /**
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
         ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getProtocolApplication().getId() != null) {
-            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplication().getId()));
-            setPotentialInputs();
-        } else if (getExperimentRunId() != null) {
-            getProtocolApplication().setExperimentRun(es.getExperimentRunById(getExperimentRunId()));
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
         }
 
-        if (getProtocolActionId() != null) {
-            ProtocolAction protAction = ProtExpressRegistry.getExperimentService().
-                getProtocolActionById(getProtocolActionId());
-            getProtocolApplication().setProtocolAction(protAction);
-            getProtocolApplication().setParameters(protAction.getProtocol().getParameters());
+        if (getInput().getId() != null) {
+            setInput(es.getInputOutputObjectById(getInput().getId()));
+        } else if (getInputId() != null) {
+            setInput(es.getInputOutputObjectById(getInputId()));
         }
     }
 
     /**
-     * Sets the setPotentialInputs.
-     *
-     */
-    private void setPotentialInputs() {
-        // Get the global inputs, not yet assigned or selected.
-        List<InputOutputObject> globalInputs = getProtocolApplication().getExperimentRun()
-            .getExperiment().getGlobalInputs();
-
-        if ((globalInputs != null) && (globalInputs.size() > 0)) {
-            List<InputOutputObject> protApplicationInputs = getProtocolApplication().getInputs();
-            for (InputOutputObject inputObject : globalInputs) {
-                if (!isSelectedInput(inputObject, protApplicationInputs)) {
-                    this.getPotentialInputs().add(inputObject);
-                }
-            }
-        }
-
-        Calendar protAppCreationDate = getProtocolApplication().getAuditInfo().getCreationDate();
-        // Get the outputs from all previous protocols that have been applied, add to potential protocol inputs.
-        List<ProtocolApplication> predecessorApplications = getProtocolApplication()
-            .getExperimentRun().getProtocolApplications();
-        if ((predecessorApplications != null) && (predecessorApplications.size() > 0)) {
-            for (ProtocolApplication predProtApp : predecessorApplications) {
-                Calendar predProtAppCreationDate = predProtApp.getAuditInfo().getCreationDate();
-                if (predProtAppCreationDate.before(protAppCreationDate)) {
-                    //Iterate through list of outputs, check to see if it's selected as an input.
-                    List<InputOutputObject> outputs = predProtApp.getOutputs();
-                    for (InputOutputObject output : outputs) {
-                        if (!isSelectedInput(output, getProtocolApplication().getInputs())) {
-                            this.getPotentialInputs().add(output);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Returns a boolean value that determines if the input has been selected or not.
-     *
-     * @param inputObject the input to check.
-     * @param protApplicationInputs list of inputs for the protocol.
-     */
-    private boolean isSelectedInput(InputOutputObject inputOutputObject,
-            List<InputOutputObject> protApplicationInputs) {
-        boolean isApplied = false;
-        for (InputOutputObject protAppInput : protApplicationInputs) {
-            boolean flag1 = protAppInput.equals(inputOutputObject);
-            if (flag1) {
-                isApplied = true;
-            }
-        }
-        return isApplied;
-    }
-
-    /**
-     * Gets the potentialInputs.
-     *
-     * @return the potentialInputs.
-     */
-    public List<InputOutputObject> getPotentialInputs() {
-        return potentialInputs;
-    }
-
-    /**
-     * loads the {@link ProtocolApplication}.
+     * loads the {@link InputOutputObject}.
      *
      * @return the directive for the next action / page to be directed to
      */
@@ -211,55 +133,39 @@ public class ProtocolApplicationManagementAction extends ActionSupport
     }
 
     /**
-     * Saves the {@link ProtocolApplication}.
+     * Adds the output object to the protocol application.
      *
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        if (getProtocolApplication().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry
-                    .getApplicationResourceBundle().getString(
-                            "protocolApplication.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry
-                    .getApplicationResourceBundle().getString(
-                            "protocolApplication.update.success"));
+             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
+                     .getString("protocolApplicationInput.selected.success"));
+
+        if (!getProtocolApplication().getInputs().contains(input)) {
+            getProtocolApplication().getInputs().add(input);
         }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(
-                getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(input);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
         return ActionSupport.SUCCESS;
     }
 
     /**
-     * delete the {@link ProtocolApplication}.
+     * delete the output.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
     public String delete() {
         String msg = ProtExpressRegistry.getApplicationResourceBundle()
-                .getString("protocolApplication.delete.success");
-        setSuccessMessage(MessageFormat.format(msg, getProtocolApplication()
-                .getName()));
-        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(
-                getProtocolApplication());
+            .getString("protocolApplicationInput.delete.success");
+        setSuccessMessage(msg);
+        getProtocolApplication().getInputs().remove(input);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
         return ActionSupport.SUCCESS;
     }
 
     /**
-     * addInput the {@link ProtocolApplication}.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String addInput() {
-
-        return ActionSupport.SUCCESS;
-    }
-
-
-    /**
-     * @return the protocolApplication
+     * @return the protocolApplication.
      */
     @CustomValidator(type = "hibernate")
     public ProtocolApplication getProtocolApplication() {
@@ -267,26 +173,53 @@ public class ProtocolApplicationManagementAction extends ActionSupport
     }
 
     /**
-     * @param protocolApplication
-     *            the protocolApplication to set
+     * @param protocolApplication the protocolApplication to set
      */
     public void setProtocolApplication(ProtocolApplication protocolApplication) {
         this.protocolApplication = protocolApplication;
     }
 
     /**
-     * @return the experimentRunId
+     * @return the input.
      */
-    public Long getExperimentRunId() {
-        return this.experimentRunId;
+    @CustomValidator(type = "hibernate")
+    public InputOutputObject getInput() {
+        return this.input;
     }
 
     /**
-     * @param experimentRunId
-     *            the experimentRunId to set
+     * @param input the input to set
      */
-    public void setExperimentRunId(Long experimentRunId) {
-        this.experimentRunId = experimentRunId;
+    public void setInput(InputOutputObject input) {
+        this.input = input;
+    }
+
+    /**
+     * @param protocolApplicationId the protocolApplicationId to set
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
+    }
+
+    /**
+     * @return the protocolApplicationId
+     */
+    public Long getProtocolApplicationId() {
+        return this.protocolApplicationId;
+    }
+
+    /**
+     * @param inputId the inputId to set
+     */
+    public void setInputId(Long inputId) {
+        this.inputId = inputId;
+    }
+
+    /**
+     * @return the inputId
+     */
+    public Long getInputId() {
+        return this.inputId;
     }
 
     /**
@@ -297,25 +230,9 @@ public class ProtocolApplicationManagementAction extends ActionSupport
     }
 
     /**
-     * @param successMessage
-     *            the successMessage to set
+     * @param successMessage the successMessage to set
      */
     public void setSuccessMessage(String successMessage) {
         this.successMessage = successMessage;
-    }
-
-    /**
-     * @return the protocol action id
-     */
-    public Long getProtocolActionId() {
-        return this.protocolActionId;
-    }
-
-    /**
-     * @param protocolActionId
-     *            the protocol action id
-     */
-    public void setProtocolActionId(Long protocolActionId) {
-        this.protocolActionId = protocolActionId;
     }
 }

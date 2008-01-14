@@ -3,7 +3,7 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
-<c:set var="isReadOnly" value="${inputOutputObject.id != null && inputOutputObject.experiment.auditInfo.creator != currentUser.loginName}" />
+<c:set var="isReadOnly" value="${output.id != null && output.experiment.auditInfo.creator != currentUser.loginName}" />
 <s:if test="${output.id != null}">
     <c:set var="formAction" value="ajax/protocolApplicationOutput/management/save/overview"/>
 </s:if>
