@@ -86,24 +86,36 @@ package gov.nih.nci.protexpress.data.persistent;
  * @author Krishna Kanchinadam
  *
  */
-public enum InputOutputObjectType {
-    /**
-     * The Data type.
-     */
-    Data("Data"),
+public enum CpasType {
     /**
      * The Material type.
      */
-    Material("Material");
+    MATERIAL("Material"),
+    /**
+     * The Data type.
+     */
+    DATA("Data"),
+    /**
+     * The ProtocolApplication type.
+     */
+    PROTOCOL_APPLICATION("ProtocolApplication"),
+    /**
+     * The ExperimentRun type.
+     */
+    EXPERIMENT_RUN("ExperimentRun"),
+    /**
+     * The ExperimentRunOutput type.
+     */
+    EXPERIMENT_RUN_OUTPUT("ExperimentRunOutput");
 
     private String displayName;
 
     /**
-     * Constructor for ProtocolType.
+     * Constructor for CpasType.
      *
      * @param displayname the display name
      */
-    private InputOutputObjectType(String displayname) {
+    private CpasType(String displayname) {
         this.displayName = displayname;
     }
 

@@ -82,19 +82,14 @@
  */
 package gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction;
-import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
 import gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction;
-import gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction;
 
 import java.util.Calendar;
 
@@ -136,7 +131,7 @@ public class ProtocolApplicationInputManagementActionTest extends ProtExpressBas
 
         this.theSession.saveOrUpdate(this.experimentRun);
 
-        this.protocolAction = new ProtocolAction(experiment, protocol);
+        this.protocolAction = new ProtocolAction(experiment, protocol, 1L);
         this.theSession.saveOrUpdate(this.protocolAction);
 
         this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);

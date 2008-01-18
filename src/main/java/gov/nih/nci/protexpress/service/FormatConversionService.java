@@ -100,20 +100,20 @@ import javax.xml.bind.JAXBException;
 public interface FormatConversionService {
 
     /**
-     * Take the experiments and write them to the file, converting them to the correct format.
-     * @param experiments the list of the experiments
+     * Take the experiment and write it to the file, converting it to the correct format.
+     * @param experiment the experiment
      * @param output the file.
      * @throws JAXBException on marshalling error
      */
-    void marshallExperiments(List<Experiment> experiments, File output) throws JAXBException;
+    void marshallExperiments(Experiment experiment, File output) throws JAXBException;
 
     /**
-     * Take the experiments and write them to the stream, converting them to the correct format.
-     * @param experiments the list of the experiments
+     * Take the experiment and write it to the stream, converting it to the correct format.
+     * @param experiment the experiments
      * @param output the output stream.
      * @throws JAXBException on marshalling error
      */
-    void marshallExperiments(List<Experiment> experiments, OutputStream output) throws JAXBException;
+    void marshallExperiments(Experiment experiment, OutputStream output) throws JAXBException;
 
     /**
      * Take the file and convert it to a list of experiments.

@@ -10,7 +10,7 @@
                 </tr>
             </s:if>
             <tr>
-                <td class="tdLabel"><label for="overviewForm_protocolId" class="label"><fmt:message key="protocolAction.protocol" />:</label></td>
+                <td class="tdLabel"><label for="overviewForm_protocolId" class="label"><fmt:message key="protocolAction.filterProtocols" />:</label></td>
                 <td>
                     <script type="text/javascript">
                         var timer;
@@ -46,7 +46,7 @@
                             lastSelectedProtocolId = selectBox.value;
                         }
                     </script>
-                    <s:textfield name="protocolName" theme="simple" size="20" tabindex="6" disabled="${isReadOnly}" onkeypress="startTimer(event);" />
+                    <s:textfield name="protocolName" key="protocolAction.protocol" theme="simple" size="20" tabindex="6" disabled="${isReadOnly}" onkeypress="startTimer(event);" />
                     <span id="progressMsg" style="display:none;"><img alt="Indicator" src="<c:url value="/images/indicator.gif"/>" /> <fmt:message key="loading" /></span><br>
                     <s:select list="#{}" cssStyle="margin-top: 3px; width: 200px;" name="protocolId" theme="simple" tabindex="7"
                         size="10" disabled="${isReadOnly}" value="protocolId.toString()" onchange="saveSelectedVal(this);"/>

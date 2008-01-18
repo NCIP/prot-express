@@ -20,6 +20,7 @@
         <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
             requestURI="${sortUrl}" list="${experimentRun.protocolApplications}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
+            <display:column property="protocolAction.stepNumber" titleKey="protocolAction.stepNumber" sortable="true" />
             <display:column property="lsid" titleKey="protocolApplication.lsid" sortable="true" />
             <display:column property="name" titleKey="protocolApplication.name" sortable="true" />
             <display:column property="protocolAction.protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
@@ -51,6 +52,7 @@
         <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
             requestURI="${sortUrl}" list="${protocolsToApply}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="false" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
+            <display:column property="protocolAction.stepNumber" titleKey="protocolAction.stepNumber" sortable="true" />
             <display:column property="protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
             <display:column property="protocol.description" titleKey="protocolAction.protocolDescription" sortable="true" />
             <display:column titleKey="actions" sortable="false">

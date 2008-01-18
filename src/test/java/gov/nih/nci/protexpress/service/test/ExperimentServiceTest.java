@@ -349,7 +349,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolAction protAction = new ProtocolAction(exp, p);
+        ProtocolAction protAction = new ProtocolAction(exp, p, 1L);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(protAction);
         this.theSession.flush();
         this.theSession.clear();

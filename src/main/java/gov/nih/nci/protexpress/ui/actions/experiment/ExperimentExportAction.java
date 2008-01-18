@@ -88,7 +88,6 @@ import gov.nih.nci.protexpress.data.persistent.Experiment;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.xml.bind.JAXBException;
 
@@ -134,11 +133,9 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
      */
     @SkipValidation
     public String export() throws JAXBException {
-        ArrayList<Experiment> experiments = new ArrayList<Experiment>();
-        experiments.add(getExperiment());
         if (ExperimentExportFileType.Xar2_2.equals(getFileType())) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ProtExpressRegistry.getXar22FormatConversionService().marshallExperiments(experiments, os);
+            ProtExpressRegistry.getXar22FormatConversionService().marshallExperiments(getExperiment(), os);
             this.inputStream = new ByteArrayInputStream(os.toByteArray());
         }
         return ActionSupport.SUCCESS;

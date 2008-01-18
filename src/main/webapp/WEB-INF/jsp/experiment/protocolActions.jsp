@@ -24,6 +24,7 @@
         <display:table class="searchresults" cellspacing="0" defaultsort="3" excludedParams="ajax"
             requestURI="${sortUrl}" list="${experiment.protocolActions}" pagesize="10" sort="list" id="row">
             <protExpress:displayTagProperties includeCancelButton="true" cancelButtonTabIndex="6" cancelButtonUrl="${cancelUrl}" />
+                <display:column property="stepNumber" titleKey="protocolAction.stepNumber" sortable="true" />
                 <display:column property="protocol.name" titleKey="protocolAction.protocolName" sortable="true" />
                 <display:column property="protocol.description" titleKey="protocolAction.protocolDescription" sortable="true" />
                 <display:column titleKey="actions" sortable="false">
