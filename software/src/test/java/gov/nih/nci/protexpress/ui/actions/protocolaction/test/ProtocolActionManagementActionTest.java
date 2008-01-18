@@ -127,7 +127,7 @@ public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernate
         this.theSession.flush();
         this.theSession.clear();
 
-        this.protocolAction = new ProtocolAction(this.experiment, this.protocol);
+        this.protocolAction = new ProtocolAction(this.experiment, this.protocol, 1L);
     }
 
     public void testLoadByExperimentId() throws Exception {

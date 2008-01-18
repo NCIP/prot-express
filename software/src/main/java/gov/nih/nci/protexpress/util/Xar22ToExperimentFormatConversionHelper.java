@@ -80,90 +80,36 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplication.test;
+
+package gov.nih.nci.protexpress.util;
+
+import java.util.List;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
+import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 
-import java.util.Calendar;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * @author Scott Miller
+ * Format conversion helper class for the Xar.xml 2.2 format.
  *
+ * @author Krishna Kanchinadam
  */
-public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    ProtocolApplicationManagementAction action;
-    ProtocolApplication protocolApplication;
-    ExperimentRun experimentRun;
-    Protocol protocol;
-    ProtocolAction protocolAction;
 
+public class Xar22ToExperimentFormatConversionHelper {
     /**
-     * {@inheritDoc}
+     * Default constructor.
+     *
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        this.action = new ProtocolApplicationManagementAction();
-
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
-        this.theSession.save(this.protocol);
-
-        Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
-        experiment.setComments("Description - Test Experiment 1");
-        experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(experiment);
-
-        this.experimentRun = new ExperimentRun("test er lsid", "test name");
-        this.experimentRun.setComments("test comments");
-        this.experimentRun.setExperiment(experiment);
-
-        this.theSession.saveOrUpdate(this.experimentRun);
-
-        this.protocolAction = new ProtocolAction(experiment, protocol, 1L);
-        this.theSession.saveOrUpdate(this.protocolAction);
-
-        this.theSession.flush();
-        this.theSession.clear();
-
-        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+    public Xar22ToExperimentFormatConversionHelper() {
     }
 
-    public void testLoadByExperimentRunId() throws Exception {
-        this.action.setExperimentRunId(this.experimentRun.getId());
-        this.action.setProtocolActionId(this.protocolAction.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.INPUT, this.action.load());
-        assertEquals(this.experimentRun, this.action.getProtocolApplication().getExperimentRun());
-        assertEquals(this.protocolAction, this.action.getProtocolApplication().getProtocolAction());
-        assertEquals(this.protocol, this.action.getProtocolApplication().getProtocolAction().getProtocol());
-    }
-
-    public void testAddAndDeleteProtocolApplication() throws Exception {
-        this.action.setProtocolApplication(this.protocolApplication);
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Protocol Application successfully created.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationManagementAction();
-        this.action.getProtocolApplication().setId(this.protocolApplication.getId());
-        this.action.prepare();
-        this.action.getProtocolApplication().setName("new name");
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Protocol Application successfully updated.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationManagementAction();
-        this.action.getProtocolApplication().setId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals("success", this.action.delete());
-        assertEquals("new name successfully deleted.", this.action.getSuccessMessage());
+   /**
+     * Given a list of Experiment objects, creates and returns an ExperimentArchiveType.
+     *
+     * @param experimentArchive the experiment archive
+     * @return an Experiment
+     */
+    public List<Experiment> getExperimentData(ExperimentArchiveType experimentArchive) {
+        return null;
     }
 }

@@ -83,7 +83,11 @@
 package gov.nih.nci.protexpress.data.persistent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -91,6 +95,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -114,6 +119,8 @@ public class ProtocolAction implements Serializable, Persistent {
     private Long id;
     private Protocol protocol;
     private Experiment experiment;
+    private Long stepNumber;
+    private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
 
     /**
      * protected default constructor for hibernate only.
@@ -126,10 +133,12 @@ public class ProtocolAction implements Serializable, Persistent {
      *
      * @param experiment the experiment to which the protocol is being applied
      * @param protocol the protocol being applied
+     * @param stepNumber the step number for the protocol being applied
      */
-    public ProtocolAction(Experiment experiment, Protocol protocol) {
+    public ProtocolAction(Experiment experiment, Protocol protocol, Long stepNumber) {
         setExperiment(experiment);
         setProtocol(protocol);
+        setStepNumber(stepNumber);
     }
 
     /**
@@ -149,7 +158,6 @@ public class ProtocolAction implements Serializable, Persistent {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     /**
      * Gets the protocol.
@@ -190,6 +198,45 @@ public class ProtocolAction implements Serializable, Persistent {
      */
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
+    }
+
+    /**
+     * Gets the stepNumber.
+     *
+     * @return the stepNumber
+     */
+    @Column(name = "step_number")
+    @NotNull
+    public Long getStepNumber() {
+        return this.stepNumber;
+    }
+
+    /**
+     * Sets the stepNumber.
+     *
+     * @param stepNumber the stepNumber to set
+     */
+    public void setStepNumber(Long stepNumber) {
+        this.stepNumber = stepNumber;
+    }
+
+    /**
+     * Gets the protocolApplications.
+     *
+     * @return the protocolApplications.
+     */
+    @OneToMany(mappedBy = "protocolAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<ProtocolApplication> getProtocolApplications() {
+        return this.protocolApplications;
+    }
+
+    /**
+     * Sets the protocolApplications.
+     *
+     * @param protocolApplications the protocolApplications to set.
+     */
+    protected void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
+        this.protocolApplications = protocolApplications;
     }
 
     /**

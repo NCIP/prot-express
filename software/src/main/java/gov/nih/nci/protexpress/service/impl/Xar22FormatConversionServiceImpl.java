@@ -84,7 +84,8 @@ package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.util.Xar22FormatConversionHelper;
+import gov.nih.nci.protexpress.util.ExperimentToXar22FormatConversionHelper;
+import gov.nih.nci.protexpress.util.Xar22ToExperimentFormatConversionHelper;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 
 import java.io.File;
@@ -123,15 +124,15 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
     /**
      * {@inheritDoc}
      */
-    public void marshallExperiments(List<Experiment> experiments, File output) throws JAXBException {
-        getNewMarshaller().marshal(convertToExperimentArchive(experiments), output);
+    public void marshallExperiments(Experiment experiment, File output) throws JAXBException {
+        getNewMarshaller().marshal(convertToExperimentArchive(experiment), output);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void marshallExperiments(List<Experiment> experiments, OutputStream output) throws JAXBException {
-        getNewMarshaller().marshal(convertToExperimentArchive(experiments), output);
+    public void marshallExperiments(Experiment experiment, OutputStream output) throws JAXBException {
+        getNewMarshaller().marshal(convertToExperimentArchive(experiment), output);
     }
 
     /**
@@ -153,10 +154,10 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @param experiments the experiments to convert
      * @return the xar 2.2 jaxb ready data
      */
-    private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(List<Experiment> experiments) {
-        Xar22FormatConversionHelper xar22ConversionHelper = new Xar22FormatConversionHelper();
-        ExperimentArchiveType experimentArchive = xar22ConversionHelper.getExperimentArchiveData(experiments);
-        return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimentArchive);
+    private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(Experiment experiment) {
+       ExperimentToXar22FormatConversionHelper expToXar22Helper = new ExperimentToXar22FormatConversionHelper();
+       ExperimentArchiveType experimentArchive = expToXar22Helper.getExperimentArchiveData(experiment);
+       return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimentArchive);
     }
 
     /**
@@ -186,7 +187,7 @@ public class Xar22FormatConversionServiceImpl implements FormatConversionService
      * @return the list of experiments.
      */
     private List<Experiment> convertToExperiments(ExperimentArchiveType experimentArchive) {
-        Xar22FormatConversionHelper xar22ConversionHelper = new Xar22FormatConversionHelper();
-        return xar22ConversionHelper.parseExperimentArchiveData(experimentArchive);
+        Xar22ToExperimentFormatConversionHelper xar22ToExpHelper = new Xar22ToExperimentFormatConversionHelper();
+        return xar22ToExpHelper.getExperimentData(experimentArchive);
     }
 }

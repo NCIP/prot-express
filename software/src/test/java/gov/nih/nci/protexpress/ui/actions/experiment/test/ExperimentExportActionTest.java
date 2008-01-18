@@ -82,17 +82,11 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportAction;
-import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportFileType;
-
-import java.io.InputStream;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Scott Miller
@@ -138,13 +132,5 @@ public class ExperimentExportActionTest extends ProtExpressBaseHibernateTest  {
                 .getExperiment()));
     }
 
-    public void testExport() throws Exception {
-        this.action.setExperiment(this.experiment);
-        this.action.setFileType(ExperimentExportFileType.Xar2_2);
-        assertEquals("XAR 2.2", ExperimentExportFileType.Xar2_2.getDisplayName());
-        assertEquals(ActionSupport.SUCCESS, this.action.export());
-        InputStream is = this.action.getInputStream();
-        Experiment ex = ProtExpressRegistry.getXar22FormatConversionService().unmarshallExperiments(is).get(0);
-        assertEquals(ex.getName(), this.experiment.getName());
-    }
+
 }

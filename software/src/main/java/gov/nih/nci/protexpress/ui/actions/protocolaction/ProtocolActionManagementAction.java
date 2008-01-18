@@ -110,7 +110,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ProtocolActionManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolAction protocolAction = new ProtocolAction(null, null);
+    private ProtocolAction protocolAction = new ProtocolAction(null, null, null);
     private Long experimentId;
     private Long protocolId;
     private String successMessage = null;
@@ -126,6 +126,8 @@ public class ProtocolActionManagementAction extends ActionSupport implements Pre
             setProtocolAction(es.getProtocolActionById(getProtocolAction().getId()));
         } else if (getExperimentId() != null) {
             Experiment exp = es.getExperimentById(getExperimentId());
+            //Set the stepnumber
+            getProtocolAction().setStepNumber(exp.getProtocolActions().size() + 1L);
             getProtocolAction().setExperiment(exp);
         }
 
