@@ -80,93 +80,168 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment;
+package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
+import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 /**
- * Class to handle the exporting of experiment data.
- * @author Scott Miller
+ * Class representing an lsid value.
+ *
+ * @author Krishna Kanchinadam
  */
-public class ExperimentExportAction extends ActionSupport implements Preparable {
-
-    private static final long serialVersionUID = 1L;
-    private Experiment experiment = new Experiment(null);
-    private ExperimentExportFileType fileType = null;
-
-    private InputStream inputStream = null;
+public final class LsidType {
+    private String baseString;
+    private String separator;
+    private String authority;
+    private String revision;
+    private String namespace;
+    private Long identifier;
+    private String lsid;
 
     /**
-     * {@inheritDoc}
+     * Constructor for LsidType.
+     *
+     * @param namespace the namespace.
+     * @param identifier the identifier.
      */
-    public void prepare() throws Exception {
-        if (getExperiment() != null && getExperiment().getId() != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
+    public LsidType(String namespace, Long identifier) {
+        setNamespace(namespace);
+        setIdentifier(identifier);
+
+        setBaseString(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.base"));
+        setSeparator(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.separator"));
+        setAuthority(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.authority"));
+        setRevision(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.revision"));
+    }
+
+    /**
+     * Gets the lsid.
+     *
+     * @return the lsid.
+     */
+    public String getLsid() {
+        lsid = null;
+        StringBuffer objectLsid = new StringBuffer();
+        if (getIdentifier() != null) {
+            lsid = objectLsid.append(getBaseString())
+            .append(getSeparator())
+            .append(getAuthority())
+            .append(getSeparator())
+            .append(getNamespace())
+            .append(getSeparator())
+            .append(getIdentifier().toString())
+            .append(getSeparator())
+            .append(getRevision())
+            .toString();
         }
+        return lsid;
     }
 
     /**
-     * Export the selected experiment.
-     * @return the stream.
+     * Gets the baseString.
+     *
+     * @return the baseString.
      */
-    public InputStream getInputStream()  {
-        return this.inputStream;
+    private String getBaseString() {
+        return baseString;
     }
 
     /**
-     * no op action that returns success.
-     * @return success
-     * @throws JAXBException on error
+     * Sets the baseString.
+     *
+     * @param baseString the baseString to set.
      */
-    @SkipValidation
-    public String export() throws JAXBException {
-        if (ExperimentExportFileType.Xar2_2.equals(getFileType())) {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ProtExpressRegistry.getXar22FormatConversionService().marshallExperiments(getExperiment(), os);
-            this.inputStream = new ByteArrayInputStream(os.toByteArray());
-        }
-        return ActionSupport.SUCCESS;
+    private void setBaseString(String baseString) {
+        this.baseString = baseString;
     }
 
     /**
-     * @return the experiment
+     * Gets the separator.
+     *
+     * @return the separator.
      */
-    public Experiment getExperiment() {
-        return this.experiment;
+    private String getSeparator() {
+        return separator;
     }
 
     /**
-     * @param experiment the experiment to set
+     * Sets the separator.
+     *
+     * @param separator the separator to set.
      */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    private void setSeparator(String separator) {
+        this.separator = separator;
     }
 
     /**
-     * @return the fileType
+     * Gets the authority.
+     *
+     * @return the authority.
      */
-    @RequiredFieldValidator(key = "experiment.export.fileType", message = "File Type is required")
-    public ExperimentExportFileType getFileType() {
-        return this.fileType;
+    private String getAuthority() {
+        return authority;
     }
 
     /**
-     * @param fileType the fileType to set
+     * Sets the authority.
+     *
+     * @param authority the authority to set.
      */
-    public void setFileType(ExperimentExportFileType fileType) {
-        this.fileType = fileType;
+    private void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    /**
+     * Gets the namespace.
+     *
+     * @return the namespace.
+     */
+    private String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * Sets the namespace.
+     *
+     * @param namespace the namespace to set.
+     */
+    private void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    /**
+     * Gets the identifier.
+     *
+     * @return the identifier.
+     */
+    private Long getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * Sets the identifier.
+     *
+     * @param identifier the identifier to set.
+     */
+    private void setIdentifier(Long identifier) {
+        this.identifier = identifier;
+    }
+
+    /**
+     * Gets the revision.
+     *
+     * @return the revision.
+     */
+    private String getRevision() {
+        return revision;
+    }
+
+    /**
+     * Sets the revision.
+     *
+     * @param revision the revision to set.
+     */
+    private void setRevision(String revision) {
+        this.revision = revision;
     }
 }

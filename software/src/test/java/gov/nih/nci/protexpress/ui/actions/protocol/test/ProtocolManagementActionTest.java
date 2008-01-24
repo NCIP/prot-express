@@ -108,7 +108,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         super.onSetUp();
         this.action = new ProtocolManagementAction();
 
-        this.protocol = new Protocol("lsid_test_protocol_1", "test protocol 1");
+        this.protocol = new Protocol("test protocol 1");
         this.protocol.setInstrument("foo");
         this.protocol.setDescription("bar");
         this.protocol.setSoftware("baz");
@@ -123,7 +123,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         this.action.prepare();
         assertEquals(null, this.action.getProtocol());
 
-        Protocol p = new Protocol(null, null);
+        Protocol p = new Protocol(null);
         this.action.setProtocol(p);
         this.action.prepare();
         assertEquals(p, this.action.getProtocol());
@@ -140,14 +140,14 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testSaveOrUpdate() throws Exception {
-        this.action.setProtocol(new Protocol("lsid", "zzz"));
+        this.action.setProtocol(new Protocol("zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
     }
 
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
         this.action.setCancelResult("dashboard");
-        this.action.setProtocol(new Protocol("lsid", "zzz"));
+        this.action.setProtocol(new Protocol("zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
         assertEquals("Protocol successfully created.", this.action.getSuccessMessage());

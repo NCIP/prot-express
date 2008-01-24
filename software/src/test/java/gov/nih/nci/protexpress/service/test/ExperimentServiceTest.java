@@ -105,7 +105,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSaveRetrieveDeleteExperiment() throws Exception {
-        Experiment exp1 = new Experiment("LSID_Test_Experiment_1", "Name - Test Experiment 1");
+        Experiment exp1 = new Experiment("Name - Test Experiment 1");
         exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
@@ -129,15 +129,15 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSearchExperiments() throws Exception {
-        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        Experiment exp = new Experiment("test experiment 1");
         exp.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
-        exp = new Experiment("lsid_test_experiment_12", "test experiment 12");
+        exp = new Experiment("test experiment 12");
         exp.setComments("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
-        exp = new Experiment("lsid_test_experiment_123", "test experiment 123");
+        exp = new Experiment("test experiment 123");
         exp.setComments("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
@@ -230,7 +230,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
                 UserHolder.getUsername(), 3);
         assertEquals(0, experiments.size());
 
-        Experiment experiment1 = new Experiment("ex1", "ex1");
+        Experiment experiment1 = new Experiment("ex1");
         this.theSession.save(experiment1);
         this.theSession.flush();
         Thread.sleep(100);
@@ -240,7 +240,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(1, experiments.size());
         assertEquals(experiment1, experiments.get(0));
 
-        Experiment experiment2 = new Experiment("ex2", "ex2");
+        Experiment experiment2 = new Experiment("ex2");
         this.theSession.save(experiment2);
         this.theSession.flush();
         Thread.sleep(100);
@@ -251,7 +251,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(experiment2, experiments.get(0));
         assertEquals(experiment1, experiments.get(1));
 
-        Experiment experiment3 = new Experiment("ex3", "ex3");
+        Experiment experiment3 = new Experiment("ex3");
         this.theSession.save(experiment3);
         this.theSession.flush();
         Thread.sleep(100);
@@ -285,9 +285,9 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testEqualsAndHashCode() {
-        assertFalse(new Experiment("LSIDTestExperiment1", "TestExperiment1").equals(new Experiment(
-                "LSIDTestExperiment1", "TestExperiment1")));
-        Experiment exp1 = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        assertFalse(new Experiment("TestExperiment1").equals(new Experiment(
+                "TestExperiment1")));
+        Experiment exp1 = new Experiment("Name - Test Experiment 1");
         exp1.setComments("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
@@ -295,18 +295,18 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(exp1.equals(null));
         assertFalse(exp1.equals(new String("Foo")));
         assertTrue(exp1.equals(exp1));
-        assertEquals(exp1.hashCode(), new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1").hashCode());
+        assertEquals(exp1.hashCode(), new Experiment("Name - Test Experiment 1").hashCode());
     }
 
     @SuppressWarnings("unchecked")
     public void testAddAndDeleteExperimentRun() throws Exception {
-        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        Experiment exp = new Experiment("test experiment 1");
         exp.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
         this.theSession.flush();
         this.theSession.clear();
 
-        ExperimentRun experimentRun = new ExperimentRun("test er1", "test er1");
+        ExperimentRun experimentRun = new ExperimentRun("test er1");
         experimentRun.setExperiment(exp);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(experimentRun);
 
@@ -327,7 +327,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testAddAndDeleteProtocolApplication() throws Exception {
-        Protocol p = new Protocol("test_protocol_1", "test protocol 1");
+        Protocol p = new Protocol("test protocol 1");
         p.setInstrument("foo");
         p.setDescription("bar");
         p.setSoftware("baz");
@@ -336,13 +336,13 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        Experiment exp = new Experiment("lsid_test_experiment_1", "test experiment 1");
+        Experiment exp = new Experiment("test experiment 1");
         exp.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
         this.theSession.flush();
         this.theSession.clear();
 
-        ExperimentRun experimentRun = new ExperimentRun("test er1", "test er1");
+        ExperimentRun experimentRun = new ExperimentRun("test er1");
         experimentRun.setExperiment(exp);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(experimentRun);
 
@@ -354,7 +354,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolApplication pa = new ProtocolApplication("pa lsid 1", "protocol application name", Calendar.getInstance(), experimentRun, protAction);
+        ProtocolApplication pa = new ProtocolApplication("protocol application name", Calendar.getInstance(), experimentRun, protAction);
         pa.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);
         this.theSession.flush();

@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,6 +105,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -128,11 +129,10 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 100;
-    private static final int LSID_LENGTH = 255;
     private static final int COMMENTS_LENGTH = 255;
 
     private Long id;
-    private String lsid;
+    private LsidType lsid;
     private String name;
     private Calendar activityDate;
     private String comments;
@@ -154,15 +154,13 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param lsid the lsid of the protocol application
      * @param name the name of the protocol application
      * @param activityDate the activity date
      * @param expRun the experiment run
      * @param protocolAction the protocol action being applied
      */
-    public ProtocolApplication(String lsid, String name, Calendar activityDate,
+    public ProtocolApplication(String name, Calendar activityDate,
             ExperimentRun expRun, ProtocolAction protocolAction) {
-        setLsid(lsid);
         setName(name);
         setActivityDate(activityDate);
         setExperimentRun(expRun);
@@ -192,21 +190,11 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @return the lsid
      */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
+    @Transient
     public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
+        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
+                .getString("lsid.namespace.protocolapplication"), this.id);
+        return this.lsid.getLsid();
     }
 
     /**

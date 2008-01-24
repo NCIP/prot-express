@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,6 +101,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -124,22 +125,21 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_LENGTH = 100;
-    private static final int LSID_LENGTH = 255;
     private static final int COMMENTS_LENGTH = 255;
     private static final int HYPOTHESIS_LENGTH = 255;
     private static final int URL_LENGTH = 255;
 
     private Long id;
-    private String lsid;
+    private LsidType lsid;
     private String name;
     private String hypothesis;
     private String url;
     private String comments;
     private AuditInfo auditInfo = new AuditInfo();
     private Person primaryContact;
+
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
-
     private List<InputOutputObject> globalInputs = new ArrayList<InputOutputObject>();
     private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
@@ -152,12 +152,10 @@ public class Experiment implements Serializable, Persistent, Auditable {
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param lsid the lsid of the experiment
      * @param name the name of the experiment
      *
      */
-    public Experiment(String lsid, String name) {
-        setLsid(lsid);
+    public Experiment(String name) {
         setName(name);
     }
 
@@ -184,21 +182,11 @@ public class Experiment implements Serializable, Persistent, Auditable {
      *
      * @return the lsid
      */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
+    @Transient
     public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
+        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
+                .getString("lsid.namespace.experiment"), this.id);
+        return this.lsid.getLsid();
     }
 
     /**

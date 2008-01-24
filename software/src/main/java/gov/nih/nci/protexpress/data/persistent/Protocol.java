@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -100,6 +100,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -126,12 +127,11 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private static final int DESCRIPTION_LENGTH = 255;
     private static final int SOFTWARE_LENGTH = 255;
     private static final int INSTRUMENT_LENGTH = 255;
-    private static final int LSID_LENGTH = 255;
     private static final int OUTPUT_MATERIAL_TYPE_LENGTH = 25;
     private static final int OUTPUT_DATA_TYPE_LENGTH = 25;
 
     private Long id;
-    private String lsid;
+    private LsidType lsid;
     private String name;
     private String description;
     private String software;
@@ -156,11 +156,9 @@ public class Protocol implements Serializable, Persistent, Auditable {
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param lsid the lsid of the protocol
      * @param name the name of the protocol
      */
-    public Protocol(String lsid, String name) {
-        setLsid(lsid);
+    public Protocol(String name) {
         setName(name);
     }
 
@@ -187,21 +185,11 @@ public class Protocol implements Serializable, Persistent, Auditable {
      *
      * @return the lsid
      */
-    @Column(name = "lsid")
-    @UniqueConstraint(propertyName = "lsid")
-    @NotEmpty
-    @Length(max = LSID_LENGTH)
+    @Transient
     public String getLsid() {
-        return this.lsid;
-    }
-
-    /**
-     * Sets the lsid for the protocol.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
+        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
+                .getString("lsid.namespace.protocol"), this.id);
+        return this.lsid.getLsid();
     }
 
     /**

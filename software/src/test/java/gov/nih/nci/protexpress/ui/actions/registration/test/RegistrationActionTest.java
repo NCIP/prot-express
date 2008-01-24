@@ -113,7 +113,6 @@ public class RegistrationActionTest extends ProtExpressBaseCsmTest {
         assertEquals("foo", action.getPasswordConfirmation());
     }
 
-
     public void testLoad() {
         assertEquals(ActionSupport.INPUT, action.load());
     }

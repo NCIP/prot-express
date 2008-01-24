@@ -96,7 +96,7 @@ import java.util.Calendar;
 public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
     public void testSaveAndUpdateAuditableObject() throws Exception {
-        Protocol p = new Protocol("lsid1", "protocol1");
+        Protocol p = new Protocol("protocol1");
         assertEquals(null, p.getAuditInfo().getCreator());
         this.theSession.save(p);
         assertEquals(UserHolder.getUsername(), p.getAuditInfo().getCreator());
@@ -135,7 +135,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testIllegalUpdate() {
-        Protocol p = new Protocol("lsid1", "protocol1");
+        Protocol p = new Protocol("protocol1");
         this.theSession.save(p);
         this.theSession.flush();
         this.theSession.clear();
@@ -152,7 +152,7 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testIllegalDeletee() {
-        Protocol p = new Protocol("lsid1", "protocol1");
+        Protocol p = new Protocol("protocol1");
         this.theSession.save(p);
         this.theSession.flush();
         this.theSession.clear();

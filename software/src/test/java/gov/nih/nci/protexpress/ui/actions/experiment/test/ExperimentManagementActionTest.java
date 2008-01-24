@@ -108,7 +108,7 @@ public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest
         super.onSetUp();
         this.action = new ExperimentManagementAction();
 
-        this.experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.experiment = new Experiment("Name - Test Experiment 1");
         this.experiment.setComments("Description - Test Experiment 1");
         this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
         this.experiment.setUrl("URL - Test Experiment 1");
@@ -123,7 +123,7 @@ public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest
         this.action.prepare();
         assertEquals(null, this.action.getExperiment());
 
-        Experiment p = new Experiment(null, null);
+        Experiment p = new Experiment(null);
         this.action.setExperiment(p);
         this.action.prepare();
         assertEquals(p, this.action.getExperiment());
@@ -140,7 +140,7 @@ public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest
     }
 
     public void testSaveOrUpdate() throws Exception {
-        this.action.setExperiment(new Experiment("Lsid_Test_Experiment", "Test Experiment"));
+        this.action.setExperiment(new Experiment("Test Experiment"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
     }
@@ -156,7 +156,7 @@ public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest
 
     public void testSaveOrUpdateReturnToDashboard() throws Exception {
         this.action.setCancelResult("dashboard");
-        this.action.setExperiment(new Experiment("lsid", "zzz"));
+        this.action.setExperiment(new Experiment("zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
         assertEquals("Experiment successfully created.", this.action.getSuccessMessage());

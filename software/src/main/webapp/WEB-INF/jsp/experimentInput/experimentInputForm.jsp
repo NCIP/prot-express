@@ -10,7 +10,15 @@
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
-<h1><fmt:message key="experiment.inputs"><fmt:param value="${input.experiment.name}" /></fmt:message></h1>
+<h1>
+    <s:if test="input == null || input.id == null">
+        <fmt:message key="experimentInput.add" />
+    </s:if>
+    <s:else>
+        <fmt:message key="experimentInput.edit" />: ${input.name}
+    </s:else>
+</h1>
+
 <div class="box">
     <s:if test="input == null || input.id == null">
         <h2><fmt:message key="experimentInput.add" /></h2>

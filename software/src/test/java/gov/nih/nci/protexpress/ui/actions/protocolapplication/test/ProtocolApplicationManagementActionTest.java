@@ -113,17 +113,17 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         super.onSetUp();
         this.action = new ProtocolApplicationManagementAction();
 
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
+        this.protocol = new Protocol("test protocol 1");
         this.theSession.save(this.protocol);
 
-        Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        Experiment experiment = new Experiment("Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
         this.theSession.saveOrUpdate(experiment);
 
-        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun = new ExperimentRun("test name");
         this.experimentRun.setComments("test comments");
         this.experimentRun.setExperiment(experiment);
 
@@ -135,7 +135,7 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.theSession.flush();
         this.theSession.clear();
 
-        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
     }
 
     public void testLoadByExperimentRunId() throws Exception {

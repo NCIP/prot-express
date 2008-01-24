@@ -82,14 +82,12 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experimentinput.test;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.experimentinput.ExperimentInputManagementAction;
-import gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Krishna Kanchinadam
@@ -109,7 +107,7 @@ public class ExperimentInputManagementActionTest extends ProtExpressBaseHibernat
         super.onSetUp();
         this.action = new ExperimentInputManagementAction();
 
-        this.experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.experiment = new Experiment("Name - Test Experiment 1");
         this.experiment.setComments("Description - Test Experiment 1");
         this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
         this.experiment.setUrl("URL - Test Experiment 1");
@@ -118,7 +116,7 @@ public class ExperimentInputManagementActionTest extends ProtExpressBaseHibernat
         this.theSession.flush();
         this.theSession.clear();
 
-        this.input = new InputOutputObject("INPUT_LSID", "Input 1");
+        this.input = new InputOutputObject("Input 1");
         this.input.setExperiment(this.experiment);
     }
 

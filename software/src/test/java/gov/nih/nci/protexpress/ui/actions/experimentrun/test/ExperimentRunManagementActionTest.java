@@ -107,7 +107,7 @@ public class ExperimentRunManagementActionTest extends ProtExpressBaseHibernateT
         super.onSetUp();
         this.action = new ExperimentRunManagementAction();
 
-        this.experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        this.experiment = new Experiment("Name - Test Experiment 1");
         this.experiment.setComments("Description - Test Experiment 1");
         this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
         this.experiment.setUrl("URL - Test Experiment 1");
@@ -116,7 +116,7 @@ public class ExperimentRunManagementActionTest extends ProtExpressBaseHibernateT
         this.theSession.flush();
         this.theSession.clear();
 
-        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun = new ExperimentRun("test name");
         this.experimentRun.setComments("test comments");
         this.experimentRun.setExperiment(this.experiment);
     }

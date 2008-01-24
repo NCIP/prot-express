@@ -10,15 +10,16 @@
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
-<h1><fmt:message key="protocolActions"><fmt:param value="${protocolAction.experiment.name}" /></fmt:message></h1>
-<div class="box">
+<h1>
     <s:if test="protocolAction == null || protocolAction.id == null">
-        <h2><fmt:message key="protocolAction.add" /></h2>
+        <fmt:message key="protocolAction.add" />
     </s:if>
     <s:else>
-       <h2><fmt:message key="protocolAction.edit" /></h2>
+        <fmt:message key="protocolAction.edit" />: ${protocolAction.experiment.name}
     </s:else>
+</h1>
 
+<div class="box">
     <s:if test="protocolAction != null && protocolAction.id != null">
         <c:url value="/ajax/protocolAction/management/load/overview.action" var="overviewUrl">
             <c:param name="experiment.id" value="${experiment.id}" />

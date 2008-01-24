@@ -107,8 +107,8 @@ public class DashboardActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testLoad() {
-        Protocol p = new Protocol("p1", "p1");
-        Experiment e = new Experiment("e1", "e1");
+        Protocol p = new Protocol("p1");
+        Experiment e = new Experiment("e1");
         this.theSession.save(p);
         this.theSession.save(e);
 

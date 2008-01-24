@@ -100,7 +100,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSaveRetrieveDeleteProtocol() throws Exception {
-        Protocol p = new Protocol("test_protocol_1", "test protocol 1");
+        Protocol p = new Protocol("test protocol 1");
         p.setInstrument("foo");
         p.setDescription("bar");
         p.setSoftware("baz");
@@ -124,15 +124,15 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
     @SuppressWarnings("unchecked")
     public void testSearchProtocols() throws Exception {
-        Protocol p = new Protocol("test_protocol_1", "test protocol 1");
+        Protocol p = new Protocol("test protocol 1");
         p.setDescription("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        p = new Protocol("test_protocol_12", "test protocol 12");
+        p = new Protocol("test protocol 12");
         p.setDescription("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
-        p = new Protocol("test_protocol_123", "test protocol 123");
+        p = new Protocol("test protocol 123");
         p.setDescription("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(p);
 
@@ -225,7 +225,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
                 UserHolder.getUsername(), 3);
         assertEquals(0, protocols.size());
 
-        Protocol protocol1 = new Protocol("ex1", "ex1");
+        Protocol protocol1 = new Protocol("ex1");
         this.theSession.save(protocol1);
         this.theSession.flush();
         Thread.sleep(100);
@@ -235,7 +235,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(1, protocols.size());
         assertEquals(protocol1, protocols.get(0));
 
-        Protocol protocol2 = new Protocol("ex2", "ex2");
+        Protocol protocol2 = new Protocol("ex2");
         this.theSession.save(protocol2);
         this.theSession.flush();
         Thread.sleep(100);
@@ -246,7 +246,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(protocol2, protocols.get(0));
         assertEquals(protocol1, protocols.get(1));
 
-        Protocol protocol3 = new Protocol("ex3", "ex3");
+        Protocol protocol3 = new Protocol("ex3");
         this.theSession.save(protocol3);
         this.theSession.flush();
         Thread.sleep(100);
@@ -280,13 +280,13 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
 
     public void testGetUsersProtocolsByProtocolName() {
 
-        Protocol protocol1 = new Protocol("ex1", "test name 1");
+        Protocol protocol1 = new Protocol("test name 1");
         this.theSession.save(protocol1);
 
-        Protocol protocol2 = new Protocol("ex2", "test name 2");
+        Protocol protocol2 = new Protocol("test name 2");
         this.theSession.save(protocol2);
 
-        Protocol protocol3 = new Protocol("ex3", "A second test protocol");
+        Protocol protocol3 = new Protocol("A second test protocol");
         this.theSession.save(protocol3);
 
         this.theSession.flush();
@@ -303,8 +303,8 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testEqualsAndHashCode() {
-        assertFalse(new Protocol("test", "test").equals(new Protocol("test", "test")));
-        Protocol p1 = new Protocol("test_protocol_1", "test protocol 1");
+        assertFalse(new Protocol("test").equals(new Protocol("test")));
+        Protocol p1 = new Protocol("test protocol 1");
         p1.setInstrument("foo");
         p1.setDescription("bar");
         p1.setSoftware("baz");
@@ -312,7 +312,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(p1.equals(null));
         assertFalse(p1.equals(new String("Foo")));
         assertTrue(p1.equals(p1));
-        assertEquals(p1.hashCode(), new Protocol("test_protocol_1", "test protocol 1")
+        assertEquals(p1.hashCode(), new Protocol("test protocol 1")
                 .hashCode());
     }
 }

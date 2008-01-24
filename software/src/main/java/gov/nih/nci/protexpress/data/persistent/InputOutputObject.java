@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.persistent;
 
-import gov.nih.nci.protexpress.data.validator.UniqueConstraint;
+import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -99,6 +99,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -119,12 +120,11 @@ import org.hibernate.validator.NotEmpty;
 public class InputOutputObject implements Serializable, Persistent {
     private static final long serialVersionUID = 1L;
 
-    private static final int LSID_LENGTH = 255;
     private static final int NAME_LENGTH = 255;
     private static final int DATA_FILE_URL_LENGTH = 255;
 
     private Long id;
-    private String lsid;
+    private LsidType lsid;
     private String name;
     private String dataFileURL;
     private Experiment experiment;
@@ -139,11 +139,9 @@ public class InputOutputObject implements Serializable, Persistent {
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param lsid the lsid to set.
      * @param name the name of the input output object.
      */
-    public InputOutputObject(String lsid, String name) {
-        setLsid(lsid);
+    public InputOutputObject(String name) {
         setName(name);
     }
 
@@ -170,12 +168,11 @@ public class InputOutputObject implements Serializable, Persistent {
      *
      * @return the lsid
      */
-    @Column(name = "lsid")
-    @NotEmpty
-    @UniqueConstraint(propertyName = "lsid")
-    @Length(max = LSID_LENGTH)
+    @Transient
     public String getLsid() {
-        return this.lsid;
+        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
+                .getString("lsid.namespace.inputoutput"), this.id);
+        return this.lsid.getLsid();
     }
 
     /**
@@ -199,15 +196,6 @@ public class InputOutputObject implements Serializable, Persistent {
     @JoinColumn(name = "dataobj_id")
     public List<SimpleTypeValue> getProperties() {
         return properties;
-    }
-
-    /**
-     * Sets the lsid.
-     *
-     * @param lsid the lsid to set
-     */
-    public void setLsid(String lsid) {
-        this.lsid = lsid;
     }
 
     /**
