@@ -114,10 +114,10 @@ public class ProtocolActionManagementActionTest extends ProtExpressBaseHibernate
         super.onSetUp();
         this.action = new ProtocolActionManagementAction();
 
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
+        this.protocol = new Protocol("test protocol 1");
         this.theSession.save(this.protocol);
 
-        experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        experiment = new Experiment("Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");

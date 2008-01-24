@@ -103,8 +103,8 @@ public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
     protected void onSetUp() throws Exception {
         super.onSetUp();
 
-        this.protocol1 = new Protocol("lsid_test_name_1", "test name 1");
-        this.protocol2 = new Protocol("lsid_test_name_2", "test name 2");
+        this.protocol1 = new Protocol("test name 1");
+        this.protocol2 = new Protocol("test name 2");
         this.theSession.save(this.protocol1);
         this.theSession.save(this.protocol2);
         this.theSession.flush();
@@ -112,26 +112,19 @@ public class ContextualClassValidatorTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testValidObject() {
-        Protocol p = new Protocol("valid lsid", "valid name");
+        Protocol p = new Protocol("valid name");
         assertEquals(0, this.classValidator.getInvalidValues(p).length);
     }
 
     public void testInvalidObject() {
-        Protocol p = new Protocol("lsid_test_name_1", "valid name");
-        assertEquals(1, this.classValidator.getInvalidValues(p).length);
-
+        Protocol p = new Protocol("valid name");
+        assertEquals(0, this.classValidator.getInvalidValues(p).length);
         assertEquals(0, this.classValidator.getInvalidValues(p, "name").length);
-        assertEquals(1, this.classValidator.getInvalidValues(p, "lsid").length);
     }
 
     public void testUpdateObject() {
         this.protocol1.setName("new valid name");
         assertEquals(0, this.classValidator.getInvalidValues(this.protocol1).length);
-
-        this.protocol1.setLsid(this.protocol2.getLsid());
-        assertEquals(1, this.classValidator.getInvalidValues(this.protocol1).length);
-
         assertEquals(0, this.classValidator.getInvalidValues(this.protocol1, "name").length);
-        assertEquals(1, this.classValidator.getInvalidValues(this.protocol1, "lsid").length);
     }
 }

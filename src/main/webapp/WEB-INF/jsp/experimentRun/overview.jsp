@@ -11,7 +11,11 @@
 </s:else>
 <protExpress:tabPane paneTitleKey="experimentRun.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="experimentRun.lsid" key="experimentRun.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <c:if test="${experimentRun.id != null}">
+            <tr>
+                <td class="tdLabel"><s:label cssClass="label" name="experimentRun.lsid" key="experimentRun.lsid" ></s:label></td>
+            </tr>
+        </c:if>
         <s:textfield name="experimentRun.name" key="experimentRun.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textarea name="experimentRun.comments" key="experimentRun.comments" rows="4" cols="37" tabindex="3" disabled="${isReadOnly}" />
         <s:hidden name="experimentRun.id" />

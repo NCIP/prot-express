@@ -107,8 +107,8 @@ public class ProtocolApplicationManagementAction extends ActionSupport
         implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(
-            null, null, null, null, null);
+    private ProtocolApplication protocolApplication =
+        new ProtocolApplication(null, null, null, null);
     private Long experimentRunId;
     private Long protocolActionId;
     private String successMessage = null;

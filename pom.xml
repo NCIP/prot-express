@@ -128,12 +128,15 @@
         <jaas.ldap.config.end></jaas.ldap.config.end>
         <test.jaas.ldap.config.start></test.jaas.ldap.config.start>
         <test.jaas.ldap.config.end></test.jaas.ldap.config.end>
-        <lsid.separator>:</lsid.separator>
         <lsid.base>urn:lsid</lsid.base>
-        <lsid.authority></lsid.authority>
-        <lsid.namespace.protocol></lsid.namespace.protocol>
-        <lsid.namespace.experiment></lsid.namespace.experiment>
+        <lsid.separator>:</lsid.separator>
+        <lsid.authority>nci.nih.gov</lsid.authority>
         <lsid.revision>1.0</lsid.revision>
+        <lsid.namespace.protocol>Protocol</lsid.namespace.protocol>
+        <lsid.namespace.experiment>Experiment</lsid.namespace.experiment>
+        <lsid.namespace.experimentrun>ExperimentRun</lsid.namespace.experimentrun>
+        <lsid.namespace.inputoutput>InputOutput</lsid.namespace.inputoutput>
+        <lsid.namespace.protocolapplication>ProtocolApplication</lsid.namespace.protocolapplication>
     </properties>
 
     <!-- Build process Configuration  -->
@@ -396,7 +399,7 @@
                     <check>
                         <haltOnFailure>true</haltOnFailure>
                         <totalBranchRate>60</totalBranchRate>
-                        <totalLineRate>60</totalLineRate>
+                        <totalLineRate>70</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>

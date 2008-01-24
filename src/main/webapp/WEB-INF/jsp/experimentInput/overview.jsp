@@ -13,7 +13,11 @@
 
 <protExpress:tabPane paneTitleKey="experimentInput.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="input.lsid" key="experimentInput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <c:if test="${input.id != null}">
+            <tr>
+                <td class="tdLabel"><s:label cssClass="label" name="input.lsid" key="experimentInput.lsid" ></s:label></td>
+            </tr>
+        </c:if>
         <s:textfield name="input.name" key="experimentInput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="input.dataFileURL" key="experimentInput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
         <s:hidden name="input.id" />

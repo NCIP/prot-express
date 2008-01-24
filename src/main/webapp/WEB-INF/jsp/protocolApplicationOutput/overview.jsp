@@ -13,7 +13,11 @@
 
 <protExpress:tabPane paneTitleKey="protocolApplicationOutput.overview">
     <s:form action="${formAction}" id="overviewForm" method="post" disabled="${isReadOnly}">
-        <s:textfield name="output.lsid" key="protocolApplicationOutput.lsid" size="40" tabindex="1" disabled="${isReadOnly}" required="true"/>
+        <c:if test="${output.id != null}">
+            <tr>
+                <td class="tdLabel"><s:label cssClass="label" name="output.lsid" key="protocolApplicationOutput.lsid" ></s:label></td>
+            </tr>
+        </c:if>
         <s:textfield name="output.name" key="protocolApplicationOutput.name" size="40" tabindex="2" disabled="${isReadOnly}" required="true"/>
         <s:textfield name="output.dataFileURL" key="protocolApplicationOutput.dataFileUrl" size="40" tabindex="3" disabled="${isReadOnly}" />
         <s:hidden name="output.id" />

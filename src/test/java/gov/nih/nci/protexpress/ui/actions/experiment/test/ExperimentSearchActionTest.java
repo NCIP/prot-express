@@ -109,21 +109,21 @@ public class ExperimentSearchActionTest extends ProtExpressBaseHibernateTest {
         super.onSetUp();
        action = new ExperimentSearchAction();
 
-        Experiment experiment = new Experiment("lsid_a_Experiment 1", "a Name - Test Experiment 1");
+        Experiment experiment = new Experiment("a Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
         theSession.saveOrUpdate(experiment);
 
-        experiment = new Experiment("lsid_b_Experiment 1", "b Name - Test Experiment 1");
+        experiment = new Experiment("b Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 2");
         experiment.setHypothesis("Hypothesis - Test Experiment 2");
         experiment.setUrl("URL - Test Experiment 2");
 
         theSession.saveOrUpdate(experiment);
 
-        experiment = new Experiment("lsid_c_Experiment 1", "c Name - Test Experiment 3");
+        experiment = new Experiment("c Name - Test Experiment 3");
         experiment.setComments("Description - Test Experiment 4");
         experiment.setHypothesis("Hypothesis - Test Experiment 4");
         experiment.setUrl("URL - Test Experiment 4");

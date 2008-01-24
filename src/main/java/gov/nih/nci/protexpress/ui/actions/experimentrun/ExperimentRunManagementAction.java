@@ -106,7 +106,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ExperimentRunManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ExperimentRun experimentRun = new ExperimentRun(null, null);
+    private ExperimentRun experimentRun = new ExperimentRun(null);
     private Long experimentId;
     private String successMessage = null;
 

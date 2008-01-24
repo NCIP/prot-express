@@ -211,7 +211,7 @@ public final class ProtExpressRegistry {
     }
 
     /**
-     * @return the pROT_EXPRESS_RESOURCE_BUNDLE
+     * @return the PROT_EXPRESS_RESOURCE_BUNDLE
      */
     public static ResourceBundle getApplicationResourceBundle() {
         return PROT_EXPRESS_RESOURCE_BUNDLE;

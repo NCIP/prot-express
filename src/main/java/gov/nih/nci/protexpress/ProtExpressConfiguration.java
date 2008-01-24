@@ -80,93 +80,39 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment;
+package gov.nih.nci.protexpress;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
+import java.util.ResourceBundle;
 
 /**
- * Class to handle the exporting of experiment data.
- * @author Scott Miller
+ * This class is used to the site level configuration options.
+ *
+ * @author Krishna Kanchinadam
  */
-public class ExperimentExportAction extends ActionSupport implements Preparable {
-
-    private static final long serialVersionUID = 1L;
-    private Experiment experiment = new Experiment(null);
-    private ExperimentExportFileType fileType = null;
-
-    private InputStream inputStream = null;
-
+public final class ProtExpressConfiguration {
     /**
-     * {@inheritDoc}
+     * The max number of results per page in paged search results.
      */
-    public void prepare() throws Exception {
-        if (getExperiment() != null && getExperiment().getId() != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
-        }
+    private static final ProtExpressConfiguration PROTEXPRESS_CONFIGURATION = new ProtExpressConfiguration();
+    private static final ResourceBundle PROT_EXPRESS_SITE_CONFIGURATION_BUNDLE =
+        ResourceBundle.getBundle("protExpressSiteConfiguration");
+
+
+    private ProtExpressConfiguration() {
+
     }
 
     /**
-     * Export the selected experiment.
-     * @return the stream.
+     * @return the singleton
      */
-    public InputStream getInputStream()  {
-        return this.inputStream;
+    public static ProtExpressConfiguration getInstance() {
+        return PROTEXPRESS_CONFIGURATION;
     }
 
     /**
-     * no op action that returns success.
-     * @return success
-     * @throws JAXBException on error
+     * @return the PROT_EXPRESS_SITE_CONFIGURATION_BUNDLE
      */
-    @SkipValidation
-    public String export() throws JAXBException {
-        if (ExperimentExportFileType.Xar2_2.equals(getFileType())) {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ProtExpressRegistry.getXar22FormatConversionService().marshallExperiments(getExperiment(), os);
-            this.inputStream = new ByteArrayInputStream(os.toByteArray());
-        }
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * @return the experiment
-     */
-    public Experiment getExperiment() {
-        return this.experiment;
-    }
-
-    /**
-     * @param experiment the experiment to set
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-    /**
-     * @return the fileType
-     */
-    @RequiredFieldValidator(key = "experiment.export.fileType", message = "File Type is required")
-    public ExperimentExportFileType getFileType() {
-        return this.fileType;
-    }
-
-    /**
-     * @param fileType the fileType to set
-     */
-    public void setFileType(ExperimentExportFileType fileType) {
-        this.fileType = fileType;
+    public static ResourceBundle getApplicationConfigurationBundle() {
+        return PROT_EXPRESS_SITE_CONFIGURATION_BUNDLE;
     }
 }

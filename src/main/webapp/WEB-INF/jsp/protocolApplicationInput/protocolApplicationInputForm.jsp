@@ -10,15 +10,16 @@
 <!--Page Help-->
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
-<h1><fmt:message key="protocolApplication.inputs"><fmt:param value="${protocolApplication.name}" /></fmt:message></h1>
-<div class="box">
+<h1>
     <s:if test="input == null || input.id == null">
-        <h2><fmt:message key="protocolApplicationInput.add" /></h2>
+        <fmt:message key="protocolApplicationInput.add" />
     </s:if>
     <s:else>
-       <h2><fmt:message key="protocolApplicationInput.edit" /></h2>
+        <fmt:message key="protocolApplicationInput.edit" />: ${input.name}
     </s:else>
+</h1>
 
+<div class="box">
     <s:if test="input != null && input.id != null">
         <c:url value="/ajax/protocolApplicationInput/management/load/overview.action" var="overviewUrl">
             <c:param name="protocolApplicationId" value="${protocolApplication.id}" />

@@ -100,8 +100,8 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ProtocolApplicationOutputManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, null, null, null);
-    private InputOutputObject output = new InputOutputObject(null, null);
+    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, null, null);
+    private InputOutputObject output = new InputOutputObject(null);
     private Long protocolApplicationId;
     private Long outputId;
     private String successMessage = null;

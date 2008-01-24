@@ -100,7 +100,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 public class ExperimentInputManagementAction extends ActionSupport implements Preparable {
 
     private static final long serialVersionUID = 1L;
-    private InputOutputObject input = new InputOutputObject(null, null);
+    private InputOutputObject input = new InputOutputObject(null);
     private Long experimentId;
     private String successMessage = null;
 

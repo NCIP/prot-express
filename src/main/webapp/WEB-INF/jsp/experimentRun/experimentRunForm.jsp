@@ -11,16 +11,16 @@
 <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
 <!--/Page Help-->
 
-<h1><fmt:message key="experimentRuns"><fmt:param value="${experimentRun.experiment.name}" /></fmt:message></h1>
-
-<div class="box">
+<h1>
     <s:if test="experimentRun == null || experimentRun.id == null">
-        <h2><fmt:message key="experimentRun.add" /></h2>
+        <fmt:message key="experimentRun.add" />
     </s:if>
     <s:else>
-        <h2>${experimentRun.name}</h2>
+        <fmt:message key="experimentRun.edit" />: ${experimentRun.name}
     </s:else>
+</h1>
 
+<div class="box">
     <s:if test="experimentRun != null && experimentRun.id != null">
         <c:url value="/ajax/experimentRun/management/load/overview.action" var="overviewUrl">
             <c:param name="experiment.id" value="${experiment.id}" />

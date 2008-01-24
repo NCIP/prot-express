@@ -115,17 +115,17 @@ public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBa
     protected void onSetUp() throws Exception {
         super.onSetUp();
 
-        this.protocol = new Protocol("test_protocol_1", "test protocol 1");
+        this.protocol = new Protocol("test protocol 1");
         this.theSession.save(this.protocol);
 
-        Experiment experiment = new Experiment("Lsid_Test_Experiment_1", "Name - Test Experiment 1");
+        Experiment experiment = new Experiment("Name - Test Experiment 1");
         experiment.setComments("Description - Test Experiment 1");
         experiment.setHypothesis("Hypothesis - Test Experiment 1");
         experiment.setUrl("URL - Test Experiment 1");
 
         this.theSession.saveOrUpdate(experiment);
 
-        this.experimentRun = new ExperimentRun("test er lsid", "test name");
+        this.experimentRun = new ExperimentRun("test name");
         this.experimentRun.setComments("test comments");
         this.experimentRun.setExperiment(experiment);
 
@@ -134,14 +134,14 @@ public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBa
         this.protocolAction = new ProtocolAction(experiment, protocol, 1L);
         this.theSession.saveOrUpdate(this.protocolAction);
 
-        this.protocolApplication = new ProtocolApplication("pa 1 test lsid", "pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
         this.protocolApplication.setActivityDate(Calendar.getInstance());
         this.theSession.saveOrUpdate(this.protocolApplication);
 
-        this.output1 = new InputOutputObject("OUTPUT1_LSID", "Output 1");
+        this.output1 = new InputOutputObject("Output 1");
         this.theSession.saveOrUpdate(this.output1);
 
-        this.output2 = new InputOutputObject("OUTPUT2_LSID", "Output 2");
+        this.output2 = new InputOutputObject("Output 2");
         this.theSession.saveOrUpdate(this.output2);
 
         this.theSession.flush();
@@ -183,7 +183,7 @@ public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBa
     }
 
     public void testAddProtocolApplicationOutput() throws Exception {
-        InputOutputObject output = new InputOutputObject("OUTPUT_LSID", "Output");
+        InputOutputObject output = new InputOutputObject("Output");
         this.action = new ProtocolApplicationOutputManagementAction();
         this.action.setOutput(output);
         this.action.setProtocolApplicationId(this.protocolApplication.getId());
