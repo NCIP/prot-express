@@ -118,6 +118,11 @@
             <result name="input">/WEB-INF/jsp/experiment/experimentSearchResults.jsp</result>
         </action>
 
+        <action name="experiment/management/protocolActions" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="load">
+            <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
+        </action>
+
         <action name="experiment/management/*"
             class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
@@ -199,7 +204,7 @@
         <action name="protocolAction/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocolaction.ProtocolActionManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/protocolAction/protocolActionForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolAction/protocolActionForm.jsp</result>
+            <result name="success" type="chain">experiment/management/protocolActions</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

@@ -47,8 +47,20 @@
                         }
                     </script>
                     <s:textfield name="protocolName" key="protocolAction.protocol" theme="simple" size="20" tabindex="6" disabled="${isReadOnly}" onkeypress="startTimer(event);" />
-                    <span id="progressMsg" style="display:none;"><img alt="Indicator" src="<c:url value="/images/indicator.gif"/>" /> <fmt:message key="loading" /></span><br>
-                    <s:select list="#{}" cssStyle="margin-top: 3px; width: 200px;" name="protocolId" theme="simple" tabindex="7"
+                    <span id="progressMsg" style="display:none;"><img alt="Indicator" src="<c:url value="/images/indicator.gif"/>" /> <fmt:message key="loading" /></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="label"><fmt:message key="protocolAction.selectProtocol"/>:</label></td>
+                <td><s:select list="#{}" cssStyle="margin-top: 3px; width: 200px;" name="protocolId" theme="simple" tabindex="7"
                         size="10" disabled="${isReadOnly}" value="protocolId.toString()" onchange="saveSelectedVal(this);"/>
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <c:url var="updateListUrl" value="/ajax/protocolAction/management/retrieveProtocols/xmlProtocolList.action" />
+                    <ajax:select baseUrl="${updateListUrl}" source="overviewForm_protocolName" target="overviewForm_protocolId" eventType="" var="ajaxSelect"
+                        parameters="protocolName={overviewForm_protocolName}" emptyOptionName="-- No Protocols Found --"
+                        preFunction="initProgress" postFunction="resetProgress" executeOnLoad="${protocolId != null}" />
+                 </td>
             </tr>
