@@ -5,15 +5,6 @@
 <c:set var="isReadOnly" value="${protocol.auditInfo.creator != currentUser.loginName}" />
 <protExpress:tabPane paneTitleKey="protocol.tabs.parameters">
     <s:form action="ajax/protocol/management/save/parameters" method="post" id="protocolForm" disabled="${isReadOnly}" >
-        <s:textfield name="protocol.parameters.appLsidTemplate" key="protocol.parameters.appLsidTemplate" size="40" tabindex="1" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.appNameTemplate" key="protocol.parameters.appNameTemplate" size="40" tabindex="2" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputMaterialLsidTemplate" key="protocol.parameters.outputMaterialLsidTemplate" size="40" tabindex="3" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputMaterialNameTemplate" key="protocol.parameters.outputMaterialNameTemplate" size="40" tabindex="4" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputDataLsidTemplate" key="protocol.parameters.outputDataLsidTemplate" size="40" tabindex="5" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputDataNameTemplate" key="protocol.parameters.outputDataNameTemplate" size="40" tabindex="6" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputDataFileTemplate" key="protocol.parameters.outputDataFileTemplate" size="40" tabindex="7" disabled="${isReadOnly}" />
-        <s:textfield name="protocol.parameters.outputDataDirTemplate" key="protocol.parameters.outputDataDirTemplate" size="40" tabindex="7" disabled="${isReadOnly}" />
-        <s:hidden name="protocol.id" />
         <s:hidden name="cancelResult" />
     </s:form>
     <div class="actions">
