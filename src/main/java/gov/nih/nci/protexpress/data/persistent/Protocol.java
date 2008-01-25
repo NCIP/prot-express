@@ -127,8 +127,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private static final int DESCRIPTION_LENGTH = 255;
     private static final int SOFTWARE_LENGTH = 255;
     private static final int INSTRUMENT_LENGTH = 255;
-    private static final int OUTPUT_MATERIAL_TYPE_LENGTH = 25;
-    private static final int OUTPUT_DATA_TYPE_LENGTH = 25;
 
     private Long id;
     private LsidType lsid;
@@ -136,15 +134,8 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private String description;
     private String software;
     private String instrument;
-    private Integer maxInputMaterialPerInstance;
-    private Integer maxInputDataPerInstance;
-    private Integer outputMaterialPerInstance;
-    private Integer outputDataPerInstance;
-    private String outputMaterialType = "Material";
-    private String outputDataType = "Data";
     private AuditInfo auditInfo = new AuditInfo();
     private Person primaryContact;
-    private ProtocolParameters parameters = new ProtocolParameters();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
@@ -328,143 +319,6 @@ public class Protocol implements Serializable, Persistent, Auditable {
      */
     public void setPrimaryContact(Person primaryContact) {
         this.primaryContact = primaryContact;
-    }
-
-    /**
-     * Gets the maxInputMaterialPerInstance.
-     *
-     * @return the maxInputMaterialPerInstance.
-     */
-    @Column(name = "max_input_material")
-    public Integer getMaxInputMaterialPerInstance() {
-        return this.maxInputMaterialPerInstance;
-    }
-
-    /**
-     * Sets the maxInputMaterialPerInstance.
-     *
-     * @param maxInputMaterialPerInstance the maxInputMaterialPerInstance to set.
-     */
-    public void setMaxInputMaterialPerInstance(Integer maxInputMaterialPerInstance) {
-        this.maxInputMaterialPerInstance = maxInputMaterialPerInstance;
-    }
-
-    /**
-     * Gets the maxInputDataPerInstance.
-     *
-     * @return the maxInputDataPerInstance.
-     */
-    @Column(name = "max_input_data")
-    public Integer getMaxInputDataPerInstance() {
-        return this.maxInputDataPerInstance;
-    }
-
-    /**
-     * Sets the maxInputDataPerInstance.
-     *
-     * @param maxInputDataPerInstance the maxInputDataPerInstance to set.
-     */
-    public void setMaxInputDataPerInstance(Integer maxInputDataPerInstance) {
-        this.maxInputDataPerInstance = maxInputDataPerInstance;
-    }
-
-    /**
-     * Gets the outputMaterialPerInstance.
-     *
-     * @return the outputMaterialPerInstance.
-     */
-    @Column(name = "output_material")
-    public Integer getOutputMaterialPerInstance() {
-        return this.outputMaterialPerInstance;
-    }
-
-    /**
-     * Sets the outputMaterialPerInstance.
-     *
-     * @param outputMaterialPerInstance the outputMaterialPerInstance to set.
-     */
-    public void setOutputMaterialPerInstance(Integer outputMaterialPerInstance) {
-        this.outputMaterialPerInstance = outputMaterialPerInstance;
-    }
-
-    /**
-     * Gets the outputDataPerInstance.
-     *
-     * @return the outputDataPerInstance.
-     */
-    @Column(name = "output_data")
-    public Integer getOutputDataPerInstance() {
-        return this.outputDataPerInstance;
-    }
-
-    /**
-     * Sets the outputDataPerInstance.
-     *
-     * @param outputDataPerInstance the outputDataPerInstance to set.
-     */
-    public void setOutputDataPerInstance(Integer outputDataPerInstance) {
-        this.outputDataPerInstance = outputDataPerInstance;
-    }
-
-    /**
-     * Gets the outputMaterialType.
-     *
-     * @return the outputMaterialType.
-     */
-    @Column(name = "output_material_type")
-    @Length(max = OUTPUT_MATERIAL_TYPE_LENGTH)
-    @NotEmpty
-    public String getOutputMaterialType() {
-        return this.outputMaterialType;
-    }
-
-    /**
-     * Sets the outputMaterialType.
-     *
-     * @param outputMaterialType the outputMaterialType to set.
-     */
-    public void setOutputMaterialType(String outputMaterialType) {
-        this.outputMaterialType = outputMaterialType;
-    }
-
-    /**
-     * Gets the outputDataType.
-     *
-     * @return the outputDataType.
-     */
-    @Column(name = "output_data_type")
-    @Length(max = OUTPUT_DATA_TYPE_LENGTH)
-    @NotEmpty
-    public String getOutputDataType() {
-        return this.outputDataType;
-    }
-
-    /**
-     * Sets the outputDataType.
-     *
-     * @param outputDataType the outputDataType to set.
-     */
-    public void setOutputDataType(String outputDataType) {
-        this.outputDataType = outputDataType;
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @return the parameters.
-     */
-    @Embedded
-    public ProtocolParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Sets the parameters.
-     *
-     * @param parameters the parameters to set.
-     */
-    public void setParameters(ProtocolParameters parameters) {
-        this.parameters = parameters;
     }
 
     /**

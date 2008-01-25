@@ -138,10 +138,8 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private String comments;
     private ExperimentRun experimentRun;
     private ProtocolAction protocolAction;
-    private ProtocolParameters parameters = new ProtocolParameters();
     private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
     private AuditInfo auditInfo = new AuditInfo();
-
     private List<InputOutputObject> inputs = new ArrayList<InputOutputObject>();
     private List<InputOutputObject> outputs = new ArrayList<InputOutputObject>();
 
@@ -299,25 +297,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     public void setExperimentRun(ExperimentRun experimentRun) {
         this.experimentRun = experimentRun;
-    }
-
-    /**
-     * Gets the parameters.
-     *
-     * @return the parameters.
-     */
-    @Embedded
-    public ProtocolParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Sets the parameters.
-     *
-     * @param parameters the parameters to set.
-     */
-    public void setParameters(ProtocolParameters parameters) {
-        this.parameters = parameters;
     }
 
     /**

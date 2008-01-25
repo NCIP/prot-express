@@ -89,7 +89,6 @@ import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.data.persistent.ProtocolParameters;
 import gov.nih.nci.protexpress.data.persistent.SimpleType;
 import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
 import gov.nih.nci.protexpress.service.FormatConversionService;
@@ -182,24 +181,11 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
 
          prot1.setPrimaryContact(person);
 
-         ProtocolParameters protParams = new ProtocolParameters();
-         protParams.setAppLsidTemplate("${RunLSIDBase}:IPAS14");
-         protParams.setAppNameTemplate("Do IPAS 14 protocol");
-         protParams.setOutputDataNameTemplate("OUT DATANAMETEMPLATE");
-         prot1.setParameters(protParams);
-
          this.protocols.add(prot1);
 
          prot1 = new Protocol("Sample Prep");
          prot1.setId(101L);
          prot1.setDescription("unspecified");
-         // Parameter declarations.
-         protParams = new ProtocolParameters();
-         protParams.setAppLsidTemplate("${RunLSIDBase}:SamplePrep.Combine");
-         protParams.setAppNameTemplate("Sample Preparation");
-         protParams.setOutputMaterialLsidTemplate("${RunLSIDBase}:Combined");
-         protParams.setOutputMaterialNameTemplate("Combined tagged sample");
-         prot1.setParameters(protParams);
          this.protocols.add(prot1);
 
      }
@@ -264,10 +250,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         // Set a Protocol Application
         ProtocolApplication protApp = new ProtocolApplication("Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, protAction1);
         protApp.setId(440L);
-        ProtocolParameters protParams = new ProtocolParameters();
-        protParams.setOutputDataFileTemplate("Out Data File Template");
-        protParams.setAppNameTemplate("Do IPAS 14 protocol");
-        protApp.setParameters(protParams);
 
         simpleTypeVal = new SimpleTypeValue("ProtAppFactorsCount", "terms.fhcrc.org#RunProtocolTypes.Category", SimpleType.valueOf("Integer"));
         simpleTypeVal.setValue("2");
@@ -278,13 +260,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         // Another protocol application.
         protApp = new ProtocolApplication("Sample Preparation", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, protAction2);
         protApp.setId(441L);
-
-        protParams = new ProtocolParameters();
-        protParams.setAppLsidTemplate("${RunLSIDBase}:SamplePrep.Combine");
-        protParams.setAppNameTemplate("Sample Preparation");
-        protParams.setOutputMaterialLsidTemplate("${RunLSIDBase}:Combined");
-        protParams.setOutputMaterialNameTemplate("Combined tagged sample");
-        protApp.setParameters(protParams);
 
         expRun.getProtocolApplications().add(protApp);
 
@@ -386,9 +361,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(unmarshalledProtApp1, this.experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
         assertEquals(unmarshalledProtApp1.getComments(), null);
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
-
-        assertEquals(unmarshalledProtApp1.getParameters().getOutputDataFileTemplate(), "Out Data File Template");
-        assertEquals(unmarshalledProtApp1.getParameters().getAppNameTemplate(), "Do IPAS 14 protocol");
 
         assertNotNull(unmarshalledProtApp1.getProperties());
         simpleTypeValues = unmarshalledProtApp1.getProperties();

@@ -131,7 +131,6 @@ public class ProtocolApplicationManagementAction extends ActionSupport
             ProtocolAction protAction = ProtExpressRegistry.getExperimentService().
                 getProtocolActionById(getProtocolActionId());
             getProtocolApplication().setProtocolAction(protAction);
-            getProtocolApplication().setParameters(protAction.getProtocol().getParameters());
         }
     }
 
