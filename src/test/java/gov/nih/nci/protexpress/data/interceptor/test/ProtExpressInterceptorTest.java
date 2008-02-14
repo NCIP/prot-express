@@ -82,7 +82,6 @@
  */
 package gov.nih.nci.protexpress.data.interceptor.test;
 
-import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.security.IllegalModificationException;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
@@ -114,24 +113,6 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
         p = (Protocol) this.theSession.load(Protocol.class, p.getId());
         assertEquals(-1, oldDate.compareTo(p.getAuditInfo().getLastModifiedDate()));
-    }
-
-    public void testSaveAnUpdateNonAuditableObject() {
-        Person p = new Person();
-        this.theSession.save(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        UserHolder.setUser(null);
-
-        p.setFirstName("test");
-        this.theSession.update(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        this.theSession.delete(p);
-        this.theSession.flush();
-        this.theSession.clear();
     }
 
     public void testIllegalUpdate() {
