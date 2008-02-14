@@ -15,24 +15,24 @@
     </Displayers>
 
     <Menus>
-        <Menu name="protExpressLogin" title="menu.protexpress" onclick="javascript:void(0);">
-            <Item name="protExpress.home" title="menu.protexpress.home" page="/dashboard/dashboard.action" />
-            <Item name="protExpress.register" title="menu.protexpress.register" page="/registration/load.action" />
-            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/notYetImplemented.html" />
-            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/notYetImplemented.html" />
+        <Menu name="protExpressLogin" title="protexpress.leftnav.menu.main.title" onclick="javascript:void(0);">
+            <Item name="protExpress.home" title="protexpress.leftnav.menu.main.login" page="/home/home.action" />
+            <Item name="protExpress.register" title="protexpress.leftnav.menu.main.register" page="/registration/load.action" />
+            <Item name="protExpressAbout.whatis" title="protexpress.leftnav.menu.main.whatis" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="/notYetImplemented.html" />
         </Menu>
-        <Menu name="protExpressMain" title="menu.protexpress" onclick="javascript:void(0);">
-            <Item name="protExpress.dashboard" title="menu.protexpress.dashboard" page="/dashboard/dashboard.action" />
-            <Item name="protExpress.protocols" title="menu.protexpress.protocols" page="/protocol/search/loadSearch.action" />
-            <Item name="protExpress.experiments" title="menu.protexpress.experiments" page="/experiment/search/loadSearch.action" />
-            <Item name="protExpress.importexport" title="menu.protexpress.importexport" page="/notYetImplemented.html" />
-            <Item name="protExpressAbout.whatis" title="menu.aboutprotexpress.whatis" page="/notYetImplemented.html" />
-            <Item name="protExpressAbout.help" title="menu.aboutprotexpress.help" page="/notYetImplemented.html" />
+        <Menu name="protExpressMain" title="protexpress.leftnav.menu.main.title" onclick="javascript:void(0);">
+            <Item name="protExpress.home" title="protexpress.leftnav.menu.main.home" page="/home/home.action" />
+            <Item name="protExpress.experimentsearch" title="protexpress.leftnav.menu.main.experimentsearch" page="/experiment/search/loadSearch.action" />
+            <Item name="protExpress.experimentcreate" title="protexpress.leftnav.menu.main.experimentcreate" page="/experiment/search/loadSearch.action" />
+            <Item name="protExpress.protocolsearch" title="protexpress.leftnav.menu.main.protocolsearch" page="/protocol/search/loadSearch.action" />
+            <Item name="protExpressAbout.whatis" title="protexpress.leftnav.menu.main.whatis" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="/notYetImplemented.html" />
         </Menu>
-        <Menu name="globalLinks" title="menu.globallinks" onclick="javascript:void(0);">
-            <Item name="globalLinks.ncihome" title="menu.globallinks.ncihome" location="http://www.cancer.gov/" />
-            <Item name="globalLinks.ncicbhome" title="menu.globallinks.ncicbhome" location="http://ncicb.nci.nih.gov/" />
-            <Item name="globalLinks.cabighome" title="menu.globallinks.cabighome" location="https://cabig.nci.nih.gov/" />
+        <Menu name="globalLinks" title="protexpress.leftnav.menu.globallinks.title" onclick="javascript:void(0);">
+            <Item name="globalLinks.ncihome" title="protexpress.leftnav.menu.globallinks.ncihome" location="http://www.cancer.gov/" />
+            <Item name="globalLinks.ncicbhome" title="protexpress.leftnav.menu.globallinks.ncicbhome" location="http://ncicb.nci.nih.gov/" />
+            <Item name="globalLinks.cabighome" title="protexpress.leftnav.menu.globallinks.cabighome" location="https://cabig.nci.nih.gov/" />
         </Menu>
     </Menus>
 </MenuConfig>

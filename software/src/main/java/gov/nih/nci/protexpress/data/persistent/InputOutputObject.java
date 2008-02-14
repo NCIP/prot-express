@@ -85,19 +85,12 @@ package gov.nih.nci.protexpress.data.persistent;
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -120,15 +113,11 @@ import org.hibernate.validator.NotEmpty;
 public class InputOutputObject implements Serializable, Persistent {
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 255;
-    private static final int DATA_FILE_URL_LENGTH = 255;
-
     private Long id;
     private LsidType lsid;
     private String name;
     private String dataFileURL;
-    private Experiment experiment;
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
+    private String additionalInfo;
 
     /**
      * protected default constructor for hibernate only.
@@ -182,20 +171,9 @@ public class InputOutputObject implements Serializable, Persistent {
      */
     @Column(name = "name")
     @NotEmpty
-    @Length(max = NAME_LENGTH)
+    @Length(max = HibernateFieldLength.IO_NAME_LENGTH)
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "dataobj_id")
-    public List<SimpleTypeValue> getProperties() {
-        return properties;
     }
 
     /**
@@ -208,21 +186,12 @@ public class InputOutputObject implements Serializable, Persistent {
     }
 
     /**
-     * Sets the properties.
-     *
-     * @param properties  the properties to set.
-     */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
-    }
-
-    /**
      * Gets the dataFileURL.
      *
      * @return the dataFileURL.
      */
     @Column(name = "data_file_url")
-    @Length(max = DATA_FILE_URL_LENGTH)
+    @Length(max = HibernateFieldLength.IO_DATA_FILE_URL_LENGTH)
     public String getDataFileURL() {
         return dataFileURL;
     }
@@ -237,23 +206,23 @@ public class InputOutputObject implements Serializable, Persistent {
     }
 
     /**
-     * Gets the experiment.
+     * Gets the additionalInfo.
      *
-     * @return the experiment.
+     * @return the additionalInfo.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experiment_id")
-    public Experiment getExperiment() {
-        return this.experiment;
+    @Column(name = "additional_info")
+    @Length(max = HibernateFieldLength.IO_ADDITIONAL_INFO_LENGTH)
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
     /**
-     * Sets the experiment.
+     * Sets the additionalInfo.
      *
-     * @param experiment the experiment to set.
+     * @param additionalInfo the additionalInfo to set.
      */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     /**

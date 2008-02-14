@@ -83,40 +83,12 @@
 
 package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.persistent.CpasType;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.Person;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.data.persistent.SimpleTypeValue;
-import gov.nih.nci.protexpress.xml.xar2_2.ContactType;
-import gov.nih.nci.protexpress.xml.xar2_2.DataBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentRunType;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentType;
-import gov.nih.nci.protexpress.xml.xar2_2.InputOutputRefsType;
-import gov.nih.nci.protexpress.xml.xar2_2.MaterialBaseType;
 import gov.nih.nci.protexpress.xml.xar2_2.ObjectFactory;
-import gov.nih.nci.protexpress.xml.xar2_2.PropertyCollectionType;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionSetType;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionType;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolBaseType;
-import gov.nih.nci.protexpress.xml.xar2_2.SimpleValueType;
-import gov.nih.nci.protexpress.xml.xar2_2.InputOutputRefsType.DataLSID;
-import gov.nih.nci.protexpress.xml.xar2_2.InputOutputRefsType.MaterialLSID;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolActionType.PredecessorAction;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType.OutputDataObjects;
-import gov.nih.nci.protexpress.xml.xar2_2.ProtocolApplicationBaseType.OutputMaterials;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
 
 
 /**
@@ -152,6 +124,11 @@ public class ExperimentToXar22FormatConversionHelper {
      * @return an ExperimentArchiveType
      */
     public ExperimentArchiveType getExperimentArchiveData(Experiment exp) {
+        return null;
+    }
+
+    /*
+    public ExperimentArchiveType getExperimentArchiveData(Experiment exp) {
         ExperimentArchiveType xarExperimentArchiveType = getExperimentArchiveTypeElement(exp);
         setProtocolsInMap(exp);
         xarExperimentArchiveType.setProtocolDefinitions(getProtocolDefinitions());
@@ -177,20 +154,18 @@ public class ExperimentToXar22FormatConversionHelper {
         xarExpTypeElement.setExperimentDescriptionURL(exp.getUrl());
         xarExpTypeElement.setHypothesis(exp.getHypothesis());
         xarExpTypeElement.setName(exp.getName());
-        xarExpTypeElement.setContact(getContactTypeElement(exp.getPrimaryContact()));
+        xarExpTypeElement.setContact(getContactTypeElement(exp.getContactPerson()));
         xarExpTypeElement.setProperties(getPropertyCollectionTypeElement(exp.getProperties()));
 
         return xarExpTypeElement;
     }
 
-    private ContactType getContactTypeElement(Person contactPerson) {
+    private ContactType getContactTypeElement(ContactPerson contactPerson) {
         ContactType xarContactTypeElement = getObjectFactory().createContactType();
         if (contactPerson != null) {
-            xarContactTypeElement.setContactId(contactPerson.getContactId());
             xarContactTypeElement.setEmail(contactPerson.getEmail());
             xarContactTypeElement.setFirstName(contactPerson.getFirstName());
             xarContactTypeElement.setLastName(contactPerson.getLastName());
-            xarContactTypeElement.setProperties(getPropertyCollectionTypeElement(contactPerson.getProperties()));
         }
         return xarContactTypeElement;
     }
@@ -261,7 +236,7 @@ public class ExperimentToXar22FormatConversionHelper {
         xarProtocolBaseTypeElement.setName(prot.getName());
         xarProtocolBaseTypeElement.setProtocolDescription(prot.getDescription());
         xarProtocolBaseTypeElement.setSoftware(prot.getSoftware());
-        xarProtocolBaseTypeElement.setContact(getContactTypeElement(prot.getPrimaryContact()));
+        xarProtocolBaseTypeElement.setContact(getContactTypeElement(prot.getContactPerson()));
         xarProtocolBaseTypeElement.setProperties(getPropertyCollectionTypeElement(prot.getProperties()));
 
         return xarProtocolBaseTypeElement;
@@ -533,5 +508,5 @@ public class ExperimentToXar22FormatConversionHelper {
 
         return xarOutputMaterialsElement;
     }
-
+*/
 }

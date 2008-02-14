@@ -133,7 +133,7 @@ public interface ProtocolService {
     List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols);
 
     /**
-     * Retrieve the protocol ith the given identifier.
+     * Retrieve the protocol with the given identifier.
      *
      * @param id the id of the protocol to retrive
      * @return the protocol to retrieve

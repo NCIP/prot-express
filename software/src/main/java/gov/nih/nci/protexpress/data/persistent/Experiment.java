@@ -96,10 +96,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -124,24 +121,17 @@ public class Experiment implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int COMMENTS_LENGTH = 255;
-    private static final int HYPOTHESIS_LENGTH = 255;
-    private static final int URL_LENGTH = 255;
-
     private Long id;
     private LsidType lsid;
     private String name;
     private String hypothesis;
     private String url;
     private String comments;
+    private ContactPerson contactInfo;
+    private String additionalInfo;
     private AuditInfo auditInfo = new AuditInfo();
-    private Person primaryContact;
-
+    private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
-    private List<InputOutputObject> globalInputs = new ArrayList<InputOutputObject>();
-    private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
     /**
      * protected default constructor for hibernate only.
@@ -195,7 +185,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the name
      */
     @Column(name = "name")
-    @Length(max = NAME_LENGTH)
+    @Length(max = HibernateFieldLength.EXPERIMENT_NAME_LENGTH)
     @NotEmpty
     @Index(name = "experiment_name_idx")
     public String getName() {
@@ -217,7 +207,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the comments
      */
     @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
+    @Length(max = HibernateFieldLength.EXPERIMENT_COMMENTS_LENGTH)
     @Index(name = "experiment_comments_idx")
     public String getComments() {
         return this.comments;
@@ -238,7 +228,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the hypothesis
      */
     @Column(name = "hypothesis")
-    @Length(max = HYPOTHESIS_LENGTH)
+    @Length(max = HibernateFieldLength.EXPERIMENT_HYPOTHESIS_LENGTH)
     public String getHypothesis() {
         return this.hypothesis;
     }
@@ -267,7 +257,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the url
      */
     @Column(name = "url")
-    @Length(max = URL_LENGTH)
+    @Length(max = HibernateFieldLength.EXPERIMENT_URL_LENGTH)
     public String getUrl() {
         return this.url;
     }
@@ -289,24 +279,22 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the primaryContact.
+     * Gets the contactPerson.
      *
-     * @return the primaryContact.
+     * @return the contactPerson.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", nullable = true)
-    @Valid
-    public Person getPrimaryContact() {
-        return this.primaryContact;
+    @Embedded
+    public ContactPerson getContactPerson() {
+        return contactPerson;
     }
 
     /**
-     * Sets the primaryContact.
+     * Sets the contactPerson.
      *
-     * @param primaryContact the primaryContact to set.
+     * @param contactPerson the contactPerson to set.
      */
-    public void setPrimaryContact(Person primaryContact) {
-        this.primaryContact = primaryContact;
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     /**
@@ -329,62 +317,23 @@ public class Experiment implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the properties.
+     * Gets the additionalInfo.
      *
-     * @return the properties.
+     * @return the additionalInfo.
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "experiment_id")
-    public List<SimpleTypeValue> getProperties() {
-        return this.properties;
+    @Column(name = "additional_info")
+    @Length(max = HibernateFieldLength.EXPERIMENT_ADDITIONAL_INFO_LENGTH)
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
     /**
-     * Sets the properties.
+     * Sets the additionalInfo.
      *
-     * @param properties the properties to set.
+     * @param additionalInfo the additionalInfo to set.
      */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * Gets the globalInputs.
-     *
-     * @return the globalInputs.
-     */
-    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<InputOutputObject> getGlobalInputs() {
-        return globalInputs;
-    }
-
-    /**
-     * Sets the globalInputs.
-     *
-     * @param globalInputs the globalInputs to set.
-     */
-    public void setGlobalInputs(List<InputOutputObject> globalInputs) {
-        this.globalInputs = globalInputs;
-    }
-
-    /**
-     * Gets the protocolActions.
-     *
-     * @return the protocolActions.
-     */
-    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("stepNumber")
-    public List<ProtocolAction> getProtocolActions() {
-        return this.protocolActions;
-    }
-
-    /**
-     * Sets the protocolActions.
-     *
-     * @param protocolActions the protocolActions to set.
-     */
-    protected void setProtocolActions(List<ProtocolAction> protocolActions) {
-        this.protocolActions = protocolActions;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     /**

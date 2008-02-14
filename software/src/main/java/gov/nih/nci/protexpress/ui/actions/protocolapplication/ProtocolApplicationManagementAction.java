@@ -84,13 +84,11 @@ package gov.nih.nci.protexpress.ui.actions.protocolapplication;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -126,12 +124,6 @@ public class ProtocolApplicationManagementAction extends ActionSupport
         } else if (getExperimentRunId() != null) {
             getProtocolApplication().setExperimentRun(es.getExperimentRunById(getExperimentRunId()));
         }
-
-        if (getProtocolActionId() != null) {
-            ProtocolAction protAction = ProtExpressRegistry.getExperimentService().
-                getProtocolActionById(getProtocolActionId());
-            getProtocolApplication().setProtocolAction(protAction);
-        }
     }
 
     /**
@@ -139,6 +131,7 @@ public class ProtocolApplicationManagementAction extends ActionSupport
      *
      */
     private void setPotentialInputs() {
+        /*
         // Get the global inputs, not yet assigned or selected.
         List<InputOutputObject> globalInputs = getProtocolApplication().getExperimentRun()
             .getExperiment().getGlobalInputs();
@@ -170,6 +163,7 @@ public class ProtocolApplicationManagementAction extends ActionSupport
                 }
             }
         }
+        */
     }
 
     /**

@@ -89,7 +89,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -101,7 +100,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -128,17 +126,17 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int COMMENTS_LENGTH = 255;
-
     private Long id;
     private LsidType lsid;
     private String name;
     private Calendar activityDate;
     private String comments;
+    private Long stepNumber;
+    private String additionalInfo;
+
+    private Protocol protocol;
     private ExperimentRun experimentRun;
-    private ProtocolAction protocolAction;
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
+
     private AuditInfo auditInfo = new AuditInfo();
     private List<InputOutputObject> inputs = new ArrayList<InputOutputObject>();
     private List<InputOutputObject> outputs = new ArrayList<InputOutputObject>();
@@ -155,14 +153,14 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      * @param name the name of the protocol application
      * @param activityDate the activity date
      * @param expRun the experiment run
-     * @param protocolAction the protocol action being applied
+     * @param protocol the protocol
      */
     public ProtocolApplication(String name, Calendar activityDate,
-            ExperimentRun expRun, ProtocolAction protocolAction) {
+            ExperimentRun expRun, Protocol protocol) {
         setName(name);
         setActivityDate(activityDate);
         setExperimentRun(expRun);
-        setProtocolAction(protocolAction);
+        setProtocol(protocol);
     }
 
     /**
@@ -202,7 +200,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     @Column(name = "name")
     @NotEmpty
-    @Length(max = NAME_LENGTH)
+    @Length(max = HibernateFieldLength.PROTAPP_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
@@ -243,7 +241,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      * @return the comments
      */
     @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
+    @Length(max = HibernateFieldLength.PROTAPP_COMMENTS_LENGTH)
     public String getComments() {
         return this.comments;
     }
@@ -258,24 +256,23 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the protocol action.
+     * Gets the stepNumber.
      *
-     * @return the protocol action.
+     * @return the stepNumber
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "step_number")
     @NotNull
-    @JoinColumn(name = "prot_action_id")
-    public ProtocolAction getProtocolAction() {
-        return this.protocolAction;
+    public Long getStepNumber() {
+        return this.stepNumber;
     }
 
     /**
-     * Sets the protocol action.
+     * Sets the stepNumber.
      *
-     * @param protocolAction the protocolAction to set.
+     * @param stepNumber the stepNumber to set
      */
-    public void setProtocolAction(ProtocolAction protocolAction) {
-        this.protocolAction = protocolAction;
+    public void setStepNumber(Long stepNumber) {
+        this.stepNumber = stepNumber;
     }
 
     /**
@@ -300,23 +297,44 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the properties.
+     * Gets the protocol.
      *
-     * @return the properties.
+     * @return the protocol.
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "prot_application_id")
-    public List<SimpleTypeValue> getProperties() {
-        return this.properties;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinColumn(name = "protocol_id")
+    public Protocol getProtocol() {
+        return this.protocol;
     }
 
     /**
-     * Sets the properties.
+     * Sets the protocol.
      *
-     * @param properties the properties to set.
+     * @param protocol the protocol to set.
      */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
+    }
+
+    /**
+     * Gets the additionalInfo.
+     *
+     * @return the additionalInfo.
+     */
+    @Column(name = "additional_info")
+    @Length(max = HibernateFieldLength.PROTAPP_ADDITIONAL_INFO_LENGTH)
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    /**
+     * Sets the additionalInfo.
+     *
+     * @param additionalInfo the additionalInfo to set.
+     */
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     /**

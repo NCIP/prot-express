@@ -26,7 +26,7 @@
                 <div class="hidesubmit"><input type="submit"></div>
             </s:form>
             <div class="actions">
-                <a href="<c:url value="/dashboard/dashboard.action" />" tabindex="6" class="cancel"><fmt:message key="cancel" /></a>
+                <a href="<c:url value="/home/home.action" />" tabindex="6" class="cancel"><fmt:message key="cancel" /></a>
                 <a href="javascript:document.getElementById('regForm').submit();" tabindex="7" class="save"><fmt:message key="save" /></a>
             </div>
         </div>

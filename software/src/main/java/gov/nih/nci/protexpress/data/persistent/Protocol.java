@@ -85,20 +85,13 @@ package gov.nih.nci.protexpress.data.persistent;
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -109,7 +102,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.Valid;
 
 /**
  * Class representing a protocol.
@@ -123,20 +115,15 @@ public class Protocol implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 100;
-    private static final int DESCRIPTION_LENGTH = 255;
-    private static final int SOFTWARE_LENGTH = 255;
-    private static final int INSTRUMENT_LENGTH = 255;
-
     private Long id;
     private LsidType lsid;
     private String name;
     private String description;
     private String software;
     private String instrument;
+    private String additionalInfo;
+    private ContactPerson contactPerson = new ContactPerson();
     private AuditInfo auditInfo = new AuditInfo();
-    private Person primaryContact;
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
      * protected default constructor for hibernate only.
@@ -191,7 +178,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     @Index(name = "protocol_name_idx")
     @Column(name = "name")
     @NotEmpty
-    @Length(max = NAME_LENGTH)
+    @Length(max = HibernateFieldLength.PROTOCOL_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
@@ -211,7 +198,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the description
      */
     @Column(name = "description")
-    @Length(max = DESCRIPTION_LENGTH)
+    @Length(max = HibernateFieldLength.PROTOCOL_DESCRIPTION_LENGTH)
     @Index(name = "protocol_desc_idx")
     public String getDescription() {
         return this.description;
@@ -232,7 +219,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the instrument
      */
     @Column(name = "instrument")
-    @Length(max = INSTRUMENT_LENGTH)
+    @Length(max = HibernateFieldLength.PROTOCOL_INSTRUMENT_LENGTH)
     public String getInstrument() {
         return this.instrument;
     }
@@ -252,7 +239,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the software
      */
     @Column(name = "software")
-    @Length(max = SOFTWARE_LENGTH)
+    @Length(max = HibernateFieldLength.PROTOCOL_SOFTWARE_LENGTH)
     public String getSoftware() {
         return this.software;
     }
@@ -266,23 +253,23 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the properties.
+     * Gets the additionalInfo.
      *
-     * @return the properties.
+     * @return the additionalInfo.
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "protocol_id")
-    public List<SimpleTypeValue> getProperties() {
-        return properties;
+    @Column(name = "additional_info")
+    @Length(max = HibernateFieldLength.PROTOCOL_ADDITIONAL_INFO_LENGTH)
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
     /**
-     * Sets the properties.
+     * Sets the additionalInfo.
      *
-     * @param properties the properties to set.
+     * @param additionalInfo the additionalInfo to set.
      */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     /**
@@ -301,24 +288,22 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the primaryContact.
+     * Gets the contactPerson.
      *
-     * @return the primaryContact.
+     * @return the contactPerson.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
-    @Valid
-    public Person getPrimaryContact() {
-        return this.primaryContact;
+    @Embedded
+    public ContactPerson getContactPerson() {
+        return contactPerson;
     }
 
     /**
-     * Sets the primaryContact.
+     * Sets the contactPerson.
      *
-     * @param primaryContact the primaryContact to set.
+     * @param contactPerson the contactPerson to set.
      */
-    public void setPrimaryContact(Person primaryContact) {
-        this.primaryContact = primaryContact;
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     /**
