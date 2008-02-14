@@ -85,7 +85,6 @@ package gov.nih.nci.protexpress.ui.actions.protocolapplication.test;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction;
@@ -103,7 +102,6 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
     ProtocolApplication protocolApplication;
     ExperimentRun experimentRun;
     Protocol protocol;
-    ProtocolAction protocolAction;
 
     /**
      * {@inheritDoc}
@@ -128,24 +126,17 @@ public class ProtocolApplicationManagementActionTest extends ProtExpressBaseHibe
         this.experimentRun.setExperiment(experiment);
 
         this.theSession.saveOrUpdate(this.experimentRun);
-
-        this.protocolAction = new ProtocolAction(experiment, protocol, 1L);
-        this.theSession.saveOrUpdate(this.protocolAction);
-
         this.theSession.flush();
         this.theSession.clear();
 
-        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, protocol);
     }
 
     public void testLoadByExperimentRunId() throws Exception {
         this.action.setExperimentRunId(this.experimentRun.getId());
-        this.action.setProtocolActionId(this.protocolAction.getId());
         this.action.prepare();
         assertEquals(ActionSupport.INPUT, this.action.load());
         assertEquals(this.experimentRun, this.action.getProtocolApplication().getExperimentRun());
-        assertEquals(this.protocolAction, this.action.getProtocolApplication().getProtocolAction());
-        assertEquals(this.protocol, this.action.getProtocolApplication().getProtocolAction().getProtocol());
     }
 
     public void testAddAndDeleteProtocolApplication() throws Exception {

@@ -4,7 +4,6 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
@@ -349,12 +348,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolAction protAction = new ProtocolAction(exp, p, 1L);
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(protAction);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        ProtocolApplication pa = new ProtocolApplication("protocol application name", Calendar.getInstance(), experimentRun, protAction);
+        ProtocolApplication pa = new ProtocolApplication("protocol application name", Calendar.getInstance(), experimentRun, p);
         pa.setComments("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);
         this.theSession.flush();

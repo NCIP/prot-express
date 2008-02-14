@@ -86,7 +86,6 @@ import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolAction;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 import gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction;
@@ -104,7 +103,6 @@ public class ProtocolApplicationInputManagementActionTest extends ProtExpressBas
     ProtocolApplication protocolApplication;
     ExperimentRun experimentRun;
     Protocol protocol;
-    ProtocolAction protocolAction;
     InputOutputObject input1;
     InputOutputObject input2;
 
@@ -131,10 +129,9 @@ public class ProtocolApplicationInputManagementActionTest extends ProtExpressBas
 
         this.theSession.saveOrUpdate(this.experimentRun);
 
-        this.protocolAction = new ProtocolAction(experiment, protocol, 1L);
-        this.theSession.saveOrUpdate(this.protocolAction);
+        this.theSession.saveOrUpdate(protocol);
 
-        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, this.protocolAction);
+        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, protocol);
         this.protocolApplication.setActivityDate(Calendar.getInstance());
         this.theSession.saveOrUpdate(this.protocolApplication);
 
