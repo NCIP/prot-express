@@ -99,8 +99,8 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Dashboard Functionality</web-resource-name>
-            <url-pattern>/dashboard/*</url-pattern>
+            <web-resource-name>Homepage Functionality</web-resource-name>
+            <url-pattern>/home/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>protExpressUser</role-name>

@@ -121,9 +121,6 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 255;
-    private static final int COMMENTS_LENGTH = 255;
-
     private Long id;
     private LsidType lsid;
     private String name;
@@ -131,7 +128,6 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
     private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
-    private List<SimpleTypeValue> properties = new ArrayList<SimpleTypeValue>();
 
     /**
      * protected default constructor for hibernate only.
@@ -175,7 +171,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     @Column(name = "name")
     @NotEmpty
-    @Length(max = NAME_LENGTH)
+    @Length(max = HibernateFieldLength.EXPRUN_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
@@ -207,7 +203,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      * @return the comments
      */
     @Column(name = "comments")
-    @Length(max = COMMENTS_LENGTH)
+    @Length(max = HibernateFieldLength.EXPRUN_COMMENTS_LENGTH)
     public String getComments() {
         return this.comments;
     }
@@ -273,26 +269,6 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     protected void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
         this.protocolApplications = protocolApplications;
-    }
-
-    /**
-     * Gets the properties.
-     *
-     * @return the properties.
-     */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "exprun_id")
-    public List<SimpleTypeValue> getProperties() {
-        return properties;
-    }
-
-    /**
-     * Sets the properties.
-     *
-     * @param properties the properties to set.
-     */
-    protected void setProperties(List<SimpleTypeValue> properties) {
-        this.properties = properties;
     }
 
     /**

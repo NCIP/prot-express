@@ -109,7 +109,7 @@
         <hibernate.validator.version>3.0.0.ga</hibernate.validator.version>
         <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
         <hibernate.commons.annotations.version>3.3.0.ga</hibernate.commons.annotations.version>
-        <schema.file>schema.sql</schema.file>
+        <schema.file>protExpressSchema.sql</schema.file>
         <jaxb.api.version>2.1</jaxb.api.version>
         <jaxb.impl.version>2.1.4</jaxb.impl.version>
         <jaxb.xjc.version>2.1.4</jaxb.xjc.version>
@@ -247,7 +247,7 @@
                     <onError>continue</onError>
                     <autocommit>true</autocommit>
                     <srcFiles>
-                        <srcFile>src/main/sql/protExpressSchema.sql</srcFile>
+                        <srcFile>target/hibernate3/sql/${schema.file}</srcFile>
                         <srcFile>src/main/sql/csmDropSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
@@ -425,6 +425,7 @@
                         <exclude>jsp/**</exclude>
                         <exclude>**/xar2_2/**</exclude>
                         <exclude>org/apache/jsp/tag/**</exclude>
+                        <exclude>gov/nih/nci/protexpress/data/persistent/HibernateFieldLength*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

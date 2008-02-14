@@ -96,8 +96,6 @@ import javax.persistence.TemporalType;
  */
 @Embeddable
 public class AuditInfo {
-    private static final int CREATOR_LENGTH = 100;
-
     private String creator;
     private Calendar creationDate = Calendar.getInstance();
     private Calendar lastModifiedDate = Calendar.getInstance();
@@ -107,7 +105,7 @@ public class AuditInfo {
      */
     // note, this does not use hibernate validator annotations, because field is set by an interceptor, and thus should
     // not be validated at the UI
-    @Column(name = "creator", nullable = false, length = CREATOR_LENGTH)
+    @Column(name = "creator", nullable = false, length = HibernateFieldLength.AUDIT_CREATOR_LENGTH)
     public String getCreator() {
         return this.creator;
     }
