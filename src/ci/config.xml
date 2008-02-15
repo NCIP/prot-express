@@ -33,7 +33,7 @@
                 subjectprefix="[${project.name} CI Notice]"
                 skipusers="true"
                 spamwhilebroken="true">
-                <failure address="kkmohan@gmail.com" reportWhenFixed="true" />
+                <failure address="NCINCICBGpsXarDevTeam@mail.nih.gov" reportWhenFixed="true" />
             </email>
         </publishers>
     </project>
