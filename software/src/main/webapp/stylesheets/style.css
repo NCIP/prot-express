@@ -30,7 +30,7 @@ P
 H1
 { font-size:155%; font-weight:normal; margin:0 8px 10px 0; padding:6px 6px 4px 0; color:#606060; border-bottom:2px solid #ccc}
 H2
-{ font-family:arial,helvetica,sans-serif; font-weight:normal;  margin:0 0 8px 0; font-size:145%; line-height:1.2em; color:#606060; margin:0; font-size:120%; font-weight:bold; color:#fff; background:#5e5e5e url("../images/bg_header_gray.gif") repeat-x top; padding:7px;  }
+{ font-family:arial,helvetica,sans-serif; font-weight:normal;  margin:0 0 8px 0; line-height:1.2em; color:#606060; margin:0; font-size:120%; font-weight:bold; color:#fff; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:7px;  }
 H3
 { clear:both; font-family:arial,helvetica,sans-serif; font-size:130%; line-height:1.4em; color:#606060; padding:10px;  }
 H4
@@ -47,7 +47,16 @@ SUP
 { font-size:80%; vertical-align:35% }
 :lang(en) SUB 
 { font-size:70%; vertical-align:-20% }
-
+FIELDSET
+{ -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px; }
+:lang(en) FIELDSET
+{ margin:10px 15px 10px 15px; background:#fff; border:1px solid #ccc }
+FIELDSET FIELDSET LEGEND
+{ line-height:23px }
+LEGEND
+{ font-size:120%; font-weight:bold; color:#6A8989; padding:3px 7px;  }
+:lang(en) LEGEND
+{ margin-bottom:1px }
 
 /* Template */
 
@@ -125,7 +134,7 @@ SUP
 .intro
 { font-size:120%; padding-right:20px; line-height:1.3em }
 .small
-{ font-size:90% }
+{ font-size:92% }
 .tiny
 { font-size:70% }
 .clear
@@ -149,7 +158,7 @@ SUP
 .padme8
 { padding:8px; background:#fff }
 .padme10
-{ padding:10px; background:#fff }
+{ padding:10px; }
 
 
 /* Homepage Content */
@@ -342,7 +351,7 @@ TABLE.searchresults TD.title
 TABLE.form
 { width:90%; margin:10px; }
 TABLE.form TD
-{ padding:3px }
+{ padding:5px !important }
 .label
 { width:30%; text-align:right; font-weight:bold; }
 .value INPUT, .value SELECT, .value TEXTAREA
@@ -360,15 +369,17 @@ TD.value
 .pad10 .line
 { margin:10px;  }
 .hiddenwrapper
-{ background:#f5f8e8; }
+{ font-size:11px }
 .hidden
-{ padding:10px 10px 35px 10px }
+{  }
+.hidden .form TD
+{  }
 .value .hidden INPUT, .value .hidden SELECT, .value .hidden TEXTAREA
 { margin-top:0px }
 .alignright .hidehelp
-{ float:right; text-align:left; width:4em; margin-top:-4px}
+{ float:right; text-align:left; width:4em; margin-top:5px; background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
 .replace
-{ text-decoration:underline }
+{ background:url("../images/ico_displayhidden.gif") no-repeat; padding-left:18px; }
 .calendaricon
 { vertical-align:middle; padding-left:5px; }
 
@@ -426,46 +437,54 @@ P.homeintro
 { margin-top:15px; width:80%; border:1px solid #999; }
 
 
-/* My Recent Experiments Table */
+/*New Data and Search Tables */
 
 TABLE.newdata
-{ width:100%; font-size:92% }
+{ width:100%; font-size:92%; background:#fff; }
 TABLE.newdata TH
-{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:7px; color:#fff; } 
-TABLE.newdata .action
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; } 
+TABLE .action
 { text-align:center; width:4.1em; }
 TABLE.newdata TD
 { padding:7px; border-bottom:1px solid #ccc;  }
-TABLE.newdata TR.hilite
+TABLE.newdata TR.hilite, .hilite
 { font-weight:bold; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top }
 TABLE.newdata TD A
 { text-decoration:underline !important }
+ 
 
-
-/* Search Stuff */ 
-
-.filterbox
-{ width:99%; height:10em; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
+.filterbox, .fadebox
+{ width:99%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 .searchresults
 { margin-top:15px; width:99%; border:1px solid #999; }
-TABLE.newdata2
-{ width:100%; font-size:92% }
+.datatable
+{ margin-top:5px; width:99%; border:1px solid #999; }
+TABLE.newdata2, TABLE.newdata3
+{ width:100%; font-size:92%; background:#fff; }
 TABLE.newdata2 TH
-{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:7px; color:#fff; } 
-TABLE.newdata2 .action
-{ text-align:center; width:4.1em; }
-TABLE.newdata2 TD
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; } 
+TABLE.newdata3 TH
+{ border-top:1px solid #6f7ea4; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:3px 7px; color:#fff; }
+TABLE .actionwide
+{ text-align:center; width:160px; }
+TABLE.newdata2 TD, TABLE.newdata3 TD
 { padding:7px; border-bottom:1px solid #ccc;  }
-TABLE.newdata2 TR.hilite
+TABLE.newdata2 TD TD, TABLE.newdata3 TD TD
+{ border:0; }
+TABLE.newdata2 TR.hilite, TABLE.newdata3 TR.hilite
 { font-weight:bold; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top }
 TABLE.newdata2 TD A
 { text-decoration:underline !important }
+TABLE.newdata2 TD DEL A, TABLE.newdata2 TD DEL A:hover
+{ text-decoration:none !important  }
+TABLE.newdata2 TD.title
+{ font-weight:bold; }
 
 
 /* Centered Buttons at the Bottom */
 
 .actionsrow
-{ border-top:1px dotted #999; padding-top:5px }
+{ text-align:center; border-top:1px dotted #999; padding:5px 0 }
 #btnrow, #btnrow2 
 { display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; }
 #btnrow LI,#btnrow2 LI 
@@ -482,7 +501,7 @@ HTML>BODY .container { *display:inline-block; }
 /* NEW Sliding Door Buttons */
 
 A.btn 
-{ width:auto; background:transparent url("../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 20px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
+{ width:auto; background:transparent url("../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 10px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
 .actionsthin A.btn
 { margin:0 10px }
 A.btn SPAN.btn_img 
@@ -499,10 +518,14 @@ A.btn SPAN SPAN
 { display:block; padding:0 0 0 20px }
 A.btn SPAN.add
 { background:url("../images/ico_add.gif") no-repeat; }
+A.btn SPAN.addrow
+{ background:url("../images/ico_rowadd.gif") no-repeat; }
 A.btn SPAN.associate
 { background:url("../images/ico_associate.gif") no-repeat; }
 A.btn SPAN.cancel
-{ background:url("../images/ico_cancel.gif") no-repeat; }
+{ background:url("../images/ico_cancel2.gif") no-repeat; }
+A.btn SPAN.check
+{ background:url("../images/ico_check.gif") no-repeat; }
 A.btn SPAN.copy
 { background:url("../images/ico_copy.gif") no-repeat; }
 A.btn SPAN.delete
@@ -523,6 +546,12 @@ A.btn SPAN.register
 { background:url("../images/ico_register.gif") no-repeat; }
 A.btn SPAN.save
 { background:url("../images/ico_save.gif") no-repeat; }
+A.btn SPAN.saveback
+{ background:url("../images/ico_saveback.gif") no-repeat; }
+A.btn SPAN.saveconfirm
+{ background:url("../images/ico_saveconfirm.gif") no-repeat; }
+A.btn SPAN.saverepeat
+{ background:url("../images/ico_saverepeat.gif") no-repeat; }
 A.btn SPAN.search
 { background:url("../images/ico_search.gif") no-repeat; }
 A.btn SPAN.submit_experiment
@@ -546,6 +575,10 @@ A.btn SPAN.validate
 
 .addicon
 { padding:2px 0 2px 17px; background:url("../images/ico_add.gif") no-repeat; }
+.cancel2
+{ font-size:95%; color:#666; margin:5px; padding:1px 0 0 18px; float:left; display:block; width:10em; height:16px; background:url("../images/ico_cancel2.gif") no-repeat; }
+.cancel3
+{ font-size:95%; color:#666; margin:5px; padding:1px 0 0 18px; float:left; display:block; width:14em; height:16px; background:url("../images/ico_cancel2.gif") no-repeat; }
 
 
 /* Paging */
@@ -561,3 +594,46 @@ A.btn SPAN.validate
 .pagecontrol .paging
 { float:right }
 
+
+/* Process Flow */
+
+#processflow
+{ clear:both; margin-bottom:10px; cursor:default; }
+#processflow DIV.step, #processflow DIV.selectedstep
+{ width:150px; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
+#processflow .arrow
+{ float:left; padding:14px 5px 0 5px; margin-right:10px; }
+#processflow DIV.selectedstep
+{ font-weight:bold; color:#333; border:1px solid #999; background:url("../images/bg_bluefade1.gif") repeat-x top }
+.info
+{ padding:10px; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
+.info P
+{ background:url("../images/ico_info.gif") no-repeat 0 1px; padding:0 0 0 18px }
+.or
+{ font-weight:bold; font-size:130%; text-align:center; border-top:1px dotted #ccc }
+.or P
+{ text-align:center; width:50px; background:#333; padding:3px; color:#fff; margin:-14px auto 0 auto }
+.fadebox H3
+{ padding-bottom:10px }
+:lang(en) H3
+{ padding-bottom:0 }
+.fadebox H3 .gt
+{ color:#fc0 }
+.fadebox H3 .selected
+{ color:#000 }
+
+
+/* Tree */
+
+UL.tree LI
+{ font-size:11px; padding:5px 0 5px 10px }
+UL.tree LI LI
+{ font-size:11px; padding-left:20px }
+UL.tree LI TH, UL.tree LI TD
+{ font-size:11px }
+UL.tree LI FIELDSET DIV.hidden
+{ margin-top:11px !important }
+UL.tree LI .hidden
+{ margin:0 }
+UL.tree LEGEND
+{ font-size:14px; margin-top:1px }

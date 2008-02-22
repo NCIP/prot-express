@@ -80,90 +80,73 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocol.test;
-
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction;
-
-import java.util.List;
-
-import org.displaytag.properties.SortOrderEnum;
-
-import com.opensymphony.xwork2.ActionSupport;
+package gov.nih.nci.protexpress.service;
 
 /**
- * @author Scott Miller
+ * The parameters for experiment searches.
  *
+ * @author Krishna Kanchinadam
  */
-public class ProtocolSearchActionTest extends ProtExpressBaseHibernateTest {
+public class SearchParameters {
 
-    ProtocolSearchAction action;
+    private SearchType searchType = SearchType.EXPERIMENTS;
+    private String name;
+    private Boolean searchAllUsers = false;
 
     /**
-     * {@inheritDoc}
+     * The Constructor.
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        action = new ProtocolSearchAction();
-
-        Protocol protocol = new Protocol("a test protocol");
-        protocol.setInstrument("foo");
-        protocol.setDescription("z bar");
-        protocol.setSoftware("baz");
-
-        theSession.saveOrUpdate(protocol);
-
-        protocol = new Protocol("b test protocol");
-        protocol.setInstrument("foo");
-        protocol.setDescription("x bar");
-        protocol.setSoftware("baz");
-
-        theSession.saveOrUpdate(protocol);
-
-        protocol = new Protocol("c test protocol");
-        protocol.setInstrument("foo");
-        protocol.setDescription("y bar");
-        protocol.setSoftware("baz");
-
-        theSession.saveOrUpdate(protocol);
-        theSession.flush();
-        theSession.clear();
+    public SearchParameters() {
     }
 
-    public void testSearch() throws Exception {
-        assertEquals(ActionSupport.INPUT, action.loadSearch());
-        assertEquals(null, action.getProtocols().getList());
-        action.getProtocols().setSortDirection(SortOrderEnum.DESCENDING);
-        action.getProtocols().setSortCriterion("name");
-        action.getProtocols().setPageNumber(1);
-        assertEquals(ActionSupport.SUCCESS, action.doSearch());
-        List<Protocol> protocols = action.getProtocols().getList();
-        assertEquals(3, protocols.size());
-        assertEquals(3, action.getProtocols().getFullListSize());
-        assertEquals("c test protocol", protocols.get(0).getName());
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
 
-        action.getSearchParameters().setName("a");
-        action.getProtocols().setSortDirection(SortOrderEnum.ASCENDING);
-        assertEquals(ActionSupport.SUCCESS, action.doSearch());
-        protocols = action.getProtocols().getList();
-        assertEquals(1, protocols.size());
-        assertEquals("a test protocol", protocols.get(0).getName());
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        action.setSearchParameters(new ProtocolSearchParameters());
-        action.getProtocols().setSortDirection(null);
-        action.getProtocols().setObjectsPerPage(1);
-        action.getProtocols().setSearchId("test");
-        assertEquals(ActionSupport.SUCCESS, action.doSearch());
-        protocols = action.getProtocols().getList();
-        assertEquals(1, protocols.size());
-        assertEquals(3, action.getProtocols().getFullListSize());
-        assertEquals("a test protocol", protocols.get(0).getName());
-        assertEquals("test", action.getProtocols().getSearchId());
+    /**
+     * Gets the searchType.
+     *
+     * @return the searchType.
+     */
+    public SearchType getSearchType() {
+        return searchType;
+    }
 
-        action.setProtocols(null);
+    /**
+     * Sets the searchType.
+     *
+     * @param searchType the searchType to set.
+     */
+    public void setSearchType(SearchType searchType) {
+        this.searchType = searchType;
+    }
+
+    /**
+     * Gets the searchAllUsers.
+     *
+     * @return the searchAllUsers.
+     */
+    public Boolean getSearchAllUsers() {
+        return searchAllUsers;
+    }
+
+    /**
+     * Sets the searchAllUsers.
+     *
+     * @param searchAllUsers the searchAllUsers to set.
+     */
+    public void setSearchAllUsers(Boolean searchAllUsers) {
+        this.searchAllUsers = searchAllUsers;
     }
 
 }

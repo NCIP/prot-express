@@ -104,7 +104,7 @@ public interface ExperimentService {
      * @param params the params for the search
      * @return the number of experiments that match the search
      */
-    int countMatchingExperiments(ExperimentSearchParameters params);
+    int countMatchingExperiments(SearchParameters params);
 
     /**
      * Searches for experiments that match the given criteria.
@@ -116,7 +116,7 @@ public interface ExperimentService {
      * @param sortDir the direction of the sort
      * @return the experiments that match the search
      */
-    List<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
+    List<Experiment> searchForExperiments(SearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir);
 
     /**

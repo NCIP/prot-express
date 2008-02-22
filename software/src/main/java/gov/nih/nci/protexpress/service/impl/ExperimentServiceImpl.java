@@ -86,7 +86,7 @@ import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
+import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.ExperimentService;
 
 import java.util.List;
@@ -113,7 +113,7 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     /**
      * {@inheritDoc}
      */
-    public int countMatchingExperiments(ExperimentSearchParameters params) {
+    public int countMatchingExperiments(SearchParameters params) {
         return (Integer) getExperimentSearchQuery(params, true, null, null).uniqueResult();
     }
 
@@ -121,13 +121,13 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public List<Experiment> searchForExperiments(ExperimentSearchParameters params, int maxResults, int firstResult,
+    public List<Experiment> searchForExperiments(SearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir) {
         return getExperimentSearchQuery(params, false, sortProperty, sortDir).setMaxResults(maxResults).setFirstResult(
                 firstResult).list();
     }
 
-    private Criteria getExperimentSearchQuery(ExperimentSearchParameters params, boolean onlyCount,
+    private Criteria getExperimentSearchQuery(SearchParameters params, boolean onlyCount,
             String sortProperty, SortOrderEnum sortDir) {
         Criteria crit = getHibernateTemplate().getSessionFactory().getCurrentSession().createCriteria(Experiment.class);
 
@@ -135,14 +135,8 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
             crit.setProjection(Projections.rowCount());
         }
 
-        if (params != null) {
-            if (StringUtils.isNotEmpty(params.getName())) {
-                crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
-            }
-
-            if (StringUtils.isNotEmpty(params.getComments())) {
-                crit.add(Restrictions.like("comments", "%" + params.getComments() + "%").ignoreCase());
-            }
+        if ((params != null) && (StringUtils.isNotEmpty(params.getName()))) {
+            crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
         }
 
         if (!onlyCount && sortDir != null && StringUtils.isNotBlank(sortProperty)) {

@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.service;
 
 /**
- * The parameters for experiment searches.
+ * The parameters for protExpress Searches.
  *
  * @author Krishna Kanchinadam
  */

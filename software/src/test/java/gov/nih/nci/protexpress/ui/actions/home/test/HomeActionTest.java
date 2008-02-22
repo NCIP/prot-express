@@ -80,164 +80,37 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput;
+package gov.nih.nci.protexpress.ui.actions.home.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.service.ExperimentService;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.home.HomeAction;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 
 /**
+ * Test for the home action.
  * @author Krishna Kanchinadam
- *
  */
-public class ProtocolApplicationOutputManagementAction extends ActionSupport implements Preparable {
+public class HomeActionTest extends ProtExpressBaseHibernateTest {
 
-    private static final long serialVersionUID = 1L;
-    private ProtocolApplication protocolApplication = new ProtocolApplication(null, null, null, null);
-    private InputOutputObject output = new InputOutputObject(null);
-    private Long protocolApplicationId;
-    private Long outputId;
-    private String successMessage = null;
+    private HomeAction action;
 
     /**
      * {@inheritDoc}
      */
-    public void prepare() throws Exception {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
-        }
-
-        if (getOutput().getId() != null) {
-            setOutput(es.getInputOutputObjectById(getOutput().getId()));
-        } else if (getOutputId() != null) {
-            setOutput(es.getInputOutputObjectById(getOutputId()));
-        }
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new HomeAction();
     }
 
-    /**
-     * loads the {@link InputOutputObject}.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
-    }
+    public void testLoad() {
+        Experiment e = new Experiment("e1");
+        this.theSession.save(e);
 
-    /**
-     * Adds the output object to the protocol application.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        if ((getProtocolApplication().getId() != null) && (getOutput().getId() == null)) {
-             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
-                     .getString("protocolApplicationOutput.save.success"));
-        } else {
-             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle()
-                     .getString("protocolApplicationOutput.update.success"));
-        }
-
-        if (!getProtocolApplication().getOutputs().contains(output)) {
-            getProtocolApplication().getOutputs().add(output);
-        }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(output);
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * delete the output.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle()
-            .getString("protocolApplicationOutput.delete.success");
-        setSuccessMessage(msg);
-        getProtocolApplication().getOutputs().remove(output);
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * @return the protocolApplication.
-     */
-    @CustomValidator(type = "hibernate")
-    public ProtocolApplication getProtocolApplication() {
-        return this.protocolApplication;
-    }
-
-    /**
-     * @param protocolApplication the protocolApplication to set
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        this.protocolApplication = protocolApplication;
-    }
-
-    /**
-     * @return the output.
-     */
-    @CustomValidator(type = "hibernate")
-    public InputOutputObject getOutput() {
-        return this.output;
-    }
-
-    /**
-     * @param output the output to set
-     */
-    public void setOutput(InputOutputObject output) {
-        this.output = output;
-    }
-
-    /**
-     * @param protocolApplicationId the protocolApplicationId to set
-     */
-    public void setProtocolApplicationId(Long protocolApplicationId) {
-        this.protocolApplicationId = protocolApplicationId;
-    }
-
-    /**
-     * @return the protocolApplicationId
-     */
-    public Long getProtocolApplicationId() {
-        return this.protocolApplicationId;
-    }
-
-    /**
-     * @param outputId the outputId to set
-     */
-    public void setOutputId(Long outputId) {
-        this.outputId = outputId;
-    }
-
-    /**
-     * @return the outputId
-     */
-    public Long getOutputId() {
-        return this.outputId;
-    }
-
-    /**
-     * @return the successMessage
-     */
-    public String getSuccessMessage() {
-        return this.successMessage;
-    }
-
-    /**
-     * @param successMessage the successMessage to set
-     */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+        assertEquals(ActionSupport.SUCCESS, this.action.load());
+        assertEquals(1, this.action.getRecentExperiments().size());
     }
 }

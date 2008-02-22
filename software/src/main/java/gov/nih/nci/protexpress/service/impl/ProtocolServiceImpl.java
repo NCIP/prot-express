@@ -83,8 +83,8 @@
 package gov.nih.nci.protexpress.service.impl;
 
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
 import gov.nih.nci.protexpress.service.ProtocolService;
+import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.util.List;
@@ -111,7 +111,7 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     /**
      * {@inheritDoc}
      */
-    public int countMatchingProtocols(ProtocolSearchParameters params) {
+    public int countMatchingProtocols(SearchParameters params) {
         return (Integer) getProtocolSearchQuery(params, true, null, null).uniqueResult();
     }
 
@@ -119,29 +119,15 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
+    public List<Protocol> searchForProtocols(SearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir) {
         return getProtocolSearchQuery(params, false, sortProperty, sortDir).setMaxResults(maxResults).setFirstResult(
                 firstResult).list();
     }
 
-    private Criteria getProtocolSearchQuery(ProtocolSearchParameters params, boolean onlyCount, String sortProperty,
+    private Criteria getProtocolSearchQuery(SearchParameters params, boolean onlyCount, String sortProperty,
             SortOrderEnum sortDir) {
         Criteria crit = getHibernateTemplate().getSessionFactory().getCurrentSession().createCriteria(Protocol.class);
-
-        if (onlyCount) {
-            crit.setProjection(Projections.rowCount());
-        }
-
-        if (params != null) {
-            if (StringUtils.isNotEmpty(params.getName())) {
-                crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
-            }
-
-            if (StringUtils.isNotEmpty(params.getDescription())) {
-                crit.add(Restrictions.like("description", "%" + params.getDescription() + "%").ignoreCase());
-            }
-        }
 
         if (!onlyCount && sortDir != null && StringUtils.isNotBlank(sortProperty)) {
             if (SortOrderEnum.ASCENDING.equals(sortDir)) {
@@ -149,6 +135,14 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
             } else {
                 crit.addOrder(Order.desc(sortProperty));
             }
+        }
+
+        if (onlyCount) {
+            crit.setProjection(Projections.rowCount());
+        }
+
+        if ((params != null) && (StringUtils.isNotEmpty(params.getName()))) {
+            crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
         }
         return crit;
     }

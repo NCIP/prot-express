@@ -80,121 +80,36 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.test;
-
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction;
-
-import java.util.Calendar;
-
-import com.opensymphony.xwork2.ActionSupport;
-
+package gov.nih.nci.protexpress.service;
 /**
  * @author Krishna Kanchinadam
  *
  */
-public class ProtocolApplicationOutputManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    ProtocolApplicationOutputManagementAction action;
-    ProtocolApplication protocolApplication;
-    ExperimentRun experimentRun;
-    Protocol protocol;
-    InputOutputObject output1;
-    InputOutputObject output2;
+public enum SearchType {
+    /**
+     * Experiment Search.
+     */
+    EXPERIMENTS("Experiments"),
+    /**
+     * Protocol Search.
+     */
+    PROTOCOLS("Protocols");
+
+    private String displayName;
 
     /**
-     * {@inheritDoc}
+     * Constructor for CpasType.
+     *
+     * @param displayname the display name
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-
-        this.protocol = new Protocol("test protocol 1");
-        this.theSession.save(this.protocol);
-
-        Experiment experiment = new Experiment("Name - Test Experiment 1");
-        experiment.setComments("Description - Test Experiment 1");
-        experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(experiment);
-
-        this.experimentRun = new ExperimentRun("test name");
-        this.experimentRun.setComments("test comments");
-        this.experimentRun.setExperiment(experiment);
-
-        this.theSession.saveOrUpdate(this.experimentRun);
-
-        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, protocol);
-        this.protocolApplication.setActivityDate(Calendar.getInstance());
-        this.theSession.saveOrUpdate(this.protocolApplication);
-
-        this.output1 = new InputOutputObject("Output 1");
-        this.theSession.saveOrUpdate(this.output1);
-
-        this.output2 = new InputOutputObject("Output 2");
-        this.theSession.saveOrUpdate(this.output2);
-
-        this.theSession.flush();
-        this.theSession.clear();
+    private SearchType(String displayname) {
+        this.displayName = displayname;
     }
 
-    public void testAddAndDeleteProtocolApplicationOutput() throws Exception {
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setOutputId(this.output1.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Output successfully updated.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setOutputId(this.output2.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Output successfully updated.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(2, this.action.getProtocolApplication().getOutputs().size());
-
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setOutputId(this.output2.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.delete());
-        assertEquals("Output successfully deleted.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(1, this.action.getProtocolApplication().getOutputs().size());
-
-    }
-
-    public void testAddProtocolApplicationOutput() throws Exception {
-        InputOutputObject output = new InputOutputObject("Output");
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setOutput(output);
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Output successfully created.", this.action.getSuccessMessage());
-
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setOutput(this.output1);
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-
-        this.action = new ProtocolApplicationOutputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(2, this.action.getProtocolApplication().getOutputs().size());
-
+    /**
+     * @return the displayName
+     */
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

@@ -101,7 +101,7 @@ public interface ProtocolService {
      * @param params the params for the search
      * @return the number of protocols that match the search
      */
-    int countMatchingProtocols(ProtocolSearchParameters params);
+    int countMatchingProtocols(SearchParameters params);
 
     /**
      * Searches for protocols that match the given criteria.
@@ -113,7 +113,7 @@ public interface ProtocolService {
      * @param sortDir the direction of the sort
      * @return the protocols that match the search
      */
-    List<Protocol> searchForProtocols(ProtocolSearchParameters params, int maxResults, int firstResult,
+    List<Protocol> searchForProtocols(SearchParameters params, int maxResults, int firstResult,
             String sortProperty, SortOrderEnum sortDir);
 
     /**

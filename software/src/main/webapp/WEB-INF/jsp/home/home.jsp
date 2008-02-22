@@ -24,7 +24,7 @@
                 <a href="" id="btn_home_create_t"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
             </div>
             <div id="btn_home_search">
-                <a href="" id="btn_home_search_t"><fmt:message key="protexpress.page.home.manageexperiments" /></a>
+                <a href="" id="btn_home_search_t"><fmt:message key="protexpress.page.home.search" /></a>
             </div>
             <div class="clear"></div>
         </div>
@@ -81,7 +81,6 @@
             </table>
         </div>
         <!-- /My Experiments -->
-        <!-- /Add Content Here -->
     </div>
-    <div class="clear"><br /></div>
+    <!-- /Add Content Here -->
 </body>

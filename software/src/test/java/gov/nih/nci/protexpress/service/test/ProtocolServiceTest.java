@@ -2,7 +2,7 @@ package gov.nih.nci.protexpress.service.test;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.service.ProtocolSearchParameters;
+import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
@@ -184,7 +184,7 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
             lastVal = prot.getDescription();
         }
 
-        ProtocolSearchParameters params = new ProtocolSearchParameters();
+        SearchParameters params = new SearchParameters();
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
         assertEquals(3, ProtExpressRegistry.getProtocolService().countMatchingProtocols(params));
@@ -207,17 +207,9 @@ public class ProtocolServiceTest extends ProtExpressBaseHibernateTest {
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(3, protocolList.size());
 
-        params.setDescription("ar ");
-        protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
-        assertEquals(3, protocolList.size());
-
         params.setName("tocol 12");
         protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
         assertEquals(2, protocolList.size());
-
-        params.setDescription("r 12");
-        protocolList = ProtExpressRegistry.getProtocolService().searchForProtocols(params, 10, 0, null, null);
-        assertEquals(1, protocolList.size());
     }
 
     public void testGetMostRecentExperiments() throws Exception {

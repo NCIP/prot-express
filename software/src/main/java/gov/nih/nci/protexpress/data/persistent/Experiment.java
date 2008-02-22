@@ -127,7 +127,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private String hypothesis;
     private String url;
     private String comments;
-    private ContactPerson contactInfo;
     private String additionalInfo;
     private AuditInfo auditInfo = new AuditInfo();
     private ContactPerson contactPerson = new ContactPerson();

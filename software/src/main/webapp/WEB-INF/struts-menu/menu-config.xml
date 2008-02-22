@@ -23,9 +23,8 @@
         </Menu>
         <Menu name="protExpressMain" title="protexpress.leftnav.menu.main.title" onclick="javascript:void(0);">
             <Item name="protExpress.home" title="protexpress.leftnav.menu.main.home" page="/home/home.action" />
-            <Item name="protExpress.experimentsearch" title="protexpress.leftnav.menu.main.experimentsearch" page="/experiment/search/loadSearch.action" />
             <Item name="protExpress.experimentcreate" title="protexpress.leftnav.menu.main.experimentcreate" page="/experiment/search/loadSearch.action" />
-            <Item name="protExpress.protocolsearch" title="protexpress.leftnav.menu.main.protocolsearch" page="/protocol/search/loadSearch.action" />
+            <Item name="protExpress.search" title="protexpress.leftnav.menu.main.search" page="/search/loadSearch.action" />
             <Item name="protExpressAbout.whatis" title="protexpress.leftnav.menu.main.whatis" page="/notYetImplemented.html" />
             <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="/notYetImplemented.html" />
         </Menu>

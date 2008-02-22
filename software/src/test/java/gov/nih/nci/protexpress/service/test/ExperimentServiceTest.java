@@ -5,7 +5,7 @@ import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.service.ExperimentSearchParameters;
+import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
@@ -188,7 +188,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
             lastVal = exp1.getComments();
         }
 
-        ExperimentSearchParameters exparams = new ExperimentSearchParameters();
+        SearchParameters exparams = new SearchParameters();
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(3, experimentList.size());
         assertEquals(3, ProtExpressRegistry.getExperimentService().countMatchingExperiments(exparams));
@@ -211,17 +211,9 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(3, experimentList.size());
 
-        exparams.setComments("ar ");
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
-        assertEquals(3, experimentList.size());
-
         exparams.setName("periment 12");
         experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
         assertEquals(2, experimentList.size());
-
-        exparams.setComments("r 12");
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(exparams, 10, 0, null, null);
-        assertEquals(1, experimentList.size());
     }
 
     public void testGetMostRecentExperiments() throws Exception {
@@ -350,6 +342,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
 
         ProtocolApplication pa = new ProtocolApplication("protocol application name", Calendar.getInstance(), experimentRun, p);
         pa.setComments("bar 123");
+        pa.setStepNumber(1L);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);
         this.theSession.flush();
         this.theSession.clear();
