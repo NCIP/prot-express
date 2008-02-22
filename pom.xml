@@ -251,7 +251,6 @@
                         <srcFile>src/main/sql/csmDropSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
-                        <srcFile>src/main/sql/sampleXarData1.sql</srcFile>
                     </srcFiles>
                 </configuration>
             </plugin>
