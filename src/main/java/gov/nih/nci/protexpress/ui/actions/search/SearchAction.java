@@ -80,122 +80,114 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.test;
+package gov.nih.nci.protexpress.ui.actions.search;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
-import gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction;
+import gov.nih.nci.protexpress.service.SearchParameters;
+import gov.nih.nci.protexpress.service.SearchType;
+import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 
-import java.util.Calendar;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Krishna Kanchinadam
- *
  */
-public class ProtocolApplicationInputManagementActionTest extends ProtExpressBaseHibernateAndStrutsTestCase {
-    ProtocolApplicationInputManagementAction action;
-    ProtocolApplication protocolApplication;
-    ExperimentRun experimentRun;
-    Protocol protocol;
-    InputOutputObject input1;
-    InputOutputObject input2;
+public class SearchAction {
+    private SearchParameters searchParameters = new SearchParameters();
+
+    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(0, null,
+            ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
+
+    private PaginatedListImpl<Experiment> experiments = new PaginatedListImpl<Experiment>(0, null,
+            ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
 
     /**
-     * {@inheritDoc}
+     * load the search page.
+     *
+     * @return the directive for the next action / page to be directed to
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-
-        this.protocol = new Protocol("test protocol 1");
-        this.theSession.save(this.protocol);
-
-        Experiment experiment = new Experiment("Name - Test Experiment 1");
-        experiment.setComments("Description - Test Experiment 1");
-        experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(experiment);
-
-        this.experimentRun = new ExperimentRun("test name");
-        this.experimentRun.setComments("test comments");
-        this.experimentRun.setExperiment(experiment);
-
-        this.theSession.saveOrUpdate(this.experimentRun);
-
-        this.theSession.saveOrUpdate(protocol);
-
-        this.protocolApplication = new ProtocolApplication("pa name 1", Calendar.getInstance(), this.experimentRun, protocol);
-        this.protocolApplication.setActivityDate(Calendar.getInstance());
-        this.theSession.saveOrUpdate(this.protocolApplication);
-
-        this.input1 = new InputOutputObject("Input 1");
-        this.theSession.saveOrUpdate(this.input1);
-
-        this.input2 = new InputOutputObject("Input 2");
-        this.theSession.saveOrUpdate(this.input2);
-
-        this.theSession.flush();
-        this.theSession.clear();
+    @SkipValidation
+    public String loadSearch() {
+        doSearch();
+        return ActionSupport.SUCCESS;
     }
 
-    public void testAddAndDeleteProtocolApplicationInput() throws Exception {
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setInputId(this.input1.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Input successfully selected.", this.action.getSuccessMessage());
+    /**
+     * Perform Search for Protocols/Experiments.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String doSearch() {
+        int count = 0;
 
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setInputId(this.input2.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Input successfully selected.", this.action.getSuccessMessage());
+        SearchType searchType = getSearchParameters().getSearchType();
+        if (searchType.equals(SearchType.EXPERIMENTS)) {
+            count = ProtExpressRegistry.getExperimentService().countMatchingExperiments(getSearchParameters());
+            getExperiments().setFullListSize(count);
+            getExperiments().setList(
+                    ProtExpressRegistry.getExperimentService().searchForExperiments(getSearchParameters(),
+                            getExperiments().getObjectsPerPage(),
+                            getExperiments().getObjectsPerPage() * (getExperiments().getPageNumber() - 1),
+                            getExperiments().getSortCriterion(), getExperiments().getSortDirection()));
+        }
 
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(2, this.action.getProtocolApplication().getInputs().size());
-
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setInputId(this.input2.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.delete());
-        assertEquals("Input successfully deleted.", this.action.getSuccessMessage());
-
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(1, this.action.getProtocolApplication().getInputs().size());
+        if (searchType.equals(SearchType.PROTOCOLS)) {
+            count = ProtExpressRegistry.getProtocolService().countMatchingProtocols(getSearchParameters());
+            getProtocols().setFullListSize(count);
+            getProtocols().setList(
+                    ProtExpressRegistry.getProtocolService().searchForProtocols(getSearchParameters(),
+                            getProtocols().getObjectsPerPage(),
+                            getProtocols().getObjectsPerPage() * (getProtocols().getPageNumber() - 1),
+                            getProtocols().getSortCriterion(), getProtocols().getSortDirection()));
+        }
+        return ActionSupport.SUCCESS;
     }
 
-    public void testAddProtocolApplicationInput() throws Exception {
-        InputOutputObject input = new InputOutputObject("Input");
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setInput(input);
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Input successfully selected.", this.action.getSuccessMessage());
+    /**
+     * @return the experiments
+     */
+    public PaginatedListImpl<Experiment> getExperiments() {
+        return this.experiments;
+    }
 
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.setInput(this.input1);
-        this.action.prepare();
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
+    /**
+     * @param experiments the experiments to set
+     */
+    public void setExperiments(PaginatedListImpl<Experiment> experiments) {
+        this.experiments = experiments;
+    }
 
-        this.action = new ProtocolApplicationInputManagementAction();
-        this.action.setProtocolApplicationId(this.protocolApplication.getId());
-        this.action.prepare();
-        assertEquals(2, this.action.getProtocolApplication().getInputs().size());
+    /**
+     * @return the protocols
+     */
+    public PaginatedListImpl<Protocol> getProtocols() {
+        return this.protocols;
+    }
 
+    /**
+     * @param protocols the protocols to set
+     */
+    public void setProtocols(PaginatedListImpl<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    /**
+     * @return the searchParameters
+     */
+    public SearchParameters getSearchParameters() {
+        return this.searchParameters;
+    }
+
+    /**
+     * @param searchParameters the searchParameters to set
+     */
+    public void setSearchParameters(SearchParameters searchParameters) {
+        this.searchParameters = searchParameters;
     }
 }

@@ -45,6 +45,7 @@
 
         </div>
         <!--  END OF CONTENT -->
+        <div class="clear"><br></div>
     </div>
 
     <!-- LEFTNAV -->

@@ -74,19 +74,14 @@
         </action>
         <!-- /Home Actions -->
 
+        <!-- Search Actions -->
+        <action name="search/*" class="gov.nih.nci.protexpress.ui.actions.search.SearchAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/search/search.jsp</result>
+            <result name="success">/WEB-INF/jsp/search/search.jsp</result>
+        </action>
+        <!-- /Search Actions -->
+
         <!-- Protocol Actions -->
-        <action name="protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
-            method="{1}">
-            <result name="success">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
-        </action>
-
-        <action name="ajax/protocol/search/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolSearchAction"
-            method="{1}">
-            <result name="success">/WEB-INF/jsp/protocol/protocolSearchResults.jsp</result>
-            <result name="input">/WEB-INF/jsp/protocol/protocolSearchResults.jsp</result>
-        </action>
-
         <action name="protocol/management/*"
             class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
@@ -105,143 +100,6 @@
         <!-- End Protocol -->
 
 
-        <!-- Experiment Actions -->
-        <action name="experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
-            method="{1}">
-            <result name="success">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
-            <result name="input">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
-        </action>
 
-        <action name="ajax/experiment/search/*" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentSearchAction"
-            method="{1}">
-            <result name="success">/WEB-INF/jsp/experiment/experimentSearchResults.jsp</result>
-            <result name="input">/WEB-INF/jsp/experiment/experimentSearchResults.jsp</result>
-        </action>
-
-        <action name="experiment/management/protocolActions" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="load">
-            <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
-        </action>
-
-        <action name="experiment/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/experimentForm.jsp</result>
-            <result name="dashboard" type="chain">dashboard/dashboard</result>
-            <result name="search">/WEB-INF/jsp/experiment/experimentSearch.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/experiment/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="experiment/export" method="export" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportAction">
-            <result name="success" type="stream">
-                <param name="contentType">text/xml</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="experiment.xml"</param>
-                <param name="bufferSize">4096</param>
-            </result>
-            <result name="input" type="chain">experiment/management/load</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End Experiment -->
-
-        <!-- Experiment Run Actions -->
-        <action name="experimentRun/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experimentRun/experimentRunForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/experimentRun/experimentRunForm.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/experimentRun/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experimentRun/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/experimentRun/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/experimentRun/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.experimentrun.ExperimentRunManagementAction" method="delete">
-            <result name="success" type="chain">ajax/experiment/management/load/experimentRuns</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End Experiment Runs -->
-
-        <!-- Protocol Application Actions -->
-        <action name="protocolApplication/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplication/protocolApplicationForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplication/protocolApplicationForm.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplication/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplication/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplication/{2}.jsp</result>
-            <result name="xmlProtocolList" type="stream">
-                <param name="contentType">text/xml;charset=UTF-8</param>
-                <param name="inputName">inputStream</param>
-                <param name="bufferSize">4096</param>
-            </result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplication/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplication.ProtocolApplicationManagementAction" method="delete">
-            <result name="success" type="chain">ajax/experimentRun/management/load/protocolApplications</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End Protocol Applications -->
-
-        <!-- ProtocolApplicationInput Actions -->
-        <action name="protocolApplicationInput/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplicationInput/protocolApplicationInputForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplicationInput/protocolApplicationInputForm.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplicationInput/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplicationInput/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplicationInput/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplicationInput/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationinput.ProtocolApplicationInputManagementAction" method="delete">
-            <result name="success" type="chain">ajax/protocolApplication/management/load/inputs</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End ProtocolApplicationOutput Actions -->
-
-        <!-- ProtocolApplicationOutput Actions -->
-        <action name="protocolApplicationOutput/management/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplicationOutput/protocolApplicationOutputForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplicationOutput/protocolApplicationOutputForm.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplicationOutput/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocolApplicationOutput/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocolApplicationOutput/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="ajax/protocolApplicationOutput/management/delete"
-            class="gov.nih.nci.protexpress.ui.actions.protocolapplicationoutput.ProtocolApplicationOutputManagementAction" method="delete">
-            <result name="success" type="chain">ajax/protocolApplication/management/load/outputs</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End ProtocolApplicationOutput Actions -->
     </package>
 </struts>
