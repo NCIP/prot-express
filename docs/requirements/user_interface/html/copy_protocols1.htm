@@ -1,0 +1,460 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<title>protExpress - Create New Experiment - Protocols</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<link rel="address bar icon" href="favicon.ico" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="common/style.css" />
+		
+		
+		
+		<script type="text/javascript" src="common/scripts/prototype.js"></script>
+		<script type="text/javascript" src="common/scripts/scriptaculous.js"></script>
+		<script type="text/javascript" src="common/scripts/effects.js"></script>
+		<script type="text/javascript" src="common/scripts/tooltip.js"></script>	
+		<script type="text/javascript" src="common/scripts/calendarpopup.js"></script>	
+		<!--[if lt IE 6]>
+		<script language="jscript">
+			//<![CDATA[
+			function toggledisplay(theObj) 
+			{ 
+				if (theObj.style.display == "none") 
+					{ theObj.style.display = ""; } 
+				else { theObj.style.display = "none"; } 
+			}
+			//]]>
+		</script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		
+		<a href="#content" id="navskip">Skip to Page Content</a>
+		
+		<div id="wrapper">
+			
+			<!--NCI/NIH Header-->
+			
+			<div id="nciheader">		
+				
+				<div id="ncilogo"><a href="http://www.cancer.gov"><img src="images/logotype.gif" width="283" height="37" alt="Logo: National Cancer Institute" /></a></div>	
+				<div id="nihtag"><a href="http://www.cancer.gov"><img src="images/tagline.gif" width="295" height="37" alt="Logo: U.S. National Institutes of Health | www.cancer.gov" /></a></div>
+				
+			</div>
+			
+			<!--/NCI/NIH Header-->
+			
+			<!--protExpress Header-->			
+			
+			<div id="protexpressheader">
+			
+				<div id="protexpresslogo"><a href="./"><img src="images/logo_protExpress.gif" width="187" height="32" alt="Logo: protExpress - Proteomics Experiment &amp; Protocol Data Management System" /></a></div>
+				
+				<div id="userinfo">Welcome, Matt  |  <a href="account.htm">Account</a>  |  <a href="logout.htm">Logout</a></div>
+			
+			</div>
+			
+			<!--/protExpress Header-->		
+		
+			<!--Work Area-->
+				
+			<div id="main">				
+				
+				<div id="contentwrapper">
+				
+					<!--Content-->
+					
+					<div id="content">
+						
+						<!--Breadcrumb-->
+						
+						<div id="breadcrumb">
+						
+							<a href="./">Home</a> &gt; <a href="experimentcreate.htm" class="selected">Create New Experiment</a>
+							
+						</div>
+					
+						<!--/Breadcrumb-->
+						
+						<!--Page Help-->
+						
+						<a href="#" class="helpicon">Help</a>
+						
+						<!--/Page Help-->
+						
+						<div class="padme8">
+						
+							<!--ADD CONTENT HERE-->
+				
+							<h1>Create New Experiment</h1>
+							
+							<div id="processflow">
+								
+								<div class="step">1. Experiment Overview</div>
+								
+								<div class="arrow"><img src="images/processarrow.gif" alt="" /></div>
+								
+								<div class="selectedstep">2. Protocols</div>
+								
+								<div class="arrow"><img src="images/processarrow.gif" alt="" /></div>
+								
+								<div class="step">3. Summary</div>
+								
+								<div class="clear"></div>
+							
+							</div>
+							
+								<div class="clear"></div>
+							
+							<div class="fadebox">
+							
+								<h2>2. Protocols</h2>
+								
+								<div class="info"><p>An experiment may consist of multiple instances (or <em>experiment runs</em>). Each instance consists of one or more protocols, each with one or more inputs and outputs. Create a new protocol or select an existing protocol from the list to add it to the experiment.</p></div>
+								
+								<fieldset>
+								
+									<legend>Experiment X</legend>
+									
+									<div style="font-size:11px;"><a href="javascript:;" title="Enter optional details" class="replace" onclick="new Effect.toggle($('instanceinfo'),'blind')">
+											<!--[if lt IE 5.5]>
+												<span onclick="toggledisplay(instanceinfo);">
+									   	<![endif]-->			
+											(Enter optional details)
+											<!--[if lt IE 5.5]>
+												</span>
+								   		<![endif]-->
+										</a></div>
+									<div id="instanceinfo" style="display:none">
+									
+										<div class="hiddenwrapper">
+										
+											<div class="hidden">
+											
+												<fieldset>
+											
+													<legend>Instance of "Experiment X"</legend>
+													
+													<div class="datatable">
+																							
+														<table class="newdata2">
+															<tr>
+																<th>Instance Name</th>
+																<th>Notes</th>
+																<th class="actionwide">Actions</th>
+															</tr>
+															<tr>
+																<td style="width:200px">
+																	<input type="text" name="" value="Experiment X.001" style="width:200px;" />
+																</td>
+																<td><textarea cols="20" rows="2" id="comm" style="width:99%;height:30px"></textarea></td>
+																<td class="actionwide">
+																	<del class="btnwrapper">
+																		<ul id="btnrow2">											
+																			<li><a href="#" class="btn" style="text-decoration:none" onclick="new Effect.toggle($('instanceinfo'),'blind')"><span class="btn_img"><span class="save">Save</span></span></a></li>
+																		</ul>
+																	</del>	
+																</td>
+															</tr>
+														</table>
+													
+													</div>
+													<div class="alignright">
+	
+														<a href="javascript:;" class="hidehelp" onclick="new Effect.toggle($('instanceinfo'),'blind')">
+															<!--[if lt IE 5.5]>
+																<span onclick="toggledisplay(moreinfo);">
+													   	<![endif]-->
+															(Hide)
+															<!--[if lt IE 5.5]>
+																</span>
+												   		<![endif]-->
+														</a>
+														
+													</div>
+													
+												</fieldset>												
+												
+											</div>
+											
+										</div>
+									
+									</div>
+									
+								</fieldset>								
+								
+								<div class="line" style="margin-top:20px"></div>
+								
+								<fieldset>
+								
+									<legend>Add New Protocol</legend>
+									
+									<form name="create" id="createnew">									
+										
+										<div class="datatable">
+											<table class="newdata2">
+												<tr>
+													<th>Protocol Name</th>
+													<th>Description</th>
+													<th>Notes</th>
+													<th class="actionwide">Action</th>
+												</tr>
+												<tr>
+													<td class="title" style="border:0"><input type="text" name="title" id="name" value="" style="width:99%" /></td>
+													<td style="border:0"><textarea cols="20" rows="2" id="comm" style="width:99%;height:30px"></textarea></td>
+													<td style="border:0"><textarea cols="20" rows="2" id="prop" style="width:99%;height:30px"></textarea></td>												
+													<td class="actionwide" style="border:0">
+														<del class="btnwrapper">
+															<ul id="btnrow2">											
+																<li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
+															</ul>
+														</del>	
+													</td>
+												</tr>
+												<tr>
+													<td colspan="4">													
+														<a href="javascript:;" title="Enter optional details" class="replace" onclick="new Effect.toggle($('moreinfo'),'blind')" style="text-decoration:none !important">
+															<!--[if lt IE 5.5]>
+																<span onclick="toggledisplay(moreinfo);">
+													   	<![endif]-->			
+															(Enter optional details)
+															<!--[if lt IE 5.5]>
+																</span>
+												   		<![endif]-->
+														</a> 
+														<div id="moreinfo" style="display:none">
+															<div class="hiddenwrapper">
+																<div class="hidden">
+																	<table class="form">
+																		<tr>
+																			<td class="label"><label for="software">Software:</label></td>
+																			<td class="value"><input type="text" id="software" maxlength="150" size="45" value="" style="width:220px" /></td>
+																		</tr>
+																		<tr>
+																			<td class="label"><label for="instrument">Instrument:</label></td>
+																			<td class="value"><input type="text" id="instrument" maxlength="150" size="45" value="" style="width:220px" /></td>
+																		</tr>
+																		<tr>
+																			<td class="label"><label for="contactfn">Contact First Name:</label></td>
+																			<td class="value"><input type="text" id="cfn" maxlength="150" size="45" value="" style="width:220px" /></td>
+																		</tr>
+																		<tr>
+																			<td class="label"><label for="contactln">Contact Last Name:</label></td>
+																			<td class="value"><input type="text" id="cln" maxlength="150" size="45" value="" style="width:220px" /></td>
+																		</tr>
+																		<tr>
+																			<td class="label"><label for="contactemail">Contact Email:</label></td>
+																			<td class="value"><input type="text" id="contactemail" maxlength="150" size="45" value="" style="width:220px" /></td>
+																		</tr>
+																		<tr>
+																			<td class="label"><label for="aci">Additional Contact Info:</label></td>
+																			<td class="value"><textarea cols="20" rows="2" id="aci" style="width:220px;height:30px"></textarea></td>
+																		</tr>
+																		<tr>
+																			<td colspan="2">
+																				<div class="alignright" style="margin-right:150px;font-size:11px"><a href="javascript:;" class="hidehelp" onclick="new Effect.toggle($('moreinfo'),'blind')">
+																				<!--[if lt IE 5.5]>
+																					<span onclick="toggledisplay(moreinfo);">
+																		   	<![endif]-->
+																				(Hide)
+																				<!--[if lt IE 5.5]>
+																					</span>
+																	   		<![endif]-->
+																				</a></div>
+																			</td>
+																		</tr>
+																	</table>
+																	
+																</div>
+															</div>
+														</div>
+														
+													</td>
+												</tr>
+											</table>
+											
+										</div>
+										
+									</form>
+									
+								</fieldset>
+								
+								<fieldset>
+								
+									<legend>Select Existing Protocol</legend>
+									
+									<!--Protocol List-->
+									
+									<div style="text-align:right; margin-top:-5px; padding:0 20px 0 0">
+										<input type="checkbox" name="" id="" /> Display Protocols created by all users										
+									</div>
+																		
+									<div class="datatable">
+																				
+										<table class="newdata2">
+											<tr>
+												<th>Protocol Name</th>
+												<th>Description</th>
+												<th>Notes</th>
+												<th>User</th>
+												<th class="actionwide">Action</th>
+											</tr>
+											<tr>
+												<td class="title">Protocol A</td>
+												<td>Sample description</td>
+												<td>Sample notes</td>
+												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
+												<td class="actionwide">
+													<del class="btnwrapper">
+														<ul id="btnrow2">											
+															<li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
+														</ul>
+													</del>	
+												</td>
+											</tr>
+											<tr>
+												<td class="title">Protocol B</td>
+												<td>Sample description</td>
+												<td>Sample notes</td>
+												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
+												<td class="actionwide">
+													<del class="btnwrapper">
+														<ul id="btnrow2">											
+															<li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
+														</ul>
+													</del>	
+												</td>
+											</tr>
+											<tr>
+												<td class="title">Protocol C</td>
+												<td>Sample description</td>
+												<td>Sample notes</td>
+												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
+												<td class="actionwide">
+													<del class="btnwrapper">
+														<ul id="btnrow2">											
+															<li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
+														</ul>
+													</del>	
+												</td>
+											</tr>
+										</table>
+										
+										<!--Paging-->
+												
+										<div class="pagecontrol">
+										
+											<p class="small">Displaying <strong>1-3</strong> of <strong>3</strong> Total.</p>
+									
+											<div class="paging">													
+													Page 1 
+												&nbsp;&nbsp;
+												&lt; Back <span class="bar">|</span> 
+												Next &gt;
+											</div>		
+										
+										</div>
+									
+										<!--/Paging-->
+										
+									</div>
+								
+								<!--/Protocol List-->
+									
+								</fieldset>
+								
+								<div class="actionsrow">	
+																			
+									<del class="btnwrapper">
+										
+										<ul id="btnrow2">											
+											<li><a href="experimentcreate.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back</span></span></a></li>
+										</ul>
+										
+									</del>			
+									
+									<div class="clear"></div>
+																		
+								</div>
+							
+							</div>
+							
+							<!--/ADD CONTENT HERE-->
+						
+						</div>
+											
+					</div>
+							
+					<div class="clear"><br /></div>
+					
+				</div>
+				
+				<!--/Content-->
+				
+				<!--Left Navigation Column-->
+				
+				<div id="leftnav">
+				
+					<!--Menu-->
+					
+					<ul class="menu">
+						<li class="liheader">protExpress</li>
+						<li><a href="home.htm">Home</a></li>
+						<li><a href="experimentcreate.htm" class="selected">Create New Experiment</a></li>
+						<li><a href="search.htm">Search ProtExpress</a></li>
+						<li><a href="help.htm">Help</a></li>
+					</ul>
+					
+					<!--/Menu-->
+				
+					<!--Quicklinks Menu-->
+					
+					<ul class="quicklinks">
+						<li class="liheader">QUICK LINKS</li>
+						<li><a href="http://www.cancer.gov/" class="external" target="new1">National Cancer Institute (NCI)</a></li>
+						<li><a href="http://ncicb.nci.nih.gov/" class="external" target="new2">NCI Center for Bioinformatics (NCICB)</a></li>
+						<li><a href="https://cabig.nci.nih.gov/" class="external" target="new3">caBIG&trade; - Cancer Biomedical Informatics Grid&trade;</a></li>
+					</ul>
+				
+					<!--/Quicklinks Menu-->					
+				
+				</div>
+								
+				<!--/Left Navigation Column-->
+				
+			</div>			
+			
+			<!--/Work Area-->		
+		
+			<!--Footer-->
+			
+			<div id="footerwrapper">
+				
+				<div id="footernav">					
+					<a href="contact.htm">CONTACT US</a>
+					<a href="http://www.nih.gov/about/privacy.htm">PRIVACY NOTICE</a>
+					<a href="http://www.nih.gov/about/disclaim.htm">DISCLAIMER</a>
+					<a href="http://www3.cancer.gov/accessibility/nci508.htm">ACCESSIBILITY</a>
+					<a href="help.htm" class="last">PROTEXPRESS SUPPORT</a>	
+				</div>
+	
+				<div id="partnerlogos">				
+					<a href="http://www.cancer.gov"><img src="images/footer_nci.gif" width="63" height="31" alt="Logo: National Cancer Institute" /></a>
+					<a href="http://www.dhhs.gov"><img src="images/footer_hhs.gif" width="39" height="31" alt="Logo: Department of Health and Human Services" /></a>
+					<a href="http://www.nih.gov"><img src="images/footer_nih.gif" width="46" height="31" alt="Logo: National Institutes of Health" /></a>
+					<a href="http://www.usa.gov"><img src="images/footer_usagov.gif" width="91" height="31" alt="Logo: USA.gov" /></a>
+				</div>
+	
+			</div>
+			
+			<!--/Footer-->
+		
+		</div>
+			
+	</body>
+	
+</html>
