@@ -651,3 +651,20 @@ UL.tree LI .hidden
 { margin:0 }
 UL.tree LEGEND
 { font-size:14px; margin-top:1px }
+
+
+/* New for Krishna */
+TABLE.newdata3 th.order1 a
+{background: url(../images/arrow_down.gif) no-repeat right; padding-right:16px; }
+TABLE.newdata3 th.order2 a
+{background: url(../images/arrow_up.gif) no-repeat right; padding-right:16px; }
+TABLE.newdata3 TD
+{ border-bottom:1px solid #ccc; }
+TABLE.newdata3 TR.odd
+{ background:#eff2fa }
+TABLE.newdata3 TR.even
+{ background:transparent }
+TABLE.newdata3 tr.over, TABLE.newdata3 tr:hover
+{background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; cursor:pointer }
+TABLE.newdata3 TH A
+{color: #fff; text-decoration:underline !important;}
