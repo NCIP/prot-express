@@ -113,6 +113,10 @@ public class SearchAction {
      */
     @SkipValidation
     public String loadSearch() {
+        protocols = new PaginatedListImpl<Protocol>(0, null,
+                ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
+        experiments = new PaginatedListImpl<Experiment>(0, null,
+                ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
         doSearch();
         return ActionSupport.SUCCESS;
     }

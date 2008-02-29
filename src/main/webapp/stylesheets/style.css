@@ -30,7 +30,7 @@ P
 H1
 { font-size:155%; font-weight:normal; margin:0 8px 10px 0; padding:6px 6px 4px 0; color:#606060; border-bottom:2px solid #ccc}
 H2
-{ font-family:arial,helvetica,sans-serif; font-weight:normal;  margin:0 0 8px 0; line-height:1.2em; color:#606060; margin:0; font-size:120%; font-weight:bold; color:#fff; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:7px;  }
+{ font-family:arial,helvetica,sans-serif; line-height:1.2em; margin:0; font-size:120%; font-weight:bold; color:#fff; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:7px;  }
 H3
 { clear:both; font-family:arial,helvetica,sans-serif; font-size:130%; line-height:1.4em; color:#606060; padding:10px;  }
 H4
@@ -50,9 +50,9 @@ SUP
 FIELDSET
 { -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px; }
 :lang(en) FIELDSET
-{ margin:10px 15px 10px 15px; background:#fff; border:1px solid #ccc }
+{ margin:10px 15px 10px 15px; background:#fff; border:1px solid #999 }
 FIELDSET FIELDSET LEGEND
-{ line-height:23px }
+{ line-height:10px }
 LEGEND
 { font-size:120%; font-weight:bold; color:#6A8989; padding:3px 7px;  }
 :lang(en) LEGEND
@@ -351,7 +351,7 @@ TABLE.searchresults TD.title
 TABLE.form
 { width:90%; margin:10px; }
 TABLE.form TD
-{ padding:5px !important }
+{ padding:4px !important }
 .label
 { width:30%; text-align:right; font-weight:bold; }
 .value INPUT, .value SELECT, .value TEXTAREA
@@ -360,6 +360,8 @@ TD.space
 { padding:0 }
 TD.value
 { padding-left:0px; }
+TD.title
+{ font-weight:bold }
 .value TEXTAREA
 { width:380px }
 .pad10
@@ -375,7 +377,7 @@ TD.value
 .hidden .form TD
 {  }
 .value .hidden INPUT, .value .hidden SELECT, .value .hidden TEXTAREA
-{ margin-top:0px }
+{  }
 .alignright .hidehelp
 { float:right; text-align:left; width:4em; margin-top:5px; background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
 .replace
@@ -421,7 +423,7 @@ TD.value
 P.homeintro
 { width:80% }
 .home_buttons
-{ width:80%; height:9em; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
+{ width:80%; height:9em; border:1px solid #ccc; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 #btn_home_create, #btn_home_search
 { display:block; margin:10px 10px 5px 10px; padding:0 0 10px 0; width:221px; font-weight:bold; float:left; background:url("../images/bg_btn_home_bottom.gif") no-repeat 1px bottom;  }
 .home_buttons A
@@ -434,7 +436,7 @@ P.homeintro
 { background:url("../images/bg_btn_search_top.gif") no-repeat top; width:166px;  padding:18px 20px 10px 37px; }
 
 .myexperiments
-{ margin-top:15px; width:80%; border:1px solid #999; }
+{ margin-top:15px; width:80%; border:1px solid #ccc; border-bottom:0; }
 
 
 /*New Data and Search Tables */
@@ -456,20 +458,26 @@ TABLE.newdata TD A
 .filterbox, .fadebox
 { width:99%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 .searchresults
-{ margin-top:15px; width:99%; border:1px solid #999; }
+{ margin-top:15px; width:99%; border:1px solid #ccc; }
 .datatable
-{ margin-top:5px; width:99%; border:1px solid #999; }
-TABLE.newdata2, TABLE.newdata3
+{ margin-top:5px; width:99%; }
+TABLE.newdata2, TABLE.newdata3, TABLE.newdata4
 { width:100%; font-size:92%; background:#fff; }
 TABLE.newdata2 TH
-{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; } 
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE.newdata3 TH
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }  
+TABLE.newdata4 TH
 { border-top:1px solid #6f7ea4; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE .actionwide
 { text-align:center; width:160px; }
-TABLE.newdata2 TD, TABLE.newdata3 TD
-{ padding:7px; border-bottom:1px solid #ccc;  }
-TABLE.newdata2 TD TD, TABLE.newdata3 TD TD
+TABLE.newdata2 TD
+{ border-bottom:0 }
+TABLE.newdata2 TD, TABLE.newdata3 TD, TABLE.newdata4 TD
+{ padding:5px;  }
+TABLE.newdata3 TD, TABLE.newdata4 TD
+{ border-bottom:1px solid #ccc }
+TABLE.newdata2 TD TD
 { border:0; }
 TABLE.newdata2 TR.hilite, TABLE.newdata3 TR.hilite
 { font-weight:bold; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top }
@@ -604,7 +612,7 @@ A.btn SPAN.validate
 #processflow .arrow
 { float:left; padding:14px 5px 0 5px; margin-right:10px; }
 #processflow DIV.selectedstep
-{ font-weight:bold; color:#333; border:1px solid #999; background:url("../images/bg_bluefade1.gif") repeat-x top }
+{ font-weight:bold; color:#fff; border:1px solid #999; background:#54668a url("../images/bg_header_blue.gif") repeat-x top;  }
 .info
 { padding:10px; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
 .info P
@@ -622,6 +630,12 @@ A.btn SPAN.validate
 .fadebox H3 .selected
 { color:#000 }
 
+#protocolflow
+{ font-size:95%; clear:both; margin:5px 15px; padding:7px; cursor:default; border:1px solid #ccc;  background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
+#protocolflow A
+{ background:url("../images/processarrow.gif") no-repeat right .2em; padding-right:35px; margin-left:5px}
+#protocolflow A.last
+{ background:0 }
 
 /* Tree */
 
@@ -637,3 +651,20 @@ UL.tree LI .hidden
 { margin:0 }
 UL.tree LEGEND
 { font-size:14px; margin-top:1px }
+
+
+/* New for Krishna */
+TABLE.newdata3 th.order1 a
+{background: url(../images/arrow_down.gif) no-repeat right; padding-right:16px; }
+TABLE.newdata3 th.order2 a
+{background: url(../images/arrow_up.gif) no-repeat right; padding-right:16px; }
+TABLE.newdata3 TD
+{ border-bottom:1px solid #ccc; }
+TABLE.newdata3 TR.odd
+{ background:#eff2fa }
+TABLE.newdata3 TR.even
+{ background:transparent }
+TABLE.newdata3 tr.over, TABLE.newdata3 tr:hover
+{background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; cursor:pointer }
+TABLE.newdata3 TH A
+{color: #fff; text-decoration:underline !important;}

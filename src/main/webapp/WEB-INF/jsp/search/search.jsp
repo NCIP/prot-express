@@ -18,23 +18,54 @@
         <!--Search Filters-->
         <div class="filterbox">
             <h2><fmt:message key="protexpress.page.search.filtertitle" /></h2>
-            <s:form action="search/doSearch" method="post">
-                <div id="form">
-                    <s:hidden name="protocols.sortDirection" />
-                    <s:hidden name="protocols.sortCriterion" />
-                    <s:hidden name="experiments.sortDirection" />
-                    <s:hidden name="experiments.sortCriterion" />
-
-                    <s:radio name="searchParameters.searchType" key="protexpress.page.search.searchfor" list="@gov.nih.nci.protexpress.service.SearchType@values()" listValue="displayName" ></s:radio>
-                    <s:textfield name="searchParameters.name" key="protexpress.page.search.name" size="40" />
-                    <s:checkbox name="searchParameters.searchAllUsers" key="protexpress.page.search.searchallusers" fieldValue="true" />
+            <s:form action="search/doSearch" method="post" theme="simple">
+                <s:hidden name="protocols.sortDirection" />
+                <s:hidden name="protocols.sortCriterion" />
+                <s:hidden name="experiments.sortDirection" />
+                <s:hidden name="experiments.sortCriterion" />
+                <table class="form">
+                    <tbody>
+                        <tr style="height: 28px;">
+                            <td class="label" style="text-align: left; vertical-align: bottom; width: 250px;">
+                                <fmt:message key="protexpress.page.search.searchfor" />:
+                                <s:radio name="searchParameters.searchType" key="protexpress.page.search.searchfor" list="@gov.nih.nci.protexpress.service.SearchType@values()" listValue="displayName" ></s:radio>
+                            </td>
+                            <td class="label" style="text-align: left; vertical-align: bottom;"><label for="date">Last Modified:</label></td>
+                            <td class="label"><fmt:message key="protexpress.page.search.searchallusers" />: <s:checkbox name="searchParameters.searchAllUsers" key="protexpress.page.search.searchallusers" fieldValue="true" /></td>
+                        </tr>
+                        <tr>
+                            <td  class="label" style="text-align: left; vertical-align: bottom;">
+                                <fmt:message key="protexpress.page.search.name" />: <s:textfield name="searchParameters.name" key="protexpress.page.search.name" size="25" />
+                            </td>
+                            <td id="date" colspan="2">
+                                <input name="" style="width: 50px;" type="text" />
+                                <img src="<c:url value="/images/ico_calendar.gif" />" alt="" align="absmiddle" /> -
+                                <input name="" style="width: 50px;" type="text" />
+                                <img src="<c:url value="/images/ico_calendar.gif" />" alt="" align="absmiddle" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="actionsrow">
+                    <del class="btnwrapper">
+                        <ul id="btnrow2">
+                            <li>
+                                <a href="" class="btn" onclick="this.blur();"><span class="btn_img"><span class="search"><fmt:message key="protexpress.page.search.search" /></span></span></a>
+                            </li>
+                        </ul>
+                    </del>
                 </div>
             </s:form>
             <div class="clear"></div>
         </div>
         <!--/Search Filters-->
         <!--Search Results-->
-        <jsp:include page="/WEB-INF/jsp/search/searchResults.jsp" />
+        <s:if test="${experiments.list != null}">
+            <jsp:include page="/WEB-INF/jsp/search/searchExperimentResults.jsp" />
+        </s:if>
+        <s:elseif test="${protocols.list != null}">
+            <jsp:include page="/WEB-INF/jsp/search/searchProtocolResults.jsp" />
+        </s:elseif>
         <!--/Search Results-->
     </div>
     <!-- /Add Content Here -->
