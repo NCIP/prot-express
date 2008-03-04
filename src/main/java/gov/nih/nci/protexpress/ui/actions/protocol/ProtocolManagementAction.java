@@ -107,6 +107,8 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     private String cancelResult = "search";
     private String successMessage = null;
 
+    private String actionResultViewSummary = "viewSummary";
+
     /**
      * {@inheritDoc}
      */
@@ -124,6 +126,16 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     @SkipValidation
     public String load() {
         return ActionSupport.INPUT;
+    }
+
+    /**
+     * loads the protocols.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String viewSummary() {
+        return this.actionResultViewSummary;
     }
 
     /**

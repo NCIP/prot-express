@@ -98,9 +98,9 @@ public final class HibernateFieldLength {
      */
     public static final int EXPERIMENT_NAME_LENGTH = 200;
     /**
-     * Field Length for Experiment Comments.
+     * Field Length for Experiment Description.
      */
-    public static final int EXPERIMENT_COMMENTS_LENGTH = 2000;
+    public static final int EXPERIMENT_DESCRIPTION_LENGTH = 2000;
     /**
      * Field Length for Experiment Hypothesis.
      */
@@ -109,10 +109,6 @@ public final class HibernateFieldLength {
      * Field Length for Experiment URL.
      */
     public static final int EXPERIMENT_URL_LENGTH = 100;
-    /**
-     * Field Length for Experiment Additional Information field.
-     */
-    public static final int EXPERIMENT_ADDITIONAL_INFO_LENGTH = 2000;
 
     /**
      * Field Length for Experiment Run Name.
@@ -155,7 +151,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Protocol Additional Information field.
      */
-    public static final int PROTOCOL_ADDITIONAL_INFO_LENGTH = 2000;
+    public static final int PROTOCOL_NOTES_LENGTH = 2000;
 
     /**
      * Field Length for Protocol Application Name.
@@ -181,6 +177,11 @@ public final class HibernateFieldLength {
      * Field Length for Contact Person Email.
      */
     public static final int CONTACT_PERSON_EMAIL_LENGTH = 100;
+    /**
+     * Field Length for Contact Person Notes.
+     */
+    public static final int CONTACT_PERSON_NOTES_LENGTH = 100;
+
 
     /**
      * Private Constructor.

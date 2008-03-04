@@ -105,7 +105,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
     @SuppressWarnings("unchecked")
     public void testSaveRetrieveDeleteExperiment() throws Exception {
         Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setComments("Description - Test Experiment 1");
+        exp1.setDescription("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
 
@@ -129,15 +129,15 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
     @SuppressWarnings("unchecked")
     public void testSearchExperiments() throws Exception {
         Experiment exp = new Experiment("test experiment 1");
-        exp.setComments("bar 123");
+        exp.setDescription("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
         exp = new Experiment("test experiment 12");
-        exp.setComments("bar 12");
+        exp.setDescription("bar 12");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
         exp = new Experiment("test experiment 123");
-        exp.setComments("bar 1");
+        exp.setDescription("bar 1");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
 
         this.theSession.flush();
@@ -168,24 +168,24 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
             lastVal = exp1.getName();
         }
 
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "comments",
+        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "description",
                 SortOrderEnum.ASCENDING);
         lastVal = null;
         for (Experiment exp1 : experimentList) {
             if (lastVal != null) {
-                assertTrue(exp1.getComments().compareTo(lastVal) >= 0);
+                assertTrue(exp1.getDescription().compareTo(lastVal) >= 0);
             }
-            lastVal = exp1.getComments();
+            lastVal = exp1.getDescription();
         }
 
-        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "comments",
+        experimentList = ProtExpressRegistry.getExperimentService().searchForExperiments(null, 10, 0, "description",
                 SortOrderEnum.DESCENDING);
         lastVal = null;
         for (Experiment exp1 : experimentList) {
             if (lastVal != null) {
-                assertTrue(exp1.getComments().compareTo(lastVal) <= 0);
+                assertTrue(exp1.getDescription().compareTo(lastVal) <= 0);
             }
-            lastVal = exp1.getComments();
+            lastVal = exp1.getDescription();
         }
 
         SearchParameters exparams = new SearchParameters();
@@ -253,7 +253,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertEquals(experiment3, experiments.get(0));
         assertEquals(experiment2, experiments.get(1));
 
-        experiment1.setComments("new comments");
+        experiment1.setDescription("new comments");
         this.theSession.update(experiment1);
         this.theSession.flush();
 
@@ -279,7 +279,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         assertFalse(new Experiment("TestExperiment1").equals(new Experiment(
                 "TestExperiment1")));
         Experiment exp1 = new Experiment("Name - Test Experiment 1");
-        exp1.setComments("Description - Test Experiment 1");
+        exp1.setDescription("Description - Test Experiment 1");
         exp1.setHypothesis("Hypothesis - Test Experiment 1");
         exp1.setUrl("URL - Test Experiment 1");
 
@@ -292,7 +292,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
     @SuppressWarnings("unchecked")
     public void testAddAndDeleteExperimentRun() throws Exception {
         Experiment exp = new Experiment("test experiment 1");
-        exp.setComments("bar 123");
+        exp.setDescription("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
         this.theSession.flush();
         this.theSession.clear();
@@ -328,7 +328,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.clear();
 
         Experiment exp = new Experiment("test experiment 1");
-        exp.setComments("bar 123");
+        exp.setDescription("bar 123");
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(exp);
         this.theSession.flush();
         this.theSession.clear();

@@ -18,7 +18,7 @@
         <!--Search Filters-->
         <div class="filterbox">
             <h2><fmt:message key="protexpress.page.search.filtertitle" /></h2>
-            <s:form action="search/doSearch" method="post" theme="simple">
+            <s:form id="searchForm" action="search/doSearch" method="post" theme="simple">
                 <s:hidden name="protocols.sortDirection" />
                 <s:hidden name="protocols.sortCriterion" />
                 <s:hidden name="experiments.sortDirection" />
@@ -28,7 +28,11 @@
                         <tr style="height: 28px;">
                             <td class="label" style="text-align: left; vertical-align: bottom; width: 250px;">
                                 <fmt:message key="protexpress.page.search.searchfor" />:
-                                <s:radio name="searchParameters.searchType" key="protexpress.page.search.searchfor" list="@gov.nih.nci.protexpress.service.SearchType@values()" listValue="displayName" ></s:radio>
+                                <s:radio
+                                    name="searchParameters.searchType"
+                                    key="protexpress.page.search.searchfor"
+                                    list="@gov.nih.nci.protexpress.service.SearchType@values()"
+                                    listValue="displayName" />
                             </td>
                             <td class="label" style="text-align: left; vertical-align: bottom;"><label for="date">Last Modified:</label></td>
                             <td class="label"><fmt:message key="protexpress.page.search.searchallusers" />: <s:checkbox name="searchParameters.searchAllUsers" key="protexpress.page.search.searchallusers" fieldValue="true" /></td>
@@ -50,7 +54,7 @@
                     <del class="btnwrapper">
                         <ul id="btnrow2">
                             <li>
-                                <a href="" class="btn" onclick="this.blur();"><span class="btn_img"><span class="search"><fmt:message key="protexpress.page.search.search" /></span></span></a>
+                                 <a href="javascript:document.getElementById('searchForm').submit();" class="btn" onclick="this.blur();"><span class="btn_img"><span class="search"><fmt:message key="protexpress.page.search.search" /></span></span></a>
                             </li>
                         </ul>
                     </del>

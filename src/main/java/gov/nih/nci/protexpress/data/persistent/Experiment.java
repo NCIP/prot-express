@@ -124,10 +124,9 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private Long id;
     private LsidType lsid;
     private String name;
+    private String description;
     private String hypothesis;
     private String url;
-    private String comments;
-    private String additionalInfo;
     private AuditInfo auditInfo = new AuditInfo();
     private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
@@ -205,20 +204,20 @@ public class Experiment implements Serializable, Persistent, Auditable {
      *
      * @return the comments
      */
-    @Column(name = "comments")
-    @Length(max = HibernateFieldLength.EXPERIMENT_COMMENTS_LENGTH)
-    @Index(name = "experiment_comments_idx")
-    public String getComments() {
-        return this.comments;
+    @Column(name = "description")
+    @Length(max = HibernateFieldLength.EXPERIMENT_DESCRIPTION_LENGTH)
+    @Index(name = "experiment_description_idx")
+    public String getDescription() {
+        return this.description;
     }
 
     /**
-     * Sets the comments.
+     * Sets the description.
      *
-     * @param comments the comments to set
+     * @param description the description to set
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -313,26 +312,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
      */
     protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
         this.experimentRuns = experimentRuns;
-    }
-
-    /**
-     * Gets the additionalInfo.
-     *
-     * @return the additionalInfo.
-     */
-    @Column(name = "additional_info")
-    @Length(max = HibernateFieldLength.EXPERIMENT_ADDITIONAL_INFO_LENGTH)
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    /**
-     * Sets the additionalInfo.
-     *
-     * @param additionalInfo the additionalInfo to set.
-     */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
     }
 
     /**

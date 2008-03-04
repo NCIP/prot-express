@@ -1,6 +1,6 @@
 /* Default Tags */
 
-:root 
+:root
 { overflow-y:scroll; }
 BODY, HTML
 { min-width:860px; margin:0; padding:0; font-family:arial,helvetica,sans-serif; color:#333; font-size:85%; background:#fff }
@@ -36,16 +36,18 @@ H3
 H4
 { background:#496DA5; color:#BDD4F9; font-size:125%; padding:5px 6px 5px 10px; border-bottom:2px solid #33558C; height:1.3em; min-height:.1% }
 LABEL
-{ font-size:95%; font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal }
+{ font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal }
 INPUT, SELECT, TEXTAREA
 { font-family:arial,helvetica,sans-serif; color:#333; font-size:100%  }
+TEXTAREA
+{ overflow:auto; overflow:-moz-scrollbars-vertical; }
 FORM
 { display:inline }
 SUB
 { font-size:80%; vertical-align:-15% }
 SUP
 { font-size:80%; vertical-align:35% }
-:lang(en) SUB 
+:lang(en) SUB
 { font-size:70%; vertical-align:-20% }
 FIELDSET
 { -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px; }
@@ -90,7 +92,7 @@ LEGEND
 
 #leftnav
 { float:left; width:175px; margin-left:-100%; font-size:85%; text-transform:uppercase; font-weight:bold;  }
-#leftnav UL.menu 
+#leftnav UL.menu
 { min-height:.1%; width:175px; padding:0; }
 #leftnav UL A
 { color:#333; background:#e9e9e9 url("../images/bg_caarraymenu.gif") repeat-y right; border-bottom:1px solid #fff; display:block; width:149px; min-height:.1%; padding:4px 8px 3px 18px; line-height:1.2em }
@@ -100,7 +102,7 @@ LEGEND
 { background:#ccc; text-decoration:none; }
 #leftnav UL A.selected:hover, #leftnav UL A.selected:focus
 { background:#ccc url("../images/ico_arrow.gif") no-repeat 7px 7px; text-decoration:none; }
-#leftnav UL A:focus 
+#leftnav UL A:focus
 { outline:none; background:#D1CEC4}
 #leftnav LI.liheader
 { background:#5c5c5c; color:#fff; padding:3px 8px; border-bottom:1px solid #fff; }
@@ -189,8 +191,8 @@ P.intro, .homepage P
 
 /* Right Side Bar */
 
-#sidebar 
-{	background:#e3e3e3; width:174px; float:right; min-height:400px }
+#sidebar
+{   background:#e3e3e3; width:174px; float:right; min-height:400px }
 #sidebar H1
 { border-top:0; background:#5c5c5c; color:#e3e6ec; padding-top:5px  }
 TABLE.login
@@ -225,27 +227,27 @@ TABLE.login TD.value
 
 /* Tabbed Navigation (NEW) */
 
-#tabbed 
-{	float:left; padding-left:10px; font-size:92%; font-weight:bold; }
+#tabbed
+{   float:left; padding-left:10px; font-size:92%; font-weight:bold; }
 #tabbed LI
-{	margin:0 5px 0 0; padding:0 5px 0 0; background:url("../images/bg_tabs.gif") 100% -100px;	float:left;	text-align:center; }
+{   margin:0 5px 0 0; padding:0 5px 0 0; background:url("../images/bg_tabs.gif") 100% -100px;   float:left; text-align:center; }
 #tabbed LI.active
 { background:url("../images/bg_tabs.gif") 100% 0; }
-#tabbed LI A, #tabbed LI A:visited, #tabbed LI SPAN 
-{	display:block; float:left; padding:5px 11px 5px 16px; text-align:center; white-space:nowrap; background:url("../images/bg_tabs.gif") 0 -100px;
-	text-decoration:none;	min-height:17px; /* fixes FX/Mac issue */	color:#146392; }
+#tabbed LI A, #tabbed LI A:visited, #tabbed LI SPAN
+{   display:block; float:left; padding:5px 11px 5px 16px; text-align:center; white-space:nowrap; background:url("../images/bg_tabs.gif") 0 -100px;
+    text-decoration:none;   min-height:17px; /* fixes FX/Mac issue */   color:#146392; }
 #tabbed>LI A, #tabbed>LI A:visited, #tabbed>LI SPAN
 { padding:7px 11px 3px 16px; }
 #tabbed LI.active A, #tabbed LI.active SPAN
-{	color:#333; background:url("../images/bg_tabs.gif") 0 0; }
+{   color:#333; background:url("../images/bg_tabs.gif") 0 0; }
 #tabbed LI:hover
-{	background-position:100% -200px;}
+{   background-position:100% -200px;}
 #tabbed LI:hover A
-{	background-position:0 -200px; }
+{   background-position:0 -200px; }
 #tabbed LI.active:hover
-{	background-position:100% 0;}
+{   background-position:100% 0;}
 #tabbed LI.active:hover A
-{	background-position:0 0; text-decoration:none; }
+{   background-position:0 0; text-decoration:none; }
 #tabbed LI A:hover
 {text-decoration:none; }
 
@@ -314,7 +316,7 @@ SPAN.bar
 { width:45%; margin-right:1%; padding:5px; float:left; background:#d7e4f9 }
 .floatbox H2
 { color:#496DA5; font-size:160%; font-weight:normal; padding:3px 5px 5px 5px; border-bottom:2px solid #eef3fa; margin-bottom:0 }
-.floatbox TABLE.searchresults 
+.floatbox TABLE.searchresults
 { margin-top:5px }
 .floatbox TABLE.searchresults TH
 { background:#496DA5; color:#BDD4F9; font-size:125%; padding:4px }
@@ -337,7 +339,7 @@ TABLE.searchresults TR.odd
 TABLE.searchresults TD
 { padding:5px; border-bottom:2px solid #BDD4F9 }
 .selectedtabbox TABLE.searchresults TD
-{ border-bottom:1px solid #ccc } 
+{ border-bottom:1px solid #ccc }
 TABLE.searchresults TD.title
 { font-weight:bold; }
 .selectedtabbox TABLE.searchresults TD UL
@@ -354,6 +356,8 @@ TABLE.form TD
 { padding:4px !important }
 .label
 { width:30%; text-align:right; font-weight:bold; }
+.label LABEL
+{ font-size:12px }
 .value INPUT, .value SELECT, .value TEXTAREA
 { display:block; margin-top:-5px }
 TD.space
@@ -363,23 +367,16 @@ TD.value
 TD.title
 { font-weight:bold }
 .value TEXTAREA
-{ width:380px }
+{ }
 .pad10
 { padding:10px }
 .value .line
 { margin:5px }
 .pad10 .line
 { margin:10px;  }
-.hiddenwrapper
-{ font-size:11px }
-.hidden
-{  }
-.hidden .form TD
-{  }
-.value .hidden INPUT, .value .hidden SELECT, .value .hidden TEXTAREA
-{  }
-.alignright .hidehelp
-{ float:right; text-align:left; width:4em; margin-top:5px; background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
+
+.hidethis
+{ background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
 .replace
 { background:url("../images/ico_displayhidden.gif") no-repeat; padding-left:18px; }
 .calendaricon
@@ -444,7 +441,7 @@ P.homeintro
 TABLE.newdata
 { width:100%; font-size:92%; background:#fff; }
 TABLE.newdata TH
-{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; } 
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE .action
 { text-align:center; width:4.1em; }
 TABLE.newdata TD
@@ -453,7 +450,7 @@ TABLE.newdata TR.hilite, .hilite
 { font-weight:bold; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top }
 TABLE.newdata TD A
 { text-decoration:underline !important }
- 
+
 
 .filterbox, .fadebox
 { width:99%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
@@ -466,13 +463,13 @@ TABLE.newdata2, TABLE.newdata3, TABLE.newdata4
 TABLE.newdata2 TH
 { border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE.newdata3 TH
-{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }  
+{ border-top:1px solid #6f7ea4; background:#54668a url("../images/bg_header_blue.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE.newdata4 TH
 { border-top:1px solid #6f7ea4; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:3px 7px; color:#fff; }
 TABLE .actionwide
 { text-align:center; width:160px; }
 TABLE.newdata2 TD
-{ border-bottom:0 }
+{ border-top:1px solid #ccc }
 TABLE.newdata2 TD, TABLE.newdata3 TD, TABLE.newdata4 TD
 { padding:5px;  }
 TABLE.newdata3 TD, TABLE.newdata4 TD
@@ -493,9 +490,9 @@ TABLE.newdata2 TD.title
 
 .actionsrow
 { text-align:center; border-top:1px dotted #999; padding:5px 0 }
-#btnrow, #btnrow2 
+#btnrow, #btnrow2
 { display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; }
-#btnrow LI,#btnrow2 LI 
+#btnrow LI,#btnrow2 LI
 { display:table-cell; }
 .btnwrapper { clear:both; text-decoration:none; }
 * #btnrow LI,* #btnrow2 LI { float:left; }
@@ -506,21 +503,22 @@ HTML>BODY #btnrow A, HTML>BODY #btnrow2 A { *float:left }
 HTML>BODY .container { *display:inline-block; }
 
 
+
 /* NEW Sliding Door Buttons */
 
-A.btn 
+A.btn
 { width:auto; background:transparent url("../images/bg_btn_right.gif") no-repeat scroll top right; color:#414141; display:block; float:left; font:normal 12px arial, sans-serif; height:24px; line-height:24px; margin:0 10px; padding-right:9px; /* sliding doors padding */ text-decoration:none; }
 .actionsthin A.btn
 { margin:0 10px }
-A.btn SPAN.btn_img 
+A.btn SPAN.btn_img
 { background:transparent url("../images/bg_btn_left.gif") no-repeat; display:block; line-height:17px; padding:4px 0 3px 9px; }
 A.btn:hover
 { background-position:center right; text-decoration:none !important; }
-A.btn:hover SPAN.btn_img 
+A.btn:hover SPAN.btn_img
 { background:transparent url("../images/bg_btn_left.gif") no-repeat 0 -29px; display:block; line-height:17px; padding:4px 0 3px 9px; }
-A.btn:active 
+A.btn:active
 { background-position:bottom right; color:#000; outline:none; /* hide dotted outline in Firefox */ }
-A.btn:active SPAN.btn_img 
+A.btn:active SPAN.btn_img
 { background-position:bottom left; padding:5px 0 2px 9px; /* push text down 1px */ }
 A.btn SPAN SPAN
 { display:block; padding:0 0 0 20px }
@@ -575,7 +573,7 @@ A.btn SPAN.validate
 .addlink_notabs_filterrow
 {  margin:-3.1em 5px 5px 0;}
 :lang(en) .addlink_notabs_filterrow
-{  margin:-3.1em 0 5px 0;} 
+{  margin:-3.1em 0 5px 0;}
 .addlink_notabs
 { margin:0 0 5px 0; }
 .addlink A.btn, .addlink_notabs A.btn, .addlink_notabs_filterrow A.btn
@@ -654,6 +652,7 @@ UL.tree LEGEND
 
 
 /* New for Krishna */
+
 TABLE.newdata3 th.order1 a
 {background: url(../images/arrow_down.gif) no-repeat right; padding-right:16px; }
 TABLE.newdata3 th.order2 a
@@ -668,3 +667,14 @@ TABLE.newdata3 tr.over, TABLE.newdata3 tr:hover
 {background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; cursor:pointer }
 TABLE.newdata3 TH A
 {color: #fff; text-decoration:underline !important;}
+
+
+
+/* 03/03/2008 */
+
+.calcol
+{ width:30px; float:left; }
+.datecol
+{ width:75px; float:left; }
+.calcol A
+{ display:block; margin-left:5px; margin-top:-3px }
