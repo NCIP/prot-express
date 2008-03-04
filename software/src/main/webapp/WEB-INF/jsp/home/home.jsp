@@ -20,11 +20,15 @@
         <!-- Big Buttons -->
         <div class="home_buttons">
             <h2><fmt:message key="protexpress.page.home.actionchoice" /></h2>
+
+            <c:url var="createExperimentUrl" value="" />
+            <c:url var="searchProtexpressUrl" value="/search/loadSearch.action" />
+
             <div id="btn_home_create">
-                <a href="" id="btn_home_create_t"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
+                <a href="${createExperimentUrl}" id="btn_home_create_t"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
             </div>
             <div id="btn_home_search">
-                <a href="" id="btn_home_search_t"><fmt:message key="protexpress.page.home.search" /></a>
+                <a href="${searchProtexpressUrl}" id="btn_home_search_t"><fmt:message key="protexpress.page.home.search" /></a>
             </div>
             <div class="clear"></div>
         </div>
@@ -32,7 +36,7 @@
         <!-- My Experiments -->
         <div class="myexperiments">
             <h2><fmt:message key="protexpress.page.home.recentexperiments" /></h2>
-            <table class="newdata">
+            <table class="newdata3">
                 <tbody>
                     <s:if test="%{recentExperiments.size() == 0}">
                         <tr><td><fmt:message key="protexpress.page.home.recentexperiments.nonefound" /></td></tr>
@@ -40,7 +44,7 @@
                     <s:else>
                         <tr>
                             <th><fmt:message key="protexpress.page.home.recentexperiments.column.experimentname" /></th>
-                            <th><fmt:message key="protexpress.page.home.recentexperiments.column.comments" /></th>
+                            <th><fmt:message key="protexpress.page.home.recentexperiments.column.description" /></th>
                             <th><fmt:message key="protexpress.page.home.recentexperiments.column.dateandtime" /></th>
                             <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.status" /></th>
                             <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.edit" /></th>
@@ -58,7 +62,7 @@
                             </c:url>
                             <tr>
                                 <td><a href="${experimentSummaryUrl}">${experiment.name}</a></td>
-                                <td>${experiment.comments}</td>
+                                <td>${experiment.description}</td>
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
                                 <td class="action">
                                     <span title="Incomplete">

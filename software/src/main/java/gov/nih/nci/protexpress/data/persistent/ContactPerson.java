@@ -98,6 +98,7 @@ public class ContactPerson {
     private String firstName;
     private String lastName;
     private String email;
+    private String notes;
 
     /**
      * Gets the firstName.
@@ -159,4 +160,25 @@ public class ContactPerson {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    /**
+     * Gets the notes.
+     *
+     * @return the notes.
+     */
+    @Column(name = "contact_notes")
+    @Length(max = HibernateFieldLength.CONTACT_PERSON_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * Sets the notes.
+     *
+     * @param notes the notes to set.
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 }

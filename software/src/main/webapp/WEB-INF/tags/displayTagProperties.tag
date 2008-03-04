@@ -10,7 +10,7 @@
 </display:setProperty>
 <display:setProperty name="paging.banner.all_items_found">
     <div class="pagecontrol">
-        <p class="small">Displaying <strong>{1}-{2}</strong> of <strong>{2}</strong> Total.</p>
+        <p class="small">Total <strong>{0}</strong> items found. Displaying all.</p>
 </display:setProperty>
 <display:setProperty name="paging.banner.some_items_found">
     <div class="pagecontrol">

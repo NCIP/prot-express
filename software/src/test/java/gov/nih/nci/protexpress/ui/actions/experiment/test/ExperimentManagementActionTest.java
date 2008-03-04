@@ -109,7 +109,7 @@ public class ExperimentManagementActionTest extends ProtExpressBaseHibernateTest
         this.action = new ExperimentManagementAction();
 
         this.experiment = new Experiment("Name - Test Experiment 1");
-        this.experiment.setComments("Description - Test Experiment 1");
+        this.experiment.setDescription("Description - Test Experiment 1");
         this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
         this.experiment.setUrl("URL - Test Experiment 1");
 

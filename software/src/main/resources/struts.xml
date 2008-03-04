@@ -82,23 +82,11 @@
         <!-- /Search Actions -->
 
         <!-- Protocol Actions -->
-        <action name="protocol/management/*"
+        <action name="protocol/*"
             class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocol/protocolForm.jsp</result>
-            <result name="dashboard" type="chain">dashboard/dashboard</result>
-            <result name="search">/WEB-INF/jsp/protocol/protocolSearch.jsp</result>
+            <result name="viewSummary">/WEB-INF/jsp/protocol/protocolSummary.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
-
-        <action name="ajax/protocol/management/*/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/protocol/{2}.jsp</result>
-            <result name="success">/WEB-INF/jsp/protocol/{2}.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-        <!-- End Protocol -->
-
 
 
     </package>

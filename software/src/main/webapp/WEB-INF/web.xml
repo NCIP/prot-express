@@ -1,30 +1,23 @@
-<?xml version="1.0"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/spring/applicationContext-container.xml /WEB-INF/spring/applicationContext-main.xml
         </param-value>
     </context-param>
-
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>protExpress</param-value>
     </context-param>
-
     <resource-ref>
         <res-ref-name>jdbc/ProtExpressDb</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
-
     <filter>
         <filter-name>user</filter-name>
         <filter-class>gov.nih.nci.protexpress.ui.filters.UserFilter</filter-class>
     </filter>
-
     <filter>
         <filter-name>hibernateSessionFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
@@ -33,70 +26,56 @@
             <param-value>sessionFactory</param-value>
         </init-param>
     </filter>
-
     <filter>
         <filter-name>action2-cleanup</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
     </filter>
-
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>
-
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>user</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>hibernateSessionFilter</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>action2-cleanup</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error.jsp</location>
     </error-page>
-
     <error-page>
         <error-code>500</error-code>
         <location>/error.jsp</location>
     </error-page>
-
     <error-page>
         <error-code>403</error-code>
         <location>/accessDenied.jsp</location>
     </error-page>
-
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Homepage Functionality</web-resource-name>
@@ -106,47 +85,6 @@
             <role-name>protExpressUser</role-name>
         </auth-constraint>
     </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Protocol Functionality</web-resource-name>
-            <url-pattern>/protocol/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>protExpressUser</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Ajax Protocol Functionality</web-resource-name>
-            <url-pattern>/ajax/protocol/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>protExpressUser</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Experiment Functionality</web-resource-name>
-            <url-pattern>/experiment/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>protExpressUser</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Ajax Experiment Functionality</web-resource-name>
-            <url-pattern>/ajax/experiment/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>protExpressUser</role-name>
-        </auth-constraint>
-    </security-constraint>
-
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Search Functionality</web-resource-name>
@@ -156,7 +94,24 @@
             <role-name>protExpressUser</role-name>
         </auth-constraint>
     </security-constraint>
-
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protocol Functionality</web-resource-name>
+            <url-pattern>/protocol/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Experiment Functionality</web-resource-name>
+            <url-pattern>/experiment/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>protExpressUser</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>protExpress</realm-name>
@@ -165,7 +120,6 @@
             <form-error-page>/WEB-INF/jsp/login/loginError.jsp</form-error-page>
         </form-login-config>
     </login-config>
-
     <security-role>
         <role-name>protExpressUser</role-name>
     </security-role>

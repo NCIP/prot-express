@@ -121,7 +121,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private String description;
     private String software;
     private String instrument;
-    private String additionalInfo;
+    private String notes;
     private ContactPerson contactPerson = new ContactPerson();
     private AuditInfo auditInfo = new AuditInfo();
 
@@ -253,23 +253,23 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the additionalInfo.
+     * Gets the notes.
      *
-     * @return the additionalInfo.
+     * @return the notes.
      */
-    @Column(name = "additional_info")
-    @Length(max = HibernateFieldLength.PROTOCOL_ADDITIONAL_INFO_LENGTH)
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    @Column(name = "notes")
+    @Length(max = HibernateFieldLength.PROTOCOL_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
     }
 
     /**
-     * Sets the additionalInfo.
+     * Sets the notes.
      *
-     * @param additionalInfo the additionalInfo to set.
+     * @param notes the notes to set.
      */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     /**

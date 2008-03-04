@@ -178,7 +178,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         // Setup first experiment.
         Experiment currentExperiment = new Experiment("IPAS14 Experiment");
         currentExperiment.setId(400L);
-        currentExperiment.setComments("Mouse Pancreatic Cancer Research");
+        currentExperiment.setDescription("Mouse Pancreatic Cancer Research");
         currentExperiment.setHypothesis("Cancer can kill a mouse too.");
         currentExperiment.setUrl("http://testUrl1:8080/index.html");
 
@@ -227,7 +227,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertEquals(unmarshalledExperiment.getName(), "IPAS14 Experiment");
         assertEquals(unmarshalledExperiment.getHypothesis(), "Cancer can kill a mouse too.");
         assertEquals(unmarshalledExperiment.getUrl(), "http://testUrl1:8080/index.html");
-        assertEquals(unmarshalledExperiment.getComments(), "Mouse Pancreatic Cancer Research");
+        assertEquals(unmarshalledExperiment.getDescription(), "Mouse Pancreatic Cancer Research");
 
         // Contact person for the experiment
         ContactPerson person = unmarshalledExperiment.getContactPerson();
