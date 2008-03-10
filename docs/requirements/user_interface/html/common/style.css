@@ -3,10 +3,10 @@
 :root 
 { overflow-y:scroll; }
 BODY, HTML
-{ min-width:860px; margin:0; padding:0; font-family:arial,helvetica,sans-serif; color:#333; font-size:85%; background:#fff }
+{ min-width:970px; margin:0; padding:0; font-family:arial,helvetica,sans-serif; color:#333; font-size:85%; background:#fff }
 /* IE6 min-width dynamic expression (hack) */
 * html #wrapper
-{ width:expression(document.body.clientWidth <=860 ? "860px" : "100%" ); }
+{ width:expression(document.body.clientWidth <=970 ? "970px" : "100%" ); }
 :lang(en) BODY
 { font-size:87%; }
 IMG,TABLE
@@ -23,6 +23,8 @@ A:hover
 { color:#455681; text-decoration:underline }
 LI
 { list-style-type:none; margin:0; padding:0 }
+OL LI 
+{ list-style-type:decimal; padding:3px }
 P,LI,H1,H2,H3,H4
 { line-height:1.4em }
 P
@@ -34,11 +36,13 @@ H2
 H3
 { clear:both; font-family:arial,helvetica,sans-serif; font-size:130%; line-height:1.4em; color:#606060; padding:10px;  }
 H4
-{ background:#496DA5; color:#BDD4F9; font-size:125%; padding:5px 6px 5px 10px; border-bottom:2px solid #33558C; height:1.3em; min-height:.1% }
+{ font-size:125%; padding:5px 6px 5px 10px; height:1.3em; min-height:.1% }
 LABEL
-{ font-size:95%; font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal }
+{ font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal }
 INPUT, SELECT, TEXTAREA
 { font-family:arial,helvetica,sans-serif; color:#333; font-size:100%  }
+TEXTAREA
+{ overflow:auto; overflow:-moz-scrollbars-vertical; }
 FORM
 { display:inline }
 SUB
@@ -48,9 +52,11 @@ SUP
 :lang(en) SUB 
 { font-size:70%; vertical-align:-20% }
 FIELDSET
-{ -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px; }
+{ -moz-border-radius:5px; padding:0 10px 10px 10px; margin:10px 15px 10px 15px;  }
 :lang(en) FIELDSET
-{ margin:10px 15px 10px 15px; background:#fff; border:1px solid #999 }
+{ margin:5px 15px 10px 15px; border:1px solid #999 }
+:lang(en) FIELDSET FIELDSET
+{ }
 FIELDSET FIELDSET LEGEND
 { line-height:10px }
 LEGEND
@@ -349,13 +355,61 @@ TABLE.searchresults TD.title
 /* Forms */
 
 TABLE.form
-{ width:90%; margin:10px; }
+{ width:95%; margin:10px auto; }
 TABLE.form TD
 { padding:4px !important }
+TABLE.form2
+{ width:200px; margin:0 auto 10px auto; }
+TABLE.form3
+{ width:300px; margin:10px auto; }
+:lang(en) TABLE.form2
+{ width:90%; margin:10px auto; }
+TABLE.form2 TD, TABLE.form3 TD
+{ padding:3px 0; }
+
 .label
 { width:30%; text-align:right; font-weight:bold; }
+.label_left
+{ text-align:left; font-weight:bold; }
+.label_left P, .label_left SPAN.normal
+{ font-weight:normal; margin:0; padding:0; line-height:1.4em }
+.form2 .label_left INPUT, .form2 .label_left TEXTAREA, .form2 .label_left SELECT
+{ font-weight:normal; width:200px }
+.form3 .label_left INPUT, .form3 .label_left TEXTAREA, .form3 .label_left SELECT
+{ font-weight:normal; width:250px }
+:lang(en) .form2 .label_left INPUT, :lang(en) .form2 .label_left TEXTAREA, :lang(en) .form2 .label_left SELECT
+{ width:100%; }
+:lang(en) .form3 .label_left INPUT, :lang(en) .form3 .label_left TEXTAREA, :lang(en) .form3 .label_left SELECT
+{ width:99%; }
+.label_left TEXTAREA
+{ height:35px }
+.label LABEL
+{ font-size:12px }
+FIELDSET.date
+{ width:89% }
+
+FIELDSET.leftfield
+{ width:42% !important; float:left !important;}
+FIELDSET.rightfield
+{ width:41% !important; float:left !important; margin-left:5px !important }
+FIELDSET.leftfield_wide
+{ width:66% !important; padding:0 !important; float:left !important;}
+FIELDSET.rightfield_thin
+{ width:26% !important; padding:0 !important;  float:left !important; margin-left:5px !important }
+FIELDSET.leftfield_wide LEGEND, FIELDSET.rightfield_thin LEGEND
+{ padding:0 10px }
+.centerfield
+{ margin:0 auto; width:91%; }
+
+.twocoltable
+{ float:left; width:47% }
+.twocoltable TABLE.form
+{ width:100% }
+.twocoltable TABLE.form TD INPUT, .twocoltable TABLE.form TD SELECT, .twocoltable TABLE.form TD TEXTAREA
+{ width:99%; }
+
 .value INPUT, .value SELECT, .value TEXTAREA
-{ display:block; margin-top:-5px }
+{ display:block;  }
 TD.space
 { padding:0 }
 TD.value
@@ -363,23 +417,16 @@ TD.value
 TD.title
 { font-weight:bold }
 .value TEXTAREA
-{ width:380px }
+{ }
 .pad10
 { padding:10px }
 .value .line
 { margin:5px }
 .pad10 .line
 { margin:10px;  }
-.hiddenwrapper
-{ font-size:11px }
-.hidden
-{  }
-.hidden .form TD
-{  }
-.value .hidden INPUT, .value .hidden SELECT, .value .hidden TEXTAREA
-{  }
-.alignright .hidehelp
-{ float:right; text-align:left; width:4em; margin-top:5px; background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
+
+.hidethis
+{ background:url("../images/ico_hidehidden.gif") no-repeat; padding-left:18px; }
 .replace
 { background:url("../images/ico_displayhidden.gif") no-repeat; padding-left:18px; }
 .calendaricon
@@ -458,7 +505,7 @@ TABLE.newdata TD A
 .filterbox, .fadebox
 { width:99%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 .searchresults
-{ margin-top:15px; width:99%; border:1px solid #ccc; }
+{ margin-top:10px; width:99%; border:1px solid #ccc; }
 .datatable
 { margin-top:5px; width:99%; }
 TABLE.newdata2, TABLE.newdata3, TABLE.newdata4
@@ -472,7 +519,7 @@ TABLE.newdata4 TH
 TABLE .actionwide
 { text-align:center; width:160px; }
 TABLE.newdata2 TD
-{ border-bottom:0 }
+{ border-top:1px solid #ccc }
 TABLE.newdata2 TD, TABLE.newdata3 TD, TABLE.newdata4 TD
 { padding:5px;  }
 TABLE.newdata3 TD, TABLE.newdata4 TD
@@ -506,6 +553,7 @@ HTML>BODY #btnrow A, HTML>BODY #btnrow2 A { *float:left }
 HTML>BODY .container { *display:inline-block; }
 
 
+
 /* NEW Sliding Door Buttons */
 
 A.btn 
@@ -526,6 +574,12 @@ A.btn SPAN SPAN
 { display:block; padding:0 0 0 20px }
 A.btn SPAN.add
 { background:url("../images/ico_add.gif") no-repeat; }
+A.btn SPAN.add_folder
+{ background:url("../images/ico_add_folder.gif") no-repeat; }
+A.btn SPAN.add_input
+{ background:url("../images/ico_add_input.gif") no-repeat; }
+A.btn SPAN.add_output
+{ background:url("../images/ico_add_output.gif") no-repeat; }
 A.btn SPAN.addrow
 { background:url("../images/ico_rowadd.gif") no-repeat; }
 A.btn SPAN.associate
@@ -550,6 +604,8 @@ A.btn SPAN.login
 { background:url("../images/ico_login.gif") no-repeat; }
 A.btn SPAN.manage_associations
 { background:url("../images/ico_manage_associations.gif") no-repeat; }
+A.btn SPAN.next
+{ background:url("../images/ico_next.gif") no-repeat; }
 A.btn SPAN.register
 { background:url("../images/ico_register.gif") no-repeat; }
 A.btn SPAN.save
@@ -558,6 +614,8 @@ A.btn SPAN.saveback
 { background:url("../images/ico_saveback.gif") no-repeat; }
 A.btn SPAN.saveconfirm
 { background:url("../images/ico_saveconfirm.gif") no-repeat; }
+A.btn SPAN.savecontinue
+{ background:url("../images/ico_savecontinue.gif") no-repeat; }
 A.btn SPAN.saverepeat
 { background:url("../images/ico_saverepeat.gif") no-repeat; }
 A.btn SPAN.search
@@ -608,11 +666,22 @@ A.btn SPAN.validate
 #processflow
 { clear:both; margin-bottom:10px; cursor:default; }
 #processflow DIV.step, #processflow DIV.selectedstep
-{ width:150px; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
+{ width:130px; text-align:center; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
 #processflow .arrow
 { float:left; padding:14px 5px 0 5px; margin-right:10px; }
 #processflow DIV.selectedstep
 { font-weight:bold; color:#fff; border:1px solid #999; background:#54668a url("../images/bg_header_blue.gif") repeat-x top;  }
+
+#processflow2
+{ clear:both; margin:10px; cursor:default; }
+#processflow2 DIV.step, #processflow2 DIV.selectedstep
+{ width:70px; text-align:center; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
+#processflow2 .arrow
+{ float:left; padding:14px 3px 0 3px; margin-right:10px; }
+#processflow2 DIV.selectedstep
+{ font-weight:bold; color:#fff; border:1px solid #999; background:#54668a url("../images/bg_header_blue.gif") repeat-x top;  }
+
+
 .info
 { padding:10px; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
 .info P
@@ -632,28 +701,16 @@ A.btn SPAN.validate
 
 #protocolflow
 { font-size:95%; clear:both; margin:5px 15px; padding:7px; cursor:default; border:1px solid #ccc;  background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
-#protocolflow A
+#protocolflow_OLD A
 { background:url("../images/processarrow.gif") no-repeat right .2em; padding-right:35px; margin-left:5px}
-#protocolflow A.last
+#protocolflow_OLD A.last
 { background:0 }
-
-/* Tree */
-
-UL.tree LI
-{ font-size:11px; padding:5px 0 5px 10px }
-UL.tree LI LI
-{ font-size:11px; padding-left:20px }
-UL.tree LI TH, UL.tree LI TD
-{ font-size:11px }
-UL.tree LI FIELDSET DIV.hidden
-{ margin-top:11px !important }
-UL.tree LI .hidden
-{ margin:0 }
-UL.tree LEGEND
-{ font-size:14px; margin-top:1px }
+#protocolflow A
+{ padding:0 5px}
 
 
 /* New for Krishna */
+
 TABLE.newdata3 th.order1 a
 {background: url(../images/arrow_down.gif) no-repeat right; padding-right:16px; }
 TABLE.newdata3 th.order2 a
@@ -668,3 +725,27 @@ TABLE.newdata3 tr.over, TABLE.newdata3 tr:hover
 {background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; cursor:pointer }
 TABLE.newdata3 TH A
 {color: #fff; text-decoration:underline !important;}
+
+
+
+/* 03/03/2008 */
+
+.calcol
+{ width:30px; float:left; }
+.datecol
+{ width:75px; float:left; }
+.calcol A
+{ display:block; margin-left:5px; margin-top:-3px }
+
+
+
+/* New Tabs */
+.tabs
+{ color:#999; margin:10px 0; background:#fbfbfb url("../images/bg_tabbar.gif") repeat-x bottom; padding:7px; border-bottom:1px solid #999; font-weight:bold; }
+.tabs A
+{ font-size:120%; background:#dedede url("../images/bg_tab.gif") repeat-x bottom; border:1px solid #999; padding:7px 25px; margin:0 7px; text-decoration:underline !important }
+.tabs A.selected
+{ background:url("../images/bg_tabselected.gif") repeat-x top; border-bottom:1px solid #fbfbfb; color:#333; text-decoration:none !important }
+
+.tabbed .searchresults
+{ margin:10px auto; width:96%; }

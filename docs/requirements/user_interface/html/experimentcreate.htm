@@ -94,46 +94,85 @@
 							
 								<h2>1. Identify Experiment</h2>
 								
-								<div class="info"><p>Specify the information used to identify this experiment. Click the "Save &amp; Continue to Protocols" button at the bottom of the page to save the overview information and proceed.</p></div>
-								
+								<div class="info"><p>Specify the information used to identify this experiment. Click the <strong>Save and Continue</strong> button at the bottom of the page to save the overview information and proceed.</p></div>
+									
 								<form name="create" id="createnew">
-								
-									<table class="form">
-										<tr>
-											<td class="label">Experiment Name:*</td>
-											<td class="value"><input type="text" name="title" id="exptitle" value="" style="width:90%;" /> </td>
-										</tr>
-										<tr>
-											<td class="label">Experiment Description:</td>
-											<td class="value"><textarea cols="20" rows="3" id="expdesc" style="width:90%"></textarea></td>
-										</tr>
-										<tr>
-											<td class="label">Hypothesis:</td>
-											<td class="value"><textarea cols="20" rows="3" id="exphypo" style="width:90%"></textarea></td>
-										</tr>
-										<tr>
-											<td class="label">URL:</td>
-											<td class="value"><input type="text" name="title" id="expurl" value="" style="width:90%;" /></td>
-										</tr>
-										<tr>
-											<td class="label">Notes:</td>
-											<td class="value"><textarea cols="20" rows="3" id="expcomments" style="width:90%"></textarea></td>
-										</tr>
-									</table>
+							
+									<div class="centerfield">								
+							
+										<fieldset class="leftfield">										
+											<legend>Experiment Overview</legend>
+											<table class="form3">
+												<tr>
+													<td class="label_left">Experiment Name:<br />
+													<input type="text" name="title" id="exptitle" value="" /> </td>
+												</tr>
+												<tr>
+													<td class="label_left">Experiment Description:<br />
+													<textarea cols="20" rows="2" id="expdesc"></textarea></td>
+												</tr>
+												<tr>
+													<td class="label_left">Hypothesis:<br />
+													<textarea cols="20" rows="2" id="exphypo"></textarea></td>
+												</tr>
+												<tr>
+													<td class="label_left">URL:<br />
+													<input type="text" name="title" id="expurl" value="" /></td>
+												</tr>
+												<tr>
+													<td class="label_left">Notes:<br />
+													<textarea cols="20" rows="2" id="expcomments"></textarea></td>
+												</tr>
+											</table>
+										</fieldset>
+										
+										<fieldset class="rightfield">
+					
+											<legend>Experiment Date Performed</legend>
+											
+											<input type="text" name="" value="" style="width:70px" /><a href="#"><img src="images/ico_calendar.gif" alt="" /></a>
+										
+										</fieldset>	
+													
+										<fieldset class="rightfield">
+											<legend>Experiment Contact</legend>
+											<table class="form3">
+												<tr>
+													<td class="label_left">Contact First Name:<br />
+													<input type="text" id="cfn" value="Krishna" /></td>
+												</tr>
+												<tr>
+													<td class="label_left">Contact Last Name:<br />
+													<input type="text" id="cln" value="Kanchinadam" /></td>
+												</tr>
+												<tr>
+													<td class="label_left">Contact Email:<br />
+													<input type="text" id="contactemail" value="email@emailaddress.com" /></td>
+												</tr>
+												<tr>
+													<td class="label_left">Notes:<br />
+													<textarea cols="20" rows="2" id="aci"></textarea></td>
+												</tr>
+											</table>
+										</fieldset>
+										
+										<div class="clear"></div>										
+									
+									</div>
 									
 									<div class="actionsrow">												
 												
 										<del class="btnwrapper">
 											<ul id="btnrow2">											
-												<li><a href="home.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back to Home</span></span></a></li>
-												<li><a href="experimentcreate_protocols1.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="save">Save &amp; Continue to Protocols &raquo;</span></span></a></li>
+												<li><a href="home.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back</span></span></a></li>
+												<li><a href="experimentcreate_protocols1.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="savecontinue">Save and Continue</span></span></a></li>
 											</ul>
 										</del>												
 										
 									</div>
 								
 								</form>
-							
+								
 							</div>
 							
 							<!--/ADD CONTENT HERE-->

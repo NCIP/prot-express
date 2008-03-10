@@ -94,18 +94,9 @@
 							
 								<h2>2. Protocol - Inputs and Outputs</h2>
 								
-								<div class="info"><p>Specify the date performed, inputs, and outputs for this protocol. You may specify multiple inputs and outputs by adding more rows. Click <strong>Add Another Protocol</strong> or <strong>Finished - Proceed to Summary</strong> at the bottom of the page to save the inputs and outputs and proceed with creating the experiment.</p></div>
+								<div class="info"><p>Specify the inputs and outputs for this protocol. You may specify multiple inputs and outputs by adding more rows. Click <strong>Add Another Protocol</strong> or <strong>Finished - Continue to Summary</strong> at the bottom of the page to save the inputs and outputs and proceed with creating the experiment.</p></div>
 								
-								<h3><a href="experimentcreate_protocols1a.htm">Experiment X</a> <span class="gt">&gt;</span> <span class="selected">Protocol ABC Inputs and Outputs</span></h3>
-								
-								
-								<fieldset>
-								
-									<legend>Date Performed</legend>
-									
-									<input type="text" name="" value="02/15/2008" style="width:70px" /><img src="images/ico_calendar.gif" alt="" />
-									
-								</fieldset>
+								<h3><a href="experimentcreate_protocols1a.htm">Molecular Pharmacology of Oxidative DNA Damage E</a> <span class="gt">&gt;</span> <span class="selected">Protocol ABC Inputs and Outputs</span></h3>
 								
 								<fieldset>
 								
@@ -113,28 +104,31 @@
 									
 									<form name="create" id="createnew">									
 										
-										<div class="datatable">
+										<div class="searchresults">
 											<table class="newdata2">
 												<tr>
-													<th>Input Name</th>
+													<th class="alignright">#</th>
+													<th>Output Name</th>
 													<th>Data Filename</th>
 													<th>Notes</th>
 													<th class="action">Action</th>
 												</tr>
 												<tr>
+													<td class="alignright">1.</td>
 													<td class="title"><input type="text" name="title" id="" value="Input Sample ABC" style="width:99%" /></td>
 													<td><input type="text" name="data" id="" value="inputsampleabc" style="width:99%" /></td>
 													<td><textarea cols="20" rows="2" id="" style="width:99%; height:40px;"></textarea></td>												
 													<td class="action"><!--<img src="images/ico_delete.gif" alt="" />--></td>
 												</tr>
 												<tr>
+													<td class="alignright">2.</td>
 													<td class="title"><input type="text" name="title" id="" value="" style="width:99%" /></td>
 													<td><input type="text" name="data" id="" value="" style="width:99%" /></td>
 													<td><textarea cols="20" rows="2" id="" style="width:99%; height:40px;"></textarea></td>												
 													<td class="action"><a href="experimentcreate_protocols2.htm"><img src="images/ico_delete.gif" alt="" /></a></td>
 												</tr>
 												<tr>
-													<td colspan="4">
+													<td colspan="5">
 														<del class="btnwrapper">
 															<ul id="btnrow2" style="float:right; margin-right:0">											
 																<li><a href="experimentcreate_protocols2a.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="addrow">Add Another Input (Row)</span></span></a></li>
@@ -155,22 +149,24 @@
 									
 									<form name="create" id="createnew">									
 										
-										<div class="datatable">
+										<div class="searchresults">
 											<table class="newdata2">
 												<tr>
+													<th class="alignright">#</th>
 													<th>Output Name</th>
 													<th>Data Filename</th>
 													<th>Notes</th>
 													<th class="action">Action</th>
 												</tr>
 												<tr>
+													<td class="alignright">1.</td>
 													<td class="title"><input type="text" name="title" id="" value="" style="width:99%" /></td>
 													<td><input type="text" name="data" id="" value="" style="width:99%" /></td>
 													<td><textarea cols="20" rows="2" id="" style="width:99%; height:40px;"></textarea></td>												
 													<td class="action"><!--<img src="images/ico_delete.gif" alt="" />--></td>
 												</tr>
 												<tr>
-													<td colspan="4">
+													<td colspan="5">
 														<del class="btnwrapper">
 															<ul id="btnrow2" style="float:right; margin-right:0">											
 																<li><a href="experimentcreate_protocols2a.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="addrow">Add Another Output (Row)</span></span></a></li>
@@ -190,9 +186,8 @@
 									<del class="btnwrapper">
 										
 										<ul id="btnrow2">											
-											<li><a href="experimentcreate_protocols1a.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back to Protocols</span></span></a></li>
-											<li><a href="experimentcreate_protocols1a.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="saveback">Add Another Protocol</span></span></a></li>
-											<li><a href="experimentcreate_summary.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="saveconfirm">Finished - Proceed to Summary</span></span></a></li>
+											<li><a href="experimentcreate_protocols1a.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back</span></span></a></li>
+											<li><a href="experimentcreate_protocoldetails.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="saveconfirm">Finished Adding Inputs and Outputs</span></span></a></li>
 										</ul>
 										
 									</del>			

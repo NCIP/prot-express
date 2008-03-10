@@ -110,226 +110,75 @@
 							
 								<div class="clear"></div>
 							
-							<div class="fadebox" style="min-width:700px">
+							<div class="fadebox">
 							
 								<h2>2. Add Protocols</h2>
 								
-								<div class="info"><p> Enter details for a new protocol, or select an existing protocol from the list  and click "Add &amp; Continue &raquo;".</p></div>
+								<div class="info"><p>Add a new protocol or select an existing protocol from the list. Note: an experiment must contain at least one protocol. Each protocol must contain at least one input and at least one output.</p></div>
 								
-								
-								<h3>Experiment X</h3>
+								<h3>Molecular Pharmacology of Oxidative DNA Damage E</h3>
 																
 								<div id="protocolflow">
-									<a href="experimentcreate_protocols2a.htm">Protocol ABC</a> 
-									<a href="experimentcreate_protocols2a.htm">Protocol DEF</a>  
-									<a href="experimentcreate_protocols2a.htm">Protocol GHI</a> 
-									<a href="experimentcreate_protocols2a.htm" class="last">Protocol JKL</a> 
+									<a href="experimentcreate_protocoledit.htm">Protocol ABC</a> | 
+									<a href="experimentcreate_protocoledit.htm">Protocol DEF</a> | 
+									<a href="experimentcreate_protocoledit.htm">Protocol GHI</a> |
+									<a href="experimentcreate_protocoledit.htm" class="last">Protocol JKL</a> 
 								</div>
 													
-							
-								<fieldset>
-								
-									<legend>Add New Protocol</legend>
-									
-									<form name="create" id="createnew">									
-										
-										<div class="datatable">
-											<table class="newdata2">
-												<tr>
-													<th>Protocol Name</th>
-													<th>Description</th>
-													<th>Notes</th>
-													<th class="actionwide">Action</th>
-												</tr>
-												<tr>
-													<td class="title" style="border:0"><input type="text" name="title" id="name" value="" style="width:99%" /></td>
-													<td style="border:0"><textarea cols="20" rows="2" id="comm" style="width:99%;height:30px"></textarea></td>
-													<td style="border:0"><textarea cols="20" rows="2" id="prop" style="width:99%;height:30px"></textarea></td>												
-													<td class="actionwide" style="border:0">
-														<del class="btnwrapper">
-															<ul id="btnrow2">											
-																<li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
-															</ul>
-														</del>	
-													</td>
-												</tr>
-												<tr>
-													<td colspan="4">													
-														<a href="javascript:;" title="Enter optional details" class="replace" onclick="new Effect.toggle($('moreinfo'),'blind')" style="text-decoration:none !important">
-															<!--[if lt IE 5.5]>
-																<span onclick="toggledisplay(moreinfo);">
-													   	<![endif]-->			
-															(Enter optional details)
-															<!--[if lt IE 5.5]>
-																</span>
-												   		<![endif]-->
-														</a> 
-														<div id="moreinfo" style="display:none">
-															<div class="hiddenwrapper">
-																<div class="hidden">
-																	<table class="form">
-																		<tr>
-																			<td class="label"><label for="software">Software:</label></td>
-																			<td class="value"><input type="text" id="software" maxlength="150" size="45" value="" style="width:220px" /></td>
-																		</tr>
-																		<tr>
-																			<td class="label"><label for="instrument">Instrument:</label></td>
-																			<td class="value"><input type="text" id="instrument" maxlength="150" size="45" value="" style="width:220px" /></td>
-																		</tr>
-																		<tr>
-																			<td class="label"><label for="contactfn">Contact First Name:</label></td>
-																			<td class="value"><input type="text" id="cfn" maxlength="150" size="45" value="" style="width:220px" /></td>
-																		</tr>
-																		<tr>
-																			<td class="label"><label for="contactln">Contact Last Name:</label></td>
-																			<td class="value"><input type="text" id="cln" maxlength="150" size="45" value="" style="width:220px" /></td>
-																		</tr>
-																		<tr>
-																			<td class="label"><label for="contactemail">Contact Email:</label></td>
-																			<td class="value"><input type="text" id="contactemail" maxlength="150" size="45" value="" style="width:220px" /></td>
-																		</tr>
-																		<tr>
-																			<td class="label"><label for="aci">Additional Contact Info:</label></td>
-																			<td class="value"><textarea cols="20" rows="2" id="aci" style="width:220px;height:30px"></textarea></td>
-																		</tr>
-																		<tr>
-																			<td colspan="2">
-																				<div class="alignright" style="margin-right:150px;font-size:11px"><a href="javascript:;" class="hidehelp" onclick="new Effect.toggle($('moreinfo'),'blind')">
-																				<!--[if lt IE 5.5]>
-																					<span onclick="toggledisplay(moreinfo);">
-																		   	<![endif]-->
-																				(Hide)
-																				<!--[if lt IE 5.5]>
-																					</span>
-																	   		<![endif]-->
-																				</a></div>
-																			</td>
-																		</tr>
-																	</table>
-																	
-																</div>
-															</div>
-														</div>
-														
-													</td>
-												</tr>
-											</table>
-											
-										</div>
-										
-									</form>
-									
-								</fieldset>
-								
-								<fieldset>
-								
-									<legend>Select Existing Protocol</legend>
-									
-									<!--Protocol List-->
-									
-									<div style="text-align:right; margin-top:-5px; padding:0 20px 0 0">
-										<input type="checkbox" name="" id="" /> Display Protocols created by all users										
-									</div>
-																		
-									<div class="searchresults">
-																				
-										<table class="newdata4">
-											<tr>
-												<th>Protocol Name</th>
-												<th>Description</th>
-												<th>Notes</th>
-												<th>User</th>
-												<th class="actionwide">Action</th>
-											</tr>
-											<tr>
-												<td class="title">Protocol ABC</td>
-												<td>Sample description</td>
-												<td>Sample notes</td>
-												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
-												<td class="actionwide">
-													<del class="btnwrapper">
-														<ul id="btnrow2">											
-															<li><a href="experimentcreate_protocols2b.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
-														</ul>
-													</del>	
-												</td>
-											</tr>
-											<tr>
-												<td class="title">Protocol A</td>
-												<td>Sample description</td>
-												<td>Sample notes</td>
-												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
-												<td class="actionwide">
-													<del class="btnwrapper">
-														<ul id="btnrow2">											
-															<li><a href="experimentcreate_protocols2b.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
-														</ul>
-													</del>	
-												</td>
-											</tr>
-											<tr>
-												<td class="title">Protocol B</td>
-												<td>Sample description</td>
-												<td>Sample notes</td>
-												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
-												<td class="actionwide">
-													<del class="btnwrapper">
-														<ul id="btnrow2">											
-															<li><a href="experimentcreate_protocols2b.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
-														</ul>
-													</del>	
-												</td>
-											</tr>
-											<tr>
-												<td class="title">Protocol C</td>
-												<td>Sample description</td>
-												<td>Sample notes</td>
-												<td><a href="mailto:kkanchinadam@email.com">kkanchinadam</a></td>
-												<td class="actionwide">
-													<del class="btnwrapper">
-														<ul id="btnrow2">											
-															<li><a href="experimentcreate_protocols2b.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="add">Add &amp; Continue &raquo;</span></span></a></li>
-														</ul>
-													</del>	
-												</td>
-											</tr>
-										</table>
-										
-										<!--Paging-->
-												
-										<div class="pagecontrol">
-										
-											<p class="small">Displaying <strong>1-4</strong> of <strong>4</strong> Total.</p>
-									
-											<div class="paging">													
-													Page 1 
-												&nbsp;&nbsp;
-												&lt; Back <span class="bar">|</span> 
-												Next &gt;
-											</div>		
-										
-										</div>
-									
-										<!--/Paging-->
-										
-									</div>
-								
-								<!--/Protocol List-->
-									
-								</fieldset>
-									
-								<div class="actionsrow">	
-																			
-									<del class="btnwrapper">
-										
-										<ul id="btnrow2">											
-											<li><a href="experimentcreate_summary.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="saveconfirm">Finished - Proceed to Summary</span></span></a></li>
-										</ul>
-										
-									</del>			
-																		
+								<div class="tabs">
+									<a href="experimentcreate_protocols1a.htm" class="selected"><span>Add New Protocol</span></a>
+									<a href="experimentcreate_protocols1c.htm"><span>Select Existing Protocol</span></a>
 								</div>
 								
+									<form name="create" id="createnew">						
+											
+										<div class="twocoltable">
+											<table class="form">
+												<tr>
+													<td class="label">Protocol Name:</td>
+													<td class="value"><input type="text" name="title" id="exptitle" value="" /></td>
+												</tr>
+												<tr>
+													<td class="label">Description:</td>
+													<td class="value"><textarea cols="20" rows="2" id="desc" style="height:70px"></textarea></td>
+												</tr>
+											</table>
+										</div>
+										
+										<div class="twocoltable">
+											<table class="form">
+												<tr>
+													<td class="label">Software:</td>
+													<td class="value"><input type="text" id="software" maxlength="150" value="" /></td>
+												</tr>
+												<tr>
+													<td class="label">Instrument:</td>
+													<td class="value"><input type="text" id="instrument" maxlength="150" value="" /></td>
+												</tr>
+												<tr>
+													<td class="label">Notes:</td>
+													<td class="value"><textarea cols="20" rows="2" id="expcomments"></textarea></td>
+												</tr>	
+											</table>
+										</div>
+											
+										<div class="clear"></div>
+											
+										
+										<div class="actionsrow">	
+																			
+										<del class="btnwrapper">
+											
+											<ul id="btnrow2">											
+												<li><a href="experimentcreate_summary.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="next">Skip this Step</span></span></a></li>
+												<li><a href="experimentcreate_protocols2b.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="savecontinue">Save and Continue</span></span></a></li>
+											</ul>
+											
+										</del>			
+										
+										<div class="clear"></div>
+											
+									</form>
 								
 							</div>
 							
