@@ -2,10 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
+<head><s:head theme="ajax" /></head>
+<title><fmt:message key="protexpress.page.search.caption" /></title>
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">
-        <a href="<c:url value="/"/>"><fmt:message key="protexpress.breadcrumb.home" /></a> <span class="&gt;">&gt;</span> <a href="<c:url value="/"/>" class="selected"><fmt:message key="protexpress.breadcrumb.search" />
+        <a href="<c:url value="/"/>"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;
+        <span class="&gt;">&gt;</span>&nbsp;
+        <a href="<c:url value="/search/reloadSearch.action"/>" class="selected"><fmt:message key="protexpress.breadcrumb.search" />
     </div>
     <!-- /Breadcrumb -->
     <!-- Page Help -->
@@ -34,7 +38,7 @@
                                     list="@gov.nih.nci.protexpress.service.SearchType@values()"
                                     listValue="displayName" />
                             </td>
-                            <td class="label" style="text-align: left; vertical-align: bottom;"><label for="date">Last Modified:</label></td>
+                            <td class="label" style="text-align: left; vertical-align: bottom;"><fmt:message key="protexpress.page.search.lastmodified" />:</td>
                             <td class="label"><fmt:message key="protexpress.page.search.searchallusers" />: <s:checkbox name="searchParameters.searchAllUsers" key="protexpress.page.search.searchallusers" fieldValue="true" /></td>
                         </tr>
                         <tr>
@@ -42,10 +46,14 @@
                                 <fmt:message key="protexpress.page.search.name" />: <s:textfield name="searchParameters.name" key="protexpress.page.search.name" size="25" />
                             </td>
                             <td id="date" colspan="2">
-                                <input name="" style="width: 50px;" type="text" />
-                                <img src="<c:url value="/images/ico_calendar.gif" />" alt="" align="absmiddle" /> -
-                                <input name="" style="width: 50px;" type="text" />
-                                <img src="<c:url value="/images/ico_calendar.gif" />" alt="" align="absmiddle" />
+                                <s:datetimepicker
+                                    name="searchParameters.fromDate"
+                                    toggleType="fade"
+                                    displayFormat="MM/dd/yyyy" /> -
+                                <s:datetimepicker
+                                    name="searchParameters.toDate"
+                                    toggleType="fade"
+                                    displayFormat="MM/dd/yyyy" />
                             </td>
                         </tr>
                     </tbody>

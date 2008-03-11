@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
+<title><fmt:message key="protexpress.page.home.caption" /></title>
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">

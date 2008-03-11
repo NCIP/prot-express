@@ -107,7 +107,11 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     private String cancelResult = "search";
     private String successMessage = null;
 
-    private String actionResultViewSummary = "viewSummary";
+    private String actionResultViewProtocolDetails = "viewProtocolDetails";
+    private String actionResultEditProtocolDetails = "editProtocolDetails";
+    private String actionResultDeleteProtocol = "deleteProtocol";
+    private String actionResultCancel = "cancel";
+
 
     /**
      * {@inheritDoc}
@@ -129,13 +133,39 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
     }
 
     /**
-     * loads the protocols.
+     * Loads the protocol and directs to the view/readonly page.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String viewSummary() {
-        return this.actionResultViewSummary;
+    public String viewProtocolDetails() {
+        return this.actionResultViewProtocolDetails;
+    }
+
+    /**
+     * Loads the protocol and directs to the edit page.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String editProtocolDetails() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
+
+        return this.actionResultEditProtocolDetails;
+    }
+
+    /**
+     * The action for deleting a protocol.
+     * @return the forward to go to.
+     */
+    @SkipValidation
+    public String deleteProtocol() {
+        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.delete.success");
+        setSuccessMessage(MessageFormat.format(msg, getProtocol().getName()));
+        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
+
+        return this.actionResultDeleteProtocol;
     }
 
     /**
@@ -144,7 +174,7 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     @SkipValidation
     public String cancel() {
-        return getCancelResult();
+        return this.actionResultCancel;
     }
 
     /**
@@ -160,19 +190,6 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
         }
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
         return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * delete the protocols.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.delete.success");
-        setSuccessMessage(MessageFormat.format(msg, getProtocol().getName()));
-        ProtExpressRegistry.getProtocolService().deleteProtocol(getProtocol());
-        return "search";
     }
 
     /**

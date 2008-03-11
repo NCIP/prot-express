@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.search;
 
+import java.util.Map;
+
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
@@ -92,12 +94,15 @@ import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Krishna Kanchinadam
  */
-public class SearchAction {
+public class SearchAction extends ActionSupport {
+    private static final long serialVersionUID = 1L;
+
     private SearchParameters searchParameters = new SearchParameters();
 
     private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(0, null,
@@ -106,6 +111,9 @@ public class SearchAction {
     private PaginatedListImpl<Experiment> experiments = new PaginatedListImpl<Experiment>(0, null,
             ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
 
+    private Map session;
+    private final String searchCriteria = "searchCriteria";
+
     /**
      * load the search page.
      *
@@ -113,10 +121,31 @@ public class SearchAction {
      */
     @SkipValidation
     public String loadSearch() {
+        session = ActionContext.getContext().getSession();
+        if (session.containsKey(this.searchCriteria)) {
+            session.remove(this.searchCriteria);
+        }
+
         protocols = new PaginatedListImpl<Protocol>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
         experiments = new PaginatedListImpl<Experiment>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
+        doSearch();
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * re-load the search page, based on the previous criteria.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String reloadSearch() {
+        session = ActionContext.getContext().getSession();
+        if (session.get(this.searchCriteria) != null) {
+            setSearchParameters((SearchParameters) session.get(this.searchCriteria));
+        }
+
         doSearch();
         return ActionSupport.SUCCESS;
     }
@@ -129,6 +158,9 @@ public class SearchAction {
     @SkipValidation
     public String doSearch() {
         int count = 0;
+
+        session = ActionContext.getContext().getSession();
+        session.put(this.searchCriteria, getSearchParameters());
 
         SearchType searchType = getSearchParameters().getSearchType();
         if (searchType.equals(SearchType.EXPERIMENTS)) {
