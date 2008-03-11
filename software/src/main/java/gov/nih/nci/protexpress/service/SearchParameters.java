@@ -82,6 +82,8 @@
  */
 package gov.nih.nci.protexpress.service;
 
+import java.util.Date;
+
 /**
  * The parameters for experiment searches.
  *
@@ -92,6 +94,8 @@ public class SearchParameters {
     private SearchType searchType = SearchType.EXPERIMENTS;
     private String name;
     private Boolean searchAllUsers = false;
+    private Date fromDate;
+    private Date toDate;
 
     /**
      * The Constructor.
@@ -147,6 +151,42 @@ public class SearchParameters {
      */
     public void setSearchAllUsers(Boolean searchAllUsers) {
         this.searchAllUsers = searchAllUsers;
+    }
+
+    /**
+     * Gets the fromDate.
+     *
+     * @return the fromDate.
+     */
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    /**
+     * Sets the fromDate.
+     *
+     * @param fromDate the fromDate to set.
+     */
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    /**
+     * Gets the toDate.
+     *
+     * @return the toDate.
+     */
+    public Date getToDate() {
+        return toDate;
+    }
+
+    /**
+     * Sets the toDate.
+     *
+     * @param toDate the toDate to set.
+     */
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 
 }

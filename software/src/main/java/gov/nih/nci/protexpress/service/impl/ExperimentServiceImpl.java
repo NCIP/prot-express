@@ -86,18 +86,15 @@ import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
 import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
 import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.ExperimentService;
+import gov.nih.nci.protexpress.service.SearchParameters;
+import gov.nih.nci.protexpress.util.SearchCriteriaHelper;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.displaytag.properties.SortOrderEnum;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,21 +128,7 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
             String sortProperty, SortOrderEnum sortDir) {
         Criteria crit = getHibernateTemplate().getSessionFactory().getCurrentSession().createCriteria(Experiment.class);
 
-        if (onlyCount) {
-            crit.setProjection(Projections.rowCount());
-        }
-
-        if ((params != null) && (StringUtils.isNotEmpty(params.getName()))) {
-            crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
-        }
-
-        if (!onlyCount && sortDir != null && StringUtils.isNotBlank(sortProperty)) {
-            if (SortOrderEnum.ASCENDING.equals(sortDir)) {
-                crit.addOrder(Order.asc(sortProperty));
-            } else {
-                crit.addOrder(Order.desc(sortProperty));
-            }
-        }
+        crit = SearchCriteriaHelper.getCriteria(crit, params, onlyCount, sortProperty, sortDir);
         return crit;
     }
 

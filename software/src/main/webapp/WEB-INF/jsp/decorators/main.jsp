@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title><fmt:message key="protexpress" /> - <decorator:title default="Welcome" /></title>
+    <title><fmt:message key="protexpress.page.default.caption" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/prototype.js"/>"></script>

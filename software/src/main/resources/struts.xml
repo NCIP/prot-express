@@ -82,9 +82,11 @@
         <!-- /Search Actions -->
 
         <!-- Protocol Actions -->
-        <action name="protocol/*"
-            class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
-            <result name="viewSummary">/WEB-INF/jsp/protocol/protocolSummary.jsp</result>
+        <action name="protocol/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
+            <result name="viewProtocolDetails">/WEB-INF/jsp/protocol/viewProtocolDetails.jsp</result>
+            <result name="editProtocolDetails">/WEB-INF/jsp/protocol/editProtocolDetails.jsp</result>
+            <result name="deleteProtocol" type="chain">search/reloadSearch</result>
+            <result name="cancel">/WEB-INF/jsp/protocol/viewProtocolDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

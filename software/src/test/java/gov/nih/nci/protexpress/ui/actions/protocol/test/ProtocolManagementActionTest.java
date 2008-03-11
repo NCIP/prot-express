@@ -162,7 +162,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
 
     public void testDelete() throws Exception {
         this.action.setProtocol((Protocol) this.theSession.get(Protocol.class, this.protocol.getId()));
-        assertEquals("search", this.action.delete());
+        assertEquals("deleteProtocol", this.action.deleteProtocol());
         assertEquals("test protocol 1 successfully deleted.", this.action.getSuccessMessage());
         this.theSession.flush();
         this.theSession.clear();
@@ -170,8 +170,6 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testCancel() throws Exception {
-        assertEquals("search", this.action.cancel());
-        this.action.setCancelResult("dashboard");
-        assertEquals("dashboard", this.action.cancel());
+        assertEquals("cancel", this.action.cancel());
     }
 }

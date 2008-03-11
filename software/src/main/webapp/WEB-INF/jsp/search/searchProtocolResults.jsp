@@ -7,7 +7,7 @@
 <div class="searchresults">
     <h2><fmt:message key="protexpress.page.search.resultstitle" /></h2>
     <c:url var="sortUrl" value="/search/doSearch.action" />
-    <c:url var="protocolSummaryUrl" value="/protocol/viewSummary.action" />
+    <c:url var="protocolSummaryUrl" value="/protocol/viewProtocolDetails.action" />
 
     <ajax:displayTag id="displayTagFrame" >
         <display:table class="newdata3" cellspacing="0" list="${protocols}" requestURI="${sortUrl}" id="row">
@@ -29,7 +29,7 @@
 
             <display:column class="action" titleKey="protexpress.page.search.protocolresults.column.edit">
                 <c:if test="${row.auditInfo.creator == currentUser.loginName}">
-                    <c:url var="protocolEditUrl" value="/notYetImplemented.html">
+                    <c:url var="protocolEditUrl" value="/protocol/editProtocolDetails.action">
                         <c:param name="protocol.id" value="${row.id}" />
                     </c:url>
                     <a href="${protocolEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.search.protocolresults.icon.edit.alt" />" /></a>
