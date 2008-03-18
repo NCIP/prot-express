@@ -80,130 +80,99 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment;
+package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction;
 
-import java.text.MessageFormat;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Action for managing experiments.
+ * This class tests the CreateExperimentManagementActionTest.
  *
- * @author Scott Miller, Krishna Kanchinadam
+ * @author Krishna Kanchinadam
  */
-@Validation
-public class ExperimentManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public class CreateExperimentManagementActionTest extends ProtExpressBaseHibernateTest {
 
-    private Experiment experiment = new Experiment(null);
-    private String cancelResult = "search";
-    private String successMessage = null;
+    CreateExperimentManagementAction action;
+    Experiment experiment;
 
     /**
      * {@inheritDoc}
      */
-    public void prepare() throws Exception {
-        if (getExperiment() != null && getExperiment().getId() != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
-        }
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new CreateExperimentManagementAction();
+
+        this.experiment = new Experiment("Name - Test Experiment 1");
+        this.experiment.setDescription("Description - Test Experiment 1");
+        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        this.experiment.setUrl("URL - Test Experiment 1");
+
+        this.theSession.saveOrUpdate(this.experiment);
+        this.theSession.flush();
+        this.theSession.clear();
     }
 
-    /**
-     * loads the experiments.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public void testPrepare() throws Exception {
+        this.action.setExperiment(null);
+        this.action.prepare();
+        assertEquals(null, this.action.getExperiment());
+
+        Experiment p = new Experiment(null);
+        this.action.setExperiment(p);
+        this.action.prepare();
+        assertEquals(p, this.action.getExperiment());
+
+        this.action.getExperiment().setId(this.experiment.getId());
+        this.action.prepare();
+        assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
+        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action
+                .getExperiment()));
     }
 
-    /**
-     * The action for handling a cancel.
-     * @return the forward to go to.
-     */
-    @SkipValidation
-    public String cancel() {
-        return getCancelResult();
+    public void testLoad() throws Exception {
+        assertEquals(ActionSupport.INPUT, this.action.load());
     }
 
-    /**
-     * Saves the experiment.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        if (getExperiment().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().
-                    getString("experiment.update.success"));
-        }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        return ActionSupport.SUCCESS;
+    public void testSaveOrUpdate() throws Exception {
+        this.action.setExperiment(new Experiment("Test Experiment"));
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
     }
 
-    /**
-     * delete the experiments.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.delete.success");
-        setSuccessMessage(MessageFormat.format(msg, getExperiment().getName()));
-        ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
-        return "search";
+    public void testDelete() throws Exception {
+        this.action.setExperiment((Experiment) this.theSession.get(Experiment.class, this.experiment.getId()));
+        assertEquals("search", this.action.delete());
+        assertEquals("Name - Test Experiment 1 successfully deleted.", this.action.getSuccessMessage());
+        this.theSession.flush();
+        this.theSession.clear();
+        assertEquals(0, this.theSession.createQuery("from " + Experiment.class.getName()).list().size());
+    }
+/*
+    public void testSaveOrUpdateReturnToDashboard() throws Exception {
+        this.action.setCancelResult("dashboard");
+        this.action.setExperiment(new Experiment("zzz"));
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
+        assertEquals("Experiment successfully created.", this.action.getSuccessMessage());
+
+        Experiment e = this.action.getExperiment();
+        this.action = new ExperimentManagementAction();
+        e.setName("Updated test name");
+        this.action.setExperiment(e);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("Experiment successfully updated.", this.action.getSuccessMessage());
     }
 
-    /**
-     * @return the experiment
-     */
-    @CustomValidator(type = "hibernate")
-    public Experiment getExperiment() {
-        return this.experiment;
+    public void testCancel() throws Exception {
+        assertEquals("search", this.action.cancel());
+        this.action.setCancelResult("dashboard");
+        assertEquals("dashboard", this.action.cancel());
     }
-
-    /**
-     * @param experiment the experiment to set
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-    /**
-     * @return the cancelResult
-     */
-    public String getCancelResult() {
-        return this.cancelResult;
-    }
-
-    /**
-     * @param cancelResult the cancelResult to set
-     */
-    public void setCancelResult(String cancelResult) {
-        this.cancelResult = cancelResult;
-    }
-
-    /**
-     * @return the successMessage
-     */
-    public String getSuccessMessage() {
-        return this.successMessage;
-    }
-
-    /**
-     * @param successMessage the successMessage to set
-     */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
-    }
+   */
 }

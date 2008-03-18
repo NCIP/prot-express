@@ -10,7 +10,7 @@
             <c:param name="protocol.id" value="${protocol.id}" />
         </c:url>
 
-        <a href="<c:url value="/" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
+        <a href="<c:url value="/home/home.action" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
         <a href="<c:url value="/search/reloadSearch.action" />"><fmt:message key="protexpress.breadcrumb.search" /></a>&nbsp;<span class="&gt;">&gt;</span>
         <a href="${editProtocolDetailsUrl}" class="selected"><fmt:message key="protexpress.breadcrumb.editprotocoldetails" /></a>
     </div>
@@ -23,7 +23,10 @@
         <h1><fmt:message key="protexpress.page.editprotocoldetails.title" /></h1>
         <div class="fadebox">
             <h2>${protocol.name}</h2>
-            <s:form id="protocolForm" action="/protocol/editProtocolDetails.action" method="post" theme="simple">
+            <c:if test="${not empty successMessage}">
+                <div class="confirm_msg">${successMessage}</div>
+            </c:if>
+            <s:form id="protocolForm" action="/protocol/save.action" method="post" theme="simple">
                 <s:hidden name="protocol.id" />
 
                 <fieldset class="leftfield">
@@ -35,6 +38,7 @@
                                 <p><s:textfield name="protocol.name" key="protexpress.page.editprotocoldetails.name" labelposition="top" required="true"/></p>
                             </td>
                         </tr>
+                        <tr>
                             <td class="label_left">
                                 <fmt:message key="protexpress.page.editprotocoldetails.description" />:<br />
                                 <p><s:textarea name="protocol.description" key="protexpress.page.editprotocoldetails.description" labelposition="top" rows="4"></s:textarea></p>

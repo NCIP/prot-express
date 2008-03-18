@@ -86,6 +86,7 @@ import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -100,6 +101,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -108,6 +111,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.NotNull;
 
 /**
  * Class representing an experiment run.
@@ -125,6 +129,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     private LsidType lsid;
     private String name;
     private String comments;
+    private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
     private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
@@ -230,6 +235,27 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      */
     public void setAuditInfo(AuditInfo auditInfo) {
         this.auditInfo = auditInfo;
+    }
+
+    /**
+     * Gets the datePerformed.
+     *
+     * @return the datePerformed.
+     */
+    @Column(name = "date_performed")
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    public Date getDatePerformed() {
+        return datePerformed;
+    }
+
+    /**
+     * Sets the datePerformed.
+     *
+     * @param datePerformed the datePerformed to set.
+     */
+    public void setDatePerformed(Date datePerformed) {
+        this.datePerformed = datePerformed;
     }
 
     /**

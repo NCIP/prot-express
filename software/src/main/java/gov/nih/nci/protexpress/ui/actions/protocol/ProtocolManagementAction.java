@@ -149,9 +149,6 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      */
     @SkipValidation
     public String editProtocolDetails() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-
         return this.actionResultEditProtocolDetails;
     }
 

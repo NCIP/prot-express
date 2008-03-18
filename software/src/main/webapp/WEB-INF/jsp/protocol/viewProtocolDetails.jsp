@@ -10,7 +10,7 @@
             <c:param name="protocol.id" value="${protocol.id}" />
         </c:url>
 
-        <a href="<c:url value="/" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
+        <a href="<c:url value="/home/home.action" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
         <a href="<c:url value="/search/reloadSearch.action" />"><fmt:message key="protexpress.breadcrumb.search" /></a>&nbsp;<span class="&gt;">&gt;</span>
         <a href="${viewProtocolDetailsUrl}" class="selected"><fmt:message key="protexpress.breadcrumb.viewprotocoldetails" /></a>
     </div>

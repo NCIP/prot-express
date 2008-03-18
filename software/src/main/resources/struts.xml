@@ -79,17 +79,36 @@
             <result name="input">/WEB-INF/jsp/search/search.jsp</result>
             <result name="success">/WEB-INF/jsp/search/search.jsp</result>
         </action>
+        <action name="ajax/search/*" class="gov.nih.nci.protexpress.ui.actions.search.SearchAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/search/searchResults.jsp</result>
+            <result name="success">/WEB-INF/jsp/search/searchResults.jsp</result>
+        </action>
         <!-- /Search Actions -->
 
         <!-- Protocol Actions -->
         <action name="protocol/*" class="gov.nih.nci.protexpress.ui.actions.protocol.ProtocolManagementAction" method="{1}">
             <result name="viewProtocolDetails">/WEB-INF/jsp/protocol/viewProtocolDetails.jsp</result>
             <result name="editProtocolDetails">/WEB-INF/jsp/protocol/editProtocolDetails.jsp</result>
+            <result name="success">/WEB-INF/jsp/protocol/editProtocolDetails.jsp</result>
             <result name="deleteProtocol" type="chain">search/reloadSearch</result>
             <result name="cancel">/WEB-INF/jsp/protocol/viewProtocolDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+        <!-- /Protocol Actions -->
 
+        <!-- Create Experiment Actions -->
+        <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/createexperiment/experimentOverview.jsp</result>
+            <result name="experimentProtocolForm" type="chain">createExperiment/load/experimentAddNewProtocol</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="createExperiment/*/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/createexperiment/{2}.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <!-- /Create Experiment Actions -->
 
     </package>
 </struts>

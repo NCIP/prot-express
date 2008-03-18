@@ -6,7 +6,7 @@
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">
-        <a href="<c:url value="/"/>" class="selected"><fmt:message key="protexpress.breadcrumb.home" /></a>
+        <a href="<c:url value="/home/home.action"/>" class="selected"><fmt:message key="protexpress.breadcrumb.home" /></a>
     </div>
     <!-- /Breadcrumb -->
 
@@ -22,7 +22,7 @@
         <div class="home_buttons">
             <h2><fmt:message key="protexpress.page.home.actionchoice" /></h2>
 
-            <c:url var="createExperimentUrl" value="" />
+            <c:url var="createExperimentUrl" value="/createExperiment/createNewExperiment.action" />
             <c:url var="searchProtexpressUrl" value="/search/loadSearch.action" />
 
             <div id="btn_home_create">
@@ -66,18 +66,26 @@
                                 <td>${experiment.description}</td>
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
                                 <td class="action">
-                                    <span title="Incomplete">
-                                        <img src="<c:url value="/images/ico_asterisk.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.incomplete.alt" />" />
-                                    </span>
-                                    <span title="Complete">
-                                        <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
-                                    </span>
-                                </td>
+                                     <c:choose>
+                                        <c:when test="${statusCompleted}">
+                                            <span title="Complete">
+                                                <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
+                                            </span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span title="Incomplete">
+                                                <img src="<c:url value="/images/ico_asterisk.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.incomplete.alt" />" />
+                                            </span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                  </td>
                                 <td class="action">
                                     <a href="${experimentEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
                                 </td>
                                 <td class="action">
-                                    <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" /></a>
+                                    <c:if test="${statusCompleted}">
+                                        <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" /></a
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
