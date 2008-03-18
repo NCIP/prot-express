@@ -7,7 +7,7 @@
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">
-        <a href="<c:url value="/"/>"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;
+        <a href="<c:url value="/home/home.action"/>"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;
         <span class="&gt;">&gt;</span>&nbsp;
         <a href="<c:url value="/search/reloadSearch.action"/>" class="selected"><fmt:message key="protexpress.breadcrumb.search" />
     </div>
@@ -23,10 +23,11 @@
         <div class="filterbox">
             <h2><fmt:message key="protexpress.page.search.filtertitle" /></h2>
             <s:form id="searchForm" action="search/doSearch" method="post" theme="simple">
-                <s:hidden name="protocols.sortDirection" />
+              <!--   <s:hidden name="protocols.sortDirection" />
                 <s:hidden name="protocols.sortCriterion" />
                 <s:hidden name="experiments.sortDirection" />
                 <s:hidden name="experiments.sortCriterion" />
+                -->
                 <table class="form">
                     <tbody>
                         <tr style="height: 28px;">
@@ -72,12 +73,7 @@
         </div>
         <!--/Search Filters-->
         <!--Search Results-->
-        <s:if test="${experiments.list != null}">
-            <jsp:include page="/WEB-INF/jsp/search/searchExperimentResults.jsp" />
-        </s:if>
-        <s:elseif test="${protocols.list != null}">
-            <jsp:include page="/WEB-INF/jsp/search/searchProtocolResults.jsp" />
-        </s:elseif>
+        <jsp:include page="/WEB-INF/jsp/search/searchResults.jsp" />
         <!--/Search Results-->
     </div>
     <!-- /Add Content Here -->

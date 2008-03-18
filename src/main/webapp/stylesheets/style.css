@@ -36,7 +36,7 @@ H2
 H3
 { clear:both; font-family:arial,helvetica,sans-serif; font-size:130%; line-height:1.4em; color:#606060; padding:10px;  }
 H4
-{ background:#496DA5; color:#BDD4F9; font-size:125%; padding:5px 6px 5px 10px; border-bottom:2px solid #33558C; height:1.3em; min-height:.1% }
+{ font-size:125%; padding:5px 6px 5px 10px; height:1.3em; min-height:.1% }
 LABEL
 { font-family:arial,helvetica,sans-serif; color:#333; font-weight:bold; font-style:normal }
 INPUT, SELECT, TEXTAREA
@@ -387,11 +387,11 @@ TABLE.form2 TD, TABLE.form3 TD
 { font-size:12px }
 FIELDSET.date
 { width:89% }
+
 FIELDSET.leftfield
 { width:42% !important; float:left !important;}
 FIELDSET.rightfield
 { width:41% !important; float:left !important; margin-left:5px !important }
-
 FIELDSET.leftfield_wide
 { width:66% !important; padding:0 !important; float:left !important;}
 FIELDSET.rightfield_thin
@@ -400,6 +400,14 @@ FIELDSET.leftfield_wide LEGEND, FIELDSET.rightfield_thin LEGEND
 { padding:0 10px }
 .centerfield
 { margin:0 auto; width:91%; }
+
+.twocoltable
+{ float:left; width:47% }
+.twocoltable TABLE.form
+{ width:100% }
+.twocoltable TABLE.form TD INPUT, .twocoltable TABLE.form TD SELECT, .twocoltable TABLE.form TD TEXTAREA
+{ width:99%; }
+
 .value INPUT, .value SELECT, .value TEXTAREA
 { display:block;  }
 TD.space
@@ -596,6 +604,8 @@ A.btn SPAN.login
 { background:url("../images/ico_login.gif") no-repeat; }
 A.btn SPAN.manage_associations
 { background:url("../images/ico_manage_associations.gif") no-repeat; }
+A.btn SPAN.next
+{ background:url("../images/ico_next.gif") no-repeat; }
 A.btn SPAN.register
 { background:url("../images/ico_register.gif") no-repeat; }
 A.btn SPAN.save
@@ -604,6 +614,8 @@ A.btn SPAN.saveback
 { background:url("../images/ico_saveback.gif") no-repeat; }
 A.btn SPAN.saveconfirm
 { background:url("../images/ico_saveconfirm.gif") no-repeat; }
+A.btn SPAN.savecontinue
+{ background:url("../images/ico_savecontinue.gif") no-repeat; }
 A.btn SPAN.saverepeat
 { background:url("../images/ico_saverepeat.gif") no-repeat; }
 A.btn SPAN.search
@@ -654,11 +666,22 @@ A.btn SPAN.validate
 #processflow
 { clear:both; margin-bottom:10px; cursor:default; }
 #processflow DIV.step, #processflow DIV.selectedstep
-{ width:150px; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
+{ width:130px; text-align:center; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
 #processflow .arrow
 { float:left; padding:14px 5px 0 5px; margin-right:10px; }
 #processflow DIV.selectedstep
 { font-weight:bold; color:#fff; border:1px solid #999; background:#54668a url("../images/bg_header_blue.gif") repeat-x top;  }
+
+#processflow2
+{ clear:both; margin:10px; cursor:default; }
+#processflow2 DIV.step, #processflow2 DIV.selectedstep
+{ width:70px; text-align:center; float:left; margin-right:10px; color:#999; padding:10px; border:1px dotted #999; }
+#processflow2 .arrow
+{ float:left; padding:14px 3px 0 3px; margin-right:10px; }
+#processflow2 DIV.selectedstep
+{ font-weight:bold; color:#fff; border:1px solid #999; background:#54668a url("../images/bg_header_blue.gif") repeat-x top;  }
+
+
 .info
 { padding:10px; background:#ffffcf url("../images/bg_row_hilite.gif") repeat-x top; border-bottom:1px solid #ccc }
 .info P
@@ -684,21 +707,6 @@ A.btn SPAN.validate
 { background:0 }
 #protocolflow A
 { padding:0 5px}
-
-/* Tree */
-
-UL.tree LI
-{ font-size:11px; padding:5px 0 5px 10px }
-UL.tree LI LI
-{ font-size:11px; padding-left:20px }
-UL.tree LI TH, UL.tree LI TD
-{ font-size:11px }
-UL.tree LI FIELDSET DIV.hidden
-{ margin-top:11px !important }
-UL.tree LI .hidden
-{ margin:0 }
-UL.tree LEGEND
-{ font-size:14px; margin-top:1px }
 
 
 /* New for Krishna */
@@ -728,3 +736,16 @@ TABLE.newdata3 TH A
 { width:75px; float:left; }
 .calcol A
 { display:block; margin-left:5px; margin-top:-3px }
+
+
+
+/* New Tabs */
+.tabs
+{ color:#999; margin:10px 0; background:#fbfbfb url("../images/bg_tabbar.gif") repeat-x bottom; padding:7px; border-bottom:1px solid #999; font-weight:bold; }
+.tabs A
+{ font-size:120%; background:#dedede url("../images/bg_tab.gif") repeat-x bottom; border:1px solid #999; padding:7px 25px; margin:0 7px; text-decoration:underline !important }
+.tabs A.selected
+{ background:url("../images/bg_tabselected.gif") repeat-x top; border-bottom:1px solid #fbfbfb; color:#333; text-decoration:none !important }
+
+.tabbed .searchresults
+{ margin:10px auto; width:96%; }

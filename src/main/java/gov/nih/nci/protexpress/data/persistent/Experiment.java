@@ -86,6 +86,7 @@ import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -98,6 +99,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -107,6 +110,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
 /**
@@ -127,7 +131,10 @@ public class Experiment implements Serializable, Persistent, Auditable {
     private String description;
     private String hypothesis;
     private String url;
+    private String notes;
+    private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
+    private Boolean statusCompleted = false;
     private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
@@ -176,6 +183,26 @@ public class Experiment implements Serializable, Persistent, Auditable {
                 .getString("lsid.namespace.experiment"), this.id);
         return this.lsid.getLsid();
     }
+
+    /**
+     * Gets the statusCompleted.
+     *
+     * @return the statusCompleted.
+     */
+    @Transient
+    public Boolean getStatusCompleted() {
+        return statusCompleted;
+    }
+
+    /**
+     * Sets the statusCompleted.
+     *
+     * @param statusCompleted the statusCompleted to set.
+     */
+    public void setStatusCompleted(Boolean statusCompleted) {
+        this.statusCompleted = statusCompleted;
+    }
+
 
     /**
      * Gets the name.
@@ -258,6 +285,47 @@ public class Experiment implements Serializable, Persistent, Auditable {
     @Length(max = HibernateFieldLength.EXPERIMENT_URL_LENGTH)
     public String getUrl() {
         return this.url;
+    }
+
+    /**
+     * Gets the notes.
+     *
+     * @return the notes.
+     */
+    @Column(name = "notes")
+    @Length(max = HibernateFieldLength.EXPERIMENT_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * Sets the notes.
+     *
+     * @param notes the notes to set.
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * Gets the datePerformed.
+     *
+     * @return the datePerformed.
+     */
+    @Column(name = "date_performed")
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    public Date getDatePerformed() {
+        return datePerformed;
+    }
+
+    /**
+     * Sets the datePerformed.
+     *
+     * @param datePerformed the datePerformed to set.
+     */
+    public void setDatePerformed(Date datePerformed) {
+        this.datePerformed = datePerformed;
     }
 
     /**

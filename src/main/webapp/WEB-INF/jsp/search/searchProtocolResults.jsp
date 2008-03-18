@@ -6,10 +6,10 @@
 
 <div class="searchresults">
     <h2><fmt:message key="protexpress.page.search.resultstitle" /></h2>
-    <c:url var="sortUrl" value="/search/doSearch.action" />
+    <c:url var="sortUrl" value="/ajax/search/doSearch.action" />
     <c:url var="protocolSummaryUrl" value="/protocol/viewProtocolDetails.action" />
 
-    <ajax:displayTag id="displayTagFrame" >
+    <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="newdata3">
         <display:table class="newdata3" cellspacing="0" list="${protocols}" requestURI="${sortUrl}" id="row">
             <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
             <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
