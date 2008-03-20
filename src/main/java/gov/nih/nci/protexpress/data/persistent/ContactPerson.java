@@ -89,7 +89,7 @@ import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
 
 /**
- * Class to store the auditing fields.
+ * Class to store a contact person details.
  *
  * @author Krishna Kanchinadam
  */

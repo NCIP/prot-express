@@ -108,7 +108,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Experiment URL.
      */
-    public static final int EXPERIMENT_URL_LENGTH = 100;
+    public static final int EXPERIMENT_URL_LENGTH = 200;
 
     /**
      * Field Length for Experiment Notes field.
@@ -135,7 +135,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Input Output Object Additional information field.
      */
-    public static final int IO_ADDITIONAL_INFO_LENGTH = 2000;
+    public static final int IO_NOTES_LENGTH = 2000;
 
     /**
      * Field Length for Protocol Name.
@@ -144,7 +144,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Protocol Description.
      */
-    public static final int PROTOCOL_DESCRIPTION_LENGTH = 500;
+    public static final int PROTOCOL_DESCRIPTION_LENGTH = 2000;
     /**
      * Field Length for Protocol Software field.
      */

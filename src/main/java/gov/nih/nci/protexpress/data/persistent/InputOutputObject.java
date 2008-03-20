@@ -211,7 +211,7 @@ public class InputOutputObject implements Serializable, Persistent {
      * @return the additionalInfo.
      */
     @Column(name = "additional_info")
-    @Length(max = HibernateFieldLength.IO_ADDITIONAL_INFO_LENGTH)
+    @Length(max = HibernateFieldLength.IO_NOTES_LENGTH)
     public String getAdditionalInfo() {
         return additionalInfo;
     }

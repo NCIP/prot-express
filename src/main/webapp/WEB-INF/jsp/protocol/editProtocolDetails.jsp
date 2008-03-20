@@ -26,7 +26,7 @@
             <c:if test="${not empty successMessage}">
                 <div class="confirm_msg">${successMessage}</div>
             </c:if>
-            <s:form id="protocolForm" action="/protocol/save.action" method="post" theme="simple">
+            <s:form id="protocolForm" action="/protocol/save.action" method="post">
                 <s:hidden name="protocol.id" />
 
                 <fieldset class="leftfield">
@@ -34,32 +34,27 @@
                     <table class="form2">
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.name" />:<br />
                                 <p><s:textfield name="protocol.name" key="protexpress.page.editprotocoldetails.name" labelposition="top" required="true"/></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.description" />:<br />
                                 <p><s:textarea name="protocol.description" key="protexpress.page.editprotocoldetails.description" labelposition="top" rows="4"></s:textarea></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.notes" />:<br />
                                 <p><s:textarea name="protocol.notes" key="protexpress.page.editprotocoldetails.notes" rows="4" labelposition="top"></s:textarea></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.software" />:<br />
                                 <p><s:textfield name="protocol.software" key="protexpress.page.editprotocoldetails.software" labelposition="top"/></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.instrument" />:<br />
-                                <p><s:textfield name="protocol.instrument" key="protexpress.page.editprotocoldetails.instrument" labelposition="top" required="true"/></p>
+                                <p><s:textfield name="protocol.instrument" key="protexpress.page.editprotocoldetails.instrument" labelposition="top"/></p>
                             </td>
                         </tr>
                     </table>
@@ -69,25 +64,21 @@
                     <table class="form2">
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.contactfirstname" />:<br />
                                 <p><s:textfield name="protocol.contactPerson.firstName" key="protexpress.page.editprotocoldetails.contactfirstname" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.contactlastname" />:<br />
                                 <p><s:textfield name="protocol.contactPerson.lastName" key="protexpress.page.editprotocoldetails.contactlastname" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.contactemail" />:<br />
                                 <p><s:textfield name="protocol.contactPerson.email" key="protexpress.page.editprotocoldetails.contactemail" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.editprotocoldetails.contactnotes" />:<br />
                                 <p><s:textfield name="protocol.contactPerson.notes" key="protexpress.page.editprotocoldetails.contactnotes" labelposition="top" /></p>
                             </td>
                         </tr>

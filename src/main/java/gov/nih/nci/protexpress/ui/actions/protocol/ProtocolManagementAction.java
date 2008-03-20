@@ -92,7 +92,9 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action for managing protocols.
@@ -179,6 +181,10 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      *
      * @return the directive for the next action / page to be directed to
      */
+    @Validations(
+            emails = {@EmailValidator(fieldName = "protocol.contactPerson.email",
+                    key = "validator.email", message = "") }
+    )
     public String save() {
         if (getProtocol().getId() == null) {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));

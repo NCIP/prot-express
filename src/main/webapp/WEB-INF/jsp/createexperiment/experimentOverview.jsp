@@ -34,7 +34,7 @@
                 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.info" /></p></div>
             </div>
 
-            <s:form id="createExperimentForm" action="/createExperiment/saveOverviewInformation.action" method="post" theme="simple">
+            <s:form id="createExperimentForm" action="/createExperiment/saveOverviewInformation.action" method="post">
                 <s:hidden name="experiment.id" />
 
                 <div class="centerfield">
@@ -43,67 +43,58 @@
                         <table class="form3">
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.name" />:<br />
                                     <s:textfield name="experiment.name" key="protexpress.page.createnewexperiment.identifyexperiment.name" labelposition="top" required="true"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.description" />:<br />
                                     <s:textarea name="experiment.description" key="protexpress.page.createnewexperiment.identifyexperiment.description" labelposition="top" rows="4"></s:textarea>
                                 </td>
                             </tr>
                            <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.hypothesis" />:<br />
                                     <s:textarea name="experiment.hypothesis" key="protexpress.page.createnewexperiment.identifyexperiment.hypothesis" labelposition="top" rows="4"></s:textarea>
                                 </td>
                            </tr>
                            <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.url" />:<br />
-                                    <s:textfield name="experiment.url" key="protexpress.page.createnewexperiment.identifyexperiment.url" labelposition="top" required="true"/>
+                                    <s:textfield name="experiment.url" key="protexpress.page.createnewexperiment.identifyexperiment.url" labelposition="top"/>
                                 </td>
                             </tr>
                            <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.notes" />:<br />
                                     <s:textarea name="experiment.notes" key="protexpress.page.createnewexperiment.identifyexperiment.notes" labelposition="top" rows="4"></s:textarea>
                                 </td>
                            </tr>
                         </table>
                     </fieldset>
                     <fieldset class="rightfield">
-                        <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
+                        <legend><span class="required">*</span> <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
                         <s:datetimepicker
                                     name="experiment.datePerformed"
                                     toggleType="fade"
-                                    displayFormat="MM/dd/yyyy" />
+                                    displayFormat="MM/dd/yyyy" required="*"/>
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
                         <table class="form3">
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contactfirstname" />:<br />
                                     <s:textfield name="experiment.contactPerson.firstName" key="protexpress.page.createnewexperiment.identifyexperiment.contactfirstname" labelposition="top" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contactlastname" />:<br />
                                     <s:textfield name="experiment.contactPerson.lastName" key="protexpress.page.createnewexperiment.identifyexperiment.contactlastname" labelposition="top" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contactemail" />:<br />
                                     <s:textfield name="experiment.contactPerson.email" key="protexpress.page.createnewexperiment.identifyexperiment.contactemail" labelposition="top" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label_left">
-                                    <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contactnotes" />:<br />
                                     <s:textfield name="experiment.contactPerson.notes" key="protexpress.page.createnewexperiment.identifyexperiment.contactnotes" labelposition="top" />
                                 </td>
                             </tr>
