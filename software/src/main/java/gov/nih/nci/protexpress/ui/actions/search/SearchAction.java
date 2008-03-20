@@ -82,14 +82,14 @@
  */
 package gov.nih.nci.protexpress.ui.actions.search;
 
-import java.util.Map;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.Protocol;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
+
+import java.util.Map;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
@@ -120,9 +120,10 @@ public class SearchAction extends ActionSupport {
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
+    @SuppressWarnings("unchecked")
     public String loadSearch() {
         session = ActionContext.getContext().getSession();
-        if (session.containsKey(this.searchCriteria)) {
+        if ((session != null) && session.containsKey(this.searchCriteria)) {
             session.remove(this.searchCriteria);
         }
 
@@ -131,7 +132,7 @@ public class SearchAction extends ActionSupport {
         experiments = new PaginatedListImpl<Experiment>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
         doSearch();
-        return ActionSupport.SUCCESS;
+        return ActionSupport.INPUT;
     }
 
     /**
@@ -140,9 +141,10 @@ public class SearchAction extends ActionSupport {
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
+    @SuppressWarnings("unchecked")
     public String reloadSearch() {
         session = ActionContext.getContext().getSession();
-        if (session.get(this.searchCriteria) != null) {
+        if ((session != null) && session.get(this.searchCriteria) != null) {
             setSearchParameters((SearchParameters) session.get(this.searchCriteria));
         }
 
@@ -156,11 +158,14 @@ public class SearchAction extends ActionSupport {
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
+    @SuppressWarnings("unchecked")
     public String doSearch() {
         int count = 0;
 
-        session = ActionContext.getContext().getSession();
-        session.put(this.searchCriteria, getSearchParameters());
+        if (session != null) {
+            session = ActionContext.getContext().getSession();
+            session.put(this.searchCriteria, getSearchParameters());
+        }
 
         SearchType searchType = getSearchParameters().getSearchType();
         if (searchType.equals(SearchType.EXPERIMENTS)) {

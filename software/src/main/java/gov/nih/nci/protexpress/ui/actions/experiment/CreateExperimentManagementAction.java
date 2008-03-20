@@ -93,7 +93,9 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action for managing create experiment process.
@@ -106,6 +108,7 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);
+    private ExperimentRun expRun = new ExperimentRun("Run");
     private String successMessage = null;
 
     private String actionResultAddProtocol = "experimentProtocolForm";
@@ -117,9 +120,10 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
         if ((getExperiment() != null) && (getExperiment().getId() != null)) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
         } else if ((getExperiment() != null) && (getExperiment().getId() == null)) {
-            ExperimentRun expRun = new ExperimentRun("Run");
-            expRun.setExperiment(getExperiment());
-            getExperiment().getExperimentRuns().add(expRun);
+            getExperiment().getContactPerson().setEmail("test@test.com");
+            getExperiment().getContactPerson().setFirstName("Krishna");
+            getExperiment().getContactPerson().setLastName("Kanchinadam");
+            getExperiment().getContactPerson().setNotes("Some Notes");
         }
     }
 
@@ -148,7 +152,14 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      *
      * @return the directive for the next action / page to be directed to
      */
+    @Validations(
+            emails = {@EmailValidator(fieldName = "experiment.contactPerson.email",
+                    key = "validator.email", message = "") }
+    )
     public String saveOverviewInformation() {
+        getExperiment().getExperimentRuns().clear();
+        getExperiment().getExperimentRuns().add(expRun);
+
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         return this.actionResultAddProtocol;
     }
