@@ -100,13 +100,13 @@
         <!-- Create Experiment Actions -->
         <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/experimentOverview.jsp</result>
-            <result name="experimentProtocolForm1" type="chain">createExperiment/load/experimentAddNewProtocol</result>
-            <result name="experimentProtocolForm" type="chain">home/home</result>
+            <result name="addProtocol" type="chain">createExperiment/manageProtocols/addNewProtocol</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="createExperiment/*/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/createexperiment/{2}.jsp</result>
+        <action name="createExperiment/manageProtocols/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentProtocolManagementAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/createexperiment/experimentAddNewProtocol.jsp</result>
+            <result name="addInputs" type="chain">home/home</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
