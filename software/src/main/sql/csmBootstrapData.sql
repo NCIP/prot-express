@@ -32,6 +32,6 @@ INSERT INTO CSM_PRIVILEGE(PRIVILEGE_NAME, PRIVILEGE_DESCRIPTION)
 INSERT INTO CSM_PRIVILEGE(PRIVILEGE_NAME, PRIVILEGE_DESCRIPTION)
     VALUES('EXECUTE','This privilege allows a user to execute a particular resource. The resource can be a method, function, behavior of the application, URL, button etc');
 
-INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD) VALUES ('user1', 'Test1', 'User','BtM2GNbiAxg=');
+INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL_ID) VALUES ('user1', 'Test1', 'User','BtM2GNbiAxg=', 'testuser@protexpress.com');
 
 INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME) VALUES ('fb_inv1', 'Fb', 'Inv');
