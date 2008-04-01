@@ -35,8 +35,8 @@
             </div>
 
             <s:form id="createExperimentForm" action="/createExperiment/saveOverviewInformation.action" method="post">
-                <s:hidden name="experiment.id" />
-
+                <s:hidden name="experiment.id" value="${experiment.id}"/>
+                <s:hidden name="experimentRun.id" value="${experimentRun.id}"/>
                 <div class="centerfield">
                     <fieldset class="leftfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" /></legend>
@@ -69,7 +69,7 @@
                         </table>
                     </fieldset>
                     <fieldset class="rightfield">
-                        <legend><span class="required">*</span> <fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
+                        <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
                         <s:datetimepicker
                                     name="experiment.datePerformed"
                                     toggleType="fade"
@@ -95,7 +95,7 @@
                             </tr>
                             <tr>
                                 <td class="label_left">
-                                    <s:textfield name="experiment.contactPerson.notes" key="protexpress.page.createnewexperiment.identifyexperiment.contactnotes" labelposition="top" />
+                                    <s:textarea name="experiment.contactPerson.notes" key="protexpress.page.createnewexperiment.identifyexperiment.contactnotes" labelposition="top" rows="4"></s:textarea>
                                 </td>
                             </tr>
                         </table>

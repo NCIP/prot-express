@@ -199,13 +199,13 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
         // Set a Protocol Application
-        ProtocolApplication protApp = new ProtocolApplication("Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(0));
+        ProtocolApplication protApp = new ProtocolApplication("Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(0));
         protApp.setId(440L);
 
         expRun.getProtocolApplications().add(protApp);
 
         // Another protocol application.
-        protApp = new ProtocolApplication("Sample Preparation", DatatypeConverter.parseDate("2006-08-31-07:00"), expRun, this.protocols.get(1));
+        protApp = new ProtocolApplication("Sample Preparation", DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(1));
         protApp.setId(441L);
 
         expRun.getProtocolApplications().add(protApp);

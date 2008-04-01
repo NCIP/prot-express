@@ -112,6 +112,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Valid;
 
 /**
  * Class representing an experiment run.
@@ -226,6 +227,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
      * @return the auditInfo
      */
     @Embedded
+    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }

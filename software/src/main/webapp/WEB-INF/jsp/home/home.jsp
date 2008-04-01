@@ -40,7 +40,11 @@
             <table class="newdata3">
                 <tbody>
                     <s:if test="%{recentExperiments.size() == 0}">
-                        <tr><td><fmt:message key="protexpress.page.home.recentexperiments.nonefound" /></td></tr>
+                        <tr>
+                            <td class="label_left">
+                                <fmt:message key="protexpress.page.home.recentexperiments.nonefound" />&nbsp;&nbsp;<a href="${createExperimentUrl}"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
+                            </td>
+                        </tr>
                     </s:if>
                     <s:else>
                         <tr>

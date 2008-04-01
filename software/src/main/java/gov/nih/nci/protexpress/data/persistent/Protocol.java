@@ -102,6 +102,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.Valid;
 
 /**
  * Class representing a protocol.
@@ -276,6 +277,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the auditInfo
      */
     @Embedded
+    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }
@@ -293,6 +295,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the contactPerson.
      */
     @Embedded
+    @Valid
     public ContactPerson getContactPerson() {
         return contactPerson;
     }

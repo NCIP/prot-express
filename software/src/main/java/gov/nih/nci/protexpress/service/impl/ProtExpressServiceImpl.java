@@ -111,6 +111,14 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void clear() {
+        getHibernateTemplate().clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue) {
         Class persistentClass = bean.getClass();
