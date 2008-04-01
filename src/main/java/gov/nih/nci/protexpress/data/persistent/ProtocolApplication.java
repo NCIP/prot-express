@@ -86,7 +86,7 @@ import gov.nih.nci.protexpress.ProtExpressConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -129,7 +129,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private Long id;
     private LsidType lsid;
     private String name;
-    private Calendar activityDate;
+    private Date activityDate;
     private String comments;
     private Long stepNumber;
     private String additionalInfo;
@@ -155,7 +155,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      * @param expRun the experiment run
      * @param protocol the protocol
      */
-    public ProtocolApplication(String name, Calendar activityDate,
+    public ProtocolApplication(String name, Date activityDate,
             ExperimentRun expRun, Protocol protocol) {
         setName(name);
         setActivityDate(activityDate);
@@ -222,7 +222,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     @Column(name = "activity_date")
     @NotNull
     @Temporal(TemporalType.DATE)
-    public Calendar getActivityDate() {
+    public Date getActivityDate() {
         return this.activityDate;
     }
 
@@ -231,7 +231,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @param activityDate the activityDate to set
      */
-    public void setActivityDate(Calendar activityDate) {
+    public void setActivityDate(Date activityDate) {
         this.activityDate = activityDate;
     }
 
@@ -304,6 +304,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "protocol_id")
+    @Valid
     public Protocol getProtocol() {
         return this.protocol;
     }

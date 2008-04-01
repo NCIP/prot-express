@@ -10,6 +10,7 @@ import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.displaytag.properties.SortOrderEnum;
@@ -340,7 +341,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         this.theSession.flush();
         this.theSession.clear();
 
-        ProtocolApplication pa = new ProtocolApplication("protocol application name", Calendar.getInstance(), experimentRun, p);
+        ProtocolApplication pa = new ProtocolApplication("protocol application name", new Date(), experimentRun, p);
         pa.setComments("bar 123");
         pa.setStepNumber(1L);
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(pa);

@@ -141,38 +141,7 @@ public class CreateExperimentManagementActionTest extends ProtExpressBaseHiberna
 
     public void testSaveOrUpdate() throws Exception {
         this.action.setExperiment(new Experiment("Test Experiment"));
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals("addProtocol", this.action.saveOverviewInformation());
         assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
     }
-
-    public void testDelete() throws Exception {
-        this.action.setExperiment((Experiment) this.theSession.get(Experiment.class, this.experiment.getId()));
-        assertEquals("search", this.action.delete());
-        assertEquals("Name - Test Experiment 1 successfully deleted.", this.action.getSuccessMessage());
-        this.theSession.flush();
-        this.theSession.clear();
-        assertEquals(0, this.theSession.createQuery("from " + Experiment.class.getName()).list().size());
-    }
-/*
-    public void testSaveOrUpdateReturnToDashboard() throws Exception {
-        this.action.setCancelResult("dashboard");
-        this.action.setExperiment(new Experiment("zzz"));
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
-        assertEquals("Experiment successfully created.", this.action.getSuccessMessage());
-
-        Experiment e = this.action.getExperiment();
-        this.action = new ExperimentManagementAction();
-        e.setName("Updated test name");
-        this.action.setExperiment(e);
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
-        assertEquals("Experiment successfully updated.", this.action.getSuccessMessage());
-    }
-
-    public void testCancel() throws Exception {
-        assertEquals("search", this.action.cancel());
-        this.action.setCancelResult("dashboard");
-        assertEquals("dashboard", this.action.cancel());
-    }
-   */
 }

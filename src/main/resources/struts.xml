@@ -106,8 +106,16 @@
 
         <action name="createExperiment/manageProtocols/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentProtocolManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/experimentAddNewProtocol.jsp</result>
-            <result name="addInputs" type="chain">home/home</result>
+            <result name="selectExistingProtocol">/WEB-INF/jsp/createexperiment/experimentSelectExistingProtocol.jsp</result>
+            <result name="addInputs" type="chain">createExperiment/manageProtocols/reviewProtocol</result>
+            <result name="reviewProtocol">/WEB-INF/jsp/createexperiment/experimentReviewProtocol.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/createExperiment/manageProtocols/*" class="gov.nih.nci.protexpress.ui.actions.search.SearchAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/createexperiment/experimentSelectExistingProtocol.jsp</result>
+            <result name="success">/WEB-INF/jsp/createexperiment/experimentSelectExistingProtocol.jsp</result>
+            <result name="selectExistingProtocol">/WEB-INF/jsp/createexperiment/experimentSelectExistingProtocol.jsp</result>
         </action>
 
         <!-- /Create Experiment Actions -->

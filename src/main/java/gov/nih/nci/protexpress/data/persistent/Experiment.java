@@ -203,7 +203,6 @@ public class Experiment implements Serializable, Persistent, Auditable {
         this.statusCompleted = statusCompleted;
     }
 
-
     /**
      * Gets the name.
      *
@@ -350,6 +349,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      * @return the contactPerson.
      */
     @Embedded
+    @Valid
     public ContactPerson getContactPerson() {
         return contactPerson;
     }

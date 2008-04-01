@@ -185,7 +185,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Contact Person Notes.
      */
-    public static final int CONTACT_PERSON_NOTES_LENGTH = 100;
+    public static final int CONTACT_PERSON_NOTES_LENGTH = 2000;
 
 
     /**

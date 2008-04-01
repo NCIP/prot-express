@@ -3,56 +3,62 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
-<form name="create" id="createnew">
+<jsp:include page="/WEB-INF/jsp/createexperiment/experimentAddOrSelectProtocolHeader.jsp" />
 
-                                    <div class="twocoltable">
-                                        <table class="form">
-                                            <tr>
-                                                <td class="label">Protocol Name:</td>
-
-                                                <td class="value"><input type="text" name="title" id="exptitle" value="" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Description:</td>
-                                                <td class="value"><textarea cols="20" rows="2" id="desc" style="height:70px"></textarea></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-
-
-                                    <div class="twocoltable">
-                                        <table class="form">
-                                            <tr>
-                                                <td class="label">Software:</td>
-                                                <td class="value"><input type="text" id="software" maxlength="150" value="" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Instrument:</td>
-
-                                                <td class="value"><input type="text" id="instrument" maxlength="150" value="" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Notes:</td>
-                                                <td class="value"><textarea cols="20" rows="2" id="expcomments"></textarea></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-
-
-                                    <div class="clear"></div>
-
-                                    <div class="actionsrow">
-
-                                        <del class="btnwrapper">
-
-                                            <ul id="btnrow2">
-                                                <li><a href="experimentcreate.htm" class="btn" onclick="this.blur();"><span class="btn_img"><span class="cancel">Cancel/Back</span></span></a></li>
-                                                <li><a href="experimentcreate_protocols2.htm" class="btn" style="text-decoration:none" onclick="this.blur();"><span class="btn_img"><span class="savecontinue">Save and Continue</span></span></a></li>
-                                            </ul>
-
-                                        </del>
-
-                                        <div class="clear"></div>
-
-                                    </div>
-
+<s:form id="addNewProtocolForm" action="/createExperiment/manageProtocols/save.action" method="post">
+    <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
+    <s:hidden name="experimentId" value="${experiment.id}"/>
+    <s:hidden name="experimentRunId" value="${experimentRun.id}"/>
+    <div class="twocoltable">
+        <table class="form">
+            <tr>
+                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.name" />:</td>
+                <td class="value"><s:textfield name="protocol.name"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.description" />:</td>
+                <td class="value"><s:textarea name="protocol.description" rows="2" cols="20"></s:textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="twocoltable">
+        <table class="form">
+            <tr>
+                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.software" />:</td>
+                <td class="value"><s:textfield name="protocol.software"></s:textfield></td>
+            </tr>
+            <tr>
+                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.instrument" />:</td>
+                 <td class="value"><s:textfield name="protocol.instrument"></s:textfield></td>
+            </tr>
+            <tr>
+                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.notes" />:</td>
+                 <td class="value"> <s:textarea name="protocol.notes" rows="2" cols="20"></s:textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear"/>
+    <div class="actionsrow">
+        <del class="btnwrapper">
+            <ul id="btnrow2">
+                <li>
+                    <c:url var="cancelUrl" value="/createExperiment/reloadCreateNewExperiment.action" />
+                    <a href="${cancelUrl}" class="btn" onclick="this.blur();">
+                        <span class="btn_img">
+                            <span class="cancel"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.button.back" /></span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:document.getElementById('addNewProtocolForm').submit();" class="btn" style="text-decoration:none" onclick="this.blur();">
+                        <span class="btn_img">
+                            <span class="savecontinue"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.button.saveandcontinue" /></span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </del>
+        <div class="clear"></div>
+    </div>
+</s:form>

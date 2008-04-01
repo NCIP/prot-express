@@ -107,4 +107,9 @@ public interface ProtExpressService {
      * @return true if the object is the one and only object with the given value for the given field
      */
     boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue);
+    /**
+     * clear the hibernate session.
+     *
+     */
+    void clear();
 }

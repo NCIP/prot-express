@@ -85,17 +85,19 @@ package gov.nih.nci.protexpress.ui.actions.experiment;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.service.ExperimentService;
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
-import java.text.MessageFormat;
+import java.util.Map;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action for managing create experiment process.
@@ -108,22 +110,22 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);
-    private ExperimentRun expRun = new ExperimentRun("Run");
+    private ExperimentRun experimentRun = new ExperimentRun("Run");
     private String successMessage = null;
+    private String actionResultAddProtocol = "addProtocol";
 
-    private String actionResultAddProtocol = "experimentProtocolForm";
+    private Map session;
+    private final String sessionExperimentId = "sessionExperimentId";
 
     /**
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
+        session = ActionContext.getContext().getSession();
+
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
         if ((getExperiment() != null) && (getExperiment().getId() != null)) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
-        } else if ((getExperiment() != null) && (getExperiment().getId() == null)) {
-            getExperiment().getContactPerson().setEmail("test@test.com");
-            getExperiment().getContactPerson().setFirstName("Krishna");
-            getExperiment().getContactPerson().setLastName("Kanchinadam");
-            getExperiment().getContactPerson().setNotes("Some Notes");
+            setExperiment(es.getExperimentById(getExperiment().getId()));
         }
     }
 
@@ -134,6 +136,17 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      */
     @SkipValidation
     public String createNewExperiment() {
+        if ((session != null) && session.containsKey(sessionExperimentId)) {
+            session.remove(sessionExperimentId);
+        }
+
+        User user = UserHolder.getUser();
+        if (user != null) {
+            getExperiment().getContactPerson().setEmail(user.getEmailId());
+            getExperiment().getContactPerson().setFirstName(user.getFirstName());
+            getExperiment().getContactPerson().setLastName(user.getLastName());
+        }
+
         return ActionSupport.INPUT;
     }
 
@@ -148,49 +161,38 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
     }
 
     /**
-     * Saves the experiment overview information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @Validations(
-            emails = {@EmailValidator(fieldName = "experiment.contactPerson.email",
-                    key = "validator.email", message = "") }
-    )
-    public String saveOverviewInformation() {
-        getExperiment().getExperimentRuns().clear();
-        getExperiment().getExperimentRuns().add(expRun);
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        return this.actionResultAddProtocol;
-    }
-
-    /**
-     * Saves the experiment.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        if (getExperiment().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().
-                    getString("experiment.update.success"));
-        }
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * delete the experiments.
+     * re-load the experiment page.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String delete() {
-        String msg = ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.delete.success");
-        setSuccessMessage(MessageFormat.format(msg, getExperiment().getName()));
-        ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
-        return "search";
+    @SuppressWarnings("unchecked")
+    public String reloadCreateNewExperiment() {
+        if ((session != null) && session.get(sessionExperimentId) != null) {
+            Long expId = (Long) session.get(sessionExperimentId);
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+        }
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Saves the experiment overview information.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveOverviewInformation() {
+        experimentRun.setDatePerformed(getExperiment().getDatePerformed());
+        experimentRun.setExperiment(getExperiment());
+        getExperiment().getExperimentRuns().clear();
+        getExperiment().getExperimentRuns().add(experimentRun);
+
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
+        ProtExpressRegistry.getProtExpressService().clear();
+
+        if (session != null) {
+            session.put(sessionExperimentId, getExperiment().getId());
+        }
+        return this.actionResultAddProtocol;
     }
 
     /**
@@ -206,6 +208,24 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      */
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
+    }
+
+    /**
+     * Gets the experimentRun.
+     *
+     * @return the experimentRun.
+     */
+    public ExperimentRun getExperimentRun() {
+        return experimentRun;
+    }
+
+    /**
+     * Sets the experimentRun.
+     *
+     * @param experimentRun the experimentRun to set.
+     */
+    public void setExperimentRun(ExperimentRun experimentRun) {
+        this.experimentRun = experimentRun;
     }
 
     /**
