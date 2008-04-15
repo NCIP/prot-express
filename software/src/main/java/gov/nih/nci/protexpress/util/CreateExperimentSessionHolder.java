@@ -80,155 +80,94 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
+package gov.nih.nci.protexpress.util;
+
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
-import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
 /**
- * Action for managing create experiment process.
+ * Class that holds experiment information in session, during the Create Experiment process.
  *
  * @author Krishna Kanchinadam
  */
 
-@Validation
-public class CreateExperimentManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public final class CreateExperimentSessionHolder {
+    private Long experimentId;
+    private Long experimentRunId;
+    private Long protocolApplicationId;
 
-    private Experiment experiment = new Experiment(null);
-    private ExperimentRun experimentRun = new ExperimentRun("Run");
-    private String successMessage = null;
-    private String actionResultAddProtocol = "addProtocol";
-    private String actionResultExperimentSummary = "experimentSummary";
-
-    private CreateExperimentSessionHelper experimentSessionHelper;
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() throws Exception {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if ((getExperiment() != null) && (getExperiment().getId() != null)) {
-            setExperiment(es.getExperimentById(getExperiment().getId()));
-        }
-    }
+    private Experiment experiment;
+    private ExperimentRun experimentRun;
+    private ProtocolApplication protocolApplication;
 
     /**
-     * create a new experiment.
+     * Default constructor.
      *
-     * @return the directive for the next action / page to be directed to
      */
-    @SkipValidation
-    public String createNewExperiment() {
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        experimentSessionHelper.removeExperimentFromSession();
-
-        User user = UserHolder.getUser();
-        if (user != null) {
-            getExperiment().getContactPerson().setEmail(user.getEmailId());
-            getExperiment().getContactPerson().setFirstName(user.getFirstName());
-            getExperiment().getContactPerson().setLastName(user.getLastName());
-        }
-
-        return ActionSupport.INPUT;
+    public CreateExperimentSessionHolder() {
     }
 
     /**
-     * loads the experiments.
+     * Gets the experimentId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @return the experimentId.
      */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public Long getExperimentId() {
+        return experimentId;
     }
 
+
     /**
-     * re-load the experiment page.
+     * Sets the experimentId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param experimentId the experimentId to set.
      */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String reloadCreateNewExperiment() {
-        setExperimentInformation();
-
-        return ActionSupport.INPUT;
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
     }
 
+
     /**
-     * re-load the experiment information and display the summary page.
+     * Gets the experimentRunId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @return the experimentRunId.
      */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String experimentSummary() {
-        setExperimentInformation();
-
-        return actionResultExperimentSummary;
+    public Long getExperimentRunId() {
+        return experimentRunId;
     }
 
-    private void setExperimentInformation() {
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        setExperiment(ProtExpressRegistry.getExperimentService().
-                getExperimentById(experimentSessionHelper.getExperimentId()));
-
-        setExperimentRun(getExperiment().getExperimentRuns().get(0));
-    }
 
     /**
-     * Saves the experiment overview information.
+     * Sets the experimentRunId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param experimentRunId the experimentRunId to set.
      */
-    public String saveOverviewInformation() {
-        experimentRun.setDatePerformed(getExperiment().getDatePerformed());
-        experimentRun.setExperiment(getExperiment());
-        getExperiment().getExperimentRuns().clear();
-        getExperiment().getExperimentRuns().add(experimentRun);
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        ProtExpressRegistry.getProtExpressService().clear();
-
-        // Update experiment in session.
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        experimentSessionHelper.setExperimentId(getExperiment().getId());
-        experimentSessionHelper.setExperiment(getExperiment());
-        experimentSessionHelper.setExperimentRunId(experimentRun.getId());
-        experimentSessionHelper.setExperimentRun(experimentRun);
-        experimentSessionHelper.updateExperimentInSession();
-        experimentSessionHelper = null;
-
-        return this.actionResultAddProtocol;
+    public void setExperimentRunId(Long experimentRunId) {
+        this.experimentRunId = experimentRunId;
     }
 
+
     /**
-     * @return the experiment
+     * Gets the experiment.
+     *
+     * @return the experiment.
      */
-    @CustomValidator(type = "hibernate")
     public Experiment getExperiment() {
-        return this.experiment;
+        return experiment;
     }
 
+
     /**
-     * @param experiment the experiment to set
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set.
      */
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
     }
+
 
     /**
      * Gets the experimentRun.
@@ -239,6 +178,7 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
         return experimentRun;
     }
 
+
     /**
      * Sets the experimentRun.
      *
@@ -248,17 +188,45 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
         this.experimentRun = experimentRun;
     }
 
-    /**
-     * @return the successMessage
-     */
-    public String getSuccessMessage() {
-        return this.successMessage;
-    }
 
     /**
-     * @param successMessage the successMessage to set
+     * Gets the protocolApplicationId.
+     *
+     * @return the protocolApplicationId.
      */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
     }
+
+
+    /**
+     * Sets the protocolApplicationId.
+     *
+     * @param protocolApplicationId the protocolApplicationId to set.
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
+    }
+
+
+    /**
+     * Gets the protocolApplication.
+     *
+     * @return the protocolApplication.
+     */
+    public ProtocolApplication getProtocolApplication() {
+        return protocolApplication;
+    }
+
+
+    /**
+     * Sets the protocolApplication.
+     *
+     * @param protocolApplication the protocolApplication to set.
+     */
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        this.protocolApplication = protocolApplication;
+    }
+
+
 }

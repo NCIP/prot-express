@@ -80,154 +80,126 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
+package gov.nih.nci.protexpress.util;
+
 import gov.nih.nci.protexpress.data.persistent.Experiment;
 import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
-import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Action for managing create experiment process.
+ * Util class to help with the experiment in session, during the create experiment process.
  *
  * @author Krishna Kanchinadam
  */
 
-@Validation
-public class CreateExperimentManagementAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
+public final class CreateExperimentSessionHelper {
+    private final String sessionExperiment = "sessionExperiment";
+    private Map session;
+    private ActionContext actionContext;
 
-    private Experiment experiment = new Experiment(null);
-    private ExperimentRun experimentRun = new ExperimentRun("Run");
-    private String successMessage = null;
-    private String actionResultAddProtocol = "addProtocol";
-    private String actionResultExperimentSummary = "experimentSummary";
+    private static CreateExperimentSessionHolder experimentSessionHolder = new CreateExperimentSessionHolder();
 
-    private CreateExperimentSessionHelper experimentSessionHelper;
     /**
-     * {@inheritDoc}
+     * Default constructor.
+     *
+     * @param actionContext the action context.
      */
-    public void prepare() throws Exception {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if ((getExperiment() != null) && (getExperiment().getId() != null)) {
-            setExperiment(es.getExperimentById(getExperiment().getId()));
+    public CreateExperimentSessionHelper(ActionContext actionContext) {
+        this.actionContext = actionContext;
+    }
+
+    /**
+     * Sets/updates the experiment information in session.
+     */
+    public void updateExperimentInSession() {
+        session = actionContext.getSession();
+        if (session != null) {
+            session.put(getSessionExperiment(), getExperimentSessionHolder());
         }
     }
 
     /**
-     * create a new experiment.
-     *
-     * @return the directive for the next action / page to be directed to
+     * Removes the experiment information from session.
      */
-    @SkipValidation
-    public String createNewExperiment() {
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        experimentSessionHelper.removeExperimentFromSession();
 
-        User user = UserHolder.getUser();
-        if (user != null) {
-            getExperiment().getContactPerson().setEmail(user.getEmailId());
-            getExperiment().getContactPerson().setFirstName(user.getFirstName());
-            getExperiment().getContactPerson().setLastName(user.getLastName());
+    public void removeExperimentFromSession() {
+        session = actionContext.getSession();
+        if ((session != null) && (session.get(getSessionExperiment()) != null)) {
+            session.remove(getSessionExperiment());
+        }
+    }
+
+    /**
+     * Gets the experiment information object from session.
+     * @return experiment object from session.
+     */
+    public CreateExperimentSessionHolder getExperimentFromSession() {
+        CreateExperimentSessionHolder expSessionHolder = null;
+        session = actionContext.getSession();
+        if ((session != null) && (session.get(getSessionExperiment()) != null)) {
+            expSessionHolder = (CreateExperimentSessionHolder) session.get(getSessionExperiment());
         }
 
-        return ActionSupport.INPUT;
+        return expSessionHolder;
     }
 
     /**
-     * loads the experiments.
+     * Gets the experimentId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @return the experimentId.
      */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public Long getExperimentId() {
+        return experimentSessionHolder.getExperimentId();
     }
 
     /**
-     * re-load the experiment page.
+     * Sets the experimentId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param experimentId the experimentId to set.
      */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String reloadCreateNewExperiment() {
-        setExperimentInformation();
-
-        return ActionSupport.INPUT;
+    public void setExperimentId(Long experimentId) {
+        experimentSessionHolder.setExperimentId(experimentId);
     }
 
     /**
-     * re-load the experiment information and display the summary page.
+     * Gets the experimentRunId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @return the experimentRunId.
      */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String experimentSummary() {
-        setExperimentInformation();
-
-        return actionResultExperimentSummary;
-    }
-
-    private void setExperimentInformation() {
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        setExperiment(ProtExpressRegistry.getExperimentService().
-                getExperimentById(experimentSessionHelper.getExperimentId()));
-
-        setExperimentRun(getExperiment().getExperimentRuns().get(0));
+    public Long getExperimentRunId() {
+        return experimentSessionHolder.getExperimentRunId();
     }
 
     /**
-     * Saves the experiment overview information.
+     * Sets the experimentRunId.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param experimentRunId the experimentRunId to set.
      */
-    public String saveOverviewInformation() {
-        experimentRun.setDatePerformed(getExperiment().getDatePerformed());
-        experimentRun.setExperiment(getExperiment());
-        getExperiment().getExperimentRuns().clear();
-        getExperiment().getExperimentRuns().add(experimentRun);
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        ProtExpressRegistry.getProtExpressService().clear();
-
-        // Update experiment in session.
-        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
-        experimentSessionHelper.setExperimentId(getExperiment().getId());
-        experimentSessionHelper.setExperiment(getExperiment());
-        experimentSessionHelper.setExperimentRunId(experimentRun.getId());
-        experimentSessionHelper.setExperimentRun(experimentRun);
-        experimentSessionHelper.updateExperimentInSession();
-        experimentSessionHelper = null;
-
-        return this.actionResultAddProtocol;
+    public void setExperimentRunId(Long experimentRunId) {
+        experimentSessionHolder.setExperimentRunId(experimentRunId);
     }
 
     /**
-     * @return the experiment
+     * Gets the experiment.
+     *
+     * @return the experiment.
      */
-    @CustomValidator(type = "hibernate")
     public Experiment getExperiment() {
-        return this.experiment;
+        return experimentSessionHolder.getExperiment();
     }
 
     /**
-     * @param experiment the experiment to set
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set.
      */
     public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+        experimentSessionHolder.setExperiment(experiment);
     }
 
     /**
@@ -236,7 +208,7 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      * @return the experimentRun.
      */
     public ExperimentRun getExperimentRun() {
-        return experimentRun;
+        return experimentSessionHolder.getExperimentRun();
     }
 
     /**
@@ -245,20 +217,70 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      * @param experimentRun the experimentRun to set.
      */
     public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
+        experimentSessionHolder.setExperimentRun(experimentRun);
     }
 
     /**
-     * @return the successMessage
+     * Gets the sessionExperiment.
+     *
+     * @return the sessionExperiment.
      */
-    public String getSuccessMessage() {
-        return this.successMessage;
+    public String getSessionExperiment() {
+        return sessionExperiment;
     }
 
     /**
-     * @param successMessage the successMessage to set
+     * Gets the experimentSessionHolder.
+     *
+     * @return the experimentSessionHolder.
      */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+    public static CreateExperimentSessionHolder getExperimentSessionHolder() {
+        return experimentSessionHolder;
+    }
+
+    /**
+     * Sets the experimentSessionHolder.
+     *
+     * @param experimentSessionHolder the experimentSessionHolder to set.
+     */
+    public static void setExperimentSessionHolder(
+            CreateExperimentSessionHolder experimentSessionHolder) {
+        CreateExperimentSessionHelper.experimentSessionHolder = experimentSessionHolder;
+    }
+
+    /**
+     * Gets the protocolApplicationId.
+     *
+     * @return the protocolApplicationId.
+     */
+    public Long getProtocolApplicationId() {
+        return experimentSessionHolder.getProtocolApplicationId();
+    }
+
+    /**
+     * Sets the protocolApplicationId.
+     *
+     * @param protocolApplicationId the protocolApplicationId to set.
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        experimentSessionHolder.setProtocolApplicationId(protocolApplicationId);
+    }
+
+    /**
+     * Gets the protocolApplication.
+     *
+     * @return the protocolApplication.
+     */
+    public ProtocolApplication getProtocolApplication() {
+        return experimentSessionHolder.getProtocolApplication();
+    }
+
+    /**
+     * Sets the protocolApplication.
+     *
+     * @param protocolApplication the protocolApplication to set.
+     */
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        experimentSessionHolder.setProtocolApplication(protocolApplication);
     }
 }

@@ -27,18 +27,18 @@
                 <legend><fmt:message key="protexpress.page.viewprotocoldetails.overviewtitle" /></legend>
                 <table class="form2">
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.name" />:<br /><p>${protocol.name}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.protocol.name" />:<br /><p>${protocol.name}</p></td>
                     </tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.description" />:<br /><p>${protocol.description}</p></td>
-                    </tr>
-                    <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.notes" />:<br /><p>${protocol.notes}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.protocol.description" />:<br /><p>${protocol.description}</p></td>
                     </tr>
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.software" />:<br /><p>${protocol.software}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.protocol.notes" />:<br /><p>${protocol.notes}</p></td>
                     </tr>
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.instrument" />:<br /><p>${protocol.instrument}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.protocol.software" />:<br /><p>${protocol.software}</p></td>
+                    </tr>
+                    <tr>
+                        <td class="label_left"><fmt:message key="protexpress.protocol.instrument" />:<br /><p>${protocol.instrument}</p></td>
                     </tr>
                 </table>
             </fieldset>
@@ -46,16 +46,16 @@
                 <legend><fmt:message key="protexpress.page.viewprotocoldetails.contacttitle" /></legend>
                 <table class="form">
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.contactfirstname" />:<br /><p>${protocol.contactPerson.firstName}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.contact.firstname" />:<br /><p>${protocol.contactPerson.firstName}</p></td>
                     </tr>
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.contactlastname" />:<br /><p>${protocol.contactPerson.lastName}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.contact.lastname" />:<br /><p>${protocol.contactPerson.lastName}</p></td>
                     </tr>
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.contactemail" />:<br /><p>${protocol.contactPerson.email}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.contact.email" />:<br /><p>${protocol.contactPerson.email}</p></td>
                     </tr>
                     <tr>
-                        <td class="label_left"><fmt:message key="protexpress.page.viewprotocoldetails.contactnotes" />:<br /><p>${protocol.contactPerson.notes}</p></td>
+                        <td class="label_left"><fmt:message key="protexpress.contact.notes" />:<br /><p>${protocol.contactPerson.notes}</p></td>
                     </tr>
                 </table>
             </fieldset>
