@@ -34,27 +34,27 @@
                     <table class="form2">
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.name" key="protexpress.page.editprotocoldetails.name" labelposition="top" required="true"/></p>
+                                <p><s:textfield name="protocol.name" key="protexpress.protocol.name" labelposition="top" required="true"/></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textarea name="protocol.description" key="protexpress.page.editprotocoldetails.description" labelposition="top" rows="4"></s:textarea></p>
+                                <p><s:textarea name="protocol.description" key="protexpress.protocol.description" labelposition="top" rows="4"></s:textarea></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textarea name="protocol.notes" key="protexpress.page.editprotocoldetails.notes" rows="4" labelposition="top"></s:textarea></p>
+                                <p><s:textarea name="protocol.notes" key="protexpress.protocol.notes" rows="4" labelposition="top"></s:textarea></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.software" key="protexpress.page.editprotocoldetails.software" labelposition="top"/></p>
+                                <p><s:textfield name="protocol.software" key="protexpress.protocol.software" labelposition="top"/></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.instrument" key="protexpress.page.editprotocoldetails.instrument" labelposition="top"/></p>
+                                <p><s:textfield name="protocol.instrument" key="protexpress.protocol.instrument" labelposition="top"/></p>
                             </td>
                         </tr>
                     </table>
@@ -64,22 +64,22 @@
                     <table class="form2">
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.firstName" key="protexpress.page.editprotocoldetails.contactfirstname" labelposition="top" /></p>
+                                <p><s:textfield name="protocol.contactPerson.firstName" key="protexpress.contact.firstname" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.lastName" key="protexpress.page.editprotocoldetails.contactlastname" labelposition="top" /></p>
+                                <p><s:textfield name="protocol.contactPerson.lastName" key="protexpress.contact.lastname" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.email" key="protexpress.page.editprotocoldetails.contactemail" labelposition="top" /></p>
+                                <p><s:textfield name="protocol.contactPerson.email" key="protexpress.contact.email" labelposition="top" /></p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.notes" key="protexpress.page.editprotocoldetails.contactnotes" labelposition="top" /></p>
+                                <p><s:textfield name="protocol.contactPerson.notes" key="protexpress.contact.notes" labelposition="top" /></p>
                             </td>
                         </tr>
                     </table>

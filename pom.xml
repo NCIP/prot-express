@@ -253,7 +253,6 @@
                         <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
                         <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                         <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
-                        <srcFile>src/main/sql/sampleXarData1.sql</srcFile>
                     </srcFiles>
                 </configuration>
             </plugin>
@@ -399,7 +398,7 @@
                 <configuration>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>60</totalBranchRate>
+                        <totalBranchRate>50</totalBranchRate>
                         <totalLineRate>60</totalLineRate>
                     </check>
                     <instrumentation>

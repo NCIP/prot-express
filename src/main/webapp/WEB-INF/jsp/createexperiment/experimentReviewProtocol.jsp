@@ -5,17 +5,17 @@
 
 <jsp:include page="/WEB-INF/jsp/createexperiment/experimentProtocolHeader.jsp" />
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.info" /></p></div>
-<h3>Review Protocol</h3>
+<h3><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.title" /></h3>
 <fieldset>
-    <legend>Protocol Details</legend>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.protocoldetailstitle" /></legend>
     <div class="twocoltable">
         <table class="form">
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.name" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.name" />:</td>
                 <td class="value">${protocolApplication.protocol.name}</td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.description" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.description" />:</td>
                 <td class="value">${protocolApplication.protocol.description}</td>
             </tr>
         </table>
@@ -23,15 +23,15 @@
     <div class="twocoltable">
         <table class="form">
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.software" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.software" />:</td>
                 <td class="value">${protocolApplication.protocol.software}</td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.instrument" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.instrument" />:</td>
                 <td class="value">${protocolApplication.protocol.instrument}</td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.notes" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
                 <td class="value">${protocolApplication.protocol.notes}</td>
             </tr>
         </table>
@@ -50,9 +50,9 @@
             </s:if>
             <s:else>
                 <tr>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs.name" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs.filename" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs.notes" /></th>
+                    <th><fmt:message key="protexpress.input.name" /></th>
+                    <th><fmt:message key="protexpress.input.filename" /></th>
+                    <th><fmt:message key="protexpress.page.input.notes" /></th>
                 </tr>
                 <c:forEach items="${protocolApplication.inputs}" var="input">
                     <tr>
@@ -79,9 +79,9 @@
             </s:if>
             <s:else>
                 <tr>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.outputs.name" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.outputs.filename" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.outputs.notes" /></th>
+                    <th><fmt:message key="protexpress.output.name" /></th>
+                    <th><fmt:message key="protexpress.output.filename" /></th>
+                    <th><fmt:message key="protexpress.output.notes" /></th>
                 </tr>
                 <c:forEach items="${protocolApplication.outputs}" var="output">
                     <tr>
@@ -102,7 +102,7 @@
                 <c:url var="experimentProtocolEditUrl" value="/notYetImplemented.html">
                     <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
                 </c:url>
-                <c:url var="experimentSummaryUrl" value="/notYetImplemented.html">
+                <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action">
                     <c:param name="experimentId" value="${experiment.id}" />
                 </c:url>
                 <c:url var="addAnotherProtocolUrl" value="/createExperiment/manageProtocols/addNewProtocol.action">

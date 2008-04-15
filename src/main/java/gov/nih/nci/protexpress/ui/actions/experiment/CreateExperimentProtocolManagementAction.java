@@ -91,8 +91,7 @@ import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
-
-import java.util.Map;
+import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
@@ -128,17 +127,12 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
     private String actionResultAddInputs = "addInputs";
     private String actionResultReviewProtocol = "reviewProtocol";
 
-    private Map session;
-    private final String sessionExperimentId = "sessionExperimentId";
-    private final String sessionProtocolApplicationId = "sessionProtocolApplicationId";
+    private CreateExperimentSessionHelper experimentSessionHelper;
 
     /**
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        session = ActionContext.getContext().getSession();
-
-
     }
 
     /**
@@ -148,17 +142,13 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
      */
     @SkipValidation
     public String addNewProtocol() {
-        if ((session != null) && (session.get(sessionExperimentId) != null)) {
-            setExperimentId((Long) session.get(sessionExperimentId));
-        }
-        if ((session != null) && (session.get(sessionProtocolApplicationId) != null)) {
-            session.remove(sessionProtocolApplicationId);
-        }
+        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
+        experimentSessionHelper.setProtocolApplicationId(null);
+        experimentSessionHelper.updateExperimentInSession();
 
         ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getExperimentId() != null) {
-            setExperiment(es.getExperimentById(getExperimentId()));
-        }
+         setExperiment(es.getExperimentById(experimentSessionHelper.getExperimentId()));
+
         return ActionSupport.INPUT;
     }
 
@@ -179,6 +169,11 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
      */
     @SkipValidation
     public String selectExistingProtocol() {
+        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
+        setExperiment(ProtExpressRegistry.getExperimentService().
+                getExperimentById(experimentSessionHelper.getExperimentId()));
+
+        /*
         if ((session != null) && (session.get(sessionExperimentId) != null)) {
             setExperimentId((Long) session.get(sessionExperimentId));
         }
@@ -186,7 +181,7 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
         if ((session != null) && (session.get(sessionProtocolApplicationId) != null)) {
             session.remove(sessionProtocolApplicationId);
         }
-
+*/
         ExperimentService es = ProtExpressRegistry.getExperimentService();
         if (getExperimentId() != null) {
             setExperiment(es.getExperimentById(getExperimentId()));
@@ -209,14 +204,13 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
      */
     @SkipValidation
     public String reviewProtocol() {
-        if ((session != null) && (session.get(sessionProtocolApplicationId) != null)) {
-            setProtocolApplicationId((Long) session.get(sessionProtocolApplicationId));
+        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
+        setProtocolApplicationId(experimentSessionHelper.getProtocolApplicationId());
 
-            ExperimentService es = ProtExpressRegistry.getExperimentService();
-            if (getProtocolApplicationId() != null) {
-                setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
-            }
-        }
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+           if (getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
+          }
 
         return this.actionResultReviewProtocol;
     }
@@ -249,8 +243,9 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
      */
     public String save() {
         ExperimentService es = ProtExpressRegistry.getExperimentService();
-        if (getExperimentId() != null) {
-            setExperiment(es.getExperimentById(getExperimentId()));
+        experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
+        if (experimentSessionHelper.getExperimentId() != null) {
+            setExperiment(es.getExperimentById(experimentSessionHelper.getExperimentId()));
             ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
 
             if ((getProtocolApplication().getId() == null) && (expRun != null)) {
@@ -268,9 +263,9 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
                 expRun.getProtocolApplications().add(getProtocolApplication());
 
                 ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-                if (session != null) {
-                    session.put(sessionProtocolApplicationId, getProtocolApplication().getId());
-                }
+                experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
+                experimentSessionHelper.setProtocolApplicationId(getProtocolApplication().getId());
+                experimentSessionHelper.updateExperimentInSession();
             }
         }
         return this.actionResultAddInputs;
@@ -294,6 +289,7 @@ public class CreateExperimentProtocolManagementAction extends ActionSupport impl
     public Long getExperimentId() {
         return experimentId;
     }
+
     /**
      * Sets the experimentId.
      *

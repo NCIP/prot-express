@@ -10,7 +10,10 @@
     <!-- Breadcrumb -->
     <div id="breadcrumb">
         <a href="<c:url value="/home/home.action" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
-        <a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />" class="selected"><fmt:message key="protexpress.breadcrumb.createnewexperiment" /></a>
+        <a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />" class="selected">
+            <s:if test="experiment != null && experiment.id != null">${experiment.name}</s:if>
+            <s:else><fmt:message key="protexpress.breadcrumb.createnewexperiment" /></s:else>
+        </a>
     </div>
     <!-- /Breadcrumb -->
     <!-- Page Help -->

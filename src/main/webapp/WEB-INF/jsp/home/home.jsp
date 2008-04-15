@@ -88,7 +88,7 @@
                                 </td>
                                 <td class="action">
                                     <c:if test="${statusCompleted}">
-                                        <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" /></a
+                                        <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" /></a>
                                     </c:if>
                                 </td>
                             </tr>

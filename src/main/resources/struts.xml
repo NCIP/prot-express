@@ -101,6 +101,7 @@
         <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/experimentOverview.jsp</result>
             <result name="addProtocol" type="chain">createExperiment/manageProtocols/addNewProtocol</result>
+            <result name="experimentSummary">/WEB-INF/jsp/createexperiment/experimentSummary.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

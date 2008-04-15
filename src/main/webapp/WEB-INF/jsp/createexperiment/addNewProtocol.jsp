@@ -7,17 +7,15 @@
 
 <s:form id="addNewProtocolForm" action="/createExperiment/manageProtocols/save.action" method="post">
     <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
-    <s:hidden name="experimentId" value="${experiment.id}"/>
-    <s:hidden name="experimentRunId" value="${experimentRun.id}"/>
     <div class="twocoltable">
         <table class="form">
             <tr>
-                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.name" />:</td>
+                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.protocol.name" />:</td>
                 <td class="value"><s:textfield name="protocol.name"/>
                 </td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.description" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.description" />:</td>
                 <td class="value"><s:textarea name="protocol.description" rows="2" cols="20"></s:textarea></td>
             </tr>
         </table>
@@ -25,15 +23,15 @@
     <div class="twocoltable">
         <table class="form">
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.software" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.software" />:</td>
                 <td class="value"><s:textfield name="protocol.software"></s:textfield></td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.instrument" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.instrument" />:</td>
                  <td class="value"><s:textfield name="protocol.instrument"></s:textfield></td>
             </tr>
             <tr>
-                <td class="label"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.notes" />:</td>
+                <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
                  <td class="value"> <s:textarea name="protocol.notes" rows="2" cols="20"></s:textarea></td>
             </tr>
         </table>
@@ -57,6 +55,7 @@
                         </span>
                     </a>
                 </li>
+
             </ul>
         </del>
         <div class="clear"></div>
