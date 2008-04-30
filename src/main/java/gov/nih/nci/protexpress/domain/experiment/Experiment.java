@@ -80,19 +80,33 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
+import gov.nih.nci.protexpress.domain.Auditable;
+import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+import gov.nih.nci.protexpress.domain.LsidType;
+import gov.nih.nci.protexpress.domain.Persistent;
+import gov.nih.nci.protexpress.domain.audit.AuditInfo;
+import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -102,17 +116,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
 /**
- * Class representing a protocol.
+ * Class representing an experiment.
  *
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  */
 @Entity
-@Table(name = "protocol")
+@Table(name = "experiment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Protocol implements Serializable, Persistent, Auditable {
+public class Experiment implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
@@ -120,31 +135,35 @@ public class Protocol implements Serializable, Persistent, Auditable {
     private LsidType lsid;
     private String name;
     private String description;
-    private String software;
-    private String instrument;
+    private String hypothesis;
+    private String url;
     private String notes;
-    private ContactPerson contactPerson = new ContactPerson();
+    private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
+    private Boolean statusCompleted = false;
+    private ContactPerson contactPerson = new ContactPerson();
+    private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected Protocol() {
+    protected Experiment() {
     }
 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name the name of the protocol
+     * @param name the name of the experiment
+     *
      */
-    public Protocol(String name) {
+    public Experiment(String name) {
         setName(name);
     }
 
     /**
-     * The id of the protocol.
+     * The id of the object.
      *
-     * @return the id, null for new protocols
+     * @return the id, null for new objects
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -153,39 +172,58 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * @param id the id of protocol to set
+     * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Gets the lsid for the protocol.
+     * Gets the lsid.
      *
      * @return the lsid
      */
     @Transient
     public String getLsid() {
         lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.protocol"), this.id);
+                .getString("lsid.namespace.experiment"), this.id);
         return this.lsid.getLsid();
     }
 
     /**
-     * Gets the name of the protocol.
+     * Gets the statusCompleted.
+     *
+     * @return the statusCompleted.
+     */
+    @Transient
+    public Boolean getStatusCompleted() {
+        return statusCompleted;
+    }
+
+    /**
+     * Sets the statusCompleted.
+     *
+     * @param statusCompleted the statusCompleted to set.
+     */
+    public void setStatusCompleted(Boolean statusCompleted) {
+        this.statusCompleted = statusCompleted;
+    }
+
+    /**
+     * Gets the name.
      *
      * @return the name
      */
-    @Index(name = "protocol_name_idx")
     @Column(name = "name")
+    @Length(max = HibernateFieldLength.EXPERIMENT_NAME_LENGTH)
     @NotEmpty
-    @Length(max = HibernateFieldLength.PROTOCOL_NAME_LENGTH)
+    @Index(name = "experiment_name_idx")
     public String getName() {
         return this.name;
     }
 
     /**
-     * Sets the name of the protocol.
+     * Sets the name.
      *
      * @param name the name to set
      */
@@ -194,13 +232,13 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the description.
+     * Gets the comments.
      *
-     * @return the description
+     * @return the comments
      */
     @Column(name = "description")
-    @Length(max = HibernateFieldLength.PROTOCOL_DESCRIPTION_LENGTH)
-    @Index(name = "protocol_desc_idx")
+    @Length(max = HibernateFieldLength.EXPERIMENT_DESCRIPTION_LENGTH)
+    @Index(name = "experiment_description_idx")
     public String getDescription() {
         return this.description;
     }
@@ -215,42 +253,43 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the instrument.
+     * Gets the hypothesis.
      *
-     * @return the instrument
+     * @return the hypothesis
      */
-    @Column(name = "instrument")
-    @Length(max = HibernateFieldLength.PROTOCOL_INSTRUMENT_LENGTH)
-    public String getInstrument() {
-        return this.instrument;
+    @Column(name = "hypothesis")
+    @Length(max = HibernateFieldLength.EXPERIMENT_HYPOTHESIS_LENGTH)
+    public String getHypothesis() {
+        return this.hypothesis;
     }
 
     /**
-     * Sets the instrument.
+     * Sets the hypothesis.
      *
-     * @param instrument the instrument to set
+     * @param hypothesis the hypothesis to set
      */
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
+    public void setHypothesis(String hypothesis) {
+        this.hypothesis = hypothesis;
     }
 
     /**
-     * Gets the software.
+     * Sets the url.
      *
-     * @return the software
+     * @param url the url to set
      */
-    @Column(name = "software")
-    @Length(max = HibernateFieldLength.PROTOCOL_SOFTWARE_LENGTH)
-    public String getSoftware() {
-        return this.software;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**
+     * Gets the url.
      *
-     * @param software the software to set
+     * @return the url
      */
-    public void setSoftware(String software) {
-        this.software = software;
+    @Column(name = "url")
+    @Length(max = HibernateFieldLength.EXPERIMENT_URL_LENGTH)
+    public String getUrl() {
+        return this.url;
     }
 
     /**
@@ -259,7 +298,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
      * @return the notes.
      */
     @Column(name = "notes")
-    @Length(max = HibernateFieldLength.PROTOCOL_NOTES_LENGTH)
+    @Length(max = HibernateFieldLength.EXPERIMENT_NOTES_LENGTH)
     public String getNotes() {
         return notes;
     }
@@ -274,7 +313,28 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * @return the auditInfo
+     * Gets the datePerformed.
+     *
+     * @return the datePerformed.
+     */
+    @Column(name = "date_performed")
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    public Date getDatePerformed() {
+        return datePerformed;
+    }
+
+    /**
+     * Sets the datePerformed.
+     *
+     * @param datePerformed the datePerformed to set.
+     */
+    public void setDatePerformed(Date datePerformed) {
+        this.datePerformed = datePerformed;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Embedded
     @Valid
@@ -283,7 +343,7 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * @param auditInfo the auditInfo to set
+     * {@inheritDoc}
      */
     public void setAuditInfo(AuditInfo auditInfo) {
         this.auditInfo = auditInfo;
@@ -310,6 +370,25 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
+     * Gets the experimentRuns.
+     *
+     * @return the experimentRuns.
+     */
+    @OneToMany(mappedBy = "experiment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<ExperimentRun> getExperimentRuns() {
+        return this.experimentRuns;
+    }
+
+    /**
+     * Sets the experimentRuns.
+     *
+     * @param experimentRuns the experimentRuns to set.
+     */
+    protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
+        this.experimentRuns = experimentRuns;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -322,17 +401,17 @@ public class Protocol implements Serializable, Persistent, Auditable {
             return true;
         }
 
-        if (!(o instanceof Protocol)) {
+        if (!(o instanceof Experiment)) {
             return false;
         }
 
-        Protocol p = (Protocol) o;
+        Experiment exp = (Experiment) o;
 
         if (this.id == null) {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
+        return new EqualsBuilder().append(getLsid(), exp.getLsid()).isEquals();
     }
 
     /**

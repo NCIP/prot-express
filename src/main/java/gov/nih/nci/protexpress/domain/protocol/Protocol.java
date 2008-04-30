@@ -80,93 +80,77 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
+import gov.nih.nci.protexpress.domain.Auditable;
+import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+import gov.nih.nci.protexpress.domain.LsidType;
+import gov.nih.nci.protexpress.domain.Persistent;
+import gov.nih.nci.protexpress.domain.audit.AuditInfo;
+import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
 /**
- * Class representing a protocol application.
+ * Class representing a protocol.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller
  */
 @Entity
-@Table(name = "protocol_application")
+@Table(name = "protocol")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolApplication implements Serializable, Auditable, Persistent {
+public class Protocol implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private LsidType lsid;
     private String name;
-    private Date activityDate;
-    private String comments;
-    private Long stepNumber;
-    private String additionalInfo;
-
-    private Protocol protocol;
-    private ExperimentRun experimentRun;
-
+    private String description;
+    private String software;
+    private String instrument;
+    private String notes;
+    private ContactPerson contactPerson = new ContactPerson();
     private AuditInfo auditInfo = new AuditInfo();
-    private List<InputOutputObject> inputs = new ArrayList<InputOutputObject>();
-    private List<InputOutputObject> outputs = new ArrayList<InputOutputObject>();
 
     /**
      * protected default constructor for hibernate only.
      */
-    protected ProtocolApplication() {
+    protected Protocol() {
     }
 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name the name of the protocol application
-     * @param activityDate the activity date
-     * @param expRun the experiment run
-     * @param protocol the protocol
+     * @param name the name of the protocol
      */
-    public ProtocolApplication(String name, Date activityDate,
-            ExperimentRun expRun, Protocol protocol) {
+    public Protocol(String name) {
         setName(name);
-        setActivityDate(activityDate);
-        setExperimentRun(expRun);
-        setProtocol(protocol);
     }
 
     /**
-     * The id of the object.
+     * The id of the protocol.
      *
-     * @return the id, null for new objects
+     * @return the id, null for new protocols
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -175,38 +159,39 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * @param id the id to set
+     * @param id the id of protocol to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Gets the lsid.
+     * Gets the lsid for the protocol.
      *
      * @return the lsid
      */
     @Transient
     public String getLsid() {
         lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.protocolapplication"), this.id);
+                .getString("lsid.namespace.protocol"), this.id);
         return this.lsid.getLsid();
     }
 
     /**
-     * Gets the name.
+     * Gets the name of the protocol.
      *
      * @return the name
      */
+    @Index(name = "protocol_name_idx")
     @Column(name = "name")
     @NotEmpty
-    @Length(max = HibernateFieldLength.PROTAPP_NAME_LENGTH)
+    @Length(max = HibernateFieldLength.PROTOCOL_NAME_LENGTH)
     public String getName() {
         return this.name;
     }
 
     /**
-     * Sets the name.
+     * Sets the name of the protocol.
      *
      * @param name the name to set
      */
@@ -215,175 +200,87 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the activityDate.
+     * Gets the description.
      *
-     * @return the activityDate
+     * @return the description
      */
-    @Column(name = "activity_date")
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    public Date getActivityDate() {
-        return this.activityDate;
+    @Column(name = "description")
+    @Length(max = HibernateFieldLength.PROTOCOL_DESCRIPTION_LENGTH)
+    @Index(name = "protocol_desc_idx")
+    public String getDescription() {
+        return this.description;
     }
 
     /**
-     * Sets the activityDate.
+     * Sets the description.
      *
-     * @param activityDate the activityDate to set
+     * @param description the description to set
      */
-    public void setActivityDate(Date activityDate) {
-        this.activityDate = activityDate;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Gets the comments.
+     * Gets the instrument.
      *
-     * @return the comments
+     * @return the instrument
      */
-    @Column(name = "comments")
-    @Length(max = HibernateFieldLength.PROTAPP_COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
+    @Column(name = "instrument")
+    @Length(max = HibernateFieldLength.PROTOCOL_INSTRUMENT_LENGTH)
+    public String getInstrument() {
+        return this.instrument;
     }
 
     /**
-     * Sets the comments.
+     * Sets the instrument.
      *
-     * @param comments the comments to set
+     * @param instrument the instrument to set
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setInstrument(String instrument) {
+        this.instrument = instrument;
     }
 
     /**
-     * Gets the stepNumber.
+     * Gets the software.
      *
-     * @return the stepNumber
+     * @return the software
      */
-    @Column(name = "step_number")
-    @NotNull
-    public Long getStepNumber() {
-        return this.stepNumber;
+    @Column(name = "software")
+    @Length(max = HibernateFieldLength.PROTOCOL_SOFTWARE_LENGTH)
+    public String getSoftware() {
+        return this.software;
     }
 
     /**
-     * Sets the stepNumber.
      *
-     * @param stepNumber the stepNumber to set
+     * @param software the software to set
      */
-    public void setStepNumber(Long stepNumber) {
-        this.stepNumber = stepNumber;
+    public void setSoftware(String software) {
+        this.software = software;
     }
 
     /**
-     * Gets the experimentRun.
+     * Gets the notes.
      *
-     * @return the experimentRun.
+     * @return the notes.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "experiment_run_id")
-    public ExperimentRun getExperimentRun() {
-        return this.experimentRun;
+    @Column(name = "notes")
+    @Length(max = HibernateFieldLength.PROTOCOL_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
     }
 
     /**
-     * Sets the experimentRun.
+     * Sets the notes.
      *
-     * @param experimentRun the experimentRun to set.
+     * @param notes the notes to set.
      */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     /**
-     * Gets the protocol.
-     *
-     * @return the protocol.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "protocol_id")
-    @Valid
-    public Protocol getProtocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Sets the protocol.
-     *
-     * @param protocol the protocol to set.
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
-
-    /**
-     * Gets the additionalInfo.
-     *
-     * @return the additionalInfo.
-     */
-    @Column(name = "additional_info")
-    @Length(max = HibernateFieldLength.PROTAPP_ADDITIONAL_INFO_LENGTH)
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    /**
-     * Sets the additionalInfo.
-     *
-     * @param additionalInfo the additionalInfo to set.
-     */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
-    }
-
-    /**
-     * Gets the inputs.
-     *
-     * @return the inputs.
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_inputs",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "input_id") })
-    public List<InputOutputObject> getInputs() {
-        return inputs;
-    }
-
-    /**
-     * Sets the inputs.
-     *
-     * @param inputs the inputs to set.
-     */
-    public void setInputs(List<InputOutputObject> inputs) {
-        this.inputs = inputs;
-    }
-
-    /**
-     * Gets the outputs.
-     *
-     * @return the outputs.
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "protapp_outputs",
-            joinColumns = { @JoinColumn(name = "protapp_id") },
-            inverseJoinColumns = { @JoinColumn(name = "output_id") })
-    public List<InputOutputObject> getOutputs() {
-        return outputs;
-    }
-
-    /**
-     * Sets the outputs.
-     *
-     * @param outputs the outputs to set.
-     */
-    protected void setOutputs(List<InputOutputObject> outputs) {
-        this.outputs = outputs;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return the auditInfo
      */
     @Embedded
     @Valid
@@ -392,10 +289,30 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * {@inheritDoc}
+     * @param auditInfo the auditInfo to set
      */
     public void setAuditInfo(AuditInfo auditInfo) {
         this.auditInfo = auditInfo;
+    }
+
+    /**
+     * Gets the contactPerson.
+     *
+     * @return the contactPerson.
+     */
+    @Embedded
+    @Valid
+    public ContactPerson getContactPerson() {
+        return contactPerson;
+    }
+
+    /**
+     * Sets the contactPerson.
+     *
+     * @param contactPerson the contactPerson to set.
+     */
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     /**
@@ -411,11 +328,11 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
             return true;
         }
 
-        if (!(o instanceof ProtocolApplication)) {
+        if (!(o instanceof Protocol)) {
             return false;
         }
 
-        ProtocolApplication p = (ProtocolApplication) o;
+        Protocol p = (Protocol) o;
 
         if (this.id == null) {
             return false;

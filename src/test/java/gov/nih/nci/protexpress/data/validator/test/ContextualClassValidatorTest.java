@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.validator.test;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.data.validator.ContextualClassValidator;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 

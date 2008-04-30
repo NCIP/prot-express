@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service.impl;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.service.ProtocolService;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.util.SearchCriteriaHelper;

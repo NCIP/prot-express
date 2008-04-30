@@ -80,9 +80,12 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
+import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+import gov.nih.nci.protexpress.domain.LsidType;
+import gov.nih.nci.protexpress.domain.Persistent;
 
 import java.io.Serializable;
 

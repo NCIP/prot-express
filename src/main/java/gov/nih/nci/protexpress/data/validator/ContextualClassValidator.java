@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.data.validator;
 
-import gov.nih.nci.protexpress.data.persistent.Persistent;
+import gov.nih.nci.protexpress.domain.Persistent;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;

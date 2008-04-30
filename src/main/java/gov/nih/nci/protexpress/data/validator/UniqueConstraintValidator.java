@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.data.validator;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Persistent;
+import gov.nih.nci.protexpress.domain.Persistent;
 
 import java.util.Iterator;
 

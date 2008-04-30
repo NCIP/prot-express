@@ -80,118 +80,107 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain.contact;
+
+import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import org.hibernate.validator.Email;
+import org.hibernate.validator.Length;
 
 /**
- * @author Krishna Kanchinadam
+ * Class to store a contact person details.
  *
+ * @author Krishna Kanchinadam
  */
-@SuppressWarnings("PMD")
-public final class HibernateFieldLength {
-    /**
-     * Field Length for Audit Creator.
-     */
-    public static final int AUDIT_CREATOR_LENGTH = 100;
+@Embeddable
+public class ContactPerson {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String notes;
 
     /**
-     * Field Length for Experiment Name.
+     * Gets the firstName.
+     *
+     * @return the firstName
      */
-    public static final int EXPERIMENT_NAME_LENGTH = 200;
-    /**
-     * Field Length for Experiment Description.
-     */
-    public static final int EXPERIMENT_DESCRIPTION_LENGTH = 2000;
-    /**
-     * Field Length for Experiment Hypothesis.
-     */
-    public static final int EXPERIMENT_HYPOTHESIS_LENGTH = 500;
-    /**
-     * Field Length for Experiment URL.
-     */
-    public static final int EXPERIMENT_URL_LENGTH = 200;
-
-    /**
-     * Field Length for Experiment Notes field.
-     */
-    public static final int EXPERIMENT_NOTES_LENGTH = 2000;
-
-    /**
-     * Field Length for Experiment Run Name.
-     */
-    public static final int EXPRUN_NAME_LENGTH = 50;
-    /**
-     * Field Length for Experiment Run Comments.
-     */
-    public static final int EXPRUN_COMMENTS_LENGTH = 2000;
-
-    /**
-     * Field Length for Input Output Object Name.
-     */
-    public static final int IO_NAME_LENGTH = 200;
-    /**
-     * Field Length for Input Output Object Data File Name.
-     */
-    public static final int IO_DATA_FILE_URL_LENGTH = 200;
-    /**
-     * Field Length for Input Output Object Additional information field.
-     */
-    public static final int IO_NOTES_LENGTH = 2000;
-
-    /**
-     * Field Length for Protocol Name.
-     */
-    public static final int PROTOCOL_NAME_LENGTH = 200;
-    /**
-     * Field Length for Protocol Description.
-     */
-    public static final int PROTOCOL_DESCRIPTION_LENGTH = 2000;
-    /**
-     * Field Length for Protocol Software field.
-     */
-    public static final int PROTOCOL_SOFTWARE_LENGTH = 200;
-    /**
-     * Field Length for Protocol Instrument field.
-     */
-    public static final int PROTOCOL_INSTRUMENT_LENGTH = 200;
-    /**
-     * Field Length for Protocol Notes field.
-     */
-    public static final int PROTOCOL_NOTES_LENGTH = 2000;
-
-    /**
-     * Field Length for Protocol Application Name.
-     */
-    public static final int PROTAPP_NAME_LENGTH = 200;
-    /**
-     * Field Length for Protocol Application Comments.
-     */
-    public static final int PROTAPP_COMMENTS_LENGTH = 2000;
-    /**
-     * Field Length for Protocol Application Additional Information Field.
-     */
-    public static final int PROTAPP_ADDITIONAL_INFO_LENGTH = 2000;
-    /**
-     * Field Length for Contact Person First Name.
-     */
-    public static final int CONTACT_PERSON_FIRST_NAME = 100;
-    /**
-     * Field Length for Contact Person Last Name.
-     */
-    public static final int CONTACT_PERSON_LAST_NAME = 100;
-    /**
-     * Field Length for Contact Person Email.
-     */
-    public static final int CONTACT_PERSON_EMAIL_LENGTH = 100;
-    /**
-     * Field Length for Contact Person Notes.
-     */
-    public static final int CONTACT_PERSON_NOTES_LENGTH = 2000;
-
-
-    /**
-     * Private Constructor.
-     */
-    private HibernateFieldLength() {
-
+    @Column(name = "contact_fname")
+    @Length(max = HibernateFieldLength.CONTACT_PERSON_FIRST_NAME)
+    public String getFirstName() {
+        return this.firstName;
     }
+
+    /**
+     * Sets the firstName.
+     *
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Gets the lastName.
+     *
+     * @return the lastName
+     */
+    @Column(name = "contact_lname")
+    @Length(max = HibernateFieldLength.CONTACT_PERSON_LAST_NAME)
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    /**
+     * Sets the lastName.
+     *
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Gets the email.
+     *
+     * @return the email
+     */
+    @Column(name = "contact_email")
+    @Length(max = HibernateFieldLength.CONTACT_PERSON_EMAIL_LENGTH)
+    @Email()
+    public String getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Sets the email.
+     *
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Gets the notes.
+     *
+     * @return the notes.
+     */
+    @Column(name = "contact_notes")
+    @Length(max = HibernateFieldLength.CONTACT_PERSON_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * Sets the notes.
+     *
+     * @param notes the notes to set.
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 }

@@ -80,168 +80,49 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
-
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
+package gov.nih.nci.protexpress.domain;
 
 /**
- * Class representing an lsid value.
- *
  * @author Krishna Kanchinadam
+ *
  */
-public final class LsidType {
-    private String baseString;
-    private String separator;
-    private String authority;
-    private String revision;
-    private String namespace;
-    private Long identifier;
-    private String lsid;
+public enum CpasType {
+    /**
+     * The Material type.
+     */
+    MATERIAL("Material"),
+    /**
+     * The Data type.
+     */
+    DATA("Data"),
+    /**
+     * The ProtocolApplication type.
+     */
+    PROTOCOL_APPLICATION("ProtocolApplication"),
+    /**
+     * The ExperimentRun type.
+     */
+    EXPERIMENT_RUN("ExperimentRun"),
+    /**
+     * The ExperimentRunOutput type.
+     */
+    EXPERIMENT_RUN_OUTPUT("ExperimentRunOutput");
+
+    private String displayName;
 
     /**
-     * Constructor for LsidType.
+     * Constructor for CpasType.
      *
-     * @param namespace the namespace.
-     * @param identifier the identifier.
+     * @param displayname the display name
      */
-    public LsidType(String namespace, Long identifier) {
-        setNamespace(namespace);
-        setIdentifier(identifier);
-
-        setBaseString(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.base"));
-        setSeparator(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.separator"));
-        setAuthority(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.authority"));
-        setRevision(ProtExpressConfiguration.getApplicationConfigurationBundle().getString("lsid.revision"));
+    private CpasType(String displayname) {
+        this.displayName = displayname;
     }
 
     /**
-     * Gets the lsid.
-     *
-     * @return the lsid.
+     * @return the displayName
      */
-    public String getLsid() {
-        lsid = null;
-        StringBuffer objectLsid = new StringBuffer();
-        if (getIdentifier() != null) {
-            lsid = objectLsid.append(getBaseString())
-            .append(getSeparator())
-            .append(getAuthority())
-            .append(getSeparator())
-            .append(getNamespace())
-            .append(getSeparator())
-            .append(getIdentifier().toString())
-            .append(getSeparator())
-            .append(getRevision())
-            .toString();
-        }
-        return lsid;
-    }
-
-    /**
-     * Gets the baseString.
-     *
-     * @return the baseString.
-     */
-    private String getBaseString() {
-        return baseString;
-    }
-
-    /**
-     * Sets the baseString.
-     *
-     * @param baseString the baseString to set.
-     */
-    private void setBaseString(String baseString) {
-        this.baseString = baseString;
-    }
-
-    /**
-     * Gets the separator.
-     *
-     * @return the separator.
-     */
-    private String getSeparator() {
-        return separator;
-    }
-
-    /**
-     * Sets the separator.
-     *
-     * @param separator the separator to set.
-     */
-    private void setSeparator(String separator) {
-        this.separator = separator;
-    }
-
-    /**
-     * Gets the authority.
-     *
-     * @return the authority.
-     */
-    private String getAuthority() {
-        return authority;
-    }
-
-    /**
-     * Sets the authority.
-     *
-     * @param authority the authority to set.
-     */
-    private void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    /**
-     * Gets the namespace.
-     *
-     * @return the namespace.
-     */
-    private String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * Sets the namespace.
-     *
-     * @param namespace the namespace to set.
-     */
-    private void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    /**
-     * Gets the identifier.
-     *
-     * @return the identifier.
-     */
-    private Long getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * Sets the identifier.
-     *
-     * @param identifier the identifier to set.
-     */
-    private void setIdentifier(Long identifier) {
-        this.identifier = identifier;
-    }
-
-    /**
-     * Gets the revision.
-     *
-     * @return the revision.
-     */
-    private String getRevision() {
-        return revision;
-    }
-
-    /**
-     * Sets the revision.
-     *
-     * @param revision the revision to set.
-     */
-    private void setRevision(String revision) {
-        this.revision = revision;
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

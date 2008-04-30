@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.home;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.util.UserHolder;
 import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;

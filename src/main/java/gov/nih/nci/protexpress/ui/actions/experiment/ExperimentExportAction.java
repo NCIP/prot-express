@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

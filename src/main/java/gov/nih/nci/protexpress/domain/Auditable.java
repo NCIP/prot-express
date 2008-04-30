@@ -80,105 +80,28 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-import org.hibernate.validator.Email;
-import org.hibernate.validator.Length;
+import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 
 /**
- * Class to store a contact person details.
+ * Interface for all auditable entities.
  *
- * @author Krishna Kanchinadam
+ * @author Scott Miller
  */
-@Embeddable
-public class ContactPerson {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String notes;
+public interface Auditable {
 
     /**
-     * Gets the firstName.
+     * The audit info.
      *
-     * @return the firstName
+     * @return the audit info
      */
-    @Column(name = "contact_fname")
-    @Length(max = HibernateFieldLength.CONTACT_PERSON_FIRST_NAME)
-    public String getFirstName() {
-        return this.firstName;
-    }
+    AuditInfo getAuditInfo();
 
     /**
-     * Sets the firstName.
+     * Set the audit info.
      *
-     * @param firstName the firstName to set
+     * @param auditInfo the audit info.
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets the lastName.
-     *
-     * @return the lastName
-     */
-    @Column(name = "contact_lname")
-    @Length(max = HibernateFieldLength.CONTACT_PERSON_LAST_NAME)
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    /**
-     * Sets the lastName.
-     *
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets the email.
-     *
-     * @return the email
-     */
-    @Column(name = "contact_email")
-    @Length(max = HibernateFieldLength.CONTACT_PERSON_EMAIL_LENGTH)
-    @Email()
-    public String getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Sets the email.
-     *
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets the notes.
-     *
-     * @return the notes.
-     */
-    @Column(name = "contact_notes")
-    @Length(max = HibernateFieldLength.CONTACT_PERSON_NOTES_LENGTH)
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * Sets the notes.
-     *
-     * @param notes the notes to set.
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
+    void setAuditInfo(AuditInfo auditInfo);
 }

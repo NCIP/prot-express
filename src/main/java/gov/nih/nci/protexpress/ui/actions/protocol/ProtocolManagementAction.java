@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 
 import java.text.MessageFormat;
 
