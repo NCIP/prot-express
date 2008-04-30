@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.Persistent;
+import gov.nih.nci.protexpress.domain.Persistent;
 
 /**
  * Service of utility methods that are not attached to a specific class.

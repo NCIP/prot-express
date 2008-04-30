@@ -1,7 +1,7 @@
 package gov.nih.nci.protexpress.service.test;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;

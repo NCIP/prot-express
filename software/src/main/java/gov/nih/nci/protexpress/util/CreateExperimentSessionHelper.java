@@ -83,10 +83,6 @@
 
 package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
-
 import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -185,42 +181,6 @@ public final class CreateExperimentSessionHelper {
     }
 
     /**
-     * Gets the experiment.
-     *
-     * @return the experiment.
-     */
-    public Experiment getExperiment() {
-        return experimentSessionHolder.getExperiment();
-    }
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set.
-     */
-    public void setExperiment(Experiment experiment) {
-        experimentSessionHolder.setExperiment(experiment);
-    }
-
-    /**
-     * Gets the experimentRun.
-     *
-     * @return the experimentRun.
-     */
-    public ExperimentRun getExperimentRun() {
-        return experimentSessionHolder.getExperimentRun();
-    }
-
-    /**
-     * Sets the experimentRun.
-     *
-     * @param experimentRun the experimentRun to set.
-     */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        experimentSessionHolder.setExperimentRun(experimentRun);
-    }
-
-    /**
      * Gets the sessionExperiment.
      *
      * @return the sessionExperiment.
@@ -264,23 +224,5 @@ public final class CreateExperimentSessionHelper {
      */
     public void setProtocolApplicationId(Long protocolApplicationId) {
         experimentSessionHolder.setProtocolApplicationId(protocolApplicationId);
-    }
-
-    /**
-     * Gets the protocolApplication.
-     *
-     * @return the protocolApplication.
-     */
-    public ProtocolApplication getProtocolApplication() {
-        return experimentSessionHolder.getProtocolApplication();
-    }
-
-    /**
-     * Sets the protocolApplication.
-     *
-     * @param protocolApplication the protocolApplication to set.
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        experimentSessionHolder.setProtocolApplication(protocolApplication);
     }
 }

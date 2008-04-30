@@ -80,37 +80,80 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.persistent;
+package gov.nih.nci.protexpress.domain.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
+import gov.nih.nci.protexpress.domain.Auditable;
+import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+import gov.nih.nci.protexpress.domain.LsidType;
+import gov.nih.nci.protexpress.domain.Persistent;
+import gov.nih.nci.protexpress.domain.audit.AuditInfo;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.Length;
+import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
 /**
- * Class representing the abstract prot express entity.
+ * Class representing an experiment run.
  *
  * @author Krishna Kanchinadam
  */
-public class AbstractProtExpressEntity implements Serializable, Persistent, Auditable {
+@Entity
+@Table(name = "experiment_run")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ExperimentRun implements Serializable, Persistent, Auditable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private LsidType lsid;
+    private String name;
+    private String comments;
+    private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
+    private Experiment experiment;
+    private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
 
     /**
      * protected default constructor for hibernate only.
      */
-    public AbstractProtExpressEntity() {
+    protected ExperimentRun() {
+    }
+
+    /**
+     * Constructor to create the object and populate all required fields.
+     *
+     * @param name the name of the experiment
+     */
+    public ExperimentRun(String name) {
+        setName(name);
     }
 
     /**
@@ -125,10 +168,33 @@ public class AbstractProtExpressEntity implements Serializable, Persistent, Audi
     }
 
     /**
+     * Sets the id.
+     *
      * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    @Column(name = "name")
+    @NotEmpty
+    @Length(max = HibernateFieldLength.EXPRUN_NAME_LENGTH)
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -139,12 +205,32 @@ public class AbstractProtExpressEntity implements Serializable, Persistent, Audi
     @Transient
     public String getLsid() {
         lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.experiment"), this.id);
+                .getString("lsid.namespace.experimentrun"), this.id);
         return this.lsid.getLsid();
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the comments.
+     *
+     * @return the comments
+     */
+    @Column(name = "comments")
+    @Length(max = HibernateFieldLength.EXPRUN_COMMENTS_LENGTH)
+    public String getComments() {
+        return this.comments;
+    }
+
+    /**
+     * Sets the comments.
+     *
+     * @param comments the comments to set
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * @return the auditInfo
      */
     @Embedded
     @Valid
@@ -153,9 +239,103 @@ public class AbstractProtExpressEntity implements Serializable, Persistent, Audi
     }
 
     /**
-     * {@inheritDoc}
+     * @param auditInfo the auditInfo to set
      */
     public void setAuditInfo(AuditInfo auditInfo) {
         this.auditInfo = auditInfo;
+    }
+
+    /**
+     * Gets the datePerformed.
+     *
+     * @return the datePerformed.
+     */
+    @Column(name = "date_performed")
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    public Date getDatePerformed() {
+        return datePerformed;
+    }
+
+    /**
+     * Sets the datePerformed.
+     *
+     * @param datePerformed the datePerformed to set.
+     */
+    public void setDatePerformed(Date datePerformed) {
+        this.datePerformed = datePerformed;
+    }
+
+    /**
+     * Gets the experiment.
+     *
+     * @return the experiment
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "experiment_id", nullable = false)
+    public Experiment getExperiment() {
+        return this.experiment;
+    }
+
+    /**
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set
+     */
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
+    /**
+     * Gets the protocolApplications.
+     *
+     * @return the protocolApplications.
+     */
+    @OneToMany(mappedBy = "experimentRun", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<ProtocolApplication> getProtocolApplications() {
+        return this.protocolApplications;
+    }
+
+    /**
+     * Sets the protocolApplications.
+     *
+     * @param protocolApplications the protocolApplications to set.
+     */
+    protected void setProtocolApplications(List<ProtocolApplication> protocolApplications) {
+        this.protocolApplications = protocolApplications;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof ExperimentRun)) {
+            return false;
+        }
+
+        ExperimentRun experimentRun = (ExperimentRun) obj;
+
+        if (this.id == null) {
+            return false;
+        }
+
+        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid()).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getLsid()).toHashCode();
     }
 }

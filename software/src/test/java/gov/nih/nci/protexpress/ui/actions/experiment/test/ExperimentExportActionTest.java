@@ -85,7 +85,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.test;
 import java.io.InputStream;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportAction;
 import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportFileType;

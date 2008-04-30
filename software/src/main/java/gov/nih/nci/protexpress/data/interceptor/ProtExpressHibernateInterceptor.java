@@ -82,8 +82,8 @@
  */
 package gov.nih.nci.protexpress.data.interceptor;
 
-import gov.nih.nci.protexpress.data.persistent.AuditInfo;
-import gov.nih.nci.protexpress.data.persistent.Auditable;
+import gov.nih.nci.protexpress.domain.audit.AuditInfo;
+import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.security.IllegalModificationException;
 import gov.nih.nci.protexpress.util.UserHolder;
 

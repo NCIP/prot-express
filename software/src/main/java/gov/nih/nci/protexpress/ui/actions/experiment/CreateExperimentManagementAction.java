@@ -83,8 +83,8 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
 import gov.nih.nci.protexpress.util.UserHolder;
@@ -195,20 +195,20 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      * @return the directive for the next action / page to be directed to
      */
     public String saveOverviewInformation() {
-        experimentRun.setDatePerformed(getExperiment().getDatePerformed());
-        experimentRun.setExperiment(getExperiment());
-        getExperiment().getExperimentRuns().clear();
-        getExperiment().getExperimentRuns().add(experimentRun);
+        if (getExperiment().getId() == null) {
+            experimentRun.setDatePerformed(getExperiment().getDatePerformed());
+            experimentRun.setExperiment(getExperiment());
+            getExperiment().getExperimentRuns().clear();
+            getExperiment().getExperimentRuns().add(experimentRun);
+        }
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         ProtExpressRegistry.getProtExpressService().clear();
 
-        // Update experiment in session.
+        // Update experiment and experiment run id's in session.
         experimentSessionHelper = new CreateExperimentSessionHelper(ActionContext.getContext());
         experimentSessionHelper.setExperimentId(getExperiment().getId());
-        experimentSessionHelper.setExperiment(getExperiment());
         experimentSessionHelper.setExperimentRunId(experimentRun.getId());
-        experimentSessionHelper.setExperimentRun(experimentRun);
         experimentSessionHelper.updateExperimentInSession();
         experimentSessionHelper = null;
 

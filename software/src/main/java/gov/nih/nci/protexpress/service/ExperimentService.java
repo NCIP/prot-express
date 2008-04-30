@@ -82,10 +82,10 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.InputOutputObject;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
 import java.util.List;
 

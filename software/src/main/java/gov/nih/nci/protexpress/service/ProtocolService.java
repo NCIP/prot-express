@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 
 import java.util.List;
 

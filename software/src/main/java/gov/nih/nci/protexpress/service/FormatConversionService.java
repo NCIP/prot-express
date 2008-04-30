@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 
 import java.io.File;
 import java.io.InputStream;

@@ -83,9 +83,6 @@
 
 package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
 
 /**
  * Class that holds experiment information in session, during the Create Experiment process.
@@ -97,10 +94,6 @@ public final class CreateExperimentSessionHolder {
     private Long experimentId;
     private Long experimentRunId;
     private Long protocolApplicationId;
-
-    private Experiment experiment;
-    private ExperimentRun experimentRun;
-    private ProtocolApplication protocolApplication;
 
     /**
      * Default constructor.
@@ -148,47 +141,6 @@ public final class CreateExperimentSessionHolder {
         this.experimentRunId = experimentRunId;
     }
 
-
-    /**
-     * Gets the experiment.
-     *
-     * @return the experiment.
-     */
-    public Experiment getExperiment() {
-        return experiment;
-    }
-
-
-    /**
-     * Sets the experiment.
-     *
-     * @param experiment the experiment to set.
-     */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
-
-
-    /**
-     * Gets the experimentRun.
-     *
-     * @return the experimentRun.
-     */
-    public ExperimentRun getExperimentRun() {
-        return experimentRun;
-    }
-
-
-    /**
-     * Sets the experimentRun.
-     *
-     * @param experimentRun the experimentRun to set.
-     */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
-    }
-
-
     /**
      * Gets the protocolApplicationId.
      *
@@ -207,26 +159,4 @@ public final class CreateExperimentSessionHolder {
     public void setProtocolApplicationId(Long protocolApplicationId) {
         this.protocolApplicationId = protocolApplicationId;
     }
-
-
-    /**
-     * Gets the protocolApplication.
-     *
-     * @return the protocolApplication.
-     */
-    public ProtocolApplication getProtocolApplication() {
-        return protocolApplication;
-    }
-
-
-    /**
-     * Sets the protocolApplication.
-     *
-     * @param protocolApplication the protocolApplication to set.
-     */
-    public void setProtocolApplication(ProtocolApplication protocolApplication) {
-        this.protocolApplication = protocolApplication;
-    }
-
-
 }

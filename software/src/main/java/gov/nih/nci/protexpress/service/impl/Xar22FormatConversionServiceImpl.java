@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service.impl;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.util.ExperimentToXar22FormatConversionHelper;
 import gov.nih.nci.protexpress.util.Xar22ToExperimentFormatConversionHelper;

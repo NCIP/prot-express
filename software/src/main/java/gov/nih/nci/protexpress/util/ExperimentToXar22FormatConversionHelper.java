@@ -83,7 +83,7 @@
 
 package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.data.persistent.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
 
 

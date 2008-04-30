@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.ui.validators.test;
 
-import gov.nih.nci.protexpress.data.persistent.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateAndStrutsTestCase;
 
 import java.util.ArrayList;

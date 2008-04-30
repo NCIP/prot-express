@@ -83,10 +83,10 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.data.persistent.Experiment;
-import gov.nih.nci.protexpress.data.persistent.ExperimentRun;
-import gov.nih.nci.protexpress.data.persistent.Protocol;
-import gov.nih.nci.protexpress.data.persistent.ProtocolApplication;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
