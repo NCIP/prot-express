@@ -80,68 +80,136 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.test;
+package gov.nih.nci.protexpress.ui.actions.experiment;
 
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.service.ExperimentService;
+import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * This class tests the CreateExperimentManagementActionTest.
+ * Action for managing create experiment process.
  *
  * @author Krishna Kanchinadam
  */
-public class CreateExperimentManagementActionTest extends ProtExpressBaseHibernateTest {
 
-    CreateExperimentManagementAction action;
-    Experiment experiment;
+@Validation
+public class CreateExperimentManageProtocolAction extends ActionSupport implements Preparable {
+    private static final long serialVersionUID = 1L;
+
+    private Long protocolApplicationId;
+    private ProtocolApplication protocolApplication = new ProtocolApplication(
+            null, null, null, null);
+
+    private String successMessage = null;
+
+    private String actionResultEditProtocol = "editProtocol";
+
+    private CreateExperimentSessionHelper experimentSessionHelper;
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        this.action = new CreateExperimentManagementAction();
-
-        this.experiment = new Experiment("Name - Test Experiment 1");
-        this.experiment.setDescription("Description - Test Experiment 1");
-        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        this.experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(this.experiment);
-        this.theSession.flush();
-        this.theSession.clear();
+    public void prepare() throws Exception {
+        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        experimentSessionHelper = getSessionHelper();
+        if (experimentSessionHelper.getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(experimentSessionHelper.getProtocolApplicationId()));
+        } else if (getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
+        }
     }
 
-    public void testPrepare() throws Exception {
-        this.action.setExperiment(null);
-        this.action.prepare();
-        assertEquals(null, this.action.getExperiment());
-
-        Experiment p = new Experiment(null);
-        this.action.setExperiment(p);
-        this.action.prepare();
-        assertEquals(p, this.action.getExperiment());
-
-        this.action.getExperiment().setId(this.experiment.getId());
-        this.action.prepare();
-        assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
-        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action
-                .getExperiment()));
+    /**
+     * Review Protocol information.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String reviewProtocol() {
+        return ActionSupport.INPUT;
     }
 
-    public void testLoad() throws Exception {
-        assertEquals(ActionSupport.INPUT, this.action.load());
+    /**
+     * Loads the protocol and directs to the edit page.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String editProtocol() {
+        return this.actionResultEditProtocol;
     }
 
-    public void testSaveOrUpdate() throws Exception {
-        this.action.setExperiment(new Experiment("Test Experiment"));
-        assertEquals("success", this.action.saveOverviewInformation());
-        assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
+    /**
+     * Updates a protocol.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String updateProtocol() {
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
+        return this.reviewProtocol();
+    }
+
+    /**
+     * Gets the protocolApplicationId.
+     *
+     * @return the protocolApplicationId.
+     */
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
+    }
+
+    /**
+     * Sets the protocolApplicationId.
+     *
+     * @param protocolApplicationId the protocolApplicationId to set.
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
+    }
+
+    /**
+     * Gets the protocol application.
+     *
+     * @return the protocol application.
+     */
+    public ProtocolApplication getProtocolApplication() {
+        return protocolApplication;
+    }
+
+    /**
+     * Sets the protocol application.
+     *
+     * @param protocolApplication
+     *            the protocolApplication to set.
+     */
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        this.protocolApplication = protocolApplication;
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return this.successMessage;
+    }
+
+    /**
+     * @param successMessage
+     *            the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    private CreateExperimentSessionHelper getSessionHelper() {
+        return new CreateExperimentSessionHelper(ActionContext.getContext());
     }
 }

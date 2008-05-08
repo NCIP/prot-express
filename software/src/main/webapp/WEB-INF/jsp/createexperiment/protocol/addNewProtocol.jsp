@@ -3,9 +3,10 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
-<jsp:include page="/WEB-INF/jsp/createexperiment/experimentAddOrSelectProtocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/addOrSelectProtocolHeader.jsp" />
 
-<s:form id="addNewProtocolForm" action="/createExperiment/manageProtocols/save.action" method="post">
+<s:form id="addNewProtocolForm" action="/createExperiment/protocols/add/save.action" method="post">
     <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
     <div class="twocoltable">
         <table class="form">
@@ -61,3 +62,5 @@
         <div class="clear"></div>
     </div>
 </s:form>
+
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolFooter.jsp" />
