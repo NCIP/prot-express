@@ -3,7 +3,8 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
-<jsp:include page="/WEB-INF/jsp/createexperiment/experimentProtocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolHeader.jsp" />
+
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.info" /></p></div>
 <h3><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.title" /></h3>
 <fieldset>
@@ -99,15 +100,11 @@
     <del class="btnwrapper">
         <ul id="btnrow2">
             <li>
-                <c:url var="experimentProtocolEditUrl" value="/notYetImplemented.html">
-                    <c:param name="protocolApplication.id" value="${protocolApplication.id}" />
+                <c:url var="experimentProtocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
+                    <c:param name="protocolApplicationId" value="${protocolApplication.id}" ></c:param>
                 </c:url>
-                <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action">
-                    <c:param name="experimentId" value="${experiment.id}" />
-                </c:url>
-                <c:url var="addAnotherProtocolUrl" value="/createExperiment/manageProtocols/addNewProtocol.action">
-                    <c:param name="experimentId" value="${experiment.id}" />
-                </c:url>
+                <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
+                <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
                 <a href="${experimentProtocolEditUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
                     <span class="btn_img">
                         <span class="save"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.edit" /></span>
@@ -132,5 +129,6 @@
     </del>
     <div class="clear"/>
 </div>
-<jsp:include page="/WEB-INF/jsp/createexperiment/experimentProtocolFooter.jsp" />
+
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolFooter.jsp" />
 

@@ -5,7 +5,8 @@
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
-<jsp:include page="/WEB-INF/jsp/createexperiment/experimentAddOrSelectProtocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/addOrSelectProtocolHeader.jsp" />
 
 <!--Protocol List-->
 <s:form id="searchForm" action="createExperiment/manageProtocols/doSearch" method="post" theme="simple">
@@ -66,3 +67,5 @@
 </div>
 </div>
 <!--/Protocol List-->
+
+<jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolFooter.jsp" />

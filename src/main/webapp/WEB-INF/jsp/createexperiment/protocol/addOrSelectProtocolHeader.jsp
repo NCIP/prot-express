@@ -9,7 +9,10 @@
     <div id="protocolflow">
         <c:forEach items="${experiment.experimentRuns}" var="expRun">
             <c:forEach items="${expRun.protocolApplications}" var="protApp">
-                <a href="<c:url value="/notYetImplemented.html" />">${protApp.protocol.name}</a>&nbsp;|&nbsp;
+                <c:url var="experimentProtocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
+                    <c:param name="protocolApplicationId" value="${protApp.id}" />
+                </c:url>
+                <a href="${experimentProtocolEditUrl}">${protApp.protocol.name}</a>&nbsp;|&nbsp;
             </c:forEach>
         </c:forEach>
     </div>

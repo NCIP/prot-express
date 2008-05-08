@@ -307,7 +307,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @return the protocol.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     @JoinColumn(name = "protocol_id")
     @Valid
@@ -384,7 +384,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @param outputs the outputs to set.
      */
-    protected void setOutputs(List<InputOutputObject> outputs) {
+    public void setOutputs(List<InputOutputObject> outputs) {
         this.outputs = outputs;
     }
 

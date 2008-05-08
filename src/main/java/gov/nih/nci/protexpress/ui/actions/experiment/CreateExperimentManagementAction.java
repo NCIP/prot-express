@@ -111,7 +111,6 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
     private Experiment experiment = new Experiment(null);
     private ExperimentRun experimentRun = new ExperimentRun("Run");
     private String successMessage = null;
-    private String actionResultAddProtocol = "addProtocol";
     private String actionResultExperimentSummary = "experimentSummary";
 
     private CreateExperimentSessionHelper experimentSessionHelper;
@@ -212,7 +211,7 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
         experimentSessionHelper.updateExperimentInSession();
         experimentSessionHelper = null;
 
-        return this.actionResultAddProtocol;
+        return ActionSupport.SUCCESS;
     }
 
     /**

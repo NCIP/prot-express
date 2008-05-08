@@ -384,7 +384,7 @@ public class Experiment implements Serializable, Persistent, Auditable {
      *
      * @param experimentRuns the experimentRuns to set.
      */
-    protected void setExperimentRuns(List<ExperimentRun> experimentRuns) {
+    public void setExperimentRuns(List<ExperimentRun> experimentRuns) {
         this.experimentRuns = experimentRuns;
     }
 
