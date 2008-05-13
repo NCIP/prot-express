@@ -398,7 +398,7 @@
                 <configuration>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>70</totalBranchRate>
+                        <totalBranchRate>60</totalBranchRate>
                         <totalLineRate>60</totalLineRate>
                     </check>
                     <instrumentation>

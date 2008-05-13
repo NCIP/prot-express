@@ -183,4 +183,18 @@ public class ContactPerson {
         this.notes = notes;
     }
 
+    /**
+     * Copy a Contact Peson, and returns the new object.
+     *
+     * @param person the person to copy.
+     * @return the new object.
+     */
+    public static ContactPerson getCopy(ContactPerson person) {
+        ContactPerson newPerson = new ContactPerson();
+        newPerson.setEmail(person.getEmail());
+        newPerson.setFirstName(person.getFirstName());
+        newPerson.setLastName(person.getLastName());
+        newPerson.setNotes(person.getNotes());
+        return newPerson;
+    }
 }

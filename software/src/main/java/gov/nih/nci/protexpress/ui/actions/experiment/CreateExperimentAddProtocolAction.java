@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
@@ -113,6 +114,7 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
 
     private Experiment experiment = new Experiment(null);
     private Protocol protocol = new Protocol(null);
+    private Long protocolId;
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             "ProtocolApplication", null, null, null);
 
@@ -124,6 +126,16 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     private String actionResultSelectExistingProtocol = "selectExistingProtocol";
 
     private CreateExperimentSessionHelper experimentSessionHelper;
+
+    /**
+     * Denotes the action to be performed - Create a new protocol, select an existing protocol or copy a protocol.
+     *
+     */
+    private enum Mode {
+        CreateProtocol,
+        SelectProtocolAndContinue,
+        CopyProtocolAndContinue;
+    }
 
     /**
      * {@inheritDoc}
@@ -169,27 +181,12 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
      */
     @SkipValidation
     public String selectExistingProtocol() {
-        experimentSessionHelper = new CreateExperimentSessionHelper(
-                ActionContext.getContext());
-        setExperiment(ProtExpressRegistry.getExperimentService()
-                .getExperimentById(experimentSessionHelper.getExperimentId()));
-
-        /*
-         * if ((session != null) && (session.get(sessionExperimentId) != null)) {
-         * setExperimentId((Long) session.get(sessionExperimentId)); }
-         *
-         * if ((session != null) && (session.get(sessionProtocolApplicationId) !=
-         * null)) { session.remove(sessionProtocolApplicationId); }
-         */
-
         getSearchParameters().setSearchAllUsers(false);
-        getSearchParameters().setSearchType(SearchType.PROTOCOLS);
         protocols = new PaginatedListImpl<Protocol>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
                 SortOrderEnum.ASCENDING);
 
         doSearch();
-
         return this.actionResultSelectExistingProtocol;
     }
 
@@ -224,50 +221,70 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
+        return saveProtocolApplicationInformation(Mode.CreateProtocol);
+    }
+
+    /**
+     * Selects a protocol, and adds it to the current experiment run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String selectProtocolAndContinue() {
+        return saveProtocolApplicationInformation(Mode.SelectProtocolAndContinue);
+    }
+
+    /**
+     * Copies a protocol, and adds the copied protocol to the current experiment run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String copyProtocolAndContinue() {
+       return saveProtocolApplicationInformation(Mode.CopyProtocolAndContinue);
+    }
+
+    /**
+     * Create/Select/Copy a protocol, and save protocol application information.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    private String saveProtocolApplicationInformation(Mode saveMode) {
         experimentSessionHelper = getSessionHelper();
-        if (experimentSessionHelper.getExperimentId() != null) {
-            setExperiment(es.getExperimentById(experimentSessionHelper
-                    .getExperimentId()));
-            ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
+        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
 
-            if (expRun != null) {
-                if (getProtocolApplication().getId() == null) {
-                    getProtocol().getContactPerson().setEmail(
-                            getExperiment().getContactPerson().getEmail());
-                    getProtocol().getContactPerson().setFirstName(
-                            getExperiment().getContactPerson().getFirstName());
-                    getProtocol().getContactPerson().setLastName(
-                            getExperiment().getContactPerson().getLastName());
-                    getProtocol().getContactPerson().setNotes(
-                            getExperiment().getContactPerson().getNotes());
-                }
-
-                ProtExpressRegistry.getProtExpressService().saveOrUpdate(
-                        getProtocol());
-
-                if (getProtocolApplication().getId() == null) {
-                    getProtocolApplication().setActivityDate(
-                            expRun.getDatePerformed());
-                    getProtocolApplication().setAdditionalInfo(
-                            getProtocol().getNotes());
-                    getProtocolApplication().setStepNumber(1L);
-                    getProtocolApplication().setProtocol(getProtocol());
-                    getProtocolApplication().setExperimentRun(expRun);
-                    expRun.getProtocolApplications().add(
-                            getProtocolApplication());
-
-                    ProtExpressRegistry.getProtExpressService().saveOrUpdate(
-                            getProtocolApplication());
-                }
-
-                experimentSessionHelper
-                        .setProtocolApplicationId(getProtocolApplication()
-                                .getId());
-                experimentSessionHelper.updateExperimentInSession();
-                experimentSessionHelper = null;
+        if ((expRun != null) && (getProtocolApplication().getId() == null)) {
+            if (saveMode == Mode.CreateProtocol) {
+                getProtocol().setContactPerson(ContactPerson.getCopy(getExperiment().getContactPerson()));
             }
+
+            if ((saveMode == Mode.SelectProtocolAndContinue) || (saveMode == Mode.CopyProtocolAndContinue)) {
+                Protocol sourceProtocol = null;
+                if (getProtocolId() != null) {
+                    sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+
+                    if (saveMode == Mode.SelectProtocolAndContinue) {
+                        setProtocol(sourceProtocol);
+                    } else {
+                        setProtocol(Protocol.getCopy(sourceProtocol));
+                    }
+                }
+            }
+
+            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
+
+            getProtocolApplication().setActivityDate(expRun.getDatePerformed());
+            getProtocolApplication().setAdditionalInfo(getProtocol().getNotes());
+            getProtocolApplication().setStepNumber(1L);
+            getProtocolApplication().setProtocol(getProtocol());
+            getProtocolApplication().setExperimentRun(expRun);
+            expRun.getProtocolApplications().add(getProtocolApplication());
+
+            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+
+            experimentSessionHelper.setProtocolApplicationId(getProtocolApplication().getId());
+            experimentSessionHelper.updateExperimentInSession();
+            experimentSessionHelper = null;
         }
+
         return ActionSupport.SUCCESS;
     }
 
@@ -371,4 +388,23 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     private CreateExperimentSessionHelper getSessionHelper() {
         return new CreateExperimentSessionHelper(ActionContext.getContext());
     }
+
+    /**
+     * Gets the protocolId.
+     *
+     * @return the protocolId.
+     */
+    public Long getProtocolId() {
+        return protocolId;
+    }
+
+    /**
+     * Sets the protocolId.
+     *
+     * @param protocolId the protocolId to set.
+     */
+    public void setProtocolId(Long protocolId) {
+        this.protocolId = protocolId;
+    }
+
 }

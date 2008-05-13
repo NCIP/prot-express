@@ -113,12 +113,17 @@
         </action>
 
        <action name="createExperiment/protocols/manage/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManageProtocolAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/createexperiment/protocol/reviewProtocol.jsp</result>
+            <result name="input">/WEB-INF/jsp/createexperiment/protocol/editProtocol.jsp</result>
+            <result name="viewProtocol">/WEB-INF/jsp/createexperiment/protocol/reviewProtocol.jsp</result>
             <result name="editProtocol">/WEB-INF/jsp/createexperiment/protocol/editProtocol.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-
+        <action name="ajax/createExperiment/protocols/add/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentAddProtocolAction" method="{1}">
+            <result name="selectExistingProtocol">/WEB-INF/jsp/createexperiment/protocol/protocolSearchResults.jsp</result>
+            <result name="success">/WEB-INF/jsp/createexperiment/protocol/protocolSearchResults.jsp</result>
+        </action>
+        <!-- /Search Actions -->
 
 
         <!-- /Create Experiment Actions -->

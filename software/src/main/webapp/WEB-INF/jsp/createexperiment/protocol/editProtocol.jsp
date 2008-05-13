@@ -7,6 +7,9 @@
 
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.editprotocol.info" /></p></div>
 <h3><fmt:message key="protexpress.page.createnewexperiment.editprotocol.title" /></h3>
+<c:if test="${not empty successMessage}">
+    <div class="confirm_msg">${successMessage}</div>
+</c:if>
 <s:form id="protocolApplicationForm" action="/createExperiment/protocols/manage/updateProtocol.action" method="post">
   <s:hidden name="protocolApplicationId" value="${protocolApplication.id}"/>
 
@@ -15,7 +18,7 @@
     <div class="twocoltable">
         <table class="form">
             <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.name" />:</td>
+                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.protocol.name" />:</td>
                 <td class="value"><s:textfield name="protocolApplication.protocol.name"/></td>
             </tr>
             <tr>
@@ -36,14 +39,14 @@
             </tr>
             <tr>
                 <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
-                <td class="value"><s:textarea name="protocolApplication.protocol.notes" rows="4"></s:textarea></td>
+                <td class="value"><s:textarea name="protocolApplication.additionalInfo" rows="4"></s:textarea></td>
             </tr>
         </table>
     </div>
 </fieldset>
 </s:form>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="experimentcreate_protocols2b.htm">Add/Edit</a>]</legend>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="<c:url value="/notYetImplemented.html"/>">Add/Edit</a>]</legend>
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -72,7 +75,7 @@
     <!--/Input List-->
 </fieldset>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="experimentcreate_protocols2b.htm">Add/Edit</a>]</legend>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="<c:url value="/notYetImplemented.html"/>">Add/Edit</a>]</legend>
     <!--Output List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
