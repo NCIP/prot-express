@@ -316,6 +316,23 @@ public class Protocol implements Serializable, Persistent, Auditable {
     }
 
     /**
+     * Copy a Protocol, and returns the new object.
+     *
+     * @param protocol the protocol to copy.
+     * @return the new object.
+     */
+    public static Protocol getCopy(Protocol protocol) {
+        Protocol newProtocol = new Protocol(protocol.getName());
+        newProtocol.setContactPerson(protocol.getContactPerson());
+        newProtocol.setDescription(protocol.getDescription());
+        newProtocol.setInstrument(protocol.getInstrument());
+        newProtocol.setNotes(protocol.getNotes());
+        newProtocol.setSoftware(protocol.getSoftware());
+        return newProtocol;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override

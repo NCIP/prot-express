@@ -14,15 +14,11 @@
             <display:setProperty name="pagination.sort.param" value="protocols.sortCriterion" />
             <display:setProperty name="pagination.sortdirection.param" value="protocols.sortDirection" />
             <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
-
-            <c:set var="emailUrl" value="mailto:test@test.com" />
             <protExpress:displayTagProperties />
 
             <display:column property="name" titleKey="protexpress.page.search.protocolresults.column.protocolname" href="${protocolSummaryUrl}" paramId="protocol.id" paramProperty="id" sortable="true" maxLength="20" maxWords="4" />
             <display:column property="description" titleKey="protexpress.page.search.protocolresults.column.description" sortable="true" maxLength="20" maxWords="4" />
-            <display:column titleKey="protexpress.page.search.protocolresults.column.user">
-                <a href="${emailUrl}">${row.auditInfo.creator}</a>
-            </display:column>
+            <display:column titleKey="protexpress.page.search.protocolresults.column.user">${row.auditInfo.creator}</display:column>
             <display:column titleKey="protexpress.page.search.protocolresults.column.dateandtime" >
                 <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${row.auditInfo.lastModifiedDate.time}" />
             </display:column>

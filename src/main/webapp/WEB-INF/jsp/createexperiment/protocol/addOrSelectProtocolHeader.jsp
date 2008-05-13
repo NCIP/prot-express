@@ -18,7 +18,4 @@
     </div>
 </s:if>
 
-<div class="tabs">
-    <a href="<c:url value="/createExperiment/manageProtocols/addNewProtocol.action" />" class="selected"><span><fmt:message key="protexpress.page.createnewexperiment.addprotocol.tabs.addnewprotocol" /></span></a>
-    <a href="<c:url value="/notYetImplemented.html" />"><span><fmt:message key="protexpress.page.createnewexperiment.addprotocol.tabs.selectexistingprotocol" /></span></a>
-</div>
+

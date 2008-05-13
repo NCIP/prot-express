@@ -92,7 +92,9 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action for managing create experiment process.
@@ -110,6 +112,7 @@ public class CreateExperimentManageProtocolAction extends ActionSupport implemen
 
     private String successMessage = null;
 
+    private String actionResultViewProtocol = "viewProtocol";
     private String actionResultEditProtocol = "editProtocol";
 
     private CreateExperimentSessionHelper experimentSessionHelper;
@@ -134,7 +137,7 @@ public class CreateExperimentManageProtocolAction extends ActionSupport implemen
      */
     @SkipValidation
     public String reviewProtocol() {
-        return ActionSupport.INPUT;
+        return actionResultViewProtocol;
     }
 
     /**
@@ -152,9 +155,14 @@ public class CreateExperimentManageProtocolAction extends ActionSupport implemen
      *
      * @return the directive for the next action / page to be directed to
      */
+    @Validations(
+            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
+                    key = "validator.notEmpty", message = "") }
+    )
     public String updateProtocol() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        return this.reviewProtocol();
+        return this.actionResultEditProtocol;
     }
 
     /**

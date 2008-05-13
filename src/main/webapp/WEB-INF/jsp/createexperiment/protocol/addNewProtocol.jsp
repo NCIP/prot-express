@@ -6,6 +6,11 @@
 <jsp:include page="/WEB-INF/jsp/createexperiment/protocol/protocolHeader.jsp" />
 <jsp:include page="/WEB-INF/jsp/createexperiment/protocol/addOrSelectProtocolHeader.jsp" />
 
+<div class="tabs">
+    <a href="<c:url value="/createExperiment/protocols/add/addNewProtocol.action" />" class="selected"><span><fmt:message key="protexpress.page.createnewexperiment.addprotocol.tabs.addnewprotocol" /></span></a>
+    <a href="<c:url value="/createExperiment/protocols/add/selectExistingProtocol.action" />"><span><fmt:message key="protexpress.page.createnewexperiment.addprotocol.tabs.selectexistingprotocol" /></span></a>
+</div>
+
 <s:form id="addNewProtocolForm" action="/createExperiment/protocols/add/save.action" method="post">
     <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
     <div class="twocoltable">

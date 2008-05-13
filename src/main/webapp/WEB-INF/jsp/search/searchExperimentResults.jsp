@@ -14,15 +14,11 @@
             <display:setProperty name="pagination.sort.param" value="experiments.sortCriterion" />
             <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
             <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
-
             <protExpress:displayTagProperties />
-            <c:set var="emailUrl" value="mailto:test@test.com" />
 
             <display:column property="name" href="${experimentSummaryUrl}" paramId="experiment.id" paramProperty="id" titleKey="protexpress.page.search.experimentresults.column.experimentname" sortable="true" maxLength="20" maxWords="4" />
             <display:column property="description" titleKey="protexpress.page.search.experimentresults.column.description" sortable="true" maxLength="20" maxWords="4" />
-            <display:column titleKey="protexpress.page.search.experimentresults.column.user">
-                <a href="${emailUrl}">${row.auditInfo.creator}</a>
-            </display:column>
+            <display:column titleKey="protexpress.page.search.experimentresults.column.user">${row.auditInfo.creator}</display:column>
             <display:column titleKey="protexpress.page.search.experimentresults.column.dateandtime" >
                 <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${row.auditInfo.lastModifiedDate.time}" />
             </display:column>
