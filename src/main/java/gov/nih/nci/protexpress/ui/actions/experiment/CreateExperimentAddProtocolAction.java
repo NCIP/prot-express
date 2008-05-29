@@ -159,6 +159,7 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     public String addNewProtocol() {
         experimentSessionHelper = getSessionHelper();
         experimentSessionHelper.setProtocolApplicationId(null);
+        experimentSessionHelper.getProtocolInputs().clear();
         experimentSessionHelper.updateExperimentInSession();
 
         return ActionSupport.INPUT;
@@ -272,7 +273,7 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
             ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
 
             getProtocolApplication().setActivityDate(expRun.getDatePerformed());
-            getProtocolApplication().setAdditionalInfo(getProtocol().getNotes());
+            getProtocolApplication().setNotes(getProtocol().getNotes());
             getProtocolApplication().setStepNumber(1L);
             getProtocolApplication().setProtocol(getProtocol());
             getProtocolApplication().setExperimentRun(expRun);

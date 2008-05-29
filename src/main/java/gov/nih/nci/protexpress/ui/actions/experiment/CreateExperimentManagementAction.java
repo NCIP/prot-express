@@ -118,7 +118,7 @@ public class CreateExperimentManagementAction extends ActionSupport implements P
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        ExperimentService es = ProtExpressRegistry.getExperimentService();
+         ExperimentService es = ProtExpressRegistry.getExperimentService();
         if ((getExperiment() != null) && (getExperiment().getId() != null)) {
             setExperiment(es.getExperimentById(getExperiment().getId()));
         }

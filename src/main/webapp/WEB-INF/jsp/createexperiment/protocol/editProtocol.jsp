@@ -11,7 +11,7 @@
     <div class="confirm_msg">${successMessage}</div>
 </c:if>
 <s:form id="protocolApplicationForm" action="/createExperiment/protocols/manage/updateProtocol.action" method="post">
-  <s:hidden name="protocolApplicationId" value="${protocolApplication.id}"/>
+  <s:hidden name="protocolApplicationId" value="protocolApplication.id"/>
 
   <fieldset>
     <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.protocoldetailstitle" /></legend>

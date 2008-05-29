@@ -59,6 +59,11 @@
 
         <default-interceptor-ref name="protExpressDefaultStack" />
 
+        <default-action-ref name="UnderConstruction" />
+        <action name="UnderConstruction">
+            <result>/notYetImplemented.jsp</result>
+        </action>
+
         <!-- Registration Actions -->
         <action name="registration/*"
             class="gov.nih.nci.protexpress.ui.actions.registration.RegistrationAction" method="{1}">
@@ -107,7 +112,7 @@
 
         <action name="createExperiment/protocols/add/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentAddProtocolAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/protocol/addNewProtocol.jsp</result>
-            <result name="success" type="redirect-action">createExperiment/protocols/manage/reviewProtocol</result>
+            <result name="success" type="redirect-action">createExperiment/protocols/inputs/load</result>
             <result name="selectExistingProtocol">/WEB-INF/jsp/createexperiment/protocol/selectExistingProtocol.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
@@ -123,7 +128,18 @@
             <result name="selectExistingProtocol">/WEB-INF/jsp/createexperiment/protocol/protocolSearchResults.jsp</result>
             <result name="success">/WEB-INF/jsp/createexperiment/protocol/protocolSearchResults.jsp</result>
         </action>
-        <!-- /Search Actions -->
+
+        <action name="createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManageProtocolInputsAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/createexperiment/protocol/manageInputs.jsp</result>
+            <result name="success">/WEB-INF/jsp/createexperiment/protocol/manageInputs.jsp</result>
+            <result name="addNewInput"  type="redirect-action">createExperiment/protocols/inputs/load</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+
+        <action name="ajax/createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManageProtocolInputsAction" method="{1}">
+            <result name="addNewInput">/WEB-INF/jsp/createexperiment/protocol/inputs.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
 
 
         <!-- /Create Experiment Actions -->

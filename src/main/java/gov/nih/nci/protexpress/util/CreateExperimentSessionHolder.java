@@ -83,6 +83,11 @@
 
 package gov.nih.nci.protexpress.util;
 
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Class that holds experiment information in session, during the Create Experiment process.
@@ -94,6 +99,7 @@ public final class CreateExperimentSessionHolder {
     private Long experimentId;
     private Long experimentRunId;
     private Long protocolApplicationId;
+    private List<InputOutputObject> protocolInputs = new ArrayList<InputOutputObject>();
 
     /**
      * Default constructor.
@@ -110,7 +116,6 @@ public final class CreateExperimentSessionHolder {
     public Long getExperimentId() {
         return experimentId;
     }
-
 
     /**
      * Sets the experimentId.
@@ -159,4 +164,23 @@ public final class CreateExperimentSessionHolder {
     public void setProtocolApplicationId(Long protocolApplicationId) {
         this.protocolApplicationId = protocolApplicationId;
     }
+
+    /**
+     * Gets the protocolInputs.
+     *
+     * @return the protocolInputs.
+     */
+    public List<InputOutputObject> getProtocolInputs() {
+        return protocolInputs;
+    }
+
+    /**
+     * Sets the protocolInputs.
+     *
+     * @param protocolInputs the protocolInputs to set.
+     */
+    public void setProtocolInputs(List<InputOutputObject> protocolInputs) {
+        this.protocolInputs = protocolInputs;
+    }
+
 }

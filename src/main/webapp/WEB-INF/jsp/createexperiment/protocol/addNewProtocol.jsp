@@ -12,7 +12,6 @@
 </div>
 
 <s:form id="addNewProtocolForm" action="/createExperiment/protocols/add/save.action" method="post">
-    <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
     <div class="twocoltable">
         <table class="form">
             <tr>

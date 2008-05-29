@@ -95,6 +95,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -138,7 +139,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private Date activityDate;
     private String comments;
     private Long stepNumber;
-    private String additionalInfo;
+    private String notes;
 
     private Protocol protocol;
     private ExperimentRun experimentRun;
@@ -325,23 +326,23 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the additionalInfo.
+     * Gets the notes.
      *
-     * @return the additionalInfo.
+     * @return the notes.
      */
-    @Column(name = "additional_info")
-    @Length(max = HibernateFieldLength.PROTAPP_ADDITIONAL_INFO_LENGTH)
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    @Column(name = "notes")
+    @Length(max = HibernateFieldLength.PROTAPP_NOTES_LENGTH)
+    public String getNotes() {
+        return notes;
     }
 
     /**
-     * Sets the additionalInfo.
+     * Sets the notes.
      *
-     * @param additionalInfo the additionalInfo to set.
+     * @param notes the notes to set.
      */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     /**
@@ -349,7 +350,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @return the inputs.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "protapp_inputs",
             joinColumns = { @JoinColumn(name = "protapp_id") },
             inverseJoinColumns = { @JoinColumn(name = "input_id") })

@@ -83,6 +83,9 @@
 
 package gov.nih.nci.protexpress.util;
 
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+
+import java.util.List;
 import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -224,5 +227,23 @@ public final class CreateExperimentSessionHelper {
      */
     public void setProtocolApplicationId(Long protocolApplicationId) {
         experimentSessionHolder.setProtocolApplicationId(protocolApplicationId);
+    }
+
+    /**
+     * Gets the protocolInputs.
+     *
+     * @return the protocolInputs.
+     */
+    public List<InputOutputObject> getProtocolInputs() {
+        return experimentSessionHolder.getProtocolInputs();
+    }
+
+    /**
+     * Sets the protocolInputs.
+     *
+     * @param protocolInputs the protocolInputs to set.
+     */
+    public void setProtocolInputs(List<InputOutputObject> protocolInputs) {
+        experimentSessionHolder.setProtocolInputs(protocolInputs);
     }
 }

@@ -65,7 +65,7 @@
                 <div class="clear"></div>
             </fieldset>
             <fieldset>
-                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;[<a href="experimentcreate.htm">EditKK</a>]</legend>
+                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;[<a href="experimentcreate.htm">Edit</a>]</legend>
                 <div class="searchresults" style="border-bottom:0;">
                     <table class="newdata3">
                         <tbody>
