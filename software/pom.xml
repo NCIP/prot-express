@@ -113,7 +113,7 @@
         <jaxb.api.version>2.1</jaxb.api.version>
         <jaxb.impl.version>2.1.4</jaxb.impl.version>
         <jaxb.xjc.version>2.1.4</jaxb.xjc.version>
-        <struts.version>2.0.9</struts.version>
+        <struts.version>2.0.11.1</struts.version>
         <ldap.host.url>ldap://cbioapp501.nci.nih.gov:389</ldap.host.url>
         <ldap.searchable.base>ou=Users,dc=firebird,dc=nci,dc=nih,dc=gov</ldap.searchable.base>
         <ldap.admin.username>cn=Manager,dc=firebird,dc=nci,dc=nih,dc=gov</ldap.admin.username>

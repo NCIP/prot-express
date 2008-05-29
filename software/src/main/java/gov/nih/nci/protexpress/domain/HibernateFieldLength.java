@@ -169,7 +169,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Protocol Application Additional Information Field.
      */
-    public static final int PROTAPP_ADDITIONAL_INFO_LENGTH = 2000;
+    public static final int PROTAPP_NOTES_LENGTH = 2000;
     /**
      * Field Length for Contact Person First Name.
      */

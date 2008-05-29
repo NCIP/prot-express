@@ -120,7 +120,7 @@ public class InputOutputObject implements Serializable, Persistent {
     private LsidType lsid;
     private String name;
     private String dataFileURL;
-    private String additionalInfo;
+    private String notes;
 
     /**
      * protected default constructor for hibernate only.
@@ -209,23 +209,23 @@ public class InputOutputObject implements Serializable, Persistent {
     }
 
     /**
-     * Gets the additionalInfo.
+     * Gets the notes.
      *
-     * @return the additionalInfo.
+     * @return the notes.
      */
-    @Column(name = "additional_info")
+    @Column(name = "notes")
     @Length(max = HibernateFieldLength.IO_NOTES_LENGTH)
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    public String getNotes() {
+        return notes;
     }
 
     /**
-     * Sets the additionalInfo.
+     * Sets the notes.
      *
-     * @param additionalInfo the additionalInfo to set.
+     * @param notes the notes to set.
      */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     /**

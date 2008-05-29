@@ -84,38 +84,40 @@ package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * Action for managing create experiment process.
+ * Action for managing create experiment protocol inputs process.
  *
  * @author Krishna Kanchinadam
  */
 
 @Validation
-public class CreateExperimentManageProtocolAction extends ActionSupport implements Preparable {
+public class CreateExperimentManageProtocolInputsAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);
     private Long protocolApplicationId;
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             null, null, null, null);
+    private List<InputOutputObject> newInputs = new ArrayList<InputOutputObject>();
 
     private String successMessage = null;
 
-    private String actionResultViewProtocol = "viewProtocol";
-    private String actionResultEditProtocol = "editProtocol";
+    private String actionResultAddNewInput = "addNewInput";
 
     private CreateExperimentSessionHelper experimentSessionHelper;
 
@@ -125,52 +127,54 @@ public class CreateExperimentManageProtocolAction extends ActionSupport implemen
     public void prepare() throws Exception {
         ExperimentService es = ProtExpressRegistry.getExperimentService();
         experimentSessionHelper = getSessionHelper();
+
+        if (experimentSessionHelper.getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(experimentSessionHelper.getProtocolApplicationId()));
+            setNewInputs(experimentSessionHelper.getProtocolInputs());
+        } else if (getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
+            setNewInputs(experimentSessionHelper.getProtocolInputs());
+        }
+
         if (experimentSessionHelper.getExperimentId() != null) {
             setExperiment(es.getExperimentById(experimentSessionHelper.getExperimentId()));
         } else if (getExperiment().getId() != null) {
             setExperiment(es.getExperimentById(getExperiment().getId()));
         }
-
-        if (experimentSessionHelper.getProtocolApplicationId() != null) {
-            setProtocolApplication(es.getProtocolApplicationById(experimentSessionHelper.getProtocolApplicationId()));
-        } else if (getProtocolApplicationId() != null) {
-            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
-        }
     }
 
     /**
-     * Review Protocol information.
+     * Loads Protocol Inputs data.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String reviewProtocol() {
-        return actionResultViewProtocol;
+    public String load() {
+        return ActionSupport.INPUT;
     }
 
     /**
-     * Loads the protocol and directs to the edit page.
+     * Creates a new input, adds to the protocol application.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String editProtocol() {
-        return this.actionResultEditProtocol;
+    public String addNewInput() {
+        getNewInputs().add(new InputOutputObject(null));
+        experimentSessionHelper.setProtocolInputs(getNewInputs());
+        experimentSessionHelper.updateExperimentInSession();
+        return actionResultAddNewInput;
     }
 
     /**
-     * Updates a protocol.
+     * Save/Updates the protocol inputs.
      *
      * @return the directive for the next action / page to be directed to
      */
-    @Validations(
-            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
-                    key = "validator.notEmpty", message = "") }
-    )
-    public String updateProtocol() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        return this.actionResultEditProtocol;
+    public String save() {
+        getProtocolApplication().setInputs(getNewInputs());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        return ActionSupport.SUCCESS;
     }
 
     /**
@@ -226,6 +230,24 @@ public class CreateExperimentManageProtocolAction extends ActionSupport implemen
      */
     public void setProtocolApplication(ProtocolApplication protocolApplication) {
         this.protocolApplication = protocolApplication;
+    }
+
+    /**
+     * Gets the newInputs.
+     *
+     * @return the newInputs.
+     */
+    public List<InputOutputObject> getNewInputs() {
+        return newInputs;
+    }
+
+    /**
+     * Sets the newInputs.
+     *
+     * @param newInputs the newInputs to set.
+     */
+    public void setNewInputs(List<InputOutputObject> newInputs) {
+        this.newInputs = newInputs;
     }
 
     /**

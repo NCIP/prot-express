@@ -10,8 +10,8 @@
     <div class="searchresults">
     <c:url var="sortUrl" value="/ajax/createExperiment/protocols/add/doSearch.action" />
 
-    <s:hidden name="protocolApplication.id" value="${protocolApplication.id}"/>
-    <s:hidden name="experimentId" value="${experiment.id}"/>
+    <s:hidden name="protocolApplication.id" value="protocolApplication.id"/>
+    <s:hidden name="experimentId" value="experiment.id"/>
 
     <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="newdata3">
         <display:table class="newdata3" cellspacing="0" list="${protocols}" requestURI="${sortUrl}" id="row">
