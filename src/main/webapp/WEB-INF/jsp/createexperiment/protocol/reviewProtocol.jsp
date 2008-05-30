@@ -53,13 +53,13 @@
                 <tr>
                     <th><fmt:message key="protexpress.input.name" /></th>
                     <th><fmt:message key="protexpress.input.filename" /></th>
-                    <th><fmt:message key="protexpress.page.input.notes" /></th>
+                    <th><fmt:message key="protexpress.input.notes" /></th>
                 </tr>
                 <c:forEach items="${protocolApplication.inputs}" var="input">
                     <tr>
                         <td class="title">${input.name}</td>
                         <td>${input.dataFileURL}</td>
-                        <td>${input.additionalInfo}</td>
+                        <td>${input.notes}</td>
                     </tr>
                 </c:forEach>
             </s:else>
@@ -88,7 +88,7 @@
                     <tr>
                         <td class="title">${output.name}</td>
                         <td>${output.dataFileURL}</td>
-                        <td>${output.additionalInfo}</td>
+                        <td>${output.notes}</td>
                     </tr>
                 </c:forEach>
             </s:else>

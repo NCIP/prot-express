@@ -8,7 +8,6 @@
 <head><s:head debug="false" theme="ajax" /></head>
 
 
-
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.addinputs.info" /></p></div>
 <h3><span>${experiment.name}</span><span class="gt">&nbsp;&gt;&nbsp;</span><span>${protocolApplication.protocol.name}</span></h3>
 <div id="processflow2">

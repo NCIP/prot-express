@@ -107,6 +107,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -372,7 +373,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      *
      * @return the outputs.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "protapp_outputs",
             joinColumns = { @JoinColumn(name = "protapp_id") },
             inverseJoinColumns = { @JoinColumn(name = "output_id") })
