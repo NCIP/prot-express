@@ -246,4 +246,22 @@ public final class CreateExperimentSessionHelper {
     public void setProtocolInputs(List<InputOutputObject> protocolInputs) {
         experimentSessionHolder.setProtocolInputs(protocolInputs);
     }
+
+    /**
+     * Gets the protocolOutputs.
+     *
+     * @return the protocolOutputs.
+     */
+    public List<InputOutputObject> getProtocolOutputs() {
+        return experimentSessionHolder.getProtocolOutputs();
+    }
+
+    /**
+     * Sets the protocolOutputs.
+     *
+     * @param protocolOutputs the protocolOutputs to set.
+     */
+    public void setProtocolOutputs(List<InputOutputObject> protocolOutputs) {
+        experimentSessionHolder.setProtocolOutputs(protocolOutputs);
+    }
 }

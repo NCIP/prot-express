@@ -83,19 +83,16 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.SearchParameters;
-import gov.nih.nci.protexpress.service.SearchType;
-import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 import gov.nih.nci.protexpress.util.CreateExperimentSessionHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -103,46 +100,42 @@ import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Action for managing create experiment process.
+ * Action for managing create experiment protocol outputs.
  *
  * @author Krishna Kanchinadam
  */
 
 @Validation
-public class CreateExperimentAddProtocolAction extends ActionSupport implements Preparable {
+public class CreateExperimentManageProtocolOutputsAction extends ActionSupport implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);
-    private Protocol protocol = new Protocol(null);
-    private Long protocolId;
+    private Long protocolApplicationId;
     private ProtocolApplication protocolApplication = new ProtocolApplication(
-            "ProtocolApplication", null, null, null);
+            null, null, null, null);
+    private List<InputOutputObject> newOutputs = new ArrayList<InputOutputObject>();
 
-    private SearchParameters searchParameters = new SearchParameters();
-    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(
-            0, null, ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
-            SortOrderEnum.ASCENDING);
+    private String successMessage = null;
 
-    private String actionResultSelectExistingProtocol = "selectExistingProtocol";
+    private String actionResultAddNewOutput = "addNewOutput";
 
     private CreateExperimentSessionHelper experimentSessionHelper;
-
-    /**
-     * Denotes the action to be performed - Create a new protocol, select an existing protocol or copy a protocol.
-     *
-     */
-    private enum Mode {
-        CreateProtocol,
-        SelectProtocolAndContinue,
-        CopyProtocolAndContinue;
-    }
 
     /**
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        experimentSessionHelper = getSessionHelper();
         ExperimentService es = ProtExpressRegistry.getExperimentService();
+        experimentSessionHelper = getSessionHelper();
+
+        if (experimentSessionHelper.getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(experimentSessionHelper.getProtocolApplicationId()));
+            setNewOutputs(experimentSessionHelper.getProtocolOutputs());
+        } else if (getProtocolApplicationId() != null) {
+            setProtocolApplication(es.getProtocolApplicationById(getProtocolApplicationId()));
+            setNewOutputs(experimentSessionHelper.getProtocolOutputs());
+        }
+
         if (experimentSessionHelper.getExperimentId() != null) {
             setExperiment(es.getExperimentById(experimentSessionHelper.getExperimentId()));
         } else if (getExperiment().getId() != null) {
@@ -151,153 +144,37 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     }
 
     /**
-     * Add a new protocol to the experiment.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String addNewProtocol() {
-        experimentSessionHelper = getSessionHelper();
-        experimentSessionHelper.setProtocolApplicationId(null);
-        experimentSessionHelper.getProtocolInputs().clear();
-        experimentSessionHelper.getProtocolOutputs().clear();
-        experimentSessionHelper.updateExperimentInSession();
-
-        return ActionSupport.INPUT;
-    }
-
-    /**
-     * Action for adding another protocol to the experiment.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String addAnotherProtocol() {
-        return addNewProtocol();
-    }
-
-    /**
-     * select an existing protocol to add to the experiment.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String selectExistingProtocol() {
-        getSearchParameters().setSearchAllUsers(false);
-        protocols = new PaginatedListImpl<Protocol>(0, null,
-                ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
-                SortOrderEnum.ASCENDING);
-
-        doSearch();
-        return this.actionResultSelectExistingProtocol;
-    }
-
-    /**
-     * Perform Search for Protocols/Experiments.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String doSearch() {
-        int count = 0;
-        getSearchParameters().setSearchType(SearchType.PROTOCOLS);
-        count = ProtExpressRegistry.getProtocolService()
-                .countMatchingProtocols(getSearchParameters());
-        getProtocols().setFullListSize(count);
-        getProtocols().setList(
-                ProtExpressRegistry.getProtocolService().searchForProtocols(
-                        getSearchParameters(),
-                        getProtocols().getObjectsPerPage(),
-                        getProtocols().getObjectsPerPage()
-                                * (getProtocols().getPageNumber() - 1),
-                        getProtocols().getSortCriterion(),
-                        getProtocols().getSortDirection()));
-
-        return actionResultSelectExistingProtocol;
-    }
-
-    /**
-     * Creates a new Protocol, and adds it to the current experiment run.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String save() {
-        return saveProtocolApplicationInformation(Mode.CreateProtocol);
-    }
-
-    /**
-     * Selects a protocol, and adds it to the current experiment run.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String selectProtocolAndContinue() {
-        return saveProtocolApplicationInformation(Mode.SelectProtocolAndContinue);
-    }
-
-    /**
-     * Copies a protocol, and adds the copied protocol to the current experiment run.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String copyProtocolAndContinue() {
-       return saveProtocolApplicationInformation(Mode.CopyProtocolAndContinue);
-    }
-
-    /**
-     * Create/Select/Copy a protocol, and save protocol application information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    private String saveProtocolApplicationInformation(Mode saveMode) {
-        experimentSessionHelper = getSessionHelper();
-        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-
-        if ((expRun != null) && (getProtocolApplication().getId() == null)) {
-            if (saveMode == Mode.CreateProtocol) {
-                getProtocol().setContactPerson(ContactPerson.getCopy(getExperiment().getContactPerson()));
-            }
-
-            if ((saveMode == Mode.SelectProtocolAndContinue) || (saveMode == Mode.CopyProtocolAndContinue)) {
-                Protocol sourceProtocol = null;
-                if (getProtocolId() != null) {
-                    sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
-
-                    if (saveMode == Mode.SelectProtocolAndContinue) {
-                        setProtocol(sourceProtocol);
-                    } else {
-                        setProtocol(Protocol.getCopy(sourceProtocol));
-                    }
-                }
-            }
-
-            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-
-            getProtocolApplication().setActivityDate(expRun.getDatePerformed());
-            getProtocolApplication().setNotes(getProtocol().getNotes());
-            getProtocolApplication().setStepNumber(1L);
-            getProtocolApplication().setProtocol(getProtocol());
-            getProtocolApplication().setExperimentRun(expRun);
-            expRun.getProtocolApplications().add(getProtocolApplication());
-
-            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-
-            experimentSessionHelper.setProtocolApplicationId(getProtocolApplication().getId());
-            experimentSessionHelper.updateExperimentInSession();
-            experimentSessionHelper = null;
-        }
-
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * loads the protocol.
+     * Loads Protocol Outputs data.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
     public String load() {
         return ActionSupport.INPUT;
+    }
+
+    /**
+     * Creates a new output and adds to the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String addNewOutput() {
+        getNewOutputs().add(new InputOutputObject(null));
+        experimentSessionHelper.setProtocolOutputs(getNewOutputs());
+        experimentSessionHelper.updateExperimentInSession();
+        return actionResultAddNewOutput;
+    }
+
+    /**
+     * Save/Updates the protocol outputs.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String save() {
+        getProtocolApplication().setOutputs(getNewOutputs());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        return ActionSupport.SUCCESS;
     }
 
     /**
@@ -312,30 +189,28 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     /**
      * Sets the experiment.
      *
-     * @param experiment
-     *            the experiment to set.
+     * @param experiment the experiment to set.
      */
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
     }
 
     /**
-     * Gets the protocol.
+     * Gets the protocolApplicationId.
      *
-     * @return the protocol.
+     * @return the protocolApplicationId.
      */
-    public Protocol getProtocol() {
-        return protocol;
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
     }
 
     /**
-     * Sets the protocol.
+     * Sets the protocolApplicationId.
      *
-     * @param protocol
-     *            the protocol to set.
+     * @param protocolApplicationId the protocolApplicationId to set.
      */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
     }
 
     /**
@@ -358,55 +233,39 @@ public class CreateExperimentAddProtocolAction extends ActionSupport implements 
     }
 
     /**
-     * @return the protocols
+     * Gets the newOutputs.
+     *
+     * @return the newOutputs.
      */
-    public PaginatedListImpl<Protocol> getProtocols() {
-        return this.protocols;
+    public List<InputOutputObject> getNewOutputs() {
+        return newOutputs;
     }
 
     /**
-     * @param protocols
-     *            the protocols to set
+     * Sets the newOutputs.
+     *
+     * @param newOutputs the newOutputs to set.
      */
-    public void setProtocols(PaginatedListImpl<Protocol> protocols) {
-        this.protocols = protocols;
+    public void setNewOutputs(List<InputOutputObject> newOutputs) {
+        this.newOutputs = newOutputs;
     }
 
     /**
-     * @return the searchParameters
+     * @return the successMessage
      */
-    public SearchParameters getSearchParameters() {
-        return this.searchParameters;
+    public String getSuccessMessage() {
+        return this.successMessage;
     }
 
     /**
-     * @param searchParameters
-     *            the searchParameters to set
+     * @param successMessage
+     *            the successMessage to set
      */
-    public void setSearchParameters(SearchParameters searchParameters) {
-        this.searchParameters = searchParameters;
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 
     private CreateExperimentSessionHelper getSessionHelper() {
         return new CreateExperimentSessionHelper(ActionContext.getContext());
     }
-
-    /**
-     * Gets the protocolId.
-     *
-     * @return the protocolId.
-     */
-    public Long getProtocolId() {
-        return protocolId;
-    }
-
-    /**
-     * Sets the protocolId.
-     *
-     * @param protocolId the protocolId to set.
-     */
-    public void setProtocolId(Long protocolId) {
-        this.protocolId = protocolId;
-    }
-
 }

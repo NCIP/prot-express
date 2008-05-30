@@ -100,6 +100,7 @@ public final class CreateExperimentSessionHolder {
     private Long experimentRunId;
     private Long protocolApplicationId;
     private List<InputOutputObject> protocolInputs = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> protocolOutputs = new ArrayList<InputOutputObject>();
 
     /**
      * Default constructor.
@@ -155,7 +156,6 @@ public final class CreateExperimentSessionHolder {
         return protocolApplicationId;
     }
 
-
     /**
      * Sets the protocolApplicationId.
      *
@@ -181,6 +181,24 @@ public final class CreateExperimentSessionHolder {
      */
     public void setProtocolInputs(List<InputOutputObject> protocolInputs) {
         this.protocolInputs = protocolInputs;
+    }
+
+    /**
+     * Gets the protocolOutputs.
+     *
+     * @return the protocolOutputs.
+     */
+    public List<InputOutputObject> getProtocolOutputs() {
+        return protocolOutputs;
+    }
+
+    /**
+     * Sets the protocolOutputs.
+     *
+     * @param protocolOutputs the protocolOutputs to set.
+     */
+    public void setProtocolOutputs(List<InputOutputObject> protocolOutputs) {
+        this.protocolOutputs = protocolOutputs;
     }
 
 }
