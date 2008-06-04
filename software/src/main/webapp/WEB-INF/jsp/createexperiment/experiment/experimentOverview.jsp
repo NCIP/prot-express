@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
-<head></head>
+<head><s:head theme="ajax" /></head>
 <title><fmt:message key="protexpress.page.createnewexperiment.overview.caption" /></title>
 
 <body>
@@ -37,7 +37,7 @@
                 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.info" /></p></div>
             </div>
 
-            <s:form id="createExperimentForm" action="/createExperiment/saveOverviewInformation.action" method="post">
+            <s:form id="createExperimentForm" action="createExperiment/save.action" method="post">
                 <div class="centerfield">
                     <fieldset class="leftfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" /></legend>
@@ -71,6 +71,10 @@
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
+                        <s:datetimepicker
+                                    name="experiment.datePerformed"
+                                    toggleType="fade"
+                                    displayFormat="MM/dd/yyyy" required="*"/>
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
