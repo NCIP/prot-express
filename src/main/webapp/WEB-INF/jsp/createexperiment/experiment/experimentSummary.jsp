@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
 <head><s:head theme="ajax" /></head>
@@ -36,14 +37,14 @@
             <h3>${experiment.name}</h3>
 
             <fieldset>
-                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.identificationtitle" />&nbsp;[<a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />">Edit</a>]</legend>
+                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.identificationtitle" />&nbsp;[<a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.editexperimentsection" /></a>]</legend>
                 <fieldset class="leftfield_wide">
                     <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.overviewtitle" /></legend>
                     <table class="form">
                         <tr><td class="label_left"><fmt:message key="protexpress.experiment.name" />:<br /><p>${experiment.name}</p></td></tr>
                         <tr><td class="label_left"><fmt:message key="protexpress.experiment.description" />:<br /><p>${experiment.description}</p></td></tr>
                         <tr><td class="label_left"><fmt:message key="protexpress.experiment.hypothesis" />:<br /><p>${experiment.hypothesis}</p></td></tr>
-                        <tr><td class="label_left"><fmt:message key="protexpress.experiment.url" />:<br /><p>${experiment.url}</p></td></tr>
+                        <tr><td class="label_left"><fmt:message key="protexpress.experiment.url" />:<br /><p><a href="${experiment.url}" target="_blank">${experiment.url}</a></p></td></tr>
                         <tr><td class="label_left"><fmt:message key="protexpress.experiment.notes" />:<br /><p>${experiment.notes}</p></td></tr>
                     </table>
                 </fieldset>
@@ -65,7 +66,7 @@
                 <div class="clear"></div>
             </fieldset>
             <fieldset>
-                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;[<a href="experimentcreate.htm">Edit</a>]</legend>
+                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;[<a href="<c:url value="/createExperiment/protocols/add/addAnotherProtocol.action"/>"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.addeditprotocolssection"/></a>]</legend>
                 <div class="searchresults" style="border-bottom:0;">
                     <table class="newdata3">
                         <tbody>
@@ -78,20 +79,28 @@
                             </s:if>
                             <s:else>
                                 <tr>
-                                    <th>Protocol Name</th>
-                                    <th># Inputs</th>
-                                    <th># Outputs</th>
-                                    <th  class="action">Edit</th>
+                                    <th class="alignright"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocols.column.count" /></th>
+                                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocols.column.protocolname" /></th>
+                                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocols.column.inputcount" /></th>
+                                    <th><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocols.column.outputcount" /></th>
+                                    <th  class="action"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocols.column.action" /></th>
                                 </tr>
-                                <c:forEach items="${experiment.experimentRuns}" var="expRun">
+                                <c:forEach items="${experiment.experimentRuns}" var="expRun" varStatus="itemCount">
                                     <c:forEach items="${expRun.protocolApplications}" var="protApp">
-                                        <c:url var="protocolEditUrl" value="/notYetImplemented.html">
-                                            <c:param name="protocolApplication.id" value="${protApp.id}" />
+                                        <c:url var="protocolViewUrl" value="/createExperiment/protocols/manage/reviewProtocol.action">
+                                            <c:param name="protocolApplicationId" value="${protApp.id}" />
                                         </c:url>
-                                        <tr>
-                                            <td>${protApp.protocol.name}</td>
-                                            <td>${protApp.protocol.name}</td>
-                                            <td>${protApp.protocol.name}</td>
+                                        <c:url var="protocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
+                                            <c:param name="protocolApplicationId" value="${protApp.id}" />
+                                        </c:url>
+                                        <c:choose>
+                                            <c:when test="${itemCount.count % 2 == 0}"><tr class="even"></c:when>
+                                            <c:otherwise><tr class="odd"></c:otherwise>
+                                        </c:choose>
+                                            <td class="alignright">${itemCount.count}.</td>
+                                            <td class="title"><a href="${protocolViewUrl}">${protApp.protocol.name}</a></td>
+                                            <td>${fn:length(protApp.inputs)}</td>
+                                            <td>${fn:length(protApp.outputs)}</td>
                                             <td  class="action">
                                                 <a href="${protocolEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.icon.edit.alt" />" /></a>
                                             </td>

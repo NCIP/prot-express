@@ -61,7 +61,7 @@
 
         <default-action-ref name="UnderConstruction" />
         <action name="UnderConstruction">
-            <result>/notYetImplemented.jsp</result>
+            <result>/notYetImplemented.html</result>
         </action>
 
         <!-- Registration Actions -->
@@ -133,13 +133,13 @@
         <action name="createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/protocol/manageInputs.jsp</result>
             <result name="success" type="redirect-action">createExperiment/protocols/outputs/load</result>
-            <result name="addNewInput"  type="redirect-action">createExperiment/protocols/inputs/load</result>
+            <result name="addNewInputdssss"  type="redirect-action">createExperiment/protocols/inputs/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
-            <result name="addNewInput">/WEB-INF/jsp/createexperiment/protocol/inputs.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+            <result name="addNewInputjhs">/WEB-INF/jsp/createexperiment/protocol/inputs.jsp</result>
+            <result name="addNewInput"  type="redirect-action">createExperiment/protocols/inputs/load</result>
         </action>
 
         <action name="createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">

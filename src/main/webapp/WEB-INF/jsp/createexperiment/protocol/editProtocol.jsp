@@ -11,7 +11,7 @@
     <div class="confirm_msg">${successMessage}</div>
 </c:if>
 <s:form id="protocolApplicationForm" action="/createExperiment/protocols/manage/updateProtocol.action" method="post">
-  <s:hidden name="protocolApplicationId" value="protocolApplication.id"/>
+  <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
 
   <fieldset>
     <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.protocoldetailstitle" /></legend>
@@ -46,7 +46,10 @@
 </fieldset>
 </s:form>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="<c:url value="/notYetImplemented.html"/>">Add/Edit</a>]</legend>
+    <c:url var="manageInputsUrl" value="/createExperiment/protocols/inputs/update.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editexperiment.addedittext"/></a>]</legend>
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -58,12 +61,17 @@
             </s:if>
             <s:else>
                 <tr>
+                    <th class="alignright"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs.column.count" /></th>
                     <th><fmt:message key="protexpress.input.name" /></th>
                     <th><fmt:message key="protexpress.input.filename" /></th>
                     <th><fmt:message key="protexpress.input.notes" /></th>
                 </tr>
-                <c:forEach items="${protocolApplication.inputs}" var="input">
-                    <tr>
+                <c:forEach items="${protocolApplication.inputs}" var="input"  varStatus="itemCount">
+                    <c:choose>
+                        <c:when test="${itemCount.count % 2 == 0}"><tr class="even"></c:when>
+                        <c:otherwise><tr class="odd"></c:otherwise>
+                    </c:choose>
+                        <td class="alignright">${itemCount.count}.</td>
                         <td class="title">${input.name}</td>
                         <td>${input.dataFileURL}</td>
                         <td>${input.notes}</td>
@@ -75,7 +83,10 @@
     <!--/Input List-->
 </fieldset>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="<c:url value="/notYetImplemented.html"/>">Add/Edit</a>]</legend>
+    <c:url var="manageOutputsUrl" value="/createExperiment/protocols/outputs/update.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="${manageOutputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editexperiment.addedittext"/></a>]</legend>
     <!--Output List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -87,12 +98,17 @@
             </s:if>
             <s:else>
                 <tr>
+                    <th class="alignright"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs.column.count" /></th>
                     <th><fmt:message key="protexpress.output.name" /></th>
                     <th><fmt:message key="protexpress.output.filename" /></th>
                     <th><fmt:message key="protexpress.output.notes" /></th>
                 </tr>
-                <c:forEach items="${protocolApplication.outputs}" var="output">
-                    <tr>
+                <c:forEach items="${protocolApplication.outputs}" var="output" varStatus="itemCount">
+                    <c:choose>
+                        <c:when test="${itemCount.count % 2 == 0}"><tr class="even"></c:when>
+                        <c:otherwise><tr class="odd"></c:otherwise>
+                    </c:choose>
+                        <td class="alignright">${itemCount.count}.</td>
                         <td class="title">${output.name}</td>
                         <td>${output.dataFileURL}</td>
                         <td>${output.notes}</td>
