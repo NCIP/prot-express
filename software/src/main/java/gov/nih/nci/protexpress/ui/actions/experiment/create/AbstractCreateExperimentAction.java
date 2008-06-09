@@ -112,8 +112,8 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
     private ExperimentRun experimentRun = new ExperimentRun("Run");
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             "ProtocolApplication", null, null, null);
-    private List<InputOutputObject> newInputs = new ArrayList<InputOutputObject>();
-    private List<InputOutputObject> newOutputs = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> protocolInputs = new ArrayList<InputOutputObject>();
+    private List<InputOutputObject> protocolOutputs = new ArrayList<InputOutputObject>();
 
     private Long experimentId;
     private Long protocolApplicationId;
@@ -172,8 +172,8 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
 
         if (protAppId != null) {
             setProtocolApplication(ProtExpressRegistry.getExperimentService().getProtocolApplicationById(protAppId));
-            setNewInputs(getSessionExperimentHolder().getProtocolInputs());
-            setNewOutputs(getSessionExperimentHolder().getProtocolOutputs());
+            setProtocolInputs(getSessionExperimentHolder().getProtocolInputs());
+            setProtocolOutputs(getSessionExperimentHolder().getProtocolOutputs());
         }
     }
 
@@ -200,7 +200,6 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
     /**
      * Removes the experiment information from session.
      */
-
     public void removeExperimentFromSession() {
         Map session = ActionContext.getContext().getSession();
         if ((session != null) && (session.get(getSessionExperiment()) != null)) {
@@ -224,6 +223,9 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
      * @return the sessionExperimentHolder.
      */
     public CreateExperimentSessionHolder getSessionExperimentHolder() {
+        if (sessionExperimentHolder == null) {
+            sessionExperimentHolder = new CreateExperimentSessionHolder();
+        }
         return sessionExperimentHolder;
     }
 
@@ -291,39 +293,45 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
     }
 
     /**
-     * Gets the newInputs.
+     * Gets the protocolInputs.
      *
-     * @return the newInputs.
+     * @return the protocolInputs.
      */
-    public List<InputOutputObject> getNewInputs() {
-        return newInputs;
+    public List<InputOutputObject> getProtocolInputs() {
+        if (protocolInputs.size() == 0) {
+            protocolInputs.add(new InputOutputObject(null));
+        }
+        return protocolInputs;
     }
 
     /**
-     * Sets the newInputs.
+     * Sets the protocolInputs.
      *
-     * @param newInputs the newInputs to set.
+     * @param protocolInputs the protocolInputs to set.
      */
-    public void setNewInputs(List<InputOutputObject> newInputs) {
-        this.newInputs = newInputs;
+    public void setProtocolInputs(List<InputOutputObject> protocolInputs) {
+        this.protocolInputs = protocolInputs;
     }
 
     /**
-     * Gets the newOutputs.
+     * Gets the protocolOutputs.
      *
-     * @return the newOutputs.
+     * @return the protocolOutputs.
      */
-    public List<InputOutputObject> getNewOutputs() {
-        return newOutputs;
+    public List<InputOutputObject> getProtocolOutputs() {
+        if (protocolOutputs.size() == 0) {
+            protocolOutputs.add(new InputOutputObject(null));
+        }
+        return protocolOutputs;
     }
 
     /**
-     * Sets the newOutputs.
+     * Sets the protocolOutputs.
      *
-     * @param newOutputs the newOutputs to set.
+     * @param protocolOutputs the protocolOutputs to set.
      */
-    public void setNewOutputs(List<InputOutputObject> newOutputs) {
-        this.newOutputs = newOutputs;
+    public void setProtocolOutputs(List<InputOutputObject> protocolOutputs) {
+        this.protocolOutputs = protocolOutputs;
     }
 
     /**

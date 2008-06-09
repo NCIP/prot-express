@@ -201,4 +201,13 @@ public final class CreateExperimentSessionHolder {
         this.protocolOutputs = protocolOutputs;
     }
 
+    /**
+     *
+     */
+    public void addNewProtocol() {
+        setProtocolApplicationId(null);
+        protocolInputs = new ArrayList<InputOutputObject>();
+        protocolOutputs = new ArrayList<InputOutputObject>();
+    }
+
 }

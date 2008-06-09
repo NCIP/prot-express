@@ -113,14 +113,26 @@ public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
     }
 
     /**
+     * Updates protocol inputs.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String update() {
+        setProtocolInputs(getProtocolApplication().getInputs());
+        getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
+        updateExperimentInSession();
+        return ActionSupport.INPUT;
+    }
+
+    /**
      * Creates a new input, adds to the protocol application.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
     public String addNewInput() {
-        getNewInputs().add(new InputOutputObject(null));
-        getSessionExperimentHolder().setProtocolInputs(getNewInputs());
+        getProtocolInputs().add(new InputOutputObject(null));
         updateExperimentInSession();
         return actionResultAddNewInput;
     }
@@ -130,9 +142,12 @@ public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String save() {
-        getProtocolApplication().setInputs(getNewInputs());
+        getProtocolApplication().setInputs(getProtocolInputs());
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
+        updateExperimentInSession();
         return ActionSupport.SUCCESS;
     }
 }

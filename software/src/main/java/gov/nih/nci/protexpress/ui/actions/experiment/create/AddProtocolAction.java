@@ -118,26 +118,13 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
     private String actionResultSelectExistingProtocol = "selectExistingProtocol";
 
     /**
-     * Denotes the action to be performed - Create a new protocol, select an existing protocol or copy a protocol.
-     *
-     */
-    private enum Mode {
-        CreateProtocol,
-        SelectProtocolAndContinue,
-        CopyProtocolAndContinue;
-    }
-
-
-    /**
      * Add a new protocol to the experiment.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
     public String addNewProtocol() {
-        getSessionExperimentHolder().setProtocolApplicationId(null);
-        getSessionExperimentHolder().getProtocolInputs().clear();
-        getSessionExperimentHolder().getProtocolOutputs().clear();
+        getSessionExperimentHolder().addNewProtocol();
         updateExperimentInSession();
 
         return ActionSupport.INPUT;
@@ -199,13 +186,14 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      *
      * @return the directive for the next action / page to be directed to
      */
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(fieldName = "protocol.name", key = "validator.notEmpty", message = "")
-                }
-            )
     public String save() {
-        return saveProtocolApplicationInformation(Mode.CreateProtocol);
+        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
+        if (expRun != null) {
+            getProtocol().setContactPerson(ContactPerson.getCopy(getExperiment().getContactPerson()));
+            return saveProtocolApplicationInformation();
+        }
+
+        return ActionSupport.INPUT;
     }
 
     /**
@@ -213,8 +201,20 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String selectProtocolAndContinue() {
-        return saveProtocolApplicationInformation(Mode.SelectProtocolAndContinue);
+        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
+        if (expRun != null) {
+            Protocol sourceProtocol = null;
+            if (getProtocolId() != null) {
+                sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+                setProtocol(sourceProtocol);
+            }
+
+            return saveProtocolApplicationInformation();
+        }
+
+        return ActionSupport.INPUT;
     }
 
     /**
@@ -222,8 +222,20 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      *
      * @return the directive for the next action / page to be directed to
      */
+    @SkipValidation
     public String copyProtocolAndContinue() {
-       return saveProtocolApplicationInformation(Mode.CopyProtocolAndContinue);
+        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
+        if (expRun != null) {
+            Protocol sourceProtocol = null;
+            if (getProtocolId() != null) {
+                sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+                setProtocol(Protocol.getCopy(sourceProtocol));
+            }
+
+            return saveProtocolApplicationInformation();
+        }
+
+        return ActionSupport.INPUT;
     }
 
     /**
@@ -231,27 +243,14 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      *
      * @return the directive for the next action / page to be directed to
      */
-    private String saveProtocolApplicationInformation(Mode saveMode) {
+@Validations(
+    requiredStrings = {
+            @RequiredStringValidator(fieldName = "protocol.name", key = "validator.notEmpty", message = "")
+    }
+)
+    private String saveProtocolApplicationInformation() {
         ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-
-        if ((expRun != null) && (getProtocolApplication().getId() == null)) {
-            if (saveMode == Mode.CreateProtocol) {
-                getProtocol().setContactPerson(ContactPerson.getCopy(getExperiment().getContactPerson()));
-            }
-
-            if ((saveMode == Mode.SelectProtocolAndContinue) || (saveMode == Mode.CopyProtocolAndContinue)) {
-                Protocol sourceProtocol = null;
-                if (getProtocolId() != null) {
-                    sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
-
-                    if (saveMode == Mode.SelectProtocolAndContinue) {
-                        setProtocol(sourceProtocol);
-                    } else {
-                        setProtocol(Protocol.getCopy(sourceProtocol));
-                    }
-                }
-            }
-
+        if (expRun != null) {
             ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
 
             getProtocolApplication().setActivityDate(expRun.getDatePerformed());
@@ -266,7 +265,6 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
             getSessionExperimentHolder().setProtocolApplicationId(getProtocolApplication().getId());
             updateExperimentInSession();
         }
-
         return ActionSupport.SUCCESS;
     }
 

@@ -423,7 +423,6 @@
                     <linkXref>true</linkXref>
                     <targetJdk>1.5</targetJdk>
                     <excludes>
-                        <exclude>**/CreateExperimentAddProtocolAction.java</exclude>
                         <exclude>jsp/**</exclude>
                         <exclude>**/xar2_2/**</exclude>
                         <exclude>org/apache/jsp/tag/**</exclude>

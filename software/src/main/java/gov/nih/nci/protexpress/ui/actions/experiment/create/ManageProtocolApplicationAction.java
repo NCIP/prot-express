@@ -110,6 +110,7 @@ public class ManageProtocolApplicationAction extends AbstractCreateExperimentAct
      */
     @SkipValidation
     public String reviewProtocol() {
+        updateExperimentInSession();
         return actionResultViewProtocol;
     }
 
@@ -120,6 +121,7 @@ public class ManageProtocolApplicationAction extends AbstractCreateExperimentAct
      */
     @SkipValidation
     public String editProtocol() {
+        updateExperimentInSession();
         return this.actionResultEditProtocol;
     }
 
