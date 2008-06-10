@@ -82,13 +82,13 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.SessionHelper;
+
+import java.util.List;
+import java.util.ListIterator;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
