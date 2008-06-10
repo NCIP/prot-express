@@ -22,8 +22,8 @@
                     <td><s:textarea name="protocolApplication.outputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
                     <td class="action">
                         <s:if test="protocolApplication.outputs.size > 1">
-                            <c:url var="deleteOutputUrl" value="/notYetImplemented.html">
-                                <c:param name="outputId" value="${e.index}" />
+                            <c:url var="deleteOutputUrl" value="/createExperiment/protocols/outputs/deleteOutput.action">
+                                <c:param name="deleteIndex" value="${e.index}" />
                             </c:url>
                             <a href="${deleteOutputUrl}"><img src="<c:url value="/images/ico_delete.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.addoutputs.icon.deletenewoutput.alt" />" /></a>
                         </s:if>

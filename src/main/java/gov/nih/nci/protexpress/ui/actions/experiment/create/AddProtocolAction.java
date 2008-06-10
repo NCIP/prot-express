@@ -125,6 +125,8 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String addNewProtocol() {
+        resetProtocolApplication();
+        SessionHelper.removeProtocolApplicationFromSession();
         return ActionSupport.INPUT;
     }
 
@@ -135,8 +137,6 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String addAnotherProtocol() {
-        resetProtocolApplication();
-        SessionHelper.removeProtocolApplicationFromSession();
         return addNewProtocol();
     }
 

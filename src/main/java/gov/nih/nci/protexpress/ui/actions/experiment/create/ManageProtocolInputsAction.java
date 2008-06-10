@@ -102,6 +102,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
 
     private String actionResultAddNewInput = "addNewInput";
 
+
     /**
      * Loads Protocol Inputs data.
      *
@@ -122,9 +123,6 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
      */
     @SkipValidation
     public String update() {
-       // setProtocolInputs(getProtocolApplication().getInputs());
-        //getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
-        //updateExperimentInSession();
         return ActionSupport.INPUT;
     }
 
@@ -138,5 +136,15 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         getProtocolApplication().getInputs().add(new InputOutputObject(null));
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewInput;
+    }
+
+    /**
+     * Saves the inputs to the session.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String saveInputsToSession() {
+        return saveInputsOutputsToSession(getProtocolApplication().getInputs());
     }
 }

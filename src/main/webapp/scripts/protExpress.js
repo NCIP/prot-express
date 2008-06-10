@@ -70,10 +70,8 @@ ajaxSubmit = function(formId, divId) {
     new Ajax.Updater(divId, url, {parameters: formData, evalScripts: true} );
 }
 
-function addNewInputOutput(actionUrl, divId) {
+function loadDiv(actionUrl, divId) {
     var divElement = document.getElementById(divId);
-   // divElement.innerHTML =     '<tr><td class="alignright">1</td><td class="title"><input type="text" value="dhfldkf"/></td><td><input type="text"/></td><td><input type="text"/></s:textarea></td><td class="action"> Delete url</tr>';
-   // return false;
     var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'get', evalScripts: true});
     return false;
 }

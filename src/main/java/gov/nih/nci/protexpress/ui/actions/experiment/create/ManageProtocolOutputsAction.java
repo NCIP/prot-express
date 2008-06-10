@@ -136,4 +136,15 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewOutput;
     }
+
+    /**
+     * Saves the outputs to the session.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String saveOutputsToSession() {
+        return saveInputsOutputsToSession(getProtocolApplication().getOutputs());
+    }
+
 }
