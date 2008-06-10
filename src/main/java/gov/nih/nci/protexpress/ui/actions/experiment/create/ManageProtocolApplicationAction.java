@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -97,7 +98,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
  */
 
 @Validation
-public class ManageProtocolApplicationAction extends AbstractCreateExperimentAction {
+public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction {
     private static final long serialVersionUID = 1L;
 
     private String actionResultViewProtocol = "viewProtocol";
@@ -110,7 +111,6 @@ public class ManageProtocolApplicationAction extends AbstractCreateExperimentAct
      */
     @SkipValidation
     public String reviewProtocol() {
-        updateExperimentInSession();
         return actionResultViewProtocol;
     }
 
@@ -121,12 +121,17 @@ public class ManageProtocolApplicationAction extends AbstractCreateExperimentAct
      */
     @SkipValidation
     public String editProtocol() {
-        updateExperimentInSession();
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService()
+                    .getProtocolApplicationById(getProtocolApplicationId()));
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+
+        }
         return this.actionResultEditProtocol;
     }
 
     /**
-     * Updates a protocol.
+     * Save/Updates the protocol applicaiton and protocol information.
      *
      * @return the directive for the next action / page to be directed to
      */
@@ -134,10 +139,17 @@ public class ManageProtocolApplicationAction extends AbstractCreateExperimentAct
             requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
                     key = "validator.notEmpty", message = "") }
     )
-    public String updateProtocol() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+    public String saveProtocol() {
+        if (getProtocolApplication().getId() == null) {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
+        } else {
+            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+        }
+
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        return this.actionResultEditProtocol;
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultViewProtocol;
     }
 
 }

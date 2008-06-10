@@ -82,10 +82,10 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.SessionHelper;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -98,18 +98,17 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractCreateExperimentAction extends ActionSupport implements Preparable {
+public abstract class AbstractProtocolApplicationAction extends AbstractCreateExperimentAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private Experiment experiment = new Experiment(null);
-    private ExperimentRun experimentRun = new ExperimentRun("Run");
-    private Long experimentId;
-    private String successMessage = null;
+    private ProtocolApplication protocolApplication = new ProtocolApplication(
+            "ProtocolApplication", null, null, null);
+    private Long protocolApplicationId;
 
     /**
      * Action Constructor.
      */
-    public AbstractCreateExperimentAction() {
+    public AbstractProtocolApplicationAction() {
         super();
     }
 
@@ -118,94 +117,64 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
      */
     public void prepare() throws Exception {
         setExperimentInformation();
-    }
-
-    /**
-     * Sets thep experiment information.
-     */
-    public void setExperimentInformation() {
-        Long expId = null;
-        if (getExperimentId() != null) {
-            expId = getExperimentId();
-        } else if (SessionHelper.getExperimentIdFromSession() != null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-        }
-        if ((getExperiment() != null) && (!getExperiment().getExperimentRuns().contains(getExperimentRun()))) {
-            getExperimentRun().setExperiment(getExperiment());
-            getExperiment().getExperimentRuns().add(getExperimentRun());
+        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
         }
     }
 
     /**
-     * Gets the experiment.
+     * Gets the protocolApplication.
      *
-     * @return the experiment.
+     * @return the protocolApplication.
      */
-    public Experiment getExperiment() {
-        return experiment;
+    public ProtocolApplication getProtocolApplication() {
+        return protocolApplication;
     }
 
     /**
-     * Sets the experiment.
+     * Gets the protocolApplicationId.
      *
-     * @param experiment the experiment to set.
+     * @return the protocolApplicationId.
      */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
     }
 
     /**
-     * Gets the experimentRun.
+     * Sets the protocolApplicationId.
      *
-     * @return the experimentRun.
+     * @param protocolApplicationId the protocolApplicationId to set.
      */
-    public ExperimentRun getExperimentRun() {
-        return experimentRun;
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
     }
 
     /**
-     * Sets the experimentRun.
+     * Sets the protocolApplication.
      *
-     * @param experimentRun the experimentRun to set.
+     * @param protocolApplication the protocolApplication to set.
      */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
+    public void setProtocolApplication(ProtocolApplication protocolApplication) {
+        this.protocolApplication = protocolApplication;
     }
 
     /**
-     * Gets the experimentId.
+     * Resets the protocolApplication.
+     */
+    public void resetProtocolApplication() {
+        this.protocolApplication = new ProtocolApplication("ProtocolApplication", null, null, null);
+    }
+
+    /**
+     * Update the protocol inputs/outputs, save the protocol application object to session.
      *
-     * @return the experimentId.
+     * @return the directive for the next action / page to be directed to
      */
-    public Long getExperimentId() {
-        return experimentId;
+    @SkipValidation
+    public String saveToSession() {
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return ActionSupport.SUCCESS;
     }
 
-    /**
-     * Sets the experimentId.
-     *
-     * @param experimentId the experimentId to set.
-     */
-    public void setExperimentId(Long experimentId) {
-        this.experimentId = experimentId;
-    }
-
-    /**
-     * @return the successMessage
-     */
-    public String getSuccessMessage() {
-        return this.successMessage;
-    }
-
-    /**
-     * @param successMessage the successMessage to set
-     */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
-    }
 
 }

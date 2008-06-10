@@ -89,6 +89,7 @@ import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
@@ -105,7 +106,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
  */
 
 @Validation
-public class AddProtocolAction extends AbstractCreateExperimentAction {
+public class AddProtocolAction extends AbstractProtocolApplicationAction {
     private static final long serialVersionUID = 1L;
 
     private Protocol protocol = new Protocol(null);
@@ -124,9 +125,6 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String addNewProtocol() {
-        getSessionExperimentHolder().addNewProtocol();
-        updateExperimentInSession();
-
         return ActionSupport.INPUT;
     }
 
@@ -137,6 +135,8 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String addAnotherProtocol() {
+        resetProtocolApplication();
+        SessionHelper.removeProtocolApplicationFromSession();
         return addNewProtocol();
     }
 
@@ -234,7 +234,6 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
 
             return saveProtocolApplicationInformation();
         }
-
         return ActionSupport.INPUT;
     }
 
@@ -251,8 +250,6 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
     private String saveProtocolApplicationInformation() {
         ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
         if (expRun != null) {
-            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
-
             getProtocolApplication().setActivityDate(expRun.getDatePerformed());
             getProtocolApplication().setNotes(getProtocol().getNotes());
             getProtocolApplication().setStepNumber(1L);
@@ -260,10 +257,7 @@ public class AddProtocolAction extends AbstractCreateExperimentAction {
             getProtocolApplication().setExperimentRun(expRun);
             expRun.getProtocolApplications().add(getProtocolApplication());
 
-            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-
-            getSessionExperimentHolder().setProtocolApplicationId(getProtocolApplication().getId());
-            updateExperimentInSession();
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         }
         return ActionSupport.SUCCESS;
     }

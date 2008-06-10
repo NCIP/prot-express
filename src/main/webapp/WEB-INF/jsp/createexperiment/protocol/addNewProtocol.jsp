@@ -56,7 +56,7 @@
                 <li>
                     <a href="javascript:document.getElementById('addNewProtocolForm').submit();" class="btn" style="text-decoration:none" onclick="this.blur();">
                         <span class="btn_img">
-                            <span class="savecontinue"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.button.saveandcontinue" /></span>
+                            <span class="savecontinue"><fmt:message key="protexpress.page.createnewexperiment.addnewprotocol.button.continue" /></span>
                         </span>
                     </a>
                 </li>

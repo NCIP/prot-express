@@ -7,8 +7,17 @@
 
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.info" /></p></div>
 <h3><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.title" /></h3>
+<c:if test="${not empty successMessage}">
+    <div class="confirm_msg">${successMessage}</div>
+</c:if>
+<s:form id="protocolApplicationForm" method="post">
+  <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
+
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.protocoldetailstitle" /></legend>
+    <c:url var="experimentProtocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" ></c:param>
+    </c:url>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.protocoldetailstitle" />[<a href="${experimentProtocolEditUrl}"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.edittext"/></a>]</legend>
     <div class="twocoltable">
         <table class="form">
             <tr>
@@ -38,8 +47,13 @@
         </table>
     </div>
 </fieldset>
+</s:form>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs" /></legend>
+    <c:url var="manageInputsUrl" value="/createExperiment/protocols/inputs/update.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs"/>[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.addedittext"/></a>]</legend>
+
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -73,7 +87,10 @@
     <!--/Input List-->
 </fieldset>
 <fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.outputs" /></legend>
+    <c:url var="manageOutputsUrl" value="/createExperiment/protocols/outputs/update.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.outputs"/>[<a href="${manageOutputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.addedittext"/></a>]</legend>
     <!--Output List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -109,15 +126,13 @@
 <div class="actionsrow">
     <del class="btnwrapper">
         <ul id="btnrow2">
+            <c:url var="experimentProtocolSaveUrl" value="/createExperiment/protocols/manage/saveProtocol.action" />
+            <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
+            <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
             <li>
-                <c:url var="experimentProtocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
-                    <c:param name="protocolApplicationId" value="${protocolApplication.id}" ></c:param>
-                </c:url>
-                <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
-                <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
-                <a href="${experimentProtocolEditUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
+                <a href="javascript:submitForm('${experimentProtocolSaveUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
                     <span class="btn_img">
-                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.edit" /></span>
+                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.save"/></span>
                     </span>
                 </a>
             </li>

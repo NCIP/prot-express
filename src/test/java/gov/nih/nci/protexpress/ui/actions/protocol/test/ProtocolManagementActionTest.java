@@ -150,7 +150,7 @@ public class ProtocolManagementActionTest extends ProtExpressBaseHibernateTest {
         this.action.setProtocol(new Protocol("zzz"));
         assertEquals(ActionSupport.SUCCESS, this.action.save());
         assertEquals(this.theSession.get(Protocol.class, this.action.getProtocol().getId()), this.action.getProtocol());
-        assertEquals("Protocol successfully created.", this.action.getSuccessMessage());
+        assertEquals("Protocol successfully saved.", this.action.getSuccessMessage());
 
         Protocol p = this.action.getProtocol();
         this.action = new ProtocolManagementAction();

@@ -94,6 +94,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 import com.opensymphony.xwork2.validator.annotations.Validations;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 /**
  * Action for managing experiment information - create, reload and view.
@@ -115,7 +116,7 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String createNewExperiment() {
-        removeExperimentFromSession();
+        SessionHelper.removeExperimentAndProtocolInformationFromSession();
         return actionResultCreateNewExperiment;
     }
 
@@ -144,6 +145,7 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
     @SkipValidation
     @SuppressWarnings("unchecked")
     public String reloadCreateNewExperiment() {
+        SessionHelper.removeExperimentAndProtocolInformationFromSession();
         return ActionSupport.INPUT;
     }
 
@@ -179,11 +181,7 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
         getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         ProtExpressRegistry.getProtExpressService().clear();
-
-        getSessionExperimentHolder().setExperimentId(getExperiment().getId());
-        getSessionExperimentHolder().setExperimentRunId(getExperimentRun().getId());
-        updateExperimentInSession();
-
+        SessionHelper.saveExperimentAndRunIdsInSession(getExperiment().getId(), getExperimentRun().getId());
         return ActionSupport.SUCCESS;
     }
 }

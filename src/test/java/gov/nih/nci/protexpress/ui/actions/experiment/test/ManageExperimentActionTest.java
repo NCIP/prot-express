@@ -84,20 +84,20 @@ package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.CreateExperimentManagementAction;
+import gov.nih.nci.protexpress.ui.actions.experiment.create.ManageExperimentAction;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * This class tests the CreateExperimentManagementActionTest.
+ * This class tests the ManageExperimentAction class.
  *
  * @author Krishna Kanchinadam
  */
-public class CreateExperimentManagementActionTest extends ProtExpressBaseHibernateTest {
+public class ManageExperimentActionTest extends ProtExpressBaseHibernateTest {
 
-    CreateExperimentManagementAction action;
+    ManageExperimentAction action;
     Experiment experiment;
 
     /**
@@ -106,7 +106,7 @@ public class CreateExperimentManagementActionTest extends ProtExpressBaseHiberna
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        this.action = new CreateExperimentManagementAction();
+        this.action = new ManageExperimentAction();
 
         this.experiment = new Experiment("Name - Test Experiment 1");
         this.experiment.setDescription("Description - Test Experiment 1");
@@ -131,8 +131,6 @@ public class CreateExperimentManagementActionTest extends ProtExpressBaseHiberna
         this.action.getExperiment().setId(this.experiment.getId());
         this.action.prepare();
         assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
-        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action
-                .getExperiment()));
     }
 
     public void testLoad() throws Exception {
@@ -141,7 +139,7 @@ public class CreateExperimentManagementActionTest extends ProtExpressBaseHiberna
 
     public void testSaveOrUpdate() throws Exception {
         this.action.setExperiment(new Experiment("Test Experiment"));
-        assertEquals("success", this.action.saveOverviewInformation());
+        assertEquals("success", this.action.save());
         assertEquals(this.theSession.get(Experiment.class, this.action.getExperiment().getId()), this.action.getExperiment());
     }
 }
