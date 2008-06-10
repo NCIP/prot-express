@@ -20,7 +20,7 @@
 <fieldset>
     <legend><fmt:message key="protexpress.page.createnewexperiment.addinputs.title" /></legend>
     <c:url var="actionUrlAddInput" value="/createExperiment/protocols/inputs/addNewInput.action" />
-    <c:url var="actionUrlSaveInputs" value="/createExperiment/protocols/inputs/save.action" />
+    <c:url var="actionUrlSaveInputs" value="/createExperiment/protocols/inputs/saveToSession.action" />
     <jsp:include page="/WEB-INF/jsp/createexperiment/protocol/inputs.jsp" />
 </fieldset>
 
@@ -28,12 +28,10 @@
 <div class="actionsrow">
     <del class="btnwrapper">
         <ul id="btnrow2">
-            <c:url var="saveInputsUrl" value="/createExperiment/protocols/inputs/save.action" />
-            <c:url var="skipStepUrl" value="/notYetImplemented.html" />
             <li>
                 <a href="javascript:submitForm('${actionUrlSaveInputs}', 'protocolApplicationInputsForm');" class="btn" onclick="this.blur();">
                     <span class="btn_img">
-                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.addinputs.button.save" /></span>
+                        <span class="next"><fmt:message key="protexpress.page.createnewexperiment.addinputs.button.continue" /></span>
                     </span>
                 </a>
             </li>

@@ -80,132 +80,195 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.util.SessionHelper;
+package gov.nih.nci.protexpress.util;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+
+import java.util.Map;
+
+import com.opensymphony.xwork2.ActionContext;
+
+
 
 /**
- * An abstract base action class for all actions related to the Create Experiment process.
+ * Class that holds experiment, protocol, input and output information in session, during the Create Experiment process.
  *
  * @author Krishna Kanchinadam
  */
 
-@Validation
-public abstract class AbstractCreateExperimentAction extends ActionSupport implements Preparable {
-    private static final long serialVersionUID = 1L;
-
-    private Experiment experiment = new Experiment(null);
-    private ExperimentRun experimentRun = new ExperimentRun("Run");
-    private Long experimentId;
-    private String successMessage = null;
+public final class SessionHelper {
+    private static final String SESSION_EXPERIMENT_ID = "sessionExperimentId";
+    private static final String SESSION_EXPERIMENT_RUN_ID = "sessionExperimentRunId";
+    private static final String SESSION_PROTOCOL_APPLICATION = "sessionProtocolApplication";
 
     /**
-     * Action Constructor.
+     * Default constructor.
+     *
      */
-    public AbstractCreateExperimentAction() {
-        super();
+    private SessionHelper() {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the Experiment Id from Session.
+     *
+     * @return the experiment id stored in session.
      */
-    public void prepare() throws Exception {
-        setExperimentInformation();
+    public static Long getExperimentIdFromSession() {
+        return (Long) retrieveFromSession(getSessionExperimentIdKey());
     }
 
     /**
-     * Sets thep experiment information.
+     * Save Experiment Id in session.
+     *
+     * @param experimentId the experiment id.
      */
-    public void setExperimentInformation() {
-        Long expId = null;
-        if (getExperimentId() != null) {
-            expId = getExperimentId();
-        } else if (SessionHelper.getExperimentIdFromSession() != null) {
-            expId = SessionHelper.getExperimentIdFromSession();
+    public static void saveExperimentIdInSession(Long experimentId) {
+        saveInSession(getSessionExperimentIdKey(), experimentId);
+    }
+
+    /**
+     * Remove Experiment Id from session.
+     */
+    public static void removeExperimentIdFromSession() {
+        removeFromSession(getSessionExperimentIdKey());
+    }
+
+    /**
+     * Gets the ExperimentRun Id from Session.
+     *
+     * @return the experiment run id stored in session.
+     */
+    public static Long getExperimentRunIdFromSession() {
+        return (Long) retrieveFromSession(getSessionExperimentRunIdKey());
+    }
+
+    /**
+     * Save ExperimentRun Id in session.
+     *
+     * @param experimentRunId the experimentRun id.
+     */
+    public static void saveExperimentRunIdInSession(Long experimentRunId) {
+        saveInSession(getSessionExperimentRunIdKey(), experimentRunId);
+    }
+
+    /**
+     * Remove ExperimentRun Id from session.
+     */
+    public static void removeExperimentRunIdFromSession() {
+        removeFromSession(getSessionExperimentRunIdKey());
+    }
+
+    /**
+     * Gets the Protocol Application from Session.
+     *
+     * @return the protocol application object stored in session.
+     */
+    public static ProtocolApplication getProtocolApplicationFromSession() {
+        return (ProtocolApplication) retrieveFromSession(getSessionProtocolApplicationKey());
+    }
+
+    /**
+     * Save Protocol Application in Session.
+     *
+     * @param protocolApplication the protocol application object.
+     */
+    public static void saveProtocolApplicationInSession(ProtocolApplication protocolApplication) {
+        saveInSession(getSessionProtocolApplicationKey(), protocolApplication);
+    }
+
+    /**
+     * Removes the Protocol Application from Session.
+     */
+    public static void removeProtocolApplicationFromSession() {
+        removeFromSession(getSessionProtocolApplicationKey());
+    }
+
+    /**
+     * Saves experiment and experiment run id in session.
+     *
+     * @param experimentId the experiment id.
+     * @param experimentRunId the experiment run id.
+     */
+    public static void saveExperimentAndRunIdsInSession(Long experimentId, Long experimentRunId) {
+        saveExperimentIdInSession(experimentId);
+        saveExperimentRunIdInSession(experimentRunId);
+    }
+
+    /**
+     * Removes Experiment and Protocol Information from session.
+     */
+    public static void removeExperimentAndProtocolInformationFromSession() {
+        removeExperimentIdFromSession();
+        removeExperimentRunIdFromSession();
+    }
+
+    /**
+     * Retrieves the object stored in session..
+     *
+     * @param sessionKey the key for which value is to be retreived.
+     * @return the value corresponding to the key or null.
+     */
+    private static Object retrieveFromSession(String sessionKey) {
+        Object returnObject = null;
+        Map session = ActionContext.getContext().getSession();
+        if ((session != null) && (session.get(sessionKey) != null)) {
+            returnObject = session.get(sessionKey);
         }
+        return returnObject;
+    }
 
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+    /**
+     * Saves the specified value in session.
+     *
+     * @param sessionKey the key.
+     * @param sessionValue the value to be saved.
+     */
+    private static void saveInSession(String sessionKey, Object sessionValue) {
+        Map session = ActionContext.getContext().getSession();
+        if (session != null) {
+            session.put(sessionKey, sessionValue);
         }
-        if ((getExperiment() != null) && (!getExperiment().getExperimentRuns().contains(getExperimentRun()))) {
-            getExperimentRun().setExperiment(getExperiment());
-            getExperiment().getExperimentRuns().add(getExperimentRun());
+    }
+
+    /**
+     * Removes the specified value in session.
+     *
+     * @param sessionKey the key.
+     *
+     */
+    private static void removeFromSession(String sessionKey) {
+        Map session = ActionContext.getContext().getSession();
+        if (session != null) {
+            session.remove(sessionKey);
         }
     }
 
     /**
-     * Gets the experiment.
+     * Gets the sessionExperimentId.
      *
-     * @return the experiment.
+     * @return the sessionExperimentId.
      */
-    public Experiment getExperiment() {
-        return experiment;
+    private static String getSessionExperimentIdKey() {
+        return SESSION_EXPERIMENT_ID;
     }
 
     /**
-     * Sets the experiment.
+     * Gets the sessionExperimentRunId.
      *
-     * @param experiment the experiment to set.
+     * @return the sessionExperimentRunId.
      */
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    private static String getSessionExperimentRunIdKey() {
+        return SESSION_EXPERIMENT_RUN_ID;
     }
 
     /**
-     * Gets the experimentRun.
+     * Gets the sessionProtocolApplication.
      *
-     * @return the experimentRun.
+     * @return the sessionProtocolApplication.
      */
-    public ExperimentRun getExperimentRun() {
-        return experimentRun;
-    }
-
-    /**
-     * Sets the experimentRun.
-     *
-     * @param experimentRun the experimentRun to set.
-     */
-    public void setExperimentRun(ExperimentRun experimentRun) {
-        this.experimentRun = experimentRun;
-    }
-
-    /**
-     * Gets the experimentId.
-     *
-     * @return the experimentId.
-     */
-    public Long getExperimentId() {
-        return experimentId;
-    }
-
-    /**
-     * Sets the experimentId.
-     *
-     * @param experimentId the experimentId to set.
-     */
-    public void setExperimentId(Long experimentId) {
-        this.experimentId = experimentId;
-    }
-
-    /**
-     * @return the successMessage
-     */
-    public String getSuccessMessage() {
-        return this.successMessage;
-    }
-
-    /**
-     * @param successMessage the successMessage to set
-     */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+    private static String getSessionProtocolApplicationKey() {
+        return SESSION_PROTOCOL_APPLICATION;
     }
 
 }

@@ -82,8 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -97,7 +97,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
+public class ManageProtocolInputsAction extends AbstractProtocolApplicationAction {
     private static final long serialVersionUID = 1L;
 
     private String actionResultAddNewInput = "addNewInput";
@@ -109,6 +109,9 @@ public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String load() {
+        if (getProtocolApplication().getInputs().size() == 0) {
+            getProtocolApplication().getInputs().add(new InputOutputObject(null));
+        }
         return ActionSupport.INPUT;
     }
 
@@ -119,9 +122,9 @@ public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String update() {
-        setProtocolInputs(getProtocolApplication().getInputs());
-        getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
-        updateExperimentInSession();
+       // setProtocolInputs(getProtocolApplication().getInputs());
+        //getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
+        //updateExperimentInSession();
         return ActionSupport.INPUT;
     }
 
@@ -132,22 +135,8 @@ public class ManageProtocolInputsAction extends AbstractCreateExperimentAction {
      */
     @SkipValidation
     public String addNewInput() {
-        getProtocolInputs().add(new InputOutputObject(null));
-        updateExperimentInSession();
+        getProtocolApplication().getInputs().add(new InputOutputObject(null));
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewInput;
-    }
-
-    /**
-     * Save/Updates the protocol inputs.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String save() {
-        getProtocolApplication().setInputs(getProtocolInputs());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        getSessionExperimentHolder().setProtocolInputs(getProtocolApplication().getInputs());
-        updateExperimentInSession();
-        return ActionSupport.SUCCESS;
     }
 }

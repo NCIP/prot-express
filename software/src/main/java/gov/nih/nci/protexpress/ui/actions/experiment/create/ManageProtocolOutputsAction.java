@@ -82,8 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -97,7 +97,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ManageProtocolOutputsAction extends AbstractCreateExperimentAction {
+public class ManageProtocolOutputsAction extends AbstractProtocolApplicationAction {
     private static final long serialVersionUID = 1L;
 
     private String actionResultAddNewOutput = "addNewOutput";
@@ -109,6 +109,9 @@ public class ManageProtocolOutputsAction extends AbstractCreateExperimentAction 
      */
     @SkipValidation
     public String load() {
+        if (getProtocolApplication().getOutputs().size() == 0) {
+            getProtocolApplication().getOutputs().add(new InputOutputObject(null));
+        }
         return ActionSupport.INPUT;
     }
 
@@ -119,9 +122,6 @@ public class ManageProtocolOutputsAction extends AbstractCreateExperimentAction 
      */
     @SkipValidation
     public String update() {
-        setProtocolInputs(getProtocolApplication().getOutputs());
-        getSessionExperimentHolder().setProtocolOutputs(getProtocolApplication().getOutputs());
-        updateExperimentInSession();
         return ActionSupport.INPUT;
     }
 
@@ -132,22 +132,8 @@ public class ManageProtocolOutputsAction extends AbstractCreateExperimentAction 
      */
     @SkipValidation
     public String addNewOutput() {
-        getProtocolOutputs().add(new InputOutputObject(null));
-        updateExperimentInSession();
+        getProtocolApplication().getOutputs().add(new InputOutputObject(null));
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewOutput;
-    }
-
-    /**
-     * Save/Updates the protocol outputs.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String save() {
-        getProtocolApplication().setOutputs(getProtocolOutputs());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        getSessionExperimentHolder().setProtocolOutputs(getProtocolApplication().getOutputs());
-        updateExperimentInSession();
-        return ActionSupport.SUCCESS;
     }
 }

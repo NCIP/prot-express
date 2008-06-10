@@ -15,14 +15,14 @@
             <th><fmt:message key="protexpress.page.createnewexperiment.addinputs.column.notes" /></th>
             <th><fmt:message key="protexpress.page.createnewexperiment.addinputs.column.action" /></th>
         </tr>
-        <s:iterator id="input" value="protocolInputs" status="e">
+        <s:iterator id="input" value="protocolApplication.inputs" status="e">
         <tr>
             <td class="alignright">${e.index + 1}</td>
-            <td class="title"><s:textfield name="protocolInputs[%{#e.index}].name" value="%{name}" required="true"/></td>
-            <td><s:textfield name="protocolInputs[%{#e.index}].dataFileURL" value="%{dataFileURL}"/></td>
-            <td><s:textarea name="protocolInputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
+            <td class="title"><s:textfield name="protocolApplication.inputs[%{#e.index}].name" value="%{name}" required="true"/></td>
+            <td><s:textfield name="protocolApplication.inputs[%{#e.index}].dataFileURL" value="%{dataFileURL}"/></td>
+            <td><s:textarea name="protocolApplication.inputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
             <td class="action">
-                <s:if test="protocolInputs.size > 1">
+                <s:if test="protocolApplication.inputs.size > 1">
                     <c:url var="deleteInputUrl" value="/notYetImplemented.html">
                         <c:param name="inputId" value="${e.index}" />
                     </c:url>

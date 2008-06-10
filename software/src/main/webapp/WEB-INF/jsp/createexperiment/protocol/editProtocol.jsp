@@ -10,7 +10,7 @@
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
 </c:if>
-<s:form id="protocolApplicationForm" action="/createExperiment/protocols/manage/updateProtocol.action" method="post">
+<s:form id="protocolApplicationForm" method="post">
   <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
 
   <fieldset>
@@ -49,7 +49,7 @@
     <c:url var="manageInputsUrl" value="/createExperiment/protocols/inputs/update.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editexperiment.addedittext"/></a>]</legend>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]</legend>
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -86,7 +86,7 @@
     <c:url var="manageOutputsUrl" value="/createExperiment/protocols/outputs/update.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="${manageOutputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editexperiment.addedittext"/></a>]</legend>
+    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="${manageOutputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]</legend>
     <!--Output List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -122,10 +122,18 @@
 <div class="actionsrow">
     <del class="btnwrapper">
         <ul id="btnrow2">
-            <c:url var="reviewProtocolUrl" value="/createExperiment/protocols/manage/reviewProtocol.action">
-                <c:param name="protocolApplicationId" value="${protocolApplication.id}" ></c:param>
-            </c:url>
+            <c:url var="experimentProtocolSaveUrl" value="/createExperiment/protocols/manage/saveProtocol.action" />
+            <c:url var="reviewProtocolUrl" value="/createExperiment/protocols/manage/reviewProtocol.action" />
             <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
+            <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
+
+            <li>
+                <a href="javascript:submitForm('${experimentProtocolSaveUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
+                    <span class="btn_img">
+                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.save"/></span>
+                    </span>
+                </a>
+            </li>
             <li>
                 <a href="${reviewProtocolUrl}" class="btn" onclick="this.blur();">
                     <span class="btn_img">
@@ -141,9 +149,9 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:document.getElementById('protocolApplicationForm').submit();" class="btn" onclick="this.blur();">
+                <a href="${experimentSummaryUrl}" class="btn" onclick="this.blur();">
                     <span class="btn_img">
-                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.save" /></span>
+                        <span class="next"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.experimentsummary" /></span>
                     </span>
                 </a>
             </li>
