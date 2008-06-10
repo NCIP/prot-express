@@ -20,7 +20,7 @@
 <fieldset>
     <legend><fmt:message key="protexpress.page.createnewexperiment.addinputs.title" /></legend>
     <c:url var="actionUrlAddInput" value="/createExperiment/protocols/inputs/addNewInput.action" />
-    <c:url var="actionUrlSaveInputs" value="/createExperiment/protocols/inputs/saveToSession.action" />
+    <c:url var="actionUrlSaveInputs" value="/createExperiment/protocols/inputs/saveInputsToSession.action" />
     <jsp:include page="/WEB-INF/jsp/createexperiment/protocol/inputs.jsp" />
 </fieldset>
 

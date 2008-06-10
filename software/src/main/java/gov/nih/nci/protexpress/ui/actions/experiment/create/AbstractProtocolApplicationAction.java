@@ -82,9 +82,14 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.SessionHelper;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -104,6 +109,7 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             "ProtocolApplication", null, null, null);
     private Long protocolApplicationId;
+    private Long deleteIndex;
 
     /**
      * Action Constructor.
@@ -168,13 +174,79 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
     /**
      * Update the protocol inputs/outputs, save the protocol application object to session.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param lst the list of inputs/outputs.
+     * @return the directive for the next action/page to be directed to.
      */
     @SkipValidation
-    public String saveToSession() {
+    public String saveInputsOutputsToSession(List<InputOutputObject> lst) {
+        ListIterator<InputOutputObject> listIter = lst.listIterator();
+        while (listIter.hasNext()) {
+            InputOutputObject ioObject = listIter.next();
+            if (StringUtils.isBlank(ioObject.getName())
+                    && StringUtils.isBlank(ioObject.getDataFileURL())
+                    && StringUtils.isBlank(ioObject.getNotes())) {
+                listIter.remove();
+            }
+        }
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return ActionSupport.SUCCESS;
     }
 
+    /**
+     * Deletes the specified input from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String deleteInput() {
+        if (getDeleteIndex().intValue() > 0) {
+            deleteInputOutput(getProtocolApplication().getInputs(), getDeleteIndex().intValue());
+        }
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Deletes the specified output from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String deleteOutput() {
+        if (getDeleteIndex().intValue() > 0) {
+            deleteInputOutput(getProtocolApplication().getOutputs(), getDeleteIndex().intValue());
+        }
+        return ActionSupport.INPUT;
+    }
+
+    /**
+     * Deletes the object at the specified index from the list.
+     *
+     * @param lst the list.
+     * @param index the index of the object to be deleted.
+     */
+    private void deleteInputOutput(List<InputOutputObject> lst, int index) {
+        if (lst != null) {
+            lst.remove(index);
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        }
+    }
+
+    /**
+     * Gets the deleteIndex.
+     *
+     * @return the deleteIndex.
+     */
+    public Long getDeleteIndex() {
+        return deleteIndex;
+    }
+
+    /**
+     * Sets the deleteIndex.
+     *
+     * @param deleteIndex the deleteIndex to set.
+     */
+    public void setDeleteIndex(Long deleteIndex) {
+        this.deleteIndex = deleteIndex;
+    }
 
 }

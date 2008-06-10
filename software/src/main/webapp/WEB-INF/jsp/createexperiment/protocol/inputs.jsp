@@ -23,8 +23,8 @@
             <td><s:textarea name="protocolApplication.inputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
             <td class="action">
                 <s:if test="protocolApplication.inputs.size > 1">
-                    <c:url var="deleteInputUrl" value="/notYetImplemented.html">
-                        <c:param name="inputId" value="${e.index}" />
+                    <c:url var="deleteInputUrl" value="/createExperiment/protocols/inputs/deleteInput.action">
+                        <c:param name="deleteIndex" value="${e.index}" />
                     </c:url>
                     <a href="${deleteInputUrl}"><img src="<c:url value="/images/ico_delete.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.addinputs.icon.deletenewinput.alt" />" /></a>
                 </s:if>
@@ -36,12 +36,11 @@
                 <del class="btnwrapper">
                     <ul id="btnrow2" style="float:right; margin-right:0">
                         <li>
-                            <c:url var="actionUrlAddInput" value="/ajax/createExperiment/protocols/inputs/addNewInput.action"/>
+                            <c:url var="actionUrlAddInput" value="/createExperiment/protocols/inputs/addNewInput.action"/>
                             <a href="javascript:submitForm('${actionUrlAddInput}', 'protocolApplicationInputsForm');" class="btn" onclick="this.blur();">
                                 <span class="btn_img"><span class="addrow"><fmt:message key="protexpress.page.createnewexperiment.addinputs.button.addanotherinput" /></span></span>
                             </a>
                         </li>
-
                     </ul>
                 </del>
             </td>
