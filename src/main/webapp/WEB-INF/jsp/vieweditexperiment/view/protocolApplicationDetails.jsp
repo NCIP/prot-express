@@ -1,0 +1,49 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="/struts-tags" prefix="s"%>
+
+<h3>${protocolApplication.protocol.name}</h3>
+<form name="edit" id="edit">
+    <fieldset class="leftfield_wide">
+        <legend><fmt:message key="protexpress.page.viewprotocolaplicationdetails.overviewtitle" /></legend>
+        <table class="form">
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.protocol.name" />:<br/><p>${protocolApplication.protocol.name}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.protocol.description" />:<br/><p>${protocolApplication.protocol.description}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.protocol.notes" />:<br/><p>${protocolApplication.notes}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.protocol.software" />:<br/><p>${protocolApplication.protocol.software}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.protocol.instrument" />:<br/><p>${protocolApplication.protocol.instrument}</p></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="rightfield_thin">
+        <legend><fmt:message key="protexpress.page.viewprotocolaplicationdetails.contacttitle" /></legend>
+        <table class="form">
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.contact.firstname" />:<br/><p>${protocolApplication.protocol.contactPerson.firstName}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.contact.lastname" />:<br/><p>${protocolApplication.protocol.contactPerson.lastName}</p></td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.contact.email" />:<br/>
+                    <p><a href="mailto:${protocolApplication.protocol.contactPerson.email}">${protocolApplication.protocol.contactPerson.email}</a></p>
+                </td>
+            </tr>
+            <tr>
+                <td class="label_left"><fmt:message key="protexpress.contact.notes" />:<br/><p>${protocolApplication.protocol.contactPerson.notes}</p></td>
+            </tr>
+        </table>
+    </fieldset>
+    <div class="clear"><br /></div>
+    <jsp:include page="/WEB-INF/jsp/vieweditexperiment/viewDetailsFooter.jsp" />
+</form>

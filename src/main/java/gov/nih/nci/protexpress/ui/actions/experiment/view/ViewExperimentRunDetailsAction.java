@@ -80,111 +80,78 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.experiment.view;
 
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
-import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
-import java.util.List;
-
-import org.displaytag.properties.SortOrderEnum;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Service to handle the manipulation of experiments.
+ * An abstract base action class for all actions related to the Create Experiment process.
  *
- * @author Scott Miller, Krishna Kanchinadam
+ * @author Krishna Kanchinadam
  */
-public interface ExperimentService {
+
+@Validation
+public class ViewExperimentRunDetailsAction extends ViewExperimentDetailsAction implements Preparable {
+    private static final long serialVersionUID = 1L;
+
+    private ExperimentRun experimentRun = null;
+    private Long experimentRunId;
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of experiments that match the search
+     * Action Constructor.
      */
-    int countMatchingExperiments(SearchParameters params);
+    public ViewExperimentRunDetailsAction() {
+        super();
+    }
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the experiments that match the search
+     * {@inheritDoc}
      */
-    List<Experiment> searchForExperiments(SearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
+    public void prepare() throws Exception {
+        if (getExperimentRunId() != null) {
+            setExperimentRun(ProtExpressRegistry.getExperimentService().getExperimentRunById(getExperimentRunId()));
+            setSelectedNodeId(getExperimentRunId().toString());
+        }
+    }
 
     /**
-     * Get the experiments the user has edited most recently.
+     * Gets the experimentRun.
      *
-     * @param username the username of the user
-     * @param numberOfExperiments the number of experiments to return
-     * @return the list of {@link Experiment}
+     * @return the experimentRun.
      */
-    List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
+    public ExperimentRun getExperimentRun() {
+        return experimentRun;
+    }
 
     /**
-     * Retrieve the experiment with the given identifier.
+     * Sets the experimentRun.
      *
-     * @param id the id of the experiment to retrive
-     * @return the {@link Experiment}
+     * @param experimentRun the experimentRun to set.
      */
-    Experiment getExperimentById(Long id);
+    public void setExperimentRun(ExperimentRun experimentRun) {
+        this.experimentRun = experimentRun;
+    }
 
     /**
-     * Retrieve the experiment run with the given identifier.
+     * Gets the experimentRunId.
      *
-     * @param id the id of the experiment run.
-     * @return the {@link ExperimentRun}
+     * @return the experimentRunId.
      */
-    ExperimentRun getExperimentRunById(Long id);
+    public Long getExperimentRunId() {
+        return experimentRunId;
+    }
 
     /**
-     * Retrieve the input output object with the given identifier.
+     * Sets the experimentRunId.
      *
-     * @param id the id of the input output object.
-     * @return the {@link InputOutputObject}
+     * @param experimentRunId the experimentRunId to set.
      */
-    InputOutputObject getInputOutputObjectById(Long id);
+    public void setExperimentRunId(Long experimentRunId) {
+        this.experimentRunId = experimentRunId;
+    }
 
-    /**
-     * Retrieve the protocol application with the given id.
-     *
-     * @param id the identifier of the protocol application.
-     * @return the {@link ProtocolApplication}
-     */
-    ProtocolApplication getProtocolApplicationById(Long id);
-
-    /**
-     * delete the given experiment.
-     *
-     * @param experiment the experiment to delete
-     */
-    void deleteExperiment(Experiment experiment);
-
-    /**
-     * delete the given experiment run.
-     *
-     * @param experimentRun the experiment run to delete.
-     */
-    void deleteExperimentRun(ExperimentRun experimentRun);
-
-    /**
-     * delete the given input output object.
-     *
-     * @param inputOutputObject the input output object to delete.
-     */
-    void deleteInputOutputObject(InputOutputObject inputOutputObject);
-
-    /**
-     * delete the {@link ProtocolApplication}.
-     *
-     * @param protocolApplication the protocol application to delete
-     */
-    void deleteProtocolApplication(ProtocolApplication protocolApplication);
 }

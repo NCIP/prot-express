@@ -80,111 +80,39 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service;
+package gov.nih.nci.protexpress.ui.actions.experiment.view;
 
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
-import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.ui.actions.experiment.AbstractExperimentTreeAction;
 
-import java.util.List;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
-import org.displaytag.properties.SortOrderEnum;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Service to handle the manipulation of experiments.
+ * An abstract base action class for all actions related to the Create Experiment process.
  *
- * @author Scott Miller, Krishna Kanchinadam
+ * @author Krishna Kanchinadam
  */
-public interface ExperimentService {
+
+@Validation
+public abstract class AbstractViewExperimentDetailsAction extends AbstractExperimentTreeAction {
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Searches for experiments that match the given criteria.
-     *
-     * @param params the params for the search
-     * @return the number of experiments that match the search
+     * Action Constructor.
      */
-    int countMatchingExperiments(SearchParameters params);
+    public AbstractViewExperimentDetailsAction() {
+        super();
+    }
 
     /**
-     * Searches for experiments that match the given criteria.
+     * Loads the data..
      *
-     * @param params the params for the search
-     * @param maxResults the max number of results to return
-     * @param firstResult the first result to return
-     * @param sortProperty the name of the property to sort on
-     * @param sortDir the direction of the sort
-     * @return the experiments that match the search
+     * @return the directive for the next action / page to be directed to
      */
-    List<Experiment> searchForExperiments(SearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir);
-
-    /**
-     * Get the experiments the user has edited most recently.
-     *
-     * @param username the username of the user
-     * @param numberOfExperiments the number of experiments to return
-     * @return the list of {@link Experiment}
-     */
-    List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments);
-
-    /**
-     * Retrieve the experiment with the given identifier.
-     *
-     * @param id the id of the experiment to retrive
-     * @return the {@link Experiment}
-     */
-    Experiment getExperimentById(Long id);
-
-    /**
-     * Retrieve the experiment run with the given identifier.
-     *
-     * @param id the id of the experiment run.
-     * @return the {@link ExperimentRun}
-     */
-    ExperimentRun getExperimentRunById(Long id);
-
-    /**
-     * Retrieve the input output object with the given identifier.
-     *
-     * @param id the id of the input output object.
-     * @return the {@link InputOutputObject}
-     */
-    InputOutputObject getInputOutputObjectById(Long id);
-
-    /**
-     * Retrieve the protocol application with the given id.
-     *
-     * @param id the identifier of the protocol application.
-     * @return the {@link ProtocolApplication}
-     */
-    ProtocolApplication getProtocolApplicationById(Long id);
-
-    /**
-     * delete the given experiment.
-     *
-     * @param experiment the experiment to delete
-     */
-    void deleteExperiment(Experiment experiment);
-
-    /**
-     * delete the given experiment run.
-     *
-     * @param experimentRun the experiment run to delete.
-     */
-    void deleteExperimentRun(ExperimentRun experimentRun);
-
-    /**
-     * delete the given input output object.
-     *
-     * @param inputOutputObject the input output object to delete.
-     */
-    void deleteInputOutputObject(InputOutputObject inputOutputObject);
-
-    /**
-     * delete the {@link ProtocolApplication}.
-     *
-     * @param protocolApplication the protocol application to delete
-     */
-    void deleteProtocolApplication(ProtocolApplication protocolApplication);
+    @SkipValidation
+    public String load() {
+        return ActionSupport.INPUT;
+    }
 }
