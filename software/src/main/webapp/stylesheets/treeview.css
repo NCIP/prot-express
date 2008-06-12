@@ -47,16 +47,17 @@ UL#treeview LI A.output
 /* Details */
 
 .detailbox
-{ margin:7px; width:98%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
+{ margin:7px; padding:0; width:98%; border:1px solid #999; background:#fbfbfb url("../images/bg_panel_gray.gif") repeat-x bottom }
 .detailbox H3
-{ font-family:arial,helvetica,sans-serif; line-height:1.2em; margin:0; font-size:100%; font-weight:bold; color:#fff; background:#000 url("../images/bg_header_black.gif") repeat-x top; padding:4px;  }
+{ font-family:arial,helvetica,sans-serif; line-height:1.2em; margin:0; font-size:100%; color:#333; padding:5px; font-weight:bold; background:#c5cfe5 url("../images/bg_treehilite.gif") repeat-x; border-bottom:1px solid #999  }
 .detailbox .calcol
 { width:30px; float:left; }
 .detailbox .datecol
 { width:75px; float:left; }
 .detailbox .calcol A
 { display:block; margin-left:5px; margin-top:-3px }
-
+.detailbox .searchresults
+{ margin:10px auto; width:96%; }
 .detailbox FIELDSET
 { margin:10px }
 .detailbox LEGEND
@@ -67,9 +68,9 @@ UL#treeview LI A.output
 
 .detailbox .actionsrow
 { text-align:center; border-top:1px dotted #999; padding:5px 0 }
-.detailbox #btnrow, .detailbox #btnrow2 
+.detailbox #btnrow, .detailbox #btnrow2
 { display:table; padding:0; margin:0 auto; list-style-type:none; white-space:nowrap; }
-.detailbox #btnrow LI, .detailbox #btnrow2 LI 
+.detailbox #btnrow LI, .detailbox #btnrow2 LI
 { display:table-cell; }
 .detailbox .btnwrapper { clear:both; text-decoration:none; }
 * #btnrow LI,* #btnrow2 LI { float:left; }

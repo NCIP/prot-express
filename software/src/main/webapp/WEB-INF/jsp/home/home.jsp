@@ -56,17 +56,17 @@
                             <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.download" /></th>
                         </tr>
                         <c:forEach items="${recentExperiments}" var="experiment">
-                            <c:url var="experimentSummaryUrl" value="/notYetImplemented.html">
-                                <c:param name="experiment.id" value="${experiment.id}" />
+                            <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action">
+                                <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
-                            <c:url var="experimentEditUrl" value="/notYetImplemented.html">
-                                <c:param name="experiment.id" value="${experiment.id}" />
+                            <c:url var="editExperimentDetailsUrl" value="/notYetImplemented.html">
+                                <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
                             <c:url var="experimentDownloadUrl" value="/notYetImplemented.html">
                                 <c:param name="experiment.id" value="${experiment.id}" />
                             </c:url>
                             <tr>
-                                <td><a href="${experimentSummaryUrl}">${experiment.name}</a></td>
+                                <td><a href="${viewExperimentDetailsUrl}">${experiment.name}</a></td>
                                 <td>${experiment.description}</td>
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
                                 <td class="action">
@@ -84,7 +84,7 @@
                                     </c:choose>
                                   </td>
                                 <td class="action">
-                                    <a href="${experimentEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
+                                    <a href="${editExperimentDetailsUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
                                 </td>
                                 <td class="action">
                                     <c:if test="${statusCompleted}">

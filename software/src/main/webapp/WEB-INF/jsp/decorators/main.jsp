@@ -19,11 +19,13 @@
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_controls.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_parser.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/experimentTree.js"/>"></script>
     <link rel="address bar icon" href="<c:url value="/images/favicon.ico"/>">
     <link rel="icon" href="<c:url value="/images/favicon.ico"/>o" type="image/x-icon">
     <link rel="shortcut icon" href="<c:url value="/images/favicon.ico"/>" type="image/x-icon">
     <link rel="stylesheet" href="<c:url value="/stylesheets/style.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<c:url value="/stylesheets/treeview.css"/>" media="screen" type="text/css"/>
 </head>
 
 <body onload="src/main/webapp/images/arrow_up.png""<decorator:getProperty property="body.onload" />">
