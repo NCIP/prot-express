@@ -145,7 +145,7 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
     @SkipValidation
     @SuppressWarnings("unchecked")
     public String reloadCreateNewExperiment() {
-        SessionHelper.removeExperimentAndProtocolInformationFromSession();
+        SessionHelper.removeProtocolApplicationFromSession();
         return ActionSupport.INPUT;
     }
 
