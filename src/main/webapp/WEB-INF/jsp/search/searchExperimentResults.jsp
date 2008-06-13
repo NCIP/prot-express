@@ -7,7 +7,6 @@
 <div class="searchresults">
     <h2><fmt:message key="protexpress.page.search.resultstitle" /></h2>
     <c:url var="sortUrl" value="/ajax/search/doSearch.action" />
-    <c:url var="experimentSummaryUrl" value="/notYetImplemented.html" />
 
     <ajax:displayTag id="displayTagFrame" ajaxFlag="true" tableClass="newdata3">
         <display:table class="newdata3" cellspacing="0" list="${experiments}" requestURI="${sortUrl}" id="row" >
@@ -15,8 +14,10 @@
             <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
             <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
             <protExpress:displayTagProperties />
-
-            <display:column property="name" href="${experimentSummaryUrl}" paramId="experiment.id" paramProperty="id" titleKey="protexpress.page.search.experimentresults.column.experimentname" sortable="true" maxLength="20" maxWords="4" />
+            <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action">
+                <c:param name="experimentId" value="${row.id}" />
+            </c:url>
+            <display:column property="name" href="${viewExperimentDetailsUrl}" titleKey="protexpress.page.search.experimentresults.column.experimentname" sortable="true" maxLength="20" maxWords="4" />
             <display:column property="description" titleKey="protexpress.page.search.experimentresults.column.description" sortable="true" maxLength="20" maxWords="4" />
             <display:column titleKey="protexpress.page.search.experimentresults.column.user">${row.auditInfo.creator}</display:column>
             <display:column titleKey="protexpress.page.search.experimentresults.column.dateandtime" >
