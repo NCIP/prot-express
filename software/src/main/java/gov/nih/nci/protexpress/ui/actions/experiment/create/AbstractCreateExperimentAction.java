@@ -133,6 +133,7 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
 
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+            setExperimentRun(getExperiment().getExperimentRuns().get(0));
         }
         if ((getExperiment() != null) && (!getExperiment().getExperimentRuns().contains(getExperimentRun()))) {
             getExperimentRun().setExperiment(getExperiment());

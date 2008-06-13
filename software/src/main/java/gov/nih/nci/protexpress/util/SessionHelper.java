@@ -201,6 +201,7 @@ public final class SessionHelper {
     public static void removeExperimentAndProtocolInformationFromSession() {
         removeExperimentIdFromSession();
         removeExperimentRunIdFromSession();
+        removeProtocolApplicationFromSession();
     }
 
     /**
