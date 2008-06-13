@@ -70,7 +70,7 @@
                 <div class="searchresults" style="border-bottom:0;">
                     <table class="newdata3">
                         <tbody>
-                            <s:if test="%{experimentRun.protocolApplications.size() != 0}">
+                            <s:if test="%{experiment.experimentRun.protocolApplications.size() != 0}">
                                 <tr>
                                     <td class="label_left">
                                         No Protocols found.
