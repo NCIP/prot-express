@@ -14,10 +14,8 @@
             <display:setProperty name="pagination.sortdirection.param" value="experiments.sortDirection" />
             <display:setProperty name="pagination.pagenumber.param" value="experiments.pageNumber" />
             <protExpress:displayTagProperties />
-            <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action">
-                <c:param name="experimentId" value="${row.id}" />
-            </c:url>
-            <display:column property="name" href="${viewExperimentDetailsUrl}" titleKey="protexpress.page.search.experimentresults.column.experimentname" sortable="true" maxLength="20" maxWords="4" />
+            <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action" />
+            <display:column property="name" href="${viewExperimentDetailsUrl}" titleKey="protexpress.page.search.experimentresults.column.experimentname" paramId="experimentId" paramProperty="id" sortable="true" maxLength="20" maxWords="4" />
             <display:column property="description" titleKey="protexpress.page.search.experimentresults.column.description" sortable="true" maxLength="20" maxWords="4" />
             <display:column titleKey="protexpress.page.search.experimentresults.column.user">${row.auditInfo.creator}</display:column>
             <display:column titleKey="protexpress.page.search.experimentresults.column.dateandtime" >
