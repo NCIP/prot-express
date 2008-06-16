@@ -124,7 +124,9 @@
                             </a>
                         </li>
                         <li>
-                            <c:url var="editUrl" value="/home/home.action" />
+                            <c:url var="editUrl" value="/viewExperiment/experiment/load.action">
+                                <c:param name="experimentId" value="${experiment.id}" />
+                            </c:url>
                             <a href="${editUrl}" class="btn" onclick="this.blur();">
                                 <span class="btn_img">
                                     <span class="saverepeat"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.button.repeat" /></span>
