@@ -84,7 +84,10 @@ package gov.nih.nci.protexpress.ui.actions.experiment.view;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
+
 import org.apache.commons.lang.StringUtils;
+
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -154,4 +157,18 @@ public class ViewExperimentDetailsAction extends AbstractViewExperimentDetailsAc
     public void setExperimentId(Long experimentId) {
         this.experimentId = experimentId;
     }
+
+    /**
+     * Save the experiment data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveExperiment() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.update.success"));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
+        ProtExpressRegistry.getProtExpressService().clear();
+
+        return ActionSupport.SUCCESS;
+    }
+
 }

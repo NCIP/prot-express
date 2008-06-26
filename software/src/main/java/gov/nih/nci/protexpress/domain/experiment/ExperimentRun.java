@@ -135,7 +135,7 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     private Long id;
     private LsidType lsid;
     private String name;
-    private String comments;
+    private String notes;
     private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
@@ -210,23 +210,23 @@ public class ExperimentRun implements Serializable, Persistent, Auditable {
     }
 
     /**
-     * Gets the comments.
+     * Gets the notes.
      *
-     * @return the comments
+     * @return the notes
      */
-    @Column(name = "comments")
-    @Length(max = HibernateFieldLength.EXPRUN_COMMENTS_LENGTH)
-    public String getComments() {
-        return this.comments;
+    @Column(name = "notes")
+    @Length(max = HibernateFieldLength.EXPRUN_NOTES_LENGTH)
+    public String getNotes() {
+        return this.notes;
     }
 
     /**
-     * Sets the comments.
+     * Sets the notes.
      *
-     * @param comments the comments to set
+     * @param notes the notes to set
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     /**

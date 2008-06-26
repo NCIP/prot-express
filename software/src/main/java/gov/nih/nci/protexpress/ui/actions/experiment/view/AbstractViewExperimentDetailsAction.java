@@ -98,6 +98,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 @Validation
 public abstract class AbstractViewExperimentDetailsAction extends AbstractExperimentTreeAction {
     private static final long serialVersionUID = 1L;
+    private String successMessage = null;
 
     /**
      * Action Constructor.
@@ -115,4 +116,24 @@ public abstract class AbstractViewExperimentDetailsAction extends AbstractExperi
     public String load() {
         return ActionSupport.INPUT;
     }
+
+    /**
+     * Gets the successMessage.
+     *
+     * @return the successMessage.
+     */
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    /**
+     * Sets the successMessage.
+     *
+     * @param successMessage the successMessage to set.
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+
 }

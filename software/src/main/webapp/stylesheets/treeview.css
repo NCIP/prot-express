@@ -36,8 +36,12 @@ UL#treeview A
 { padding:1px 2px; color:#333; display:block; padding-left:20px; }
 UL#treeview LI A:hover
 { text-decoration:none }
-UL#treeview LI A.folder
-{ background:url("../images/ico_folder.gif") no-repeat 0 0;  }
+UL#treeview LI A.experiment
+{ background:url("../images/ico_experiment.gif") no-repeat 0 0;  }
+UL#treeview LI A.experimentrun
+{ background:url("../images/ico_experiment_run.gif") no-repeat 0 0;  }
+UL#treeview LI A.protocol
+{ background:url("../images/ico_protocol.gif") no-repeat 0 0;  }
 UL#treeview LI A.input
 { background:url("../images/ico_input.gif") no-repeat 0 1px;  }
 UL#treeview LI A.output

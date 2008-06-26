@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.view;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -154,4 +155,16 @@ public class ViewExperimentRunDetailsAction extends ViewExperimentDetailsAction 
         this.experimentRunId = experimentRunId;
     }
 
+    /**
+     * Save the experiment run data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveExperimentRun() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experimentrun.update.success"));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperimentRun());
+        ProtExpressRegistry.getProtExpressService().clear();
+
+        return ActionSupport.SUCCESS;
+    }
 }

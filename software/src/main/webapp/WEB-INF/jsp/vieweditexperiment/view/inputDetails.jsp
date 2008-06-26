@@ -20,4 +20,3 @@
         </tr>
     </table>
 </form>
-<jsp:include page="/WEB-INF/jsp/vieweditexperiment/viewDetailsFooter.jsp" />

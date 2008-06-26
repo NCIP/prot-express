@@ -4,7 +4,6 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
 <h3>${protocolApplication.protocol.name}</h3>
-<form name="edit" id="edit">
     <fieldset class="leftfield_wide">
         <legend><fmt:message key="protexpress.page.viewprotocolaplicationdetails.overviewtitle" /></legend>
         <table class="form">
@@ -22,6 +21,14 @@
             </tr>
             <tr>
                 <td class="label_left"><fmt:message key="protexpress.protocol.instrument" />:<br/><p>${protocolApplication.protocol.instrument}</p></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="rightfield_thin">
+        <legend><fmt:message key="protexpress.protocolapplication.dateperformed" /></legend>
+        <table class="form">
+            <tr>
+                <td class="label_left"><p><fmt:formatDate type="date" dateStyle="short" value="${protocolApplication.datePerformed}" /></p></td>
             </tr>
         </table>
     </fieldset>
@@ -45,5 +52,3 @@
         </table>
     </fieldset>
     <div class="clear"><br /></div>
-    <jsp:include page="/WEB-INF/jsp/vieweditexperiment/viewDetailsFooter.jsp" />
-</form>

@@ -85,6 +85,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.view;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -160,4 +161,35 @@ public class ViewInputOutputDetailsAction extends ViewProtocolApplicationDetails
         this.inputOutputObjectId = inputOutputObjectId;
     }
 
+    /**
+     * Save the input data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveInput() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("input.update.success"));
+        return saveInputOutputObject();
+    }
+
+    /**
+     * Save the output data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveOutput() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("output.update.success"));
+        return saveInputOutputObject();
+    }
+
+    /**
+     * Save the object.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    private String saveInputOutputObject() {
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
+        ProtExpressRegistry.getProtExpressService().clear();
+
+        return ActionSupport.SUCCESS;
+    }
 }

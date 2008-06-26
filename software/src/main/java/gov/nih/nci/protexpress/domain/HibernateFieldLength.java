@@ -122,7 +122,7 @@ public final class HibernateFieldLength {
     /**
      * Field Length for Experiment Run Comments.
      */
-    public static final int EXPRUN_COMMENTS_LENGTH = 2000;
+    public static final int EXPRUN_NOTES_LENGTH = 2000;
 
     /**
      * Field Length for Input Output Object Name.

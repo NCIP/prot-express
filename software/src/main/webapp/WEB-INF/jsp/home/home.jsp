@@ -59,7 +59,7 @@
                             <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action">
                                 <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
-                            <c:url var="editExperimentDetailsUrl" value="/notYetImplemented.html">
+                            <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
                                 <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
                             <c:url var="experimentDownloadUrl" value="/notYetImplemented.html">
