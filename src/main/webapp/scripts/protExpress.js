@@ -72,7 +72,9 @@ ajaxSubmit = function(formId, divId) {
 
 function loadDiv(actionUrl, divId) {
     var divElement = document.getElementById(divId);
-    var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'get', evalScripts: true});
+    var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'get', evalScripts: true, executeScripts: true});
+
+    alert (divElement.innerHTML);
     return false;
 }
 

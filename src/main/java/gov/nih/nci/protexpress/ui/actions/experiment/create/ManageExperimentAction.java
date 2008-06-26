@@ -179,6 +179,7 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
 
     public String save() {
         getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
+        getExperimentRun().setNotes(getExperiment().getNotes());
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         ProtExpressRegistry.getProtExpressService().clear();
         SessionHelper.saveExperimentAndRunIdsInSession(getExperiment().getId(), getExperimentRun().getId());

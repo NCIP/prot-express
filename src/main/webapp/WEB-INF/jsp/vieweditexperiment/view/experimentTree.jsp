@@ -4,30 +4,36 @@
 
 <ul id="treeview">
     <li id="${experiment.id}">
-        <c:url var="loadExperimentDetailsUrl" value="/ajax/viewExperiment/experiment/load.action">
+        <c:url var="loadExperimentDetailsUrl" value="${urlPrefix}/experiment/load.action">
             <c:param name="experimentId" value="${experiment.id}"></c:param>
         </c:url>
-        <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${experiment.id}','${loadExperimentDetailsUrl}')" class="folder">${experiment.name}</a></span>
+        <s:url id="loadExperimentDetailsUrl1" value="%{#urlPrefix1}/experiment/load.action">
+            <s:param name="experimentId" value="%{experiment.id}"></s:param>
+        </s:url>
+        <s:a href="%{loadExperimentDetailsUrl1}" theme="ajax" targets="detail-content">#test111</s:a>
+        <span>
+            <a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${experiment.id}','${loadExperimentDetailsUrl}')" class="experiment">${experiment.name}</a>
+        </span>
         <ul style="display:block">
             <s:iterator id="experimentRun" value="%{experiment.experimentRuns}">
-                <c:url var="loadExperimentRunDetailsUrl" value="/ajax/viewExperiment/experimentRun/load.action">
+                <c:url var="loadExperimentRunDetailsUrl" value="${urlPrefix}/experimentRun/load.action">
                     <c:param name="experimentId" value="${experiment.id}"></c:param>
                     <c:param name="experimentRunId" value="${experimentRun.id}"></c:param>
                 </c:url>
                 <li id="${experimentRun.id}">
-                    <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${experimentRun.id}','${loadExperimentRunDetailsUrl}')" class="folder">${experimentRun.name}</a></span>
+                    <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${experimentRun.id}','${loadExperimentRunDetailsUrl}')" class="experimentrun">${experimentRun.name}</a></span>
                     <ul style="display:block">
                         <s:iterator id="protApp" value="%{protocolApplications}">
-                            <c:url var="loadProtocolApplicationDetailsUrl" value="/ajax/viewExperiment/protocolApplication/load.action">
+                            <c:url var="loadProtocolApplicationDetailsUrl" value="${urlPrefix}/protocolApplication/load.action">
                                 <c:param name="experimentId" value="${experiment.id}"></c:param>
                                 <c:param name="experimentRunId" value="${experimentRun.id}"></c:param>
                                 <c:param name="protocolApplicationId" value="${protApp.id}"></c:param>
                             </c:url>
                             <li id="${protApp.id}">
-                                <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${protApp.id}','${loadProtocolApplicationDetailsUrl}')" class="folder">${protApp.protocol.name}</a></span>
-                                <ul style="display:block">
+                                <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${protApp.id}','${loadProtocolApplicationDetailsUrl}')" class="protocol">${protApp.protocol.name}</a></span>
+                                <ul style="display:none">
                                     <s:iterator id="input" value="%{inputs}">
-                                        <c:url var="loadInputDetailsUrl" value="/ajax/viewExperiment/input/load.action">
+                                        <c:url var="loadInputDetailsUrl" value="${urlPrefix}/input/load.action">
                                             <c:param name="experimentId" value="${experiment.id}"></c:param>
                                             <c:param name="experimentRunId" value="${experimentRun.id}"></c:param>
                                             <c:param name="protocolApplicationId" value="${protApp.id}"></c:param>
@@ -37,7 +43,7 @@
                                             <span><a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${protApp.id}.${input.id}','${loadInputDetailsUrl}')" class="input">${input.name}</a></span></li>
                                     </s:iterator>
                                     <s:iterator id="output" value="%{outputs}">
-                                        <c:url var="loadOutputDetailsUrl" value="/ajax/viewExperiment/output/load.action">
+                                        <c:url var="loadOutputDetailsUrl" value="${urlPrefix}/output/load.action">
                                             <c:param name="experimentId" value="${experiment.id}"></c:param>
                                             <c:param name="experimentRunId" value="${experimentRun.id}"></c:param>
                                             <c:param name="protocolApplicationId" value="${protApp.id}"></c:param>

@@ -196,7 +196,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         ExperimentRun expRun = new ExperimentRun("IP0014_AX02 (Mouse Pancreatic Cancer Study)");
         expRun.setId(430L);
         expRun.setExperiment(currentExperiment);
-        expRun.setComments("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
+        expRun.setNotes("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
         // Set a Protocol Application
         ProtocolApplication protApp = new ProtocolApplication("Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(0));
@@ -251,7 +251,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertNotNull(unmarshalledExperimentRun);
         assertEquals(unmarshalledExperimentRun, this.experiments.get(0).getExperimentRuns().get(0));
         assertEquals(unmarshalledExperimentRun.getName(), "IP0014_AX02 (Mouse Pancreatic Cancer Study)");
-        assertEquals(unmarshalledExperimentRun.getComments(), "Profiling of Proteins in Lung " +
+        assertEquals(unmarshalledExperimentRun.getNotes(), "Profiling of Proteins in Lung " +
                 "Adenocarcinoma Cell Surface");
 
         List<ProtocolApplication> protApplications = unmarshalledExperimentRun.getProtocolApplications();
@@ -261,7 +261,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         unmarshalledProtApp1.setId(440L);
         assertNotNull(unmarshalledProtApp1);
         assertEquals(unmarshalledProtApp1, this.experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
-        assertEquals(unmarshalledProtApp1.getComments(), null);
+        assertEquals(unmarshalledProtApp1.getNotes(), null);
         assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
 
         assertNotNull(unmarshalledProtApp1.getExperimentRun());

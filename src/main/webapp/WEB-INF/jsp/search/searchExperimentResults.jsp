@@ -38,8 +38,8 @@
             </display:column>
             <display:column class="action" titleKey="protexpress.page.search.experimentresults.column.edit">
                 <c:if test="${row.auditInfo.creator == currentUser.loginName}">
-                    <c:url var="experimentEditUrl" value="/notYetImplemented.html">
-                        <c:param name="experiment.id" value="${row.id}" />
+                    <c:url var="experimentEditUrl" value="/editExperiment/experiment/load.action">
+                        <c:param name="experimentId" value="${row.id}" />
                     </c:url>
                     <a href="${experimentEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.search.experimentresults.icon.edit.alt" />" /></a>
                 </c:if>

@@ -5,11 +5,9 @@
 
 <head><s:head theme="ajax" /></head>
 <title><fmt:message key="protexpress.page.viewexperiment.title.caption" /></title>
-
 <c:url var="viewExperimentDetailsUrl" value="/viewExperiment/experiment/load.action">
     <c:param name="experimentId" value="${experiment.id}" />
 </c:url>
-
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">
@@ -28,7 +26,7 @@
             <!--TREE COLUMN-->
             <div id="treecol">
                 <h2 class="treehead"><fmt:message key="protexpress.page.viewexperiment.treeview.title" /></h2>
-                <jsp:include page="/WEB-INF/jsp/vieweditexperiment/experimentTree.jsp" />
+                <%@ include file="/WEB-INF/jsp/vieweditexperiment/viewExperimentTree.jsp"%>
             </div>
             <c:if test="${selectedNodeId != null}">
                 <script>
@@ -41,6 +39,22 @@
                 <h2 class="detailhead"><fmt:message key="protexpress.page.viewexperiment.detailsview.title" /></h2>
                 <div class="detailbox" id="detail-content">
                     <jsp:include page="/WEB-INF/jsp/vieweditexperiment/view/experimentDetails.jsp" />
+                </div>
+                <div class="detailbox">
+                    <div class="actionsrow">
+                        <del class="btnwrapper">
+                            <ul id="btnrow2">
+                                <li>
+                                    <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
+                                        <c:param name="experimentId" value="${experiment.id}" />
+                                    </c:url>
+                                    <a href="${editExperimentDetailsUrl}" class="btn" onclick="this.blur();">
+                                        <span class="btn_img"><span class="edit"><fmt:message key="protexpress.page.viewexperiment.detailsview.footer.editexperiment" /></span></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </del>
+                    </div>
                 </div>
             </div>
             <!-- /DETAIL COLUMN -->

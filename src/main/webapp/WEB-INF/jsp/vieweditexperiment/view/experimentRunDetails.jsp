@@ -11,9 +11,12 @@
             <td class="value">${experimentRun.name}</td>
         </tr>
         <tr>
+            <td class="label"><fmt:message key="protexpress.experimentrun.dateperformed" />:</td>
+            <td class="value"><fmt:formatDate type="date" dateStyle="short" value="${experimentRun.datePerformed}" /></td>
+        </tr>
+        <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.notes" />:</td>
-            <td class="value">${experimentRun.experiment.notes}</td>
+            <td class="value">${experimentRun.notes}</td>
         </tr>
     </table>
 </form>
-<jsp:include page="/WEB-INF/jsp/vieweditexperiment/viewDetailsFooter.jsp" />

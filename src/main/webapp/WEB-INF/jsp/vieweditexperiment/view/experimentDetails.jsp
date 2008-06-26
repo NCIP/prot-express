@@ -4,7 +4,6 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
 <h3>${experiment.name}</h3>
-<form name="edit" id="edit">
     <fieldset class="leftfield_wide">
         <legend><fmt:message key="protexpress.page.viewexperimentdetails.overviewtitle" /></legend>
         <table class="form">
@@ -22,6 +21,14 @@
             </tr>
             <tr>
                 <td class="label_left"><fmt:message key="protexpress.experiment.notes" />:<br/><p>${experiment.notes}</p></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="rightfield_thin">
+        <legend><fmt:message key="protexpress.experiment.dateperformed" /></legend>
+        <table class="form">
+            <tr>
+                <td class="label_left"><p><fmt:formatDate type="date" dateStyle="short" value="${experiment.datePerformed}" /></p></td>
             </tr>
         </table>
     </fieldset>
@@ -44,6 +51,5 @@
             </tr>
         </table>
     </fieldset>
-</form>
 <div class="clear"><br /></div>
-<jsp:include page="/WEB-INF/jsp/vieweditexperiment/viewDetailsFooter.jsp" />
+

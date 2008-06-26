@@ -137,7 +137,7 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     private Long id;
     private LsidType lsid;
     private String name;
-    private Date activityDate;
+    private Date datePerformed = new Date();
     private String comments;
     private Long stepNumber;
     private String notes;
@@ -159,14 +159,14 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      * Constructor to create the object and populate all required fields.
      *
      * @param name the name of the protocol application
-     * @param activityDate the activity date
+     * @param datePerformed the date performed
      * @param expRun the experiment run
      * @param protocol the protocol
      */
-    public ProtocolApplication(String name, Date activityDate,
+    public ProtocolApplication(String name, Date datePerformed,
             ExperimentRun expRun, Protocol protocol) {
         setName(name);
-        setActivityDate(activityDate);
+        setDatePerformed(datePerformed);
         setExperimentRun(expRun);
         setProtocol(protocol);
     }
@@ -223,24 +223,24 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     }
 
     /**
-     * Gets the activityDate.
+     * Gets the datePerformed.
      *
-     * @return the activityDate
+     * @return the datePerformed.
      */
-    @Column(name = "activity_date")
+    @Column(name = "date_performed")
     @NotNull
     @Temporal(TemporalType.DATE)
-    public Date getActivityDate() {
-        return this.activityDate;
+    public Date getDatePerformed() {
+        return datePerformed;
     }
 
     /**
-     * Sets the activityDate.
+     * Sets the datePerformed.
      *
-     * @param activityDate the activityDate to set
+     * @param datePerformed the datePerformed to set.
      */
-    public void setActivityDate(Date activityDate) {
-        this.activityDate = activityDate;
+    public void setDatePerformed(Date datePerformed) {
+        this.datePerformed = datePerformed;
     }
 
     /**
