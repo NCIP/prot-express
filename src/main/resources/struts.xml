@@ -133,12 +133,13 @@
         <action name="createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/createexperiment/protocol/manageInputs.jsp</result>
             <result name="success" type="redirect-action">createExperiment/protocols/outputs/load</result>
-            <result name="addNewInput" type="redirect-action">createExperiment/protocols/inputs/load</result>
+            <result name="addNewInput"  type="redirect-action">createExperiment/protocols/inputs/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
-            <result name="addNewInputAjaxCall">/WEB-INF/jsp/createexperiment/protocol/inputs.jsp</result>
+            <result name="addNewInput">/WEB-INF/jsp/createexperiment/protocol/inputs.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">
@@ -150,37 +151,37 @@
         <!-- /Create Experiment Actions -->
 
         <!-- View Experiment Actions -->
-        <action name="viewExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentDetailsAction" method="{1}">
+        <action name="viewExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/viewDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/viewDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/viewExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentDetailsAction" method="{1}">
+        <action name="ajax/viewExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/view/experimentDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/view/experimentDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/viewExperiment/experimentRun/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentRunDetailsAction" method="{1}">
+        <action name="ajax/viewExperiment/experimentRun/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentRunDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/view/experimentRunDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/view/experimentRunDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/viewExperiment/protocolApplication/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewProtocolApplicationDetailsAction" method="{1}">
+        <action name="ajax/viewExperiment/protocolApplication/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ProtocolApplicationDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/view/protocolApplicationDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/view/protocolApplicationDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/viewExperiment/input/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewInputOutputDetailsAction" method="{1}">
+        <action name="ajax/viewExperiment/input/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/view/inputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/view/inputDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/viewExperiment/output/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewInputOutputDetailsAction" method="{1}">
+        <action name="ajax/viewExperiment/output/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/view/outputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/view/outputDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
@@ -189,37 +190,39 @@
         <!-- /View Experiment Actions -->
 
         <!-- Edit Experiment Actions -->
-        <action name="editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentDetailsAction" method="{1}">
+        <action name="editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/editDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/editDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentDetailsAction" method="{1}">
+        <action name="ajax/editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/experimentDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/experimentDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/editExperiment/experimentRun/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewExperimentRunDetailsAction" method="{1}">
+        <action name="ajax/editExperiment/experimentRun/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentRunDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/experimentRunDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/experimentRunDetails.jsp</result>
+            <result name="addNewProtocol">/WEB-INF/jsp/vieweditexperiment/edit/addNewProtocol.jsp</result>
+            <result name="selectExistingProtocol">/WEB-INF/jsp/vieweditexperiment/edit/selectExistingProtocol.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/editExperiment/protocolApplication/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewProtocolApplicationDetailsAction" method="{1}">
+        <action name="ajax/editExperiment/protocolApplication/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ProtocolApplicationDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/editExperiment/input/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewInputOutputDetailsAction" method="{1}">
+        <action name="ajax/editExperiment/input/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/inputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/inputDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="ajax/editExperiment/output/*" class="gov.nih.nci.protexpress.ui.actions.experiment.view.ViewInputOutputDetailsAction" method="{1}">
+        <action name="ajax/editExperiment/output/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/outputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/outputDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />

@@ -80,14 +80,25 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.view;
+package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.service.SearchParameters;
+import gov.nih.nci.protexpress.service.SearchType;
+import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * An abstract base action class for all actions related to the Create Experiment process.
@@ -96,16 +107,25 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ViewExperimentRunDetailsAction extends ViewExperimentDetailsAction implements Preparable {
+public class ExperimentRunDetailsAction extends ExperimentDetailsAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private ExperimentRun experimentRun = null;
     private Long experimentRunId;
 
+    private Protocol protocol = new Protocol(null);
+    private SearchParameters searchParameters = new SearchParameters();
+    private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(
+            0, null, ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
+            SortOrderEnum.ASCENDING);
+
+    private String actionResultAddNewProtocol = "addNewProtocol";
+    private String actionResultSelectExistingProtocol = "selectExistingProtocol";
+
     /**
      * Action Constructor.
      */
-    public ViewExperimentRunDetailsAction() {
+    public ExperimentRunDetailsAction() {
         super();
     }
 
@@ -166,5 +186,137 @@ public class ViewExperimentRunDetailsAction extends ViewExperimentDetailsAction 
         ProtExpressRegistry.getProtExpressService().clear();
 
         return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * Add a new protocol.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String addNewProtocol() {
+        return actionResultAddNewProtocol;
+    }
+
+    /**
+     * select an existing protocol to add to the experiment.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String selectExistingProtocol() {
+        getSearchParameters().setSearchAllUsers(false);
+        protocols = new PaginatedListImpl<Protocol>(0, null,
+                ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
+                SortOrderEnum.ASCENDING);
+
+        searchProtocols();
+        return this.actionResultSelectExistingProtocol;
+    }
+
+    /**
+     * Perform Search for Protocols.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    @SuppressWarnings("unchecked")
+    public String searchProtocols() {
+        int count = 0;
+        getSearchParameters().setSearchType(SearchType.PROTOCOLS);
+        count = ProtExpressRegistry.getProtocolService()
+                .countMatchingProtocols(getSearchParameters());
+        getProtocols().setFullListSize(count);
+        getProtocols().setList(
+                ProtExpressRegistry.getProtocolService().searchForProtocols(
+                        getSearchParameters(),
+                        getProtocols().getObjectsPerPage(),
+                        getProtocols().getObjectsPerPage()
+                                * (getProtocols().getPageNumber() - 1),
+                        getProtocols().getSortCriterion(),
+                        getProtocols().getSortDirection()));
+
+        return actionResultSelectExistingProtocol;
+    }
+
+    /**
+     * Gets the protocol.
+     *
+     * @return the protocol.
+     */
+    public Protocol getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * Sets the protocol.
+     *
+     * @param protocol the protocol to set.
+     */
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
+    }
+
+    /**
+     * Gets the searchParameters.
+     *
+     * @return the searchParameters.
+     */
+    public SearchParameters getSearchParameters() {
+        return searchParameters;
+    }
+
+    /**
+     * Sets the searchParameters.
+     *
+     * @param searchParameters the searchParameters to set.
+     */
+    public void setSearchParameters(SearchParameters searchParameters) {
+        this.searchParameters = searchParameters;
+    }
+
+    /**
+     * Gets the protocols.
+     *
+     * @return the protocols.
+     */
+    public PaginatedListImpl<Protocol> getProtocols() {
+        return protocols;
+    }
+
+    /**
+     * Sets the protocols.
+     *
+     * @param protocols the protocols to set.
+     */
+    public void setProtocols(PaginatedListImpl<Protocol> protocols) {
+        this.protocols = protocols;
+    }
+
+    /**
+     * Creates a new Protocol, and adds it to the current experiment run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+
+    public String saveNewProtocol() {
+        getProtocol().setContactPerson(ContactPerson.getCopy(getExperimentRun().getExperiment().getContactPerson()));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
+        return  saveProtocolApplicationInformation();
+    }
+
+    /**
+     * Create/Select/Copy a protocol, and save protocol application information.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    private String saveProtocolApplicationInformation() {
+         ProtocolApplication protApplication = new ProtocolApplication("ProtocolApplication",
+                 getExperimentRun().getDatePerformed(), getExperimentRun(), getProtocol());
+
+             protApplication.setNotes(getProtocol().getNotes());
+             protApplication.setStepNumber(1L);
+             ProtExpressRegistry.getProtExpressService().saveOrUpdate(protApplication);
+             ProtExpressRegistry.getProtExpressService().clear();
+             return ActionSupport.SUCCESS;
     }
 }

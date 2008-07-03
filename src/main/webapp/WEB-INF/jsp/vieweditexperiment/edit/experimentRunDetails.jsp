@@ -55,11 +55,14 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:alert('Not Yet Implemented');" class="btn" onclick="this.blur();">
+                    <s:url id="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
+                        <s:param name="experimentRunId" value="experimentRun.id" />
+                    </s:url>
+                    <s:a theme="ajax" href="%{addNewProtocolUrl}" targets="detail-content" cssClass="btn" onclick="this.blur();">
                         <span class="btn_img">
                             <span class="add_folder"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol" /></span>
                         </span>
-                    </a>
+                    </s:a>
                 </li>
             </ul>
         </del>
