@@ -25,27 +25,37 @@
 #editview UL LI
 { padding:0 }
 UL#treeview LI SPAN
-{ display:block; background:#fff; border:1px solid #fff; }
+{ display:block; margin:-15px 0 0 16px; background:#fff; border:1px solid #fff; }
+:lang(en) UL#treeview LI SPAN
+{ margin:0 0 0 16px; }
+UL#treeview LI LI LI LI SPAN
+{ margin:0 0 0 16px; }
+
 UL#treeview LI SPAN.selected
 { display:block; background:#c5cfe5 url("../images/bg_treehilite.gif") repeat-x; border:1px solid #bdc6de;  }
 UL#treeview LI SPAN:hover
 { background:#e2e7f2 url("../images/bg_treehover.gif") repeat-x; border:1px solid #e2e7f2; }
 UL#treeview
-{ margin:7px }
+{ margin:7px; font-size:95%; }
 UL#treeview A
 { padding:1px 2px; color:#333; display:block; padding-left:20px; }
 UL#treeview LI A:hover
 { text-decoration:none }
-UL#treeview LI A.experiment
-{ background:url("../images/ico_experiment.gif") no-repeat 0 0;  }
-UL#treeview LI A.experimentrun
-{ background:url("../images/ico_experiment_run.gif") no-repeat 0 0;  }
-UL#treeview LI A.protocol
-{ background:url("../images/ico_protocol.gif") no-repeat 0 0;  }
+UL#treeview LI A.folder
+{ background:url("../images/ico_folder.gif") no-repeat 0 0;  }
 UL#treeview LI A.input
 { background:url("../images/ico_input.gif") no-repeat 0 1px;  }
 UL#treeview LI A.output
 { background:url("../images/ico_output.gif") no-repeat 0 1px;  }
+UL#treeview LI A.experiment
+{ background:url("../images/ico_experiment.gif") no-repeat 0 0;  }
+UL#treeview LI A.experiment_run
+{ background:url("../images/ico_experiment_run.gif") no-repeat 0 0;  }
+UL#treeview LI A.protocol
+{ background:url("../images/ico_protocol.gif") no-repeat 0 0;  }
+
+UL#treeview A.treearrow
+{ padding:2px; width:16px; height:16px; display:inline; float:left; }
 
 
 /* Details */

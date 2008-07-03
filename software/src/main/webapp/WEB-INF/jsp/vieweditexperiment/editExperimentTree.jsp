@@ -11,7 +11,7 @@
             <s:param name="experimentId" value="%{experiment.id}"></s:param>
         </s:url>
         <span>
-            <s:a href="%{loadExperimentDetailsUrl}" theme="ajax" targets="detail-content"  cssClass="experiment">${experiment.name}</s:a>
+            <s:a href="%{loadExperimentDetailsUrl}" theme="ajax" targets="detail-content"  cssClass="experiment" onclick="alert('hii');">${experiment.name}</s:a>
         </span>
         <ul style="display:block">
             <s:iterator id="experimentRun" value="%{experiment.experimentRuns}">

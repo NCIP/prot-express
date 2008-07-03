@@ -80,7 +80,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.view;
+package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
 import gov.nih.nci.protexpress.ui.actions.experiment.AbstractExperimentTreeAction;
 
@@ -96,14 +96,14 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractViewExperimentDetailsAction extends AbstractExperimentTreeAction {
+public abstract class AbstractExperimentDetailsAction extends AbstractExperimentTreeAction {
     private static final long serialVersionUID = 1L;
     private String successMessage = null;
 
     /**
      * Action Constructor.
      */
-    public AbstractViewExperimentDetailsAction() {
+    public AbstractExperimentDetailsAction() {
         super();
     }
 

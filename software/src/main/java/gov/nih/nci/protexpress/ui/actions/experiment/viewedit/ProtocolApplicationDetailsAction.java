@@ -80,7 +80,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.view;
+package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
@@ -96,7 +96,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ViewProtocolApplicationDetailsAction extends ViewExperimentRunDetailsAction implements Preparable {
+public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private ProtocolApplication protocolApplication = null;
@@ -105,7 +105,7 @@ public class ViewProtocolApplicationDetailsAction extends ViewExperimentRunDetai
     /**
      * Action Constructor.
      */
-    public ViewProtocolApplicationDetailsAction() {
+    public ProtocolApplicationDetailsAction() {
         super();
     }
 

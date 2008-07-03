@@ -123,7 +123,7 @@
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Experiment Create Functionality</web-resource-name>
+            <web-resource-name>Experiment Edit Functionality</web-resource-name>
             <url-pattern>/editExperiment/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
