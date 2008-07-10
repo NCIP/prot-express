@@ -107,7 +107,7 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
     private static final long serialVersionUID = 1L;
 
     private ProtocolApplication protocolApplication = new ProtocolApplication(
-            "ProtocolApplication", null, null, null);
+            null, null, null);
     private Long protocolApplicationId;
     private Long deleteIndex;
 
@@ -168,7 +168,7 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      * Resets the protocolApplication.
      */
     public void resetProtocolApplication() {
-        this.protocolApplication = new ProtocolApplication("ProtocolApplication", null, null, null);
+        this.protocolApplication = new ProtocolApplication(null, null, null);
     }
 
     /**

@@ -20,32 +20,45 @@
             <display:setProperty name="pagination.pagenumber.param" value="protocols.pageNumber" />
             <protExpress:displayTagProperties />
 
-            <display:column property="name" titleKey="protexpress.page.createnewexperiment.selectexistingprotocol.name" sortable="true" maxLength="20" maxWords="4" />
-            <display:column property="description" titleKey="protexpress.page.createnewexperiment.selectexistingprotocol.description" sortable="true" maxLength="20" maxWords="4" />
-            <display:column property="notes" titleKey="protexpress.page.createnewexperiment.selectexistingprotocol.notes" maxLength="20" maxWords="4" />
-            <display:column titleKey="protexpress.page.createnewexperiment.selectexistingprotocol.user">${row.auditInfo.creator}</display:column>
-            <display:column class="actionwide" titleKey="protexpress.page.createnewexperiment.selectexistingprotocol.action">
+            <display:column property="name" titleKey="protexpress.page.editexperimentrundetails.selectexistingprotocol.name" sortable="true" maxLength="20" maxWords="4" />
+            <display:column property="description" titleKey="protexpress.page.editexperimentrundetails.selectexistingprotocol.description" sortable="true" maxLength="20" maxWords="4" />
+            <display:column property="notes" titleKey="protexpress.page.editexperimentrundetails.selectexistingprotocol.notes" maxLength="20" maxWords="4" />
+            <display:column titleKey="protexpress.page.editexperimentrundetails.selectexistingprotocol.user">${row.auditInfo.creator}</display:column>
+            <display:column class="actionwide" titleKey="protexpress.page.editexperimentrundetails.selectexistingprotocol.action">
                 <del class="btnwrapper">
                     <ul id="btnrow2">
                         <li>
                             <c:choose>
                                 <c:when test="${row.auditInfo.creator == currentUser.loginName}">
-                                    <c:url var="selectAndContinueUrl" value="/createExperiment/protocols/add/selectProtocolAndContinue.action">
-                                        <c:param name="protocolId" value="${row.id}" ></c:param>
-                                    </c:url>
-                                    <a href="${selectAndContinueUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
+                                    <s:url id="selectAndContinueUrl" value="/ajax/editExperiment/experimentRun/selectProtocolAndContinue.action">
+                                        <s:param name="protocolId" value="#request.row.id" ></s:param>
+                                        <s:param name="experimentRunId" value="experimentRun.id" ></s:param>
+                                    </s:url>
+                                    <s:a href="%{selectAndContinueUrl}" cssClass="btn" cssStyle="text-decoration:none" theme="ajax" targets="detail-content" onclick="this.blur();">
                                         <span class="btn_img">
-                                            <span class="add"><fmt:message key="protexpress.page.createnewexperiment.selectexistingprotocol.button.selectandcontinue" /></span>
+                                            <span class="add">Using s:a, not JSTL</span>
+                                        </span>
+                                    </s:a>
+                                    <c:url var="selectAndContinueUrl1" value="/ajax/editExperiment/experimentRun/selectProtocolAndContinue.action">
+                                        <c:param name="protocolId" value="${row.id}" ></c:param>
+                                        <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
+                                    </c:url>
+                                    <a href="javascript://noop/" onclick="testSubmit('${selectAndContinueUrl1}')" class="btn" style="text-decoration:none" >
+                                        <span class="btn_img">
+                                            <span class="add"><fmt:message key="protexpress.page.editexperimentrundetails.selectexistingprotocol.button.selectandcontinue" /></span>
                                         </span>
                                     </a>
+
+                                    <a href="javascript://noop/" onclick="toggleTreeNodeAndRefreshDetailsView('${experiment.id}','${loadExperimentDetailsUrl}')" class="experiment">${experiment.name}</a>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:url var="copyAndContinueUrl" value="/createExperiment/protocols/add/copyProtocolAndContinue.action">
+                                    <c:url var="copyAndContinueUrl" value="/ajax/editExperiment/experimentRun/copyProtocolAndContinue.action">
                                         <c:param name="protocolId" value="${row.id}" ></c:param>
+                                        <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
                                     </c:url>
                                     <a href="${copyAndContinueUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
                                         <span class="btn_img">
-                                            <span class="add"><fmt:message key="protexpress.page.createnewexperiment.selectexistingprotocol.button.copyandcontinue" /></span>
+                                            <span class="add"><fmt:message key="protexpress.page.editexperimentrundetails.selectexistingprotocol.button.copyandcontinue" /></span>
                                         </span>
                                     </a>
                                 </c:otherwise>

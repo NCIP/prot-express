@@ -13,8 +13,8 @@
     <s:hidden name="protocolApplicationId" value="%{protocolApplicationId}"/>
     <table class="form">
         <tr>
-            <td class="label"><fmt:message key="protexpress.input.name" />:</td>
-            <td class="value"><s:textfield name="inputOutputObject.name" required="true"/></td>
+            <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.input.name" />:</td>
+            <td class="value"><s:textfield name="inputOutputObject.name"/></td>
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.input.filename" />:</td>

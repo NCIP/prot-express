@@ -254,7 +254,6 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
         if (expRun != null) {
             getProtocolApplication().setDatePerformed(expRun.getDatePerformed());
             getProtocolApplication().setNotes(getProtocol().getNotes());
-            getProtocolApplication().setStepNumber(1L);
             getProtocolApplication().setProtocol(getProtocol());
             getProtocolApplication().setExperimentRun(expRun);
             expRun.getProtocolApplications().add(getProtocolApplication());

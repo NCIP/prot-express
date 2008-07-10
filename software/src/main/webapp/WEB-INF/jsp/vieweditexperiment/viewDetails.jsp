@@ -26,7 +26,8 @@
             <!--TREE COLUMN-->
             <div id="treecol">
                 <h2 class="treehead"><fmt:message key="protexpress.page.viewexperiment.treeview.title" /></h2>
-                <%@ include file="/WEB-INF/jsp/vieweditexperiment/viewExperimentTree.jsp"%>
+                <c:set var="treeMode" value="VIEW" />
+                <%@ include file="/WEB-INF/jsp/vieweditexperiment/viewEditExperimentTree.jsp"%>
             </div>
             <c:if test="${selectedNodeId != null}">
                 <script>

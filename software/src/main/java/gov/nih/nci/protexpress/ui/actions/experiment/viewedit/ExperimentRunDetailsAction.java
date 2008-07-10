@@ -96,9 +96,7 @@ import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * An abstract base action class for all actions related to the Create Experiment process.
@@ -114,6 +112,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     private Long experimentRunId;
 
     private Protocol protocol = new Protocol(null);
+    private Long protocolId;
     private SearchParameters searchParameters = new SearchParameters();
     private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(
             0, null, ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
@@ -239,6 +238,24 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     }
 
     /**
+     * Gets the protocolId.
+     *
+     * @return the protocolId.
+     */
+    public Long getProtocolId() {
+        return protocolId;
+    }
+
+    /**
+     * Sets the protocolId.
+     *
+     * @param protocolId the protocolId to set.
+     */
+    public void setProtocolId(Long protocolId) {
+        this.protocolId = protocolId;
+    }
+
+    /**
      * Gets the protocol.
      *
      * @return the protocol.
@@ -305,16 +322,44 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     }
 
     /**
+     * Selects a protocol, and adds it to the current experiment run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String selectProtocolAndContinue() {
+        Protocol sourceProtocol = null;
+        if (getProtocolId() != null) {
+            sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+            setProtocol(sourceProtocol);
+        }
+
+        return saveProtocolApplicationInformation();
+    }
+
+    /**
+     * Copies a protocol, and adds the copied protocol to the current experiment run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String copyProtocolAndContinue() {
+        Protocol sourceProtocol = null;
+        if (getProtocolId() != null) {
+            sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
+            setProtocol(Protocol.getCopy(sourceProtocol));
+        }
+
+        return saveProtocolApplicationInformation();
+    }
+
+    /**
      * Create/Select/Copy a protocol, and save protocol application information.
      *
      * @return the directive for the next action / page to be directed to
      */
     private String saveProtocolApplicationInformation() {
-         ProtocolApplication protApplication = new ProtocolApplication("ProtocolApplication",
-                 getExperimentRun().getDatePerformed(), getExperimentRun(), getProtocol());
-
+         ProtocolApplication protApplication = new ProtocolApplication(getExperimentRun().getDatePerformed(),
+                 getExperimentRun(), getProtocol());
              protApplication.setNotes(getProtocol().getNotes());
-             protApplication.setStepNumber(1L);
              ProtExpressRegistry.getProtExpressService().saveOrUpdate(protApplication);
              ProtExpressRegistry.getProtExpressService().clear();
              return ActionSupport.SUCCESS;

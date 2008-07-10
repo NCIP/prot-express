@@ -199,13 +199,13 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         expRun.setNotes("Profiling of Proteins in Lung Adenocarcinoma Cell Surface");
 
         // Set a Protocol Application
-        ProtocolApplication protApp = new ProtocolApplication("Do IPAS 14 protocol", DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(0));
+        ProtocolApplication protApp = new ProtocolApplication(DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(0));
         protApp.setId(440L);
 
         expRun.getProtocolApplications().add(protApp);
 
         // Another protocol application.
-        protApp = new ProtocolApplication("Sample Preparation", DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(1));
+        protApp = new ProtocolApplication(DatatypeConverter.parseDate("2006-08-31-07:00").getTime(), expRun, this.protocols.get(1));
         protApp.setId(441L);
 
         expRun.getProtocolApplications().add(protApp);
@@ -262,7 +262,6 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
         assertNotNull(unmarshalledProtApp1);
         assertEquals(unmarshalledProtApp1, this.experiments.get(0).getExperimentRuns().get(0).getProtocolApplications().get(0));
         assertEquals(unmarshalledProtApp1.getNotes(), null);
-        assertEquals(unmarshalledProtApp1.getName(), "Do IPAS 14 protocol");
 
         assertNotNull(unmarshalledProtApp1.getExperimentRun());
     }
