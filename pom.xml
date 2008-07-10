@@ -57,13 +57,32 @@
             <id>kanchink</id>
             <name>Krishna M. Kanchinadam</name>
         </developer>
+        <developer>
+            <email>smatyas@5amsolutions.com</email>
+            <id>smatyas</id>
+            <name>Steve Matyas</name>
+        </developer>
     </developers>
 
     <scm>
         <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</connection>
         <url>http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</url>
     </scm>
-
+    
+    <distributionManagement>
+        <repository>
+            <id>5AM-Releases</id>
+            <name>5AM Releases</name>
+            <url>dav:http://maven.5amsolutions.com/archiva/repository/internal/</url>
+        </repository>
+        <snapshotRepository>
+            <id>5AM-Snapshots</id>
+            <name>5AM Snapshots</name>
+            <url>dav:http://maven.5amsolutions.com/archiva/repository/snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+    
     <!-- Maven repo's to use -->
     <repositories>
         <repository>
@@ -76,7 +95,28 @@
             <url>http://download.java.net/maven/1</url>
             <layout>legacy</layout>
         </repository>
+        <repository>
+            <id>5AM-Releases</id>
+            <url>http://maven.5amsolutions.com/archiva/repository/internal/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>5AM-Snapshots</id>
+            <url>http://maven.5amsolutions.com/archiva/repository/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
+    
     <pluginRepositories>
         <pluginRepository>
             <id>repo1.maven.org</id>
@@ -347,6 +387,13 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
         <resources>
             <resource>
                 <filtering>true</filtering>
@@ -408,6 +455,10 @@
                             <exclude>**/xar2_2/**</exclude>
                         </excludes>
                     </instrumentation>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>                    
                 </configuration>
             </plugin>
             <plugin>
