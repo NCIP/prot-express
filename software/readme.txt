@@ -18,4 +18,4 @@ In addition to these commands, you can use -P<comman seperated list of profils> 
 
 For example, this command would use the local and noLdap profiles to do a clean build and deploy and generate the project site
 
-mvn -Plocal,noLdap clean site hibernate2:hbm2ddl sql:execute tomcat:deploy
+mvn -Plocal,noLdap clean site hibernate3:hbm2ddl sql:execute tomcat:deploy
