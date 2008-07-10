@@ -252,7 +252,6 @@
                         <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
                         <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
                         <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
-                        <srcFile>src/main/sql/sampleProtocols.sql</srcFile>
                     </srcFiles>
                 </configuration>
             </plugin>

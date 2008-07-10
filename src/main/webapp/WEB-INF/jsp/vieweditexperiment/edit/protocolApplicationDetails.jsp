@@ -14,7 +14,7 @@
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.overviewtitle" /></legend>
         <table class="form2">
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.name" key="protexpress.protocol.name" labelposition="top" required="true"/></td>
+                <td class="label_left"><span class="required">*</span>&nbsp;<s:textfield name="protocolApplication.protocol.name" key="protexpress.protocol.name" labelposition="top"/></td>
             </tr>
             <tr>
                 <td class="label_left"><s:textarea name="protocolApplication.protocol.description" key="protexpress.protocol.description" labelposition="top" rows="4"></s:textarea></td>
@@ -23,10 +23,10 @@
                 <td class="label_left"><s:textarea name="protocolApplication.notes" key="protexpress.protocol.notes" labelposition="top" rows="4"></s:textarea></td>
             </tr>
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.software" key="protexpress.protocol.software" labelposition="top" required="true"/></td>
+                <td class="label_left"><s:textfield name="protocolApplication.protocol.software" key="protexpress.protocol.software" labelposition="top"/></td>
             </tr>
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.instrument" key="protexpress.protocol.instrument" labelposition="top" required="true"/></td>
+                <td class="label_left"><s:textfield name="protocolApplication.protocol.instrument" key="protexpress.protocol.instrument" labelposition="top"/></td>
             </tr>
         </table>
     </fieldset>

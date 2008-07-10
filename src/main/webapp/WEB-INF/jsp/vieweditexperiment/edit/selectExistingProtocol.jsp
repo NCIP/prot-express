@@ -27,8 +27,9 @@
     <s:hidden name="protocols.sortDirection" />
     <s:hidden name="protocols.sortCriterion" />
     <div style="text-align:right; padding:0 20px 0 0;">
-        <s:checkbox theme="ajax" name="searchParameters.searchAllUsers" key="protexpress.page.createnewexperiment.selectexistingprotocol.searchallusers" fieldValue="true" onclick="javascript:document.getElementById('searchForm').submit();" />&nbsp;
-        <fmt:message key="protexpress.page.createnewexperiment.selectexistingprotocol.searchallusers" />&nbsp;
+        <s:a cssStyle="text-decoration:none" theme="ajax" targets="detail-content" onclick="this.blur();">
+          <s:checkbox theme="ajax" name="searchParameters.searchAllUsers" key="protexpress.page.createnewexperiment.selectexistingprotocol.searchallusers" fieldValue="true" />&nbsp;
+      </s:a>
     </div>
 </s:form>
 <!-- /Protocol Search Form -->

@@ -163,8 +163,8 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      */
     public String saveProtocolApplication() {
         setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        //ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperimentRun());
-        //ProtExpressRegistry.getProtExpressService().clear();
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().clear();
 
         return ActionSupport.SUCCESS;
     }

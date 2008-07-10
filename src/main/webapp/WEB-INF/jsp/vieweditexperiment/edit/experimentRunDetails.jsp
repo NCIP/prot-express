@@ -14,13 +14,13 @@
         <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.name" />:</td>
             <td class="value">
-                <s:textfield name="experimentRun.name" required="true"/>
+                <span class="required">*</span>&nbsp;<s:textfield name="experimentRun.name"/>
             </td>
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.dateperformed" />:</td>
             <td class="value">
-                <s:datetimepicker name="experimentRun.datePerformed" toggleType="fade" displayFormat="MM/dd/yyyy" required="*"/>
+                <span class="required">*</span>&nbsp;<s:datetimepicker name="experimentRun.datePerformed" toggleType="fade" displayFormat="MM/dd/yyyy"/>
             </td>
         </tr>
         <tr>

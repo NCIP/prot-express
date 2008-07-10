@@ -18,46 +18,6 @@
 { border-left:0 }
 
 
-/* List */
-
-#editview UL
-{ padding:0; margin:0 0 0 16px; }
-#editview UL LI
-{ padding:0 }
-UL#treeview LI SPAN
-{ display:block; margin:-15px 0 0 16px; background:#fff; border:1px solid #fff; }
-:lang(en) UL#treeview LI SPAN
-{ margin:0 0 0 16px; }
-UL#treeview LI LI LI LI SPAN
-{ margin:0 0 0 16px; }
-
-UL#treeview LI SPAN.selected
-{ display:block; background:#c5cfe5 url("../images/bg_treehilite.gif") repeat-x; border:1px solid #bdc6de;  }
-UL#treeview LI SPAN:hover
-{ background:#e2e7f2 url("../images/bg_treehover.gif") repeat-x; border:1px solid #e2e7f2; }
-UL#treeview
-{ margin:7px; font-size:95%; }
-UL#treeview A
-{ padding:1px 2px; color:#333; display:block; padding-left:20px; }
-UL#treeview LI A:hover
-{ text-decoration:none }
-UL#treeview LI A.folder
-{ background:url("../images/ico_folder.gif") no-repeat 0 0;  }
-UL#treeview LI A.input
-{ background:url("../images/ico_input.gif") no-repeat 0 1px;  }
-UL#treeview LI A.output
-{ background:url("../images/ico_output.gif") no-repeat 0 1px;  }
-UL#treeview LI A.experiment
-{ background:url("../images/ico_experiment.gif") no-repeat 0 0;  }
-UL#treeview LI A.experiment_run
-{ background:url("../images/ico_experiment_run.gif") no-repeat 0 0;  }
-UL#treeview LI A.protocol
-{ background:url("../images/ico_protocol.gif") no-repeat 0 0;  }
-
-UL#treeview A.treearrow
-{ padding:2px; width:16px; height:16px; display:inline; float:left; }
-
-
 /* Details */
 
 .detailbox
@@ -93,3 +53,97 @@ HTML>BODY .detailbox #btnrow LI,HTML>BODY .detailbox #btnrow2 LI{ *float:left }
 HTML>BODY .detailbox #btnrow A, HTML>BODY .detailbox #btnrow2 A { *float:left }
 * .detailbox .btnwrapper  {display:inline-block;  }
 HTML>BODY .detailbox .container { *display:inline-block; }
+
+
+/*
+ * PureDOMExplorer Demo styles
+ * written by Chris Heilmann
+ * More at http://onlinetools.org/tools/puredom/
+ */
+
+  ul.pde a:link,
+  ul.pde a:visited,
+  ul.pde a:hover,
+  ul.pde a:active{
+    text-decoration:none;
+    color:#000;
+    font-size:120%;
+    }
+  ul.pde,ul.pde li{
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  ul.pde{
+    text-align:left;
+    font-size:.8em;
+    margin:.5em auto .5em 30px;
+    background:#fff;
+    width:85%;
+  }
+  ul.pde ul{
+    margin:5px 0 0 2em;
+    padding:0;
+  }
+  ul.pde li{
+    line-height:1.3em;
+    padding:.3em 0;
+    margin:0;
+    padding-left:16px;
+    text-indent:-32px;
+  }
+
+  ul.pde li li li li {
+    line-height:1.3em;
+    padding:.3em 0;
+    margin:0 0 0 -16px;
+    padding-left:0;
+    text-indent:-16px;
+  }
+
+#treecol A.input
+{ background:url("../images/ico_input.gif") no-repeat 0 1px; padding:2px 0 2px 18px; }
+#treecol A.output
+{ background:url("../images/ico_output.gif") no-repeat 0 1px; padding:2px 0 2px 18px; }
+#treecol A.experiment
+{ background:url("../images/ico_experiment.gif") no-repeat 0 0; padding:2px 0 2px 18px; }
+#treecol A.experiment_run
+{ background:url("../images/ico_experiment_run.gif") no-repeat 0 0; padding:2px 0 2px 18px; }
+#treecol A.protocol
+{ background:url("../images/ico_protocol.gif") no-repeat 0 0; padding:2px 0 2px 18px; }
+
+#treecol SPAN
+{ padding:2px 0; }
+#treecol SPAN.selected
+{ font-weight:bold !important; background:#c5cfe5  }
+#treecol SPAN:hover
+{ background:#e2e7f2; }
+
+
+/* dynamically added to LIs with nested ULs */
+  ul.pde li.parent{
+    padding-left:0;
+  }
+  ul.pde li.parent img{
+    border:none;
+    padding-right:5px;
+  }
+/* dynamically added to LIs with nested ULs and STRONG elements in them */
+  ul.pde li.current li{
+   padding-left:0
+   text-indent:0
+     }
+/* The class to hide nested ULs */
+       .hide{
+               position:absolute;
+               top:0;
+               left:-4000px;
+       }
+
+/* The class to show nested ULs */
+       .show{
+               position:static;
+               display: table;
+               top:0;
+               left:1em;
+       }

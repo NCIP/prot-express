@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
-<s:head theme="ajax" />
+<s:head theme="ajax"/>
 <h3>${experiment.name}</h3>
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
@@ -15,7 +15,7 @@
         <table class="form3">
             <tr>
                 <td class="label_left">
-                    <s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top" required="true"/>
+                    <span class="required">*</span>&nbsp;<s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top"/>
                 </td>
             </tr>
             <tr>

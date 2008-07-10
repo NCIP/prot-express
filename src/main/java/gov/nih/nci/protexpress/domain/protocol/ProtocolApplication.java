@@ -118,7 +118,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
@@ -136,10 +135,8 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
 
     private Long id;
     private LsidType lsid;
-    private String name;
     private Date datePerformed = new Date();
     private String comments;
-    private Long stepNumber;
     private String notes;
 
     private Protocol protocol;
@@ -158,14 +155,12 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
     /**
      * Constructor to create the object and populate all required fields.
      *
-     * @param name the name of the protocol application
      * @param datePerformed the date performed
      * @param expRun the experiment run
      * @param protocol the protocol
      */
-    public ProtocolApplication(String name, Date datePerformed,
+    public ProtocolApplication(Date datePerformed,
             ExperimentRun expRun, Protocol protocol) {
-        setName(name);
         setDatePerformed(datePerformed);
         setExperimentRun(expRun);
         setProtocol(protocol);
@@ -199,27 +194,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
         lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
                 .getString("lsid.namespace.protocolapplication"), this.id);
         return this.lsid.getLsid();
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    @Column(name = "name")
-    @NotEmpty
-    @Length(max = HibernateFieldLength.PROTAPP_NAME_LENGTH)
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Sets the name.
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -261,26 +235,6 @@ public class ProtocolApplication implements Serializable, Auditable, Persistent 
      */
     public void setComments(String comments) {
         this.comments = comments;
-    }
-
-    /**
-     * Gets the stepNumber.
-     *
-     * @return the stepNumber
-     */
-    @Column(name = "step_number")
-    @NotNull
-    public Long getStepNumber() {
-        return this.stepNumber;
-    }
-
-    /**
-     * Sets the stepNumber.
-     *
-     * @param stepNumber the stepNumber to set
-     */
-    public void setStepNumber(Long stepNumber) {
-        this.stepNumber = stepNumber;
     }
 
     /**
