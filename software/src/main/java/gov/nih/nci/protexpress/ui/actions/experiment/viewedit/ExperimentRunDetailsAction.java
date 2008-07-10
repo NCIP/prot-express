@@ -220,10 +220,12 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     @SkipValidation
     @SuppressWarnings("unchecked")
     public String searchProtocols() {
-        int count = 0;
         getSearchParameters().setSearchType(SearchType.PROTOCOLS);
+
+        int count = 0;
         count = ProtExpressRegistry.getProtocolService()
-                .countMatchingProtocols(getSearchParameters());
+        .countMatchingProtocols(getSearchParameters());
+
         getProtocols().setFullListSize(count);
         getProtocols().setList(
                 ProtExpressRegistry.getProtocolService().searchForProtocols(
@@ -235,24 +237,6 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
                         getProtocols().getSortDirection()));
 
         return actionResultSelectExistingProtocol;
-    }
-
-    /**
-     * Gets the protocolId.
-     *
-     * @return the protocolId.
-     */
-    public Long getProtocolId() {
-        return protocolId;
-    }
-
-    /**
-     * Sets the protocolId.
-     *
-     * @param protocolId the protocolId to set.
-     */
-    public void setProtocolId(Long protocolId) {
-        this.protocolId = protocolId;
     }
 
     /**
@@ -271,6 +255,24 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
      */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
+    }
+
+    /**
+     * Gets the protocolId.
+     *
+     * @return the protocolId.
+     */
+    public Long getProtocolId() {
+        return protocolId;
+    }
+
+    /**
+     * Sets the protocolId.
+     *
+     * @param protocolId the protocolId to set.
+     */
+    public void setProtocolId(Long protocolId) {
+        this.protocolId = protocolId;
     }
 
     /**
