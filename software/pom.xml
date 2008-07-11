@@ -130,9 +130,13 @@
 
     <!-- Project properties -->
     <properties>
-        <jdbc.url>jdbc:postgresql://localhost/protexpress</jdbc.url>
-        <jdbc.username>postgres</jdbc.username>
-        <jdbc.password>postgres</jdbc.password>
+        <database.url.prefix>jdbc:postgresql://localhost:5432/</database.url.prefix>
+        <database.name>protexpress</database.name>
+        <admin.db.username>postgres</admin.db.username>
+        <admin.db.password>postgres</admin.db.password>
+        <jdbc.url>${database.url.prefix}${database.name}</jdbc.url>
+        <jdbc.username>protexpress</jdbc.username>
+        <jdbc.password>protexpress</jdbc.password>
         <jdbc.groupId>postgresql</jdbc.groupId>
         <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
         <jdbc.artifactId>postgresql</jdbc.artifactId>
@@ -264,6 +268,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!-- 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
@@ -295,6 +300,7 @@
                     </srcFiles>
                 </configuration>
             </plugin>
+             -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
@@ -387,6 +393,30 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sql-maven-plugin</artifactId>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>${jdbc.groupId}</groupId>
+                            <artifactId>${jdbc.artifactId}</artifactId>
+                            <version>${jdbc.version}</version>
+                        </dependency>
+                    </dependencies>
+
+                    <configuration>
+                        <driver>${jdbc.driverClassName}</driver>
+                        <url>${jdbc.url}</url>
+                        <username>${jdbc.username}</username>
+                        <password>${jdbc.password}</password>
+                        <autocommit>true</autocommit>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -581,7 +611,8 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <jdbc.url>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/protexpress</jdbc.url>
+                <database.url.prefix>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/</database.url.prefix>
+                <database.name>protexpress</database.name>
                 <jdbc.username>gpsxar</jdbc.username>
                 <jdbc.password>gpsxar456</jdbc.password>
                 <tomcat.manager.url>http://protexpress-dev.nci.nih.gov:18080/manager</tomcat.manager.url>
@@ -610,6 +641,63 @@
                 <hibernate.export>true</hibernate.export>
             </properties>
         </profile>
+        <profile>
+            <id>nuke-db</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <configuration>
+                            <url>${database.url.prefix}template1</url>
+                            <username>${admin.db.username}</username>
+                            <password>${admin.db.password}</password>
+                            <autocommit>true</autocommit>
+                            <sqlCommand> 
+                                drop database if exists ${database.name}; 
+                                drop user if exists ${jdbc.username};
+                                create database ${database.name}; 
+                                create user ${jdbc.username} with password '${jdbc.password}'; 
+                                grant all on database ${database.name} to ${jdbc.username}; 
+                            </sqlCommand>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>     
+        <profile>
+            <id>init-db</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <configuration>
+                            <components>
+                                <component>
+                                    <name>execute</name>
+                                </component>
+                            </components>
+                            <onError>continue</onError>
+                            <autocommit>true</autocommit>
+                            <srcFiles>
+                                <srcFile>target/hibernate3/sql/${schema.file}</srcFile>
+                                <srcFile>src/main/sql/csmDropSchema.sql</srcFile>
+                                <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
+                                <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
+                                <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>           
     </profiles>
 
 
