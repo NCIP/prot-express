@@ -3,6 +3,7 @@ Here is a summary of the mvn tasks that are useful when working with ProtExpress
 mvn clean   -- deletes the target directory
 mvn hibernate3:hbm2ddl  -- Generates the hibernate drop / create schema sql script (but does not execute it!!), requires running compile first.
 mvn sql:execute  -- Executes the hibernate drop / create schema script and any bootstrap sql scripts
+mvn -Pnuke-db sql:execute -- Drop & Create DB and DB User
 mvn site  -- builds the project website and runs all of the different test and report items configured
 mvn package  -- builds the war file
 mvn war:exploded  -- builds the exploded war file, but does not package it in to a war  (as the deploy targets
