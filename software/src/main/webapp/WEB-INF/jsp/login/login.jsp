@@ -19,7 +19,7 @@
         </div>
         <div id="homelogin">
             <h1><fmt:message key="login.header" /></h1>
-            <form id="login" name="login" action=j_security_check>
+            <form id="login" name="login" action="j_security_check" method="post">
                 <table class="login">
                     <tbody>
                     <c:if test="${not empty failedLogin}">
