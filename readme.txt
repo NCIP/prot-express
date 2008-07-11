@@ -14,7 +14,7 @@ mvn tomcat:undeploy  -- undeploys the application from tomcat
 mvn tomcat:redeploy   -- redploys the application to tomcat (does not seem to be as reliable as tomcat:undeploy tomcat:deploy)
 mvn verify -- checks that all required metrics are met
 
-In addition to these commands, you can use -P<comman seperated list of profils> to specify which profiles to use.
+In addition to these commands, you can use -P<comma-separated list of profile names(ids)> to specify which profiles to use.
 
 For example, this command would use the local and noLdap profiles to do a clean build and deploy and generate the project site
 
