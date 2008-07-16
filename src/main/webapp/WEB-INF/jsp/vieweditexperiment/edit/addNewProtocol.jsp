@@ -2,8 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
-
-<s:head theme="ajax" />
+<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
 <h3><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.caption" /></h3>
 
@@ -14,10 +13,10 @@
     <s:url id="selectExistingProtocolUrl" value="/ajax/editExperiment/experimentRun/selectExistingProtocol.action">
         <s:param name="experimentRunId" value="experimentRun.id" />
     </s:url>
-    <s:a theme="ajax" href="%{addNewProtocolUrl}" targets="detail-content" cssClass="selected">
+    <s:a href="javascript:http://noop/" cssClass="selected" onclick="ProtExpress.loadDiv('%{addNewProtocolUrl}', 'detail-content', true)">
         <span><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.tabs.addnewprotocol" /></span>
     </s:a>
-    <s:a theme="ajax" href="%{selectExistingProtocolUrl}" targets="detail-content" >
+    <s:a href="javascript:http://noop/" onclick="ProtExpress.loadDiv('%{selectExistingProtocolUrl}', 'detail-content', true)">
         <span><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.tabs.selectexistingprotocol" /></span>
     </s:a>
 </div>
@@ -54,30 +53,13 @@
         </table>
     </div>
     <div class="clear"/>
-    <div class="actionsrow">
-        <del class="btnwrapper">
-            <ul id="btnrow2">
-                <li>
-                    <s:url id="cancelUrl" value="/ajax/editExperiment/experimentRun/load.action">
-                        <s:param name="experimentRunId" value="experimentRun.id" />
-                    </s:url>
-                    <s:a theme="ajax" href="%{cancelUrl}" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="cancel"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.cancel" /></span>
-                        </span>
-                    </s:a>
-                </li>
-                <li>
-                    <s:a theme="ajax" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="save"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.save" /></span>
-                        </span>
-                    </s:a>
-                </li>
-            </ul>
-        </del>
-        <div class="clear"></div>
-    </div>
+    <c:url var="cancelUrl" value="/ajax/editExperiment/experimentRun/load.action">
+        <c:param name="experimentRunId" value="${experimentRun.id}" />
+    </c:url>
+    <protExpress:buttonRow>
+        <protExpress:button style="cancel" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.cancel" id="cancel" href="${cancelUrl} }"/>
+        <protExpress:button style="save" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('addNewProtocolForm', 'detail-content'); return false;"/>
+    </protExpress:buttonRow>
 </s:form>
 
 

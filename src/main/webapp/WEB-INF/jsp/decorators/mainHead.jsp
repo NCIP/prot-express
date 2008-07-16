@@ -25,9 +25,12 @@
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/experimentTree.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/pde.js"/>"></script>
     <link rel="address bar icon" href="<c:url value="/images/favicon.ico"/>">
-    <link rel="icon" href="<c:url value="/images/favicon.ico"/>o" type="image/x-icon">
+    <link rel="icon" href="<c:url value="/images/favicon.ico"/>" type="image/x-icon">
     <link rel="shortcut icon" href="<c:url value="/images/favicon.ico"/>" type="image/x-icon">
     <link rel="stylesheet" href="<c:url value="/stylesheets/style.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/treeview.css"/>" media="screen" type="text/css"/>
+	<script type="text/javascript" language="javascript">
+	    var contextPath = "<%=request.getContextPath()%>";
+	</script>    
 </head>
