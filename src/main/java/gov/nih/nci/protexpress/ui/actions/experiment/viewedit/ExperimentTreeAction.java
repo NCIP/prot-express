@@ -56,14 +56,12 @@ public class ExperimentTreeAction extends ExperimentDetailsAction {
                 setSelectedNodeId(getOutput().getId().toString());
             }
         }
-        
-        if (getProtApp() != null) {
-            if (getExperimentRun() == null) {
-                setExperimentRun(getProtApp().getExperimentRun());
-            }
-            if (getExperiment() == null) {
-                setExperiment(getExperimentRun().getExperiment());
-            }
+        /* initialize instance variables based on object graph */
+        if (getProtApp() != null && getExperimentRun() == null) {
+            setExperimentRun(getProtApp().getExperimentRun());
+        }
+        if (getExperimentRun() != null && getExperiment() == null) {
+            setExperiment(getExperimentRun().getExperiment());
         }
     }
     

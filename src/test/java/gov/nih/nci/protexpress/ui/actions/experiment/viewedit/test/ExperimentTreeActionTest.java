@@ -60,7 +60,7 @@ public class ExperimentTreeActionTest extends ProtExpressBaseHibernateTest {
         this.action.prepare();
         assertNotNull(this.action.getExperimentRun());
         assertEquals(this.action.getExperimentRun().getId().toString(), this.action.getSelectedNodeId());
-        assertNull(this.action.getExperiment());
+        assertNotNull(this.action.getExperiment());
         assertNull(this.action.getProtApp());
         assertNull(this.action.getInput());
         assertNull(this.action.getOutput());
