@@ -20,3 +20,8 @@ In addition to these commands, you can use -P<comma-separated list of profile na
 For example, this command would use the local and noLdap profiles to do a clean build and deploy and generate the project site
 
 mvn -Plocal,noLdap clean site hibernate3:hbm2ddl sql:execute tomcat:deploy
+
+==========
+SVN Diff:
+==========
+svn diff -x -bw --no-diff-deleted -x --ignore-eol-style > diff.diff
