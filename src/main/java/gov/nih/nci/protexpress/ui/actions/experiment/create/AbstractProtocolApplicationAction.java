@@ -212,7 +212,7 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      */
     @SkipValidation
     public String deleteOutput() {
-        if (getDeleteIndex().intValue() > 0) {
+        if (getDeleteIndex().intValue() >= 0) {
             deleteInputOutput(getProtocolApplication().getOutputs(), getDeleteIndex().intValue());
         }
         return ActionSupport.INPUT;

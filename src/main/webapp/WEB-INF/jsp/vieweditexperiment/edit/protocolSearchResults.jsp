@@ -30,20 +30,11 @@
                         <li>
                             <c:choose>
                                 <c:when test="${row.auditInfo.creator == currentUser.loginName}">
-                                    <s:url id="selectAndContinueUrl" value="/ajax/editExperiment/experimentRun/selectProtocolAndContinue.action">
-                                        <s:param name="protocolId" value="#request.row.id" ></s:param>
-                                        <s:param name="experimentRunId" value="experimentRun.id" ></s:param>
-                                    </s:url>
-                                    <s:a href="%{selectAndContinueUrl}" cssClass="btn" cssStyle="text-decoration:none" theme="ajax" targets="detail-content" onclick="this.blur();">
-                                        <span class="btn_img">
-                                            <span class="add">Using s:a, not JSTL</span>
-                                        </span>
-                                    </s:a>
                                     <c:url var="selectAndContinueUrl1" value="/ajax/editExperiment/experimentRun/selectProtocolAndContinue.action">
                                         <c:param name="protocolId" value="${row.id}" ></c:param>
                                         <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
                                     </c:url>
-                                    <a href="javascript://noop/" onclick="testSubmit('${selectAndContinueUrl1}')" class="btn" style="text-decoration:none" >
+                                    <a href="javascript://noop/" onclick="refreshDetailsView('${selectAndContinueUrl1}')" class="btn" style="text-decoration:none" >
                                         <span class="btn_img">
                                             <span class="add"><fmt:message key="protexpress.page.editexperimentrundetails.selectexistingprotocol.button.selectandcontinue" /></span>
                                         </span>
@@ -56,7 +47,7 @@
                                         <c:param name="protocolId" value="${row.id}" ></c:param>
                                         <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
                                     </c:url>
-                                    <a href="${copyAndContinueUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
+                                    <a href="javascript://noop/" onclick="refreshDetailsView('${copyAndContinueUrl}')" class="btn" style="text-decoration:none" >
                                         <span class="btn_img">
                                             <span class="add"><fmt:message key="protexpress.page.editexperimentrundetails.selectexistingprotocol.button.copyandcontinue" /></span>
                                         </span>

@@ -110,6 +110,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
 
     private ExperimentRun experimentRun = null;
     private Long experimentRunId;
+    private Long newProtAppId;
 
     private Protocol protocol = new Protocol(null);
     private Long protocolId;
@@ -120,6 +121,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
 
     private String actionResultAddNewProtocol = "addNewProtocol";
     private String actionResultSelectExistingProtocol = "selectExistingProtocol";
+    private String actionResultEditProtocolApplicationDetails = "editProtocolApplication";
 
     /**
      * Action Constructor.
@@ -362,8 +364,33 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
          ProtocolApplication protApplication = new ProtocolApplication(getExperimentRun().getDatePerformed(),
                  getExperimentRun(), getProtocol());
              protApplication.setNotes(getProtocol().getNotes());
+             ProtExpressRegistry.getProtExpressService().saveOrUpdate(protApplication.getProtocol());
              ProtExpressRegistry.getProtExpressService().saveOrUpdate(protApplication);
              ProtExpressRegistry.getProtExpressService().clear();
-             return ActionSupport.SUCCESS;
+
+             // set the appropriate id's to pass as parameters to the next action.
+             setNewProtAppId(protApplication.getId());
+             setExperimentRunId(getExperimentRun().getId());
+             setExperimentId(getExperimentRun().getExperiment().getId());
+             return actionResultEditProtocolApplicationDetails;
     }
+
+    /**
+     * Gets the newProtAppId.
+     *
+     * @return the newProtAppId.
+     */
+    public Long getNewProtAppId() {
+        return newProtAppId;
+    }
+
+    /**
+     * Sets the newProtAppId.
+     *
+     * @param newProtAppId the newProtAppId to set.
+     */
+    public void setNewProtAppId(Long newProtAppId) {
+        this.newProtAppId = newProtAppId;
+    }
+
 }

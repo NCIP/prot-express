@@ -12,10 +12,10 @@
         <c:param name="treeMode" value="EDIT"/>
     </c:url>
     <script type="text/javascript">
-        var actionUrl = '${actionUrl}';   
+        var actionUrl = '${actionUrl}';
         var divElement = document.getElementById('span_${protocolApplication.id}');
         var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>      
+    </script>
 </c:if>
 <s:form id="editExperimentForm" action="/ajax/editExperiment/protocolApplication/saveProtocolApplication.action" method="post">
     <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
@@ -44,7 +44,7 @@
         <s:textfield name="protocolApplication.datePerformed" required="true" size="10" maxlength="10">
             <s:param name="value"><s:date name="protocolApplication.datePerformed" format="MM/dd/yyyy"/></s:param>
             <s:param name="after"><div><fmt:message key="default.date.format"/></div></s:param>
-        </s:textfield>         
+        </s:textfield>
     </fieldset>
      <fieldset class="rightfield">
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.contacttitle" /></legend>
@@ -72,9 +72,17 @@
         </table>
     </fieldset>
     <div class="clear" />
+
+    <c:url var="manageInputsUrl" value="/ajax/editExperiment/protocolApplication/manageInputs.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+    <c:url var="manageOutputsUrl" value="/ajax/editExperiment/protocolApplication/manageOutputs.action">
+        <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+    </c:url>
+
     <protExpress:buttonRow>
         <protExpress:button style="save" textKey="protexpress.page.editprotocolapplicationdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editExperimentForm', 'detail-content'); return false;"/>
-        <protExpress:button style="add_input" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addinput" id="add_input" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="add_folder" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addinput" id="add_folder" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'detail-content', true); this.blur(); return false;"/>
         <protExpress:button style="add_output" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addoutput" id="add_output" href="javascript:alert('Not Yet Implemented');"/>
         <protExpress:button style="delete" textKey="protexpress.page.editprotocolapplicationdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
     </protExpress:buttonRow>

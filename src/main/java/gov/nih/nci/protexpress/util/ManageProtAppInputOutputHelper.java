@@ -80,116 +80,107 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
+package gov.nih.nci.protexpress.util;
+
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.apache.commons.lang.StringUtils;
+
+
 
 /**
- * An abstract base action class for all actions related to the Create Experiment process.
+ * Util methods for managing protocol inputs and outputs. .
  *
  * @author Krishna Kanchinadam
  */
 
-@Validation
-public class InputOutputDetailsAction extends ProtocolApplicationDetailsAction implements Preparable {
-    private static final long serialVersionUID = 1L;
-
-    private InputOutputObject inputOutputObject = new InputOutputObject(null);
-    private Long inputOutputObjectId;
-
+public final class ManageProtAppInputOutputHelper {
     /**
-     * Action Constructor.
+     * Default constructor.
+     *
      */
-    public InputOutputDetailsAction() {
-        super();
+    private ManageProtAppInputOutputHelper() {
     }
 
     /**
-     * {@inheritDoc}
+     * Removes the invalid items (inputs/outputs with blank name, filename and notes) from the list.
+     *
+     * @param lst the list of inputs/outputs.
      */
-    public void prepare() throws Exception {
-        if (getInputOutputObjectId() != null) {
-            setInputOutputObject(ProtExpressRegistry.getExperimentService()
-                    .getInputOutputObjectById(getInputOutputObjectId()));
-            StringBuffer sb = new StringBuffer();
-            setSelectedNodeId(
-                    sb.append(getProtocolApplicationId().toString())
-                    .append(".")
-                    .append(getInputOutputObjectId().toString())
-                    .toString());
+    public static void removeInvalidItems(List<InputOutputObject> lst) {
+        ListIterator<InputOutputObject> listIter = lst.listIterator();
+        while (listIter.hasNext()) {
+            InputOutputObject ioObject = listIter.next();
+            if (StringUtils.isBlank(ioObject.getName())
+                    && StringUtils.isBlank(ioObject.getDataFileURL())
+                    && StringUtils.isBlank(ioObject.getNotes())) {
+                listIter.remove();
+            }
         }
     }
 
     /**
-     * Gets the inputOutputObject.
+     * Adds a new input to the protocol application inputs list.
      *
-     * @return the inputOutputObject.
+     * @param lst the list of inputs.
      */
-    public InputOutputObject getInputOutputObject() {
-        return inputOutputObject;
+    public static void addNewInput(List<InputOutputObject> lst) {
+        addNewElementToList(lst);
     }
 
     /**
-     * Sets the inputOutputObject.
+     * Adds a new output to the protocol application outputs list.
      *
-     * @param inputOutputObject the inputOutputObject to set.
+     * @param lst the list of outputs.
      */
-    public void setInputOutputObject(InputOutputObject inputOutputObject) {
-        this.inputOutputObject = inputOutputObject;
+    public static void addNewOutput(List<InputOutputObject> lst) {
+        addNewElementToList(lst);
     }
 
     /**
-     * Gets the inputOutputObjectId.
+     * Adds a new InputOutputObject element to the inputs/outputs list.
      *
-     * @return the inputOutputObjectId.
+     * @param lst the list.
      */
-    public Long getInputOutputObjectId() {
-        return inputOutputObjectId;
+    private static void addNewElementToList(List<InputOutputObject> lst) {
+        if (lst != null) {
+            lst.add(new InputOutputObject(null));
+        }
     }
 
     /**
-     * Sets the inputOutputObjectId.
+     * Deletes the specified input from the protocol application inputs list.
      *
-     * @param inputOutputObjectId the inputOutputObjectId to set.
+     * @param lst the list of inputs.
+     * @param deleteIndex the index of the element to be deleted from the list.
      */
-    public void setInputOutputObjectId(Long inputOutputObjectId) {
-        this.inputOutputObjectId = inputOutputObjectId;
+    public static void deleteInput(List<InputOutputObject> lst, Long deleteIndex) {
+        deleteElementFromList(lst, deleteIndex);
     }
 
     /**
-     * Save the input data.
+     * Deletes the specified output from the protocol application outputs list.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param lst the list of outputs.
+     * @param deleteIndex the index of the element to be deleted from the list.
      */
-    public String saveInput() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("input.update.success"));
-        return saveInputOutputObject();
+    public static void deleteOutput(List<InputOutputObject> lst, Long deleteIndex) {
+        deleteElementFromList(lst, deleteIndex);
     }
 
     /**
-     * Save the output data.
+     * Deletes the element at the specified index from the list.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param lst the list.
+     * @param index the index of the object to be deleted.
      */
-    public String saveOutput() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("output.update.success"));
-        return saveInputOutputObject();
-    }
-
-    /**
-     * Save the object.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    private String saveInputOutputObject() {
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
-        ProtExpressRegistry.getProtExpressService().clear();
-
-        return ActionSupport.SUCCESS;
+    private static void deleteElementFromList(List<InputOutputObject> lst, Long deleteIndex) {
+        if ((lst != null) && (deleteIndex.intValue() >= 0) && (lst.size() > 0)) {
+            lst.remove(deleteIndex.intValue());
+        }
     }
 }

@@ -11,9 +11,9 @@ INSERT INTO experiment_run (id, creation_date, creator, modification_date, date_
 
 INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (2, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, 'Prepare and run LCMS, producing one mzXml file per input sample.', NULL, 'Marelli_protocol (LCMS2)', NULL, NULL);
 
-INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (3, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, 'An organellar 20KgP fraction was subjected to isopycnic density gradient centrifugation and analyzed by SDS-PAGE and Coomassie blue staining. ', NULL, 'Marelli_protocol Sample Prep', NULL, NULL);
+INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (3, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, 'An organellar 20KgP fraction was subjected to isopycnic density gradient centrifugation and analyzed by SDS-PAGE and Coomassie blue staining. ', NULL, 'Sample Prep', NULL, NULL);
 
-INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (4, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, 'ICAT-labeled peptides were analyzed by µLC-ESI-MS/MS. Peptides were separated by on-line reversed-phase chromatography using a 75 µm x 10 cm self-packed Magic C18AQ column (Michrom BioResources) at a flow rate of 300 nL/min.', NULL, 'Marelli_protocol LC MS2', NULL, NULL);
+INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (4, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, 'ICAT-labeled peptides were analyzed by µLC-ESI-MS/MS. Peptides were separated by on-line reversed-phase chromatography using a 75 µm x 10 cm self-packed Magic C18AQ column (Michrom BioResources) at a flow rate of 300 nL/min.', NULL, 'Online reverse Chromotography', NULL, NULL);
 
 INSERT INTO protocol (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, description, instrument, name, notes, software) VALUES (5, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, '', NULL, 'Convert to mzXML', NULL, NULL);
 
@@ -68,5 +68,7 @@ INSERT INTO protapp_outputs (protapp_id, output_id) VALUES (16, 18);
 INSERT INTO protapp_outputs (protapp_id, output_id) VALUES (20, 22);
 INSERT INTO protapp_outputs (protapp_id, output_id) VALUES (24, 26);
 
+
+SELECT pg_catalog.setval('hibernate_sequence', 35, true);
 
 COMMIT;
