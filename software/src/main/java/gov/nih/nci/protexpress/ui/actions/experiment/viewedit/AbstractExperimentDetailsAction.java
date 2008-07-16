@@ -99,6 +99,8 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public abstract class AbstractExperimentDetailsAction extends AbstractExperimentTreeAction {
     private static final long serialVersionUID = 1L;
     private String successMessage = null;
+    private String actionResultRefreshTree = "refreshTree";
+
 
     /**
      * Action Constructor.
@@ -115,6 +117,16 @@ public abstract class AbstractExperimentDetailsAction extends AbstractExperiment
     @SkipValidation
     public String load() {
         return ActionSupport.INPUT;
+    }
+
+    /**
+     * Refresh the tree data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String refreshTree() {
+        return this.actionResultRefreshTree;
     }
 
     /**

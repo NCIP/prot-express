@@ -25,6 +25,7 @@
 <s:form id="searchForm" action="/ajax/editExperiment/experimentRun/searchProtocols" method="post" theme="simple">
     <s:hidden name="protocols.sortDirection" />
     <s:hidden name="protocols.sortCriterion" />
+    <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
     <div style="text-align:right; padding:0 20px 0 0;">
         <s:a cssStyle="text-decoration:none" onclick="ProtExpress.submitAjaxForm('searchForm', 'detail-content'); return false;">
           <s:checkbox theme="ajax" name="searchParameters.searchAllUsers" key="protexpress.page.createnewexperiment.selectexistingprotocol.searchallusers" fieldValue="true" />&nbsp;

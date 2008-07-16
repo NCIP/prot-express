@@ -84,6 +84,10 @@ package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
+import gov.nih.nci.protexpress.util.SessionHelper;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -101,6 +105,10 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
 
     private ProtocolApplication protocolApplication = null;
     private Long protocolApplicationId;
+    private Long deleteIndex;
+
+    private String actionResultAddInputs = "addInputs";
+    private String actionResultAddOutputs = "addOutputs";
 
     /**
      * Action Constructor.
@@ -116,8 +124,72 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
         if (getProtocolApplicationId() != null) {
             setProtocolApplication(ProtExpressRegistry.getExperimentService().
                     getProtocolApplicationById(getProtocolApplicationId()));
-            setSelectedNodeId(getProtocolApplicationId().toString());
+        } else if (SessionHelper.getProtocolApplicationFromSession() != null) {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
         }
+    }
+
+    /**
+     * Add Inputs.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String manageInputs() {
+        SessionHelper.removeProtocolApplicationFromSession();
+        ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+
+        return this.actionResultAddInputs;
+    }
+
+    /**
+     * Creates a new input, adds to the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String addNewInput() {
+        ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddInputs;
+    }
+
+    /**
+     * Deletes the specified input from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String deleteInput() {
+        ManageProtAppInputOutputHelper.deleteInput(getProtocolApplication().getInputs(), getDeleteIndex());
+        return this.actionResultAddInputs;
+    }
+
+    /**
+     * Updates the inputs for the protocol application. .
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String updateInputs() {
+        setSuccessMessage(ProtExpressRegistry.
+                getApplicationResourceBundle().getString("protocol.inputs.update.success"));
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
+
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().clear();
+        return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * Add Outputs.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String manageOutputs() {
+        return this.actionResultAddOutputs;
     }
 
     /**
@@ -154,6 +226,24 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      */
     public void setProtocolApplicationId(Long protocolApplicationId) {
         this.protocolApplicationId = protocolApplicationId;
+    }
+
+    /**
+     * Gets the deleteIndex.
+     *
+     * @return the deleteIndex.
+     */
+    public Long getDeleteIndex() {
+        return deleteIndex;
+    }
+
+    /**
+     * Sets the deleteIndex.
+     *
+     * @param deleteIndex the deleteIndex to set.
+     */
+    public void setDeleteIndex(Long deleteIndex) {
+        this.deleteIndex = deleteIndex;
     }
 
     /**
