@@ -229,6 +229,15 @@
         </action>
 
         <!-- /Edit Experiment Actions -->
+        <action name="ajax/experiment/nav/tree/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentTreeAction" method="{1}">
+            <result name="refresh">/WEB-INF/jsp/vieweditexperiment/viewEditExperimentTree.jsp</result>
+            <result name="refreshExperiment">/WEB-INF/jsp/tree/experimentNode.jsp</result>
+            <result name="refreshExperimentRun">/WEB-INF/jsp/tree/experimentRunNode.jsp</result>
+            <result name="refreshProtocolApplication">/WEB-INF/jsp/tree/protocolAppNode.jsp</result>
+            <result name="refreshInput">/WEB-INF/jsp/tree/inputNode.jsp</result>
+            <result name="refreshOutput">/WEB-INF/jsp/tree/outputNode.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
 
     </package>
 </struts>

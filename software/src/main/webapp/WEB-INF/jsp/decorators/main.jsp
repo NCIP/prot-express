@@ -7,7 +7,7 @@
 
 <%@ include file="/WEB-INF/jsp/decorators/mainHead.jsp"%>
 
-<body onload="src/main/webapp/images/arrow_up.png""<decorator:getProperty property="body.onload" />">
+<body onload="<decorator:getProperty property="body.onload" />">
 
 <!--  HEADER -->
 <div id="header"><%@ include file="/WEB-INF/jsp/decorators/mainHeader.jsp"%></div>

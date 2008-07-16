@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
-<s:head theme="ajax" />
 
 <title><fmt:message key="protexpress.page.editexperiment.title.caption" /></title>
 <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">

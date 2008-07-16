@@ -2,11 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
-<s:head theme="ajax" />
 <h3>${experimentRun.name}</h3>
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
+    <c:url var="actionUrl" value="/ajax/experiment/nav/tree/refreshExperimentRun.action">
+        <c:param name="experimentRunId" value="${experimentRun.id}"/>
+        <c:param name="treeMode" value="EDIT"/>
+    </c:url>
+    <script type="text/javascript">
+        var actionUrl = '${actionUrl}';   
+        var divElement = document.getElementById('span_${experimentRun.id}');
+        var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
+    </script>    
 </c:if>
 <s:form id="editExperimentRunForm" action="/ajax/editExperiment/experimentRun/saveExperimentRun.action" method="post">
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
@@ -20,7 +29,11 @@
         <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.dateperformed" />:</td>
             <td class="value">
-                <span class="required">*</span>&nbsp;<s:datetimepicker name="experimentRun.datePerformed" toggleType="fade" displayFormat="MM/dd/yyyy"/>
+                <span class="required">*</span>&nbsp;
+                <s:textfield name="experimentRun.datePerformed" required="true" size="10" maxlength="10">
+		            <s:param name="value"><s:date name="experimentRun.datePerformed" format="MM/dd/yyyy"/></s:param>
+		            <s:param name="after"><div><fmt:message key="default.date.format"/></div></s:param>
+		        </s:textfield>  
             </td>
         </tr>
         <tr>
@@ -30,41 +43,15 @@
             </td>
         </tr>
     </table>
-    <div class="actionsrow">
-        <del class="btnwrapper">
-            <ul id="btnrow2">
-                <li>
-                    <a href="javascript:alert('Not Yet Implemented');" class="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="copy"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.repeat" /></span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <s:a theme="ajax" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="save"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.save" /></span>
-                        </span>
-                    </s:a>
-                </li>
-                <li>
-                    <a href="javascript:alert('Not Yet Implemented');" class="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="delete"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.delete" /></span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <s:url id="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
-                        <s:param name="experimentRunId" value="experimentRun.id" />
-                    </s:url>
-                    <s:a theme="ajax" href="%{addNewProtocolUrl}" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="add_folder"><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol" /></span>
-                        </span>
-                    </s:a>
-                </li>
-            </ul>
-        </del>
-    </div>
+
+    <c:url var="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
+        <c:param name="experimentRunId" value="${experimentRun.id}" />
+    </c:url>
+    <protExpress:buttonRow>
+        <protExpress:button style="copy" textKey="protexpress.page.editexperimentrundetails.buttons.repeat" id="copy" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="save" textKey="protexpress.page.editexperimentrundetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editExperimentRunForm', 'detail-content'); return false;"/>
+        <protExpress:button style="delete" textKey="protexpress.page.editexperimentrundetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="add_folder" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol" id="add_folder" onclick="ProtExpress.loadDiv('${addNewProtocolUrl}', 'detail-content', true); this.blur(); return false;"/>
+    </protExpress:buttonRow>
+
 </s:form>
