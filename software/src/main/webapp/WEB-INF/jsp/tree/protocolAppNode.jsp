@@ -5,18 +5,18 @@
 
 <c:choose>
     <c:when test='${treeMode == "EDIT"}'>
-        <s:url id="loadProtocolApplicationDetailsUrl" value="/ajax/editExperiment/protocolApplication/load.action">
-            <s:param name="experimentId" value="experiment.id"></s:param>
-            <s:param name="experimentRunId" value="#experimentRun.id"></s:param>
-            <s:param name="protocolApplicationId" value="#protApp.id"></s:param>
-        </s:url>
+        <c:url var="loadProtocolApplicationDetailsUrl" value="/ajax/editExperiment/protocolApplication/load.action">
+            <c:param name="experimentId" value="${experiment.id}"/>
+            <c:param name="experimentRunId" value="${experimentRun.id}"/>
+            <c:param name="protocolApplicationId" value="${protApp.id}"/>
+        </c:url>
     </c:when>
     <c:otherwise>
-        <s:url id="loadProtocolApplicationDetailsUrl" value="/ajax/viewExperiment/protocolApplication/load.action">
-            <s:param name="experimentId" value="experiment.id"></s:param>
-            <s:param name="experimentRunId" value="#experimentRun.id"></s:param>
-            <s:param name="protocolApplicationId" value="#protApp.id"></s:param>
-        </s:url>
+        <c:url var="loadProtocolApplicationDetailsUrl" value="/ajax/viewExperiment/protocolApplication/load.action">
+            <c:param name="experimentId" value="${experiment.id}"/>
+            <c:param name="experimentRunId" value="${experimentRun.id}"/>
+            <c:param name="protocolApplicationId" value="${protApp.id}"/>
+        </c:url>
     </c:otherwise>
 </c:choose>
 <protExpress:treeNode name="${protApp.protocol.name}" url="${loadProtocolApplicationDetailsUrl}" cssClass="protocol"/>

@@ -4,16 +4,16 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <c:choose>
     <c:when test='${treeMode == "EDIT"}'>
-        <s:url id="loadExperimentRunDetailsUrl" value="/ajax/editExperiment/experimentRun/load.action">
-            <s:param name="experimentId" value="experiment.id"></s:param>
-            <s:param name="experimentRunId" value="#experimentRun.id"></s:param>
-        </s:url>
+        <c:url var="loadExperimentRunDetailsUrl" value="/ajax/editExperiment/experimentRun/load.action">
+            <c:param name="experimentId" value="${experiment.id}"/>
+            <c:param name="experimentRunId" value="${experimentRun.id}"/>
+        </c:url>
     </c:when>
     <c:otherwise>
-        <s:url id="loadExperimentRunDetailsUrl" value="/ajax/viewExperiment/experimentRun/load.action">
-            <s:param name="experimentId" value="experiment.id"></s:param>
-            <s:param name="experimentRunId" value="#experimentRun.id"></s:param>
-        </s:url>
+        <c:url var="loadExperimentRunDetailsUrl" value="/ajax/viewExperiment/experimentRun/load.action">
+            <c:param name="experimentId" value="${experiment.id}"/>
+            <c:param name="experimentRunId" value="${experimentRun.id}"/>
+        </c:url>
     </c:otherwise>
 </c:choose>
 <protExpress:treeNode name="${experimentRun.name}" url="${loadExperimentRunDetailsUrl}" cssClass="experiment_run"/>
