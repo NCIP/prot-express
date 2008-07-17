@@ -30,15 +30,6 @@
                 <td>
                     <del class="btnwrapper">
                         <ul id="btnrow2" style="float:right; margin-right:0">
-                        <!--
-                            <li>
-                                <s:a theme="ajax" targets="divInputOutput"  cssClass="btn" onclick="this.blur();">
-                                    <span class="btn_img">
-                                        <span class="addrow"><fmt:message key="protexpress.page.createnewexperiment.addinputs.button.addanotherinput" /></span>
-                                    </span>
-                                </s:a>
-                            </li>
-                            -->
                             <li>
                                     <s:url id="actionUrlAddInput" value="/createExperiment/protocols/inputs/addNewInput.action"/>
                                     <a href="javascript:submitForm('${actionUrlAddInput}', 'protocolApplicationInputsForm');" class="btn" onclick="this.blur();">

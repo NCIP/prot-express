@@ -5,6 +5,9 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
 
+<c:set var="formId" value="manageInputsForm" />
+<c:set var="divId" value="detail-content" />
+
 <c:url var="cancelUrl" value="/ajax/editExperiment/protocolApplication/load.action">
     <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     <c:param name="experimentRunId" value="${protocolApplication.experimentRun.id}" />
@@ -16,7 +19,7 @@
 
 <h3><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.caption" /></h3>
 
-<s:form id="manageInputsForms" action="/ajax/editExperiment/protocolApplication/addNewInput.action" method="post">
+<s:form id="manageInputsForm" action="/ajax/editExperiment/protocolApplication/addNewInput.action" method="post">
     <fieldset>
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.addnewinputstitle" /></legend>
         <div class="searchresults">
@@ -40,7 +43,7 @@
                                 <c:url var="deleteInputUrl" value="/ajax/editExperiment/protocolApplication/deleteInput.action" >
                                     <c:param name="deleteIndex" value="${e.index}" />
                                 </c:url>
-                                <a href="javascript://noop/" onclick="ProtExpress.submitAjaxFormToUrl('manageInputsForms', 'detail-content', '${deleteInputUrl}'); this.blur(); return false;">
+                                <a href="javascript://noop/" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${deleteInputUrl}'); this.blur(); return false;">
                                     <img src="<c:url value="/images/ico_delete.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.addinputs.icon.deletenewinput.alt" />" />
                                 </a>
                             </c:if>
@@ -52,7 +55,7 @@
                         <del class="btnwrapper">
                             <ul id="btnrow2" style="float:right; margin-right:0">
                                 <protExpress:button style="add_input" textKey="protexpress.page.editprotocolapplicationdetails.inputs.button.addanotherinput"
-                                id="addInput" onclick="ProtExpress.submitAjaxFormToUrl('manageInputsForms', 'detail-content', '${addNewInputUrl}'); this.blur(); return false;"/>
+                                id="addInput" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${addNewInputUrl}'); this.blur(); return false;"/>
                             </ul>
                         </del>
                     </td>
@@ -63,8 +66,8 @@
 </s:form>
 
 <protExpress:buttonRow>
-    <protExpress:button style="cancel" textKey="protexpress.page.editprotocolapplicationdetails.inputs.button.cancel" id="cancel" onclick="ProtExpress.loadDiv('${cancelUrl}', 'detail-content', true); this.blur(); return false;"/>
-    <protExpress:button style="save" textKey="protexpress.page.editprotocolapplicationdetails.inputs.button.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('manageInputsForms', 'detail-content', '${saveUrl}'); this.blur(); return false;"/>
+    <protExpress:button style="cancel" textKey="protexpress.page.editprotocolapplicationdetails.inputs.button.cancel" id="cancel" onclick="ProtExpress.loadDiv('${cancelUrl}', '${divId}', true); this.blur(); return false;"/>
+    <protExpress:button style="save" textKey="protexpress.page.editprotocolapplicationdetails.inputs.button.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${saveUrl}'); this.blur(); return false;"/>
 </protExpress:buttonRow>
 
 
