@@ -130,7 +130,7 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     }
 
     /**
-     * Add Inputs.
+     * Manage Inputs.
      *
      * @return the directive for the next action / page to be directed to
      */
@@ -139,8 +139,20 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
         SessionHelper.removeProtocolApplicationFromSession();
         ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-
         return this.actionResultAddInputs;
+    }
+
+    /**
+     * Manage Outputs.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String manageOutputs() {
+        SessionHelper.removeProtocolApplicationFromSession();
+        ManageProtAppInputOutputHelper.addNewOutput(getProtocolApplication().getOutputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddOutputs;
     }
 
     /**
@@ -156,6 +168,18 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     }
 
     /**
+     * Creates a new output, adds to the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String addNewOutput() {
+        ManageProtAppInputOutputHelper.addNewOutput(getProtocolApplication().getOutputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddOutputs;
+    }
+
+    /**
      * Deletes the specified input from the protocol application.
      *
      * @return the directive for the next action / page to be directed to.
@@ -167,29 +191,58 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     }
 
     /**
+     * Deletes the specified output from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String deleteOutput() {
+        ManageProtAppInputOutputHelper.deleteOutput(getProtocolApplication().getOutputs(), getDeleteIndex());
+        return this.actionResultAddOutputs;
+    }
+
+    /**
      * Updates the inputs for the protocol application. .
      *
      * @return the directive for the next action / page to be directed to.
      */
     @SkipValidation
     public String updateInputs() {
-        setSuccessMessage(ProtExpressRegistry.
-                getApplicationResourceBundle().getString("protocol.inputs.update.success"));
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        ProtExpressRegistry.getProtExpressService().clear();
-        return ActionSupport.SUCCESS;
+        return save("protocol.inputs.update.success");
     }
 
     /**
-     * Add Outputs.
+     * Updates the inputs for the protocol application. .
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String updateOutputs() {
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
+        return save("protocol.outputs.update.success");
+    }
+
+    /**
+     * Save the Protocol Application.
      *
      * @return the directive for the next action / page to be directed to
      */
-    @SkipValidation
-    public String manageOutputs() {
-        return this.actionResultAddOutputs;
+    public String saveProtocolApplication() {
+        return save("protocol.update.success");
+    }
+
+    /**
+     * save the protocol application.
+     *
+     * @param messageKey the success update message key.
+     * @return the directive for the next action / page to be directed to
+     */
+    private String save(String messageKey) {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(messageKey));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().clear();
+        return ActionSupport.SUCCESS;
     }
 
     /**
@@ -244,18 +297,5 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      */
     public void setDeleteIndex(Long deleteIndex) {
         this.deleteIndex = deleteIndex;
-    }
-
-    /**
-     * Save the experiment run data.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveProtocolApplication() {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        ProtExpressRegistry.getProtExpressService().clear();
-
-        return ActionSupport.SUCCESS;
     }
 }

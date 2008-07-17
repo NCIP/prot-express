@@ -82,8 +82,8 @@
 
     <protExpress:buttonRow>
         <protExpress:button style="save" textKey="protexpress.page.editprotocolapplicationdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editExperimentForm', 'detail-content'); return false;"/>
-        <protExpress:button style="add_folder" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addinput" id="add_folder" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'detail-content', true); this.blur(); return false;"/>
-        <protExpress:button style="add_output" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addoutput" id="add_output" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="add_input" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addinput" id="add_input" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'detail-content', true); this.blur(); return false;"/>
+        <protExpress:button style="add_output" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addoutput" id="add_output" onclick="ProtExpress.loadDiv('${manageOutputsUrl}', 'detail-content', true); this.blur(); return false;"/>
         <protExpress:button style="delete" textKey="protexpress.page.editprotocolapplicationdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
     </protExpress:buttonRow>
 </s:form>
