@@ -62,9 +62,3 @@ function selectTreeNode(spanId) {
    // alert(spanId);
 
 }
-
-function testSubmit(actionUrl) {
-alert(actionUrl);
-    var divId = "detail-content";
-    loadDiv(actionUrl, divId);
-}

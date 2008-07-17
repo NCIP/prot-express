@@ -223,7 +223,7 @@
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
             <result name="addInputs">/WEB-INF/jsp/vieweditexperiment/edit/manageInputs.jsp</result>
-            <result name="addOutputs">/WEB-INF/jsp/vieweditexperiment/edit/manageInputs.jsp</result>
+            <result name="addOutputs">/WEB-INF/jsp/vieweditexperiment/edit/manageOutputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
