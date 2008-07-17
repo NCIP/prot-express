@@ -1,14 +1,14 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
- *  Action to handle reload the experiment nav tree content
+ *  Action to handle reload the experiment nav tree content.
  */
 public class ExperimentTreeAction extends ExperimentDetailsAction {
 
@@ -17,13 +17,13 @@ public class ExperimentTreeAction extends ExperimentDetailsAction {
     private Long experimentRunId;
     private ExperimentRun experimentRun;
     private Long protAppId;
-    private ProtocolApplication protApp; 
+    private ProtocolApplication protApp;
     private Long inputId;
     private InputOutputObject input;
     private Long outputId;
     private InputOutputObject output;
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -64,56 +64,56 @@ public class ExperimentTreeAction extends ExperimentDetailsAction {
             setExperiment(getExperimentRun().getExperiment());
         }
     }
-    
+
     /**
      * @return refresh the entire tree
      */
     public String refresh() {
         return "refresh";
     }
-    
+
     /**
      * @return refresh the experiment node
      */
     public String refreshExperiment() {
         return "refreshExperiment";
     }
-    
+
     /**
      * @return refresh the experiment.experimentrun node
      */
     public String refreshExperimentRun() {
         return "refreshExperimentRun";
     }
-    
+
     /**
      * @return refresh the experiment.experimentrun.protocolApplication node
      */
     public String refreshProtocolApplication() {
         return "refreshProtocolApplication";
     }
-    
+
     /**
      * @return refresh the experiment.experimentrun.protocolApplication.input
      */
     public String refreshInput() {
         return "refreshInput";
     }
-    
+
     /**
      * @return refresh the experiment.experimentrun.protocolApplication.output
      */
     public String refreshOutput() {
         return "refreshOutput";
     }
-    
+
     /**
      * @return VIEW/EDIT
      */
     public String getTreeMode() {
         return treeMode;
     }
-    
+
     /**
      * @param treeMode VIEW/EDIT
      */
@@ -178,14 +178,14 @@ public class ExperimentTreeAction extends ExperimentDetailsAction {
     }
 
     /**
-     * @return the selected experimentRun 
+     * @return the selected experimentRun
      */
     public ExperimentRun getExperimentRun() {
         return experimentRun;
     }
 
     /**
-     * @param experimentRun selected 
+     * @param experimentRun selected
      */
     public void setExperimentRun(ExperimentRun experimentRun) {
         this.experimentRun = experimentRun;
