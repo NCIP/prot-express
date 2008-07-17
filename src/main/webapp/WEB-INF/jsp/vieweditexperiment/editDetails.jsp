@@ -47,3 +47,11 @@
         <!--/ADD CONTENT HERE-->
     </div>
 </body>
+
+<script type="text/javascript">
+    // Define the variables that will be used for the date controls in subsequent page.
+    // Variables have to be defined in the parent page, due to scope problems.
+    // These variables will be referred to in the appropriate page for displaying the calendar popup controls.
+
+    var expDatePerformed, expRunDatePerformed, protAppDatePerformed;
+</script>
