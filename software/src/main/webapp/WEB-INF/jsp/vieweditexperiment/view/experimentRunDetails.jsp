@@ -12,7 +12,7 @@
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.dateperformed" />:</td>
-            <td class="value"><fmt:formatDate type="date" dateStyle="short" value="${experimentRun.datePerformed}" /></td>
+            <td class="value"><fmt:formatDate type="date" pattern="MM/dd/yyyy" dateStyle="short" value="${experimentRun.datePerformed}" /></td>
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.experimentrun.notes" />:</td>

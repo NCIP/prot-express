@@ -28,7 +28,7 @@
         <legend><fmt:message key="protexpress.experiment.dateperformed" /></legend>
         <table class="form">
             <tr>
-                <td class="label_left"><p><fmt:formatDate type="date" dateStyle="short" value="${experiment.datePerformed}" /></p></td>
+                <td class="label_left"><p><fmt:formatDate type="date" pattern="MM/dd/yyyy" dateStyle="short" value="${experiment.datePerformed}" /></p></td>
             </tr>
         </table>
     </fieldset>

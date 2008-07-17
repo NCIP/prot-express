@@ -12,19 +12,19 @@
         <c:param name="treeMode" value="EDIT"/>
     </c:url>
     <script type="text/javascript">
-	    var actionUrl = '${actionUrl}';   
-	    var divElement = document.getElementById('span_${experiment.id}');
-	    var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
+      var actionUrl = '${actionUrl}';
+      var divElement = document.getElementById('span_${experiment.id}');
+      var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
     </script>
 </c:if>
 <s:form id="editExperimentForm" action="/ajax/editExperiment/experiment/saveExperiment.action" method="post">
     <s:hidden name="experimentId" value="%{experiment.id}"/>
     <fieldset class="leftfield">
-        <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" /></legend>
+        <legend><fmt:message key="protexpress.page.editexperimentdetails.overviewtitle" /></legend>
         <table class="form3">
             <tr>
                 <td class="label_left">
-                    <span class="required">*</span>&nbsp;<s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top"/>
+                    <s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top" required="true"/>
                 </td>
             </tr>
             <tr>
@@ -50,14 +50,14 @@
         </table>
     </fieldset>
     <fieldset class="rightfield">
-        <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
-		<s:textfield name="experiment.datePerformed" required="true" size="10" maxlength="10">
-		    <s:param name="value"><s:date name="experiment.datePerformed" format="MM/dd/yyyy"/></s:param>
-		    <s:param name="after"><div><fmt:message key="default.date.format"/></div></s:param>
-		</s:textfield>        
+        <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.editexperimentdetails.dateperformedtitle" /> (<fmt:message key="default.date.format"/>)</legend>
+        <s:textfield theme="xhtml" name="experiment.datePerformed" required="true" size="10" maxlength="10">
+            <s:param name="value"><s:date name="experiment.datePerformed" format="MM/dd/yyyy"/></s:param>
+        </s:textfield>
+        <a href="javascript://noop/" onclick="expDatePerformed.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>
     </fieldset>
     <fieldset class="rightfield">
-        <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
+        <legend><fmt:message key="protexpress.page.editexperimentdetails.contacttitle" /></legend>
         <table class="form3">
             <tr>
                 <td class="label_left">
@@ -87,3 +87,7 @@
         <protExpress:button style="delete" textKey="protexpress.page.editexperimentdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
     </protExpress:buttonRow>
 </s:form>
+
+<script type="text/javascript">
+    expDatePerformed = new Epoch('expDatePerformedPopup', 'popup', document.getElementById('editExperimentForm_experiment_datePerformed'));
+</script>
