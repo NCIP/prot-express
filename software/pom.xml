@@ -68,7 +68,7 @@
         <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</connection>
         <url>http://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software/</url>
     </scm>
-    
+
     <distributionManagement>
         <repository>
             <id>5AM-Releases</id>
@@ -82,7 +82,7 @@
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
-    
+
     <!-- Maven repo's to use -->
     <repositories>
         <repository>
@@ -116,7 +116,7 @@
             </releases>
         </repository>
     </repositories>
-    
+
     <pluginRepositories>
         <pluginRepository>
             <id>repo1.maven.org</id>
@@ -455,7 +455,7 @@
                     <formats>
                         <format>html</format>
                         <format>xml</format>
-                    </formats>                    
+                    </formats>
                 </configuration>
             </plugin>
             <plugin>
@@ -582,7 +582,7 @@
                 <database.name>protexpress</database.name>
                 <jdbc.username>gpsxar</jdbc.username>
                 <jdbc.password>gpsxar456</jdbc.password>
-                <tomcat.manager.url>http://protexpress-dev.nci.nih.gov:18080/manager</tomcat.manager.url>
+                <tomcat.manager.url>http://cbiovdev5057.nci.nih.gov:18080/manager</tomcat.manager.url>
             </properties>
             <build>
                 <plugins>
@@ -623,18 +623,18 @@
                             <username>${admin.db.username}</username>
                             <password>${admin.db.password}</password>
                             <autocommit>true</autocommit>
-                            <sqlCommand> 
-                                drop database if exists ${database.name}; 
+                            <sqlCommand>
+                                drop database if exists ${database.name};
                                 drop user if exists ${jdbc.username};
-                                create database ${database.name}; 
-                                create user ${jdbc.username} with password '${jdbc.password}'; 
-                                grant all on database ${database.name} to ${jdbc.username}; 
+                                create database ${database.name};
+                                create user ${jdbc.username} with password '${jdbc.password}';
+                                grant all on database ${database.name} to ${jdbc.username};
                             </sqlCommand>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
-        </profile>     
+        </profile>
         <profile>
             <id>init-db</id>
             <activation>
@@ -664,7 +664,7 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>           
+        </profile>
     </profiles>
 
 
