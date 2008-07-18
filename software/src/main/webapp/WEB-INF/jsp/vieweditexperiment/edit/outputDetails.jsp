@@ -13,10 +13,10 @@
         <c:param name="treeMode" value="EDIT"/>
     </c:url>
     <script type="text/javascript">
-        var actionUrl = '${actionUrl}';   
+        var actionUrl = '${actionUrl}';
         var divElement = document.getElementById('span_${protocolApplicationId}.${inputOutputObject.id}');
         var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>       
+    </script>
 </c:if>
 <s:form id="editOutputForm" action="/ajax/editExperiment/output/saveOutput.action" method="post">
     <s:hidden name="inputOutputObjectId" value="%{inputOutputObject.id}"/>
@@ -41,27 +41,5 @@
         <protExpress:button style="save" textKey="protexpress.page.outputdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editOutputForm', 'detail-content'); return false;"/>
         <protExpress:button style="delete" textKey="protexpress.page.outputdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
     </protExpress:buttonRow>
-    <%-- 
-    <div class="actionsrow">
-        <del class="btnwrapper">
-            <ul id="btnrow2">
-                <li>
-                    <s:a theme="ajax" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="save"><fmt:message key="protexpress.page.outputdetails.buttons.save" /></span>
-                        </span>
-                    </s:a>
-                </li>
-                <li>
-                    <a href="javascript:alert('Not Yet Implemented');" class="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="delete"><fmt:message key="protexpress.page.outputdetails.buttons.delete" /></span>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </del>
-    </div>
-    --%>    
 </s:form>
 

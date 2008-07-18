@@ -31,7 +31,7 @@
             </div>
             <c:if test="${selectedNodeId != null}">
                 <script>
-                    selectTreeNode('${selectedNodeId}');
+                    // selectTreeNode('${selectedNodeId}');
                 </script>
             </c:if>
             <!-- /TREE COLUMN -->
