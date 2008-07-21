@@ -41,27 +41,5 @@
         <protExpress:button style="save" textKey="protexpress.page.inputdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editInputForm', 'detail-content'); return false;"/>
         <protExpress:button style="delete" textKey="protexpress.page.inputdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
     </protExpress:buttonRow>
-    <%-- 
-    <div class="actionsrow">
-        <del class="btnwrapper">
-            <ul id="btnrow2">
-                <li>
-                    <s:a theme="ajax" targets="detail-content" cssClass="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="save"><fmt:message key="protexpress.page.inputdetails.buttons.save" /></span>
-                        </span>
-                    </s:a>
-                </li>
-                <li>
-                    <a href="javascript:alert('Not Yet Implemented');" class="btn" onclick="this.blur();">
-                        <span class="btn_img">
-                            <span class="delete"><fmt:message key="protexpress.page.inputdetails.buttons.delete" /></span>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </del>
-    </div>
-    --%>    
 </s:form>
 
