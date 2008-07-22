@@ -32,6 +32,21 @@ INSERT INTO CSM_PRIVILEGE(PRIVILEGE_NAME, PRIVILEGE_DESCRIPTION)
 INSERT INTO CSM_PRIVILEGE(PRIVILEGE_NAME, PRIVILEGE_DESCRIPTION)
     VALUES('EXECUTE','This privilege allows a user to execute a particular resource. The resource can be a method, function, behavior of the application, URL, button etc');
 
-INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL_ID) VALUES ('user1', 'Test1', 'User','BtM2GNbiAxg=', 'testuser@protexpress.com');
+INSERT INTO CSM_GROUP (GROUP_NAME, GROUP_DESC, APPLICATION_ID) VALUES ('User', 'User group - security role', (select application_id from csm_application where application_name = 'protExpress'));
 
-INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME) VALUES ('fb_inv1', 'Fb', 'Inv');
+-- Password is password
+INSERT INTO CSM_USER (login_name, first_name, last_name, organization, department, title, phone_number, password, email_id, start_date, end_date, update_date) VALUES ('krishnak', 'Krishna', 'Kanchinadam', '', '', '', '', 'qN+MnXquuqO8j2uyHEABIQ==', 'kanchink@mail.nih.gov', NULL, NULL, '2008-06-23');
+INSERT INTO CSM_USER_PE(PROTECTION_ELEMENT_ID, USER_ID) VALUES ((select protection_element_id from csm_protection_element where protection_element_name = 'protExpress'), (select user_id from csm_user where login_name = 'krishnak'));
+
+-- Password is pass
+INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD) VALUES ('user1', 'DB', 'User','BtM2GNbiAxg=');
+INSERT INTO CSM_USER_PE(PROTECTION_ELEMENT_ID, USER_ID) VALUES ((select protection_element_id from csm_protection_element where protection_element_name = 'protExpress'), (select user_id from csm_user where login_name = 'user1'));
+INSERT INTO CSM_USER_GROUP (USER_ID, GROUP_ID) VALUES ((select user_id from csm_user where login_name = 'user1'), (select group_id from csm_group where group_name = 'User'));
+
+-- Password is pass
+INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD) VALUES ('ldapuser', 'LDAP', 'User','BtM2GNbiAxg=');
+INSERT INTO CSM_USER_PE(PROTECTION_ELEMENT_ID, USER_ID) VALUES ((select protection_element_id from csm_protection_element where protection_element_name = 'protExpress'), (select user_id from csm_user where login_name = 'ldapuser'));
+INSERT INTO CSM_USER_GROUP (USER_ID, GROUP_ID) VALUES ((select user_id from csm_user where login_name = 'ldapuser'), (select group_id from csm_group where group_name = 'User'));
+
+
+
