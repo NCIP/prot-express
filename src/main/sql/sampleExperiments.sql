@@ -1,5 +1,3 @@
-INSERT INTO csm_user (user_id, login_name, first_name, last_name, organization, department, title, phone_number, "password", email_id, start_date, end_date, update_date) VALUES (4, 'krishnak', 'Kris', 'Kanchinadam', '', '', '', '', 'qN+MnXquuqO8j2uyHEABIQ==', 'kanchink@mail.nih.gov', NULL, NULL, '2008-06-23');
-
 
 INSERT INTO experiment (id, creation_date, creator, modification_date, contact_email, contact_fname, contact_lname, contact_notes, date_performed, description, hypothesis, name, notes, url) VALUES (1, '2008-06-23 00:00:00', 'user1', '2008-06-23 00:00:00', NULL, NULL, NULL, NULL, '2008-06-23', 'We have combined classical subcellular fractionation with large-scale quantitative mass spectrometry to identify proteins that enrich specifically with peroxisomes of Saccharomyces cerevisiae.', 'Some Hypothesis', 'Peroxisome membrane protein analysis, Marcello Marelli et al.', NULL, 'http://www.jcb.org/cgi/content/abstract/167/6/1099');
 

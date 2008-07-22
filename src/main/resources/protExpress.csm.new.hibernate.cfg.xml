@@ -8,14 +8,20 @@
         <property name="hibernate.connection.datasource">java:comp/env/jdbc/ProtExpressDb</property>
 
         <!-- mapping files -->
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/User.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml" />
-        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml" />
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/User.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/FilterClause.hbm.xml"/>        
+        <mapping resource="gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml"/>    
+        <!--  These mapping files are not necessary 
+        <mapping resource="gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml"/>       
+         -->        
     </session-factory>
 </hibernate-configuration>
