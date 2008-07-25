@@ -56,14 +56,14 @@ public class LDAPTest extends TestCase {
         }
     }
 
-    public void testFirebirdLdap() throws Exception {
-        Hashtable<String, String> ldapContextParams = new Hashtable<String, String>();
-        ldapContextParams.put("ldapHost", "ldap://cbioapp501.nci.nih.gov:389");
-        ldapContextParams.put("ldapSearchableBase", "ou=Users,dc=firebird,dc=nci,dc=nih,dc=gov");
-        ldapContextParams.put("ldapUserIdLabel", "uid");
-        ldapContextParams.put("ldapAdminUserName", "cn=Manager,dc=firebird,dc=nci,dc=nih,dc=gov");
-        ldapContextParams.put("ldapAdminPassword", "firebird");
-
-        assertTrue(LDAPHelper.authenticate(ldapContextParams, "fb_inv1", "f1rebird05".toCharArray(), null));
-    }
+//    public void testFirebirdLdap() throws Exception {
+//        Hashtable<String, String> ldapContextParams = new Hashtable<String, String>();
+//        ldapContextParams.put("ldapHost", "ldap://cbioapp501.nci.nih.gov:389");
+//        ldapContextParams.put("ldapSearchableBase", "ou=Users,dc=firebird,dc=nci,dc=nih,dc=gov");
+//        ldapContextParams.put("ldapUserIdLabel", "uid");
+//        ldapContextParams.put("ldapAdminUserName", "cn=Manager,dc=firebird,dc=nci,dc=nih,dc=gov");
+//        ldapContextParams.put("ldapAdminPassword", "firebird");
+//
+//        assertTrue(LDAPHelper.authenticate(ldapContextParams, "fb_inv1", "f1rebird05".toCharArray(), null));
+//    }
 }
