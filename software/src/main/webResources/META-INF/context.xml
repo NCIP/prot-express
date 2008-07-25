@@ -16,6 +16,15 @@
         logAbandoned="true"
         validationQuery="select 1" />
 
+   <Resource name="mail/ProtExpressMail"
+             auth="Container"
+             type="javax.mail.Session"
+             mail.smtp.host="mailfwd.nih.gov"
+             mail.smtp.port="25"
+             mail.transport.protocol="smtp"
+             mail.smtp.auth="false"
+       />
+        
     <Realm className="org.apache.catalina.realm.JAASRealm"
         appName="protExpress"
         userClassNames="gov.nih.nci.protexpress.security.UserPrincipal"

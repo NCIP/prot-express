@@ -90,6 +90,10 @@
             <url>http://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
+            <id>repository.jboss.org</id>
+            <url>http://repository.jboss.org/maven2/</url>
+        </repository>
+        <repository>
             <id>java.net</id>
             <name>java.net Maven Repository</name>
             <url>http://download.java.net/maven/1</url>
@@ -146,6 +150,9 @@
         <source.level>1.5</source.level>
         <target.level>1.5</target.level>
         <tomcat.manager.url>http://localhost:8080/manager</tomcat.manager.url>
+        <tomcat.home.parent>/dev/app_servers/</tomcat.home.parent>
+        <tomcat.home.name>apache-tomcat-5.5.20</tomcat.home.name>
+        <tomcat.home>${tomcat.home.parent}/${tomcat.home.name}</tomcat.home>
         <hibernate.create>true</hibernate.create>
         <hibernate.drop>true</hibernate.drop>
         <hibernate.export>false</hibernate.export>
@@ -158,10 +165,10 @@
         <jaxb.impl.version>2.1.4</jaxb.impl.version>
         <jaxb.xjc.version>2.1.4</jaxb.xjc.version>
         <struts.version>2.0.11.1</struts.version>
-        <ldap.host.url>ldap://cbioapp501.nci.nih.gov:389</ldap.host.url>
-        <ldap.searchable.base>ou=Users,dc=firebird,dc=nci,dc=nih,dc=gov</ldap.searchable.base>
-        <ldap.admin.username>cn=Manager,dc=firebird,dc=nci,dc=nih,dc=gov</ldap.admin.username>
-        <ldap.admin.password>firebird</ldap.admin.password>
+        <ldap.install>true</ldap.install>
+        <ldap.host.url>ldaps://ncids4a.nci.nih.gov:636/</ldap.host.url>
+        <ldap.searchbase>ou=nci,o=nih</ldap.searchbase>
+        <ldap.searchprefix>cn</ldap.searchprefix>
         <test.jdbc.url>jdbc:hsqldb:mem:protExpressTests</test.jdbc.url>
         <test.jdbc.username>sa</test.jdbc.username>
         <test.jdbc.password></test.jdbc.password>
@@ -312,7 +319,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -494,6 +501,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
+                <ldap.install>false</ldap.install>
                 <test.jaas.ldap.config.start>/**</test.jaas.ldap.config.start>
                 <test.jaas.ldap.config.end>**/</test.jaas.ldap.config.end>
                 <jaas.ldap.config.start>/**</jaas.ldap.config.start>
@@ -660,6 +668,7 @@
                                 <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
                                 <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/extraCreateSchema.sql</srcFile>
+                                <srcFile>src/main/sql/protExpressBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                             </srcFiles>
                         </configuration>
@@ -667,6 +676,100 @@
                 </plugins>
             </build>
         </profile>
+    <profile>
+        <id>installTomcat</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>tomcat</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <tasks>
+                                    <property name="tomcat.temp.dir"
+                                        value="${pom.basedir}/target/tomcat" />
+                                    <mkdir dir="${tomcat.temp.dir}" />
+                                    <get
+                                        src="http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.20/bin/${tomcat.home.name}.zip"
+                                        dest="${tomcat.temp.dir}/${tomcat.home.name}.zip" usetimestamp="true"/>
+                                        
+                                    <mkdir dir="${tomcat.home.parent}"/>
+                                    <unzip src="${tomcat.temp.dir}/${tomcat.home.name}.zip" dest="${tomcat.home.parent}"/>
+                                    
+                                    <!-- Apply patch to 5.5.20 using 5.5.17 common/lib/naming-factory.jar -->
+                                    <get
+                                        src="http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.17/bin/apache-tomcat-5.5.17.zip"
+                                        dest="${tomcat.temp.dir}/apache-tomcat-5.5.17.zip" usetimestamp="true"/>
+                                    <unzip src="${tomcat.temp.dir}/apache-tomcat-5.5.17.zip" dest="${tomcat.temp.dir}">
+                                        <patternset>
+                                            <include name="**/common/lib/naming-factory.jar"/>
+                                        </patternset>                                    
+                                    </unzip>
+                                    <copy file="${tomcat.temp.dir}/apache-tomcat-5.5.17/common/lib/naming-factory.jar"
+                                        todir="${tomcat.home}/common/lib/" overwrite="true"/>
+                                        
+                                    <get
+                                        src="http://mirrors.ibiblio.org/pub/mirrors/maven2/postgresql/postgresql/8.1-407.jdbc3/postgresql-8.1-407.jdbc3.jar"
+                                        dest="${tomcat.home}/common/lib/postgresql-8.1-407.jdbc3.jar" usetimestamp="true"/>
+                                    <get
+                                        src="http://repository.jboss.org/maven2/javax/activation/activation/1.0.2/activation-1.0.2.jar"
+                                        dest="${tomcat.home}/common/lib/activation-1.0.2.jar" usetimestamp="true"/>
+                                    <get
+                                        src="http://repo1.maven.org/maven2/javax/mail/mail/1.4/mail-1.4.jar"
+                                        dest="${tomcat.home}/common/lib/mail-1.4.jar" usetimestamp="true"/>
+                                    <get
+                                        src="http://repository.jboss.org/maven2/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar"
+                                        dest="${tomcat.home}/common/endorsed/jaxb-api-2.1.jar" usetimestamp="true"/>
+                                        
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>tomcat-jaas</id>
+                            <phase>package</phase>
+                            <configuration>
+                                <tasks>
+                                    <mkdir dir="${tomcat.home}/conf/protExpress" />
+                                    <copy file="${pom.basedir}/target/protExpress/META-INF/jaas.config" 
+                                    todir="${tomcat.home}/conf/protExpress"/>
+                                    
+                                    <copy file="${pom.basedir}/src/main/tomcat/setenv.bat" todir="${tomcat.home}/bin/"/>
+                                    <copy file="${pom.basedir}/src/main/tomcat/setenv.sh" todir="${tomcat.home}/bin/"/>
+                                    <copy file="${pom.basedir}/src/main/tomcat/tomcat-users.xml" todir="${tomcat.home}/conf/"/>
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>tomcat-clean</id>
+                            <phase>clean</phase>
+                            <configuration>
+                                <tasks>
+                                    <delete dir="${tomcat.home}"/>
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
     </profiles>
 
 
@@ -744,6 +847,11 @@
             <version>3.2</version>
         </dependency>
         <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
             <version>1.1</version>
@@ -813,6 +921,16 @@
             <artifactId>jericho-html</artifactId>
             <version>2.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.fiveamsolutions</groupId>
+            <artifactId>nci-commons-core</artifactId>
+            <version>1.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fiveamsolutions</groupId>
+            <artifactId>nci-commons-struts2</artifactId>
+            <version>1.0.9</version>
+        </dependency>
 
         <!-- Dependencies provided by the container -->
         <dependency>
@@ -825,6 +943,24 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.1-407.jdbc3</version>
             <scope>provided</scope>
         </dependency>
 

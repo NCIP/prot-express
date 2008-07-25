@@ -85,7 +85,6 @@ package gov.nih.nci.protexpress.domain.protocol;
 import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
 import gov.nih.nci.protexpress.domain.LsidType;
-import gov.nih.nci.protexpress.domain.Persistent;
 
 import java.io.Serializable;
 
@@ -104,6 +103,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotEmpty;
 
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
+
 /**
  * Class representing a Material object - a biological sample or a processed
  * derivative of a sample.
@@ -113,7 +114,7 @@ import org.hibernate.validator.NotEmpty;
 @Entity
 @Table(name = "input_output_object")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class InputOutputObject implements Serializable, Persistent {
+public class InputOutputObject implements Serializable, PersistentObject {
     private static final long serialVersionUID = 1L;
 
     private Long id;

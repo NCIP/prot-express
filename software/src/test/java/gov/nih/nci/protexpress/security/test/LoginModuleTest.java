@@ -113,7 +113,7 @@ public abstract class LoginModuleTest extends ProtExpressBaseCsmTest {
     protected void validateSuccessfulLogin(String username, String password, boolean hasRole) throws LoginException {
         CSMCallbackHandler csmCallbackHandler = new CSMCallbackHandler(username, password);
         LoginContext loginContext = new LoginContext("protExpress", csmCallbackHandler);
-        //loginContext.login();
+        loginContext.login();
 
         if ((loginContext != null) && (loginContext.getSubject() != null)) {
             Iterator principals = loginContext.getSubject().getPrincipals().iterator();

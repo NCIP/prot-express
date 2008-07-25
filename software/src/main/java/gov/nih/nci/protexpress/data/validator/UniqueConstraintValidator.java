@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.data.validator;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.Persistent;
 
 import java.util.Iterator;
 
@@ -91,6 +90,8 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.validator.PropertyConstraint;
 import org.hibernate.validator.Validator;
+
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
 
 /**
  * @author Scott Miller
@@ -111,7 +112,7 @@ public class UniqueConstraintValidator implements Validator<UniqueConstraint>, P
      * {@inheritDoc}
      */
     public boolean isValid(Object propValue) {
-        Persistent bean = ContextualClassValidator.getCurrentBean();
+        PersistentObject bean = ContextualClassValidator.getCurrentBean();
         if (bean == null) {
             return true;
         }

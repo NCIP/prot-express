@@ -1,12 +1,12 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The ProtExpress
+ * source code form and machine readable, binary, object code form. The caarray-war
  * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees and 5AM Solutions, Inc. (5AM). To the extent
  * government employees are authors, any rights in such works shall be subject
  * to Title 17 of the United States Code, section 105.
  *
- * This ProtExpress Software License (the License) is between NCI and You. You (or
+ * This caarray-war Software License (the License) is between NCI and You. You (or
  * Your) shall mean a person or an entity, and all other entities that control,
  * are controlled by, or are under common control with the entity. Control for
  * purposes of this definition means (i) the direct or indirect power to cause
@@ -17,10 +17,10 @@
  * This License is granted provided that You agree to the conditions described
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
  * no-charge, irrevocable, transferable and royalty-free right and license in
- * its rights in the ProtExpress Software to (i) use, install, access, operate,
+ * its rights in the caarray-war Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the ProtExpress Software; (ii) distribute and
- * have distributed to and by third parties the ProtExpress Software and any
+ * and prepare derivative works of the caarray-war Software; (ii) distribute and
+ * have distributed to and by third parties the caarray-war Software and any
  * modifications and derivative works thereof; and (iii) sublicense the
  * foregoing rights set out in (i) and (ii) to third parties, including the
  * right to license such rights to further third parties. For sake of clarity,
@@ -82,67 +82,96 @@
  */
 package gov.nih.nci.protexpress.ui.actions.registration;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
+import static gov.nih.nci.protexpress.ProtExpressRegistry.getRegistrationService;
+import static gov.nih.nci.protexpress.ProtExpressRegistry.getUserProvisioningManager;
+import gov.nih.nci.protexpress.domain.ConfigParamEnum;
+import gov.nih.nci.protexpress.domain.register.Country;
+import gov.nih.nci.protexpress.domain.register.RegistrationRequest;
+import gov.nih.nci.protexpress.domain.register.State;
+import gov.nih.nci.security.authentication.helper.LDAPHelper;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.UserSearchCriteria;
-import gov.nih.nci.security.exceptions.CSTransactionException;
+import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException;
+import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
+import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
+
+import javax.mail.MessagingException;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
-import com.opensymphony.xwork2.ActionContext;
+import com.fiveamsolutions.nci.commons.web.struts2.action.ActionHelper;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.EmailValidator;
-import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
-
 /**
- * Action to handle self registration.
- *
- * @author Scott Miller
+ * Registration action.  Handles saving and email sending.
  */
+// CSM requires Hashtable, servletcontext untyped
+@SuppressWarnings({ "PMD.ReplaceHashtableWithMap", "unchecked", "PMD.CyclomaticComplexity" })
 @Validation
-public class RegistrationAction extends ActionSupport {
-    private static final long serialVersionUID = 1L;
+public class RegistrationAction extends ActionSupport implements Preparable {
 
-    private User user = null;
-    private String passwordConfirmation = null;
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(RegistrationAction.class);
+
+    private RegistrationRequest registrationRequest;
+    private String password;
+    private String passwordConfirm;
+    private Boolean ldapAuthenticate;
+    private List<Country> countryList;
+    private List<State> stateList;
+    private final Hashtable<String, String> ldapContextParams = new Hashtable<String, String>();
+    private String successMessage;
 
     /**
-     * Action to load the registration form.
-     *
-     * @return the directive for the next action / page to be directed to
+     * {@inheritDoc}
      */
-    @SkipValidation
-    public String load() {
-        return ActionSupport.INPUT;
+    public void prepare() {
+        setCountryList(getRegistrationService().getCountries());
+        setStateList(getRegistrationService().getStates());
+        ServletContext context = ServletActionContext.getServletContext();
+        Enumeration<String> e = context.getInitParameterNames();
+        while (e.hasMoreElements()) {
+            String param = e.nextElement();
+            if (param.startsWith("ldap")) {
+                ldapContextParams.put(param, context.getInitParameter(param));
+            }
+        }
+        registrationRequest = new RegistrationRequest();
+        ldapAuthenticate = Boolean.TRUE;
     }
 
     /**
-     * Action to actually save the registration.
-     *
+     * Action to actually save the registration with authentication.
      * @return the directive for the next action / page to be directed to
-     * @throws CSTransactionException on error
      */
-    @Validations(
-        emails = {@EmailValidator(fieldName = "user.emailId", key = "validator.email", message = "") },
-        stringLengthFields = {@StringLengthFieldValidator(fieldName = "user.loginName", minLength = "6",
-                key = "validator.minLength", message = "") },
-        requiredStrings = {
-            @RequiredStringValidator(fieldName = "user.loginName", key = "validator.notEmpty", message = ""),
-            @RequiredStringValidator(fieldName = "user.firstName", key = "validator.notEmpty", message = ""),
-            @RequiredStringValidator(fieldName = "user.lastName", key = "validator.notEmpty", message = ""),
-            @RequiredStringValidator(fieldName = "user.emailId", key = "validator.notEmpty", message = ""),
-            @RequiredStringValidator(fieldName = "user.password", key = "validator.notEmpty", message = "") },
-        fieldExpressions = {@FieldExpressionValidator(fieldName = "passwordConfirmation",
-                expression = "user.password == passwordConfirmation", key = "passwordConfirmation.mustBeEqual",
-                message = "") })
-    public String save() throws CSTransactionException {
-        ProtExpressRegistry.getUserProvisioningManager().createUser(getUser());
-        return ActionSupport.SUCCESS;
+    public String save() {
+        try {
+            // We call the service to save, then send email.  This is non-transactional behavior,
+            // but it's okay in this case.  The request gets logged to our db, but if email doesn't
+            // send, we tell the user to retry.  (We don't send email in service because Email helper
+            // makes assumptions about the environment that are inappropriate for the service tier.)
+            getRegistrationService().register(getRegistrationRequest());
+            LOGGER.debug("done saving registration request; sending email");
+            EmailHelper.registerEmail(getRegistrationRequest());
+            EmailHelper.registerEmailAdmin(getRegistrationRequest());
+            setSuccessMessage(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.THANKS_MESSAGE.name()));
+
+            return Action.SUCCESS;
+        } catch (MessagingException me) {
+            LOGGER.error("Failed to send an email", me);
+            ActionHelper.saveMessage(getText("registration.emailFailure"));
+            return Action.INPUT;
+        }
     }
 
     /**
@@ -151,51 +180,159 @@ public class RegistrationAction extends ActionSupport {
     @Override
     public void validate() {
         super.validate();
-        if (getUser() != null) {
-            if (StringUtils.isNotBlank(getUser().getLoginName())
-                    && ProtExpressRegistry.getUserProvisioningManager().getUser(getUser().getLoginName()) != null) {
-                String errorField = "user.loginName";
-                ActionContext.getContext().getValueStack().set("fieldName", errorField);
-                addFieldError(errorField, getText("validator.unique"));
+        if (isLdapInstall()) {
+            validateLdap();
+        } else {
+            validateNonLdap();
+        }
+    }
+
+    private void validateLdap() {
+        try {
+            if (ldapAuthenticate
+                    && (StringUtils.isBlank(getPassword())
+                            || !LDAPHelper.authenticate(ldapContextParams , registrationRequest.getLoginName(),
+                                                        getPassword().toCharArray(), null))) {
+                addActionError(getText("registration.ldapLookupFailure"));
             }
-            if (StringUtils.isNotBlank(getUser().getEmailId())) {
-                User searchUser = new User();
-                searchUser.setEmailId(getUser().getEmailId());
-                if (ProtExpressRegistry.getUserProvisioningManager().getObjects(new UserSearchCriteria(searchUser))
-                        .size() != 0) {
-                    String errorField = "user.emailId";
-                    ActionContext.getContext().getValueStack().set("fieldName", errorField);
-                    addFieldError(errorField, getText("validator.unique"));
-                }
+        } catch (CSInternalLoginException e) {
+            // CSM throws this exception on valid user / wrong pass
+            addActionError(getText("registration.ldapLookupFailure"));
+        } catch (CSInternalConfigurationException e) {
+            addActionError(e.getMessage());
+            LOGGER.error("Unable to validate", e);
+        } catch (CSInternalInsufficientAttributesException e) {
+            addActionError(e.getMessage());
+            LOGGER.error("Unable to validate", e);
+        }
+    }
+
+    private void validateNonLdap() {
+        if (StringUtils.isNotBlank(getRegistrationRequest().getLoginName())
+                && (getUserProvisioningManager()
+                                .getUser(getRegistrationRequest().getLoginName()) != null)) {
+            addActionError(getText("registration.usernameInUse"));
+        }
+        if (StringUtils.isNotBlank(getRegistrationRequest().getEmail())) {
+            User searchUser = new User();
+            searchUser.setEmailId(getRegistrationRequest().getEmail());
+            if (!getUserProvisioningManager()
+                             .getObjects(new UserSearchCriteria(searchUser)).isEmpty()) {
+                addActionError(getText("registration.emailAddressInUse"));
             }
         }
     }
 
+    /*
+     *
+     * Getters / setters below here
+     *
+     */
+
     /**
      * @return the user
      */
-    public User getUser() {
-        return this.user;
+    @CustomValidator(type = "hibernate")
+    public RegistrationRequest getRegistrationRequest() {
+        return this.registrationRequest;
     }
 
     /**
-     * @param user the user to set
+     * @param registrationRequest the request to set
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setRegistrationRequest(RegistrationRequest registrationRequest) {
+        this.registrationRequest = registrationRequest;
+    }
+
+    /**
+     * @return the countryList
+     */
+    public List<Country> getCountryList() {
+        return countryList;
+    }
+
+    /**
+     * @param countryList the countryList to set
+     */
+    public void setCountryList(List<Country> countryList) {
+        this.countryList = countryList;
+    }
+
+    /**
+     * @return the stateList
+     */
+    public List<State> getStateList() {
+        return stateList;
+    }
+
+    /**
+     * @param stateList the stateList to set
+     */
+    public void setStateList(List<State> stateList) {
+        this.stateList = stateList;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
      * @return the passwordConfirmation
      */
-    public String getPasswordConfirmation() {
-        return this.passwordConfirmation;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
 
     /**
-     * @param passwordConfirmation the passwordConfirmation to set
+     * @param passwordConfirm the passwordConfirmation to set
      */
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    /**
+     * @return the ldapAuthenticate
+     */
+    public Boolean getLdapAuthenticate() {
+        return ldapAuthenticate;
+    }
+
+    /**
+     * @param ldapAuthenticate the ldapAuthenticate to set
+     */
+    public void setLdapAuthenticate(Boolean ldapAuthenticate) {
+        this.ldapAuthenticate = ldapAuthenticate;
+    }
+
+    /**
+     * @return is ldap install?
+     */
+    public boolean isLdapInstall() {
+        return Boolean.parseBoolean(ldapContextParams.get("ldap.install"));
+    }
+
+    /**
+     * @return the successMessage
+     */
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    /**
+     * @param successMessage the successMessage to set
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }
+

@@ -25,3 +25,23 @@ mvn -Plocal,noLdap clean site hibernate3:hbm2ddl sql:execute tomcat:deploy
 SVN Diff:
 ==========
 svn diff -x -bw --no-diff-deleted -x --ignore-eol-style > diff.diff
+
+============================
+Tomcat v5.5.20
+(http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.20/bin/apache-tomcat-5.5.20.zip)
+=============================
+To install tomcat do the following:
+mvn -PinstallTomcat -Dmaven.test.skip=true clean package
+mvn -PinstallTomcat clean  -- Blows away your Tomcat Home directory
+mvn -PinstallTomcat validate -- Performs the base installation of tomcat w/ customization
+mvn -PinstallTomcat package -- copies over filtered resources and additional tomcat scripts
+
+** You can override the install location by altering the tomcat.home.parent property value using:
+ - -Dtomcat.home.parent=<yourpath>
+ - using your own profiles.xml
+ 
+Patch 5.5.20's common/lib/naming-factory.jar from -- http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.17/bin/apache-tomcat-5.5.17.zip
+Download http://mirrors.ibiblio.org/pub/mirrors/maven2/postgresql/postgresql/8.1-407.jdbc3/postgresql-8.1-407.jdbc3.jar to CATALINA_HOME\common\lib
+Download http://repository.jboss.org/maven2/javax/activation/activation/1.0.2/activation-1.0.2.jar to CATALINA_HOME\common\lib
+Download http://repo1.maven.org/maven2/javax/mail/mail/1.4/mail-1.4.jar to CATALINA_HOME\common\lib
+Download http://repository.jboss.org/maven2/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar to CATALINA_HOME\common\endorsed

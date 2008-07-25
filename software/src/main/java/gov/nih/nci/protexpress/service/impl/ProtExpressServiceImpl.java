@@ -82,7 +82,6 @@
  */
 package gov.nih.nci.protexpress.service.impl;
 
-import gov.nih.nci.protexpress.domain.Persistent;
 import gov.nih.nci.protexpress.service.ProtExpressService;
 
 import java.util.List;
@@ -91,6 +90,8 @@ import org.hibernate.proxy.HibernateProxy;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
 
 /**
  * Implementation of the {@link ProtExpressService}.
@@ -120,7 +121,7 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
      * {@inheritDoc}
      */
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue) {
+    public boolean isFieldUnique(PersistentObject bean, String fieldName, Object fieldValue) {
         Class persistentClass = bean.getClass();
         if (bean instanceof HibernateProxy) {
             persistentClass = ((HibernateProxy) bean).getHibernateLazyInitializer().getPersistentClass();

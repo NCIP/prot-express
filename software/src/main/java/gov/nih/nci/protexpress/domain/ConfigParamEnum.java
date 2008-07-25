@@ -1,12 +1,12 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The ProtExpress
+ * source code form and machine readable, binary, object code form. The caarray-common-jar
  * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees and 5AM Solutions, Inc. (5AM). To the extent
  * government employees are authors, any rights in such works shall be subject
  * to Title 17 of the United States Code, section 105.
  *
- * This ProtExpress Software License (the License) is between NCI and You. You (or
+ * This caarray-common-jar Software License (the License) is between NCI and You. You (or
  * Your) shall mean a person or an entity, and all other entities that control,
  * are controlled by, or are under common control with the entity. Control for
  * purposes of this definition means (i) the direct or indirect power to cause
@@ -17,10 +17,10 @@
  * This License is granted provided that You agree to the conditions described
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
  * no-charge, irrevocable, transferable and royalty-free right and license in
- * its rights in the ProtExpress Software to (i) use, install, access, operate,
+ * its rights in the caarray-common-jar Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the ProtExpress Software; (ii) distribute and
- * have distributed to and by third parties the ProtExpress Software and any
+ * and prepare derivative works of the caarray-common-jar Software; (ii) distribute and
+ * have distributed to and by third parties the caarray-common-jar Software and any
  * modifications and derivative works thereof; and (iii) sublicense the
  * foregoing rights set out in (i) and (ii) to third parties, including the
  * right to license such rights to further third parties. For sake of clarity,
@@ -80,69 +80,52 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.validator;
-
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
-
-import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
+package gov.nih.nci.protexpress.domain;
 
 /**
- * Class validator that uses a thread local to allow the property validators to access the current bean.
- * @param <T> the class the validation will run against.
- * @author Scott Miller
+ * Various configuration parameters.
  */
-public class ContextualClassValidator<T> extends ClassValidator<T> {
-    private static final long serialVersionUID = 1L;
-    private static ThreadLocal<PersistentObject> currentBeanThreadLocal = new ThreadLocal<PersistentObject>();
-
+public enum ConfigParamEnum {
     /**
-     * Get the bean currently being validated in this thread.
-     *
-     * @return the bean that was last passed to the getInvalidValues methods in this thread.
+     * The email address to send email from.
      */
-    public static PersistentObject getCurrentBean() {
-        return currentBeanThreadLocal.get();
-    }
-
+    EMAIL_FROM,
     /**
-     * Constructs the class validator.
-     *
-     * @param beanClazz the class to validate.
+     * Boolean property on whether to send an confirmation email to the end user
+     * after registering.
      */
-    public ContextualClassValidator(Class<T> beanClazz) {
-        super(beanClazz);
-        setCurrentBean(null);
-    }
-
-    private void setCurrentBean(PersistentObject bean) {
-        currentBeanThreadLocal.set(bean);
-    }
-
+    SEND_CONFIRM_EMAIL,
     /**
-     * {@inheritDoc}
+     * Subject line of the confirmation email.
      */
-    @Override
-    public InvalidValue[] getInvalidValues(T bean, String propertyName) {
-        try {
-            setCurrentBean((PersistentObject) bean);
-            return super.getInvalidValues(bean, propertyName);
-        } finally {
-            setCurrentBean(null);
-        }
-
-    }
-
+    CONFIRM_EMAIL_SUBJECT,
     /**
-     * {@inheritDoc}
+     * Content of the confirmation email.
      */
-    @Override
-    public InvalidValue[] getInvalidValues(T bean) {
-        try {
-            setCurrentBean((PersistentObject) bean);
-            return super.getInvalidValues(bean);
-        } finally {
-            setCurrentBean(null);
-        }
-    }
+    CONFIRM_EMAIL_CONTENT,
+    /**
+     * Boolean property on whether to send an email to the administrator
+     * after registering.
+     */
+    SEND_ADMIN_EMAIL,
+    /**
+     * What email address to send registration information to (ie, the helpdesk email address).
+     */
+    REG_EMAIL_TO,
+    /**
+     * Subject line of the registration email.
+     */
+    REG_EMAIL_SUBJECT,
+    /**
+     * The thankyou for registering text that should appear after a user submits their registration.
+     */
+    THANKS_MESSAGE,
+    /**
+     * Development mode flag.  Should only be true for local development purposes.
+     */
+    DEVELOPMENT_MODE,
+    /**
+     * caArray version number, for schema migration purposes.
+     */
+    SCHEMA_VERSION;
 }
