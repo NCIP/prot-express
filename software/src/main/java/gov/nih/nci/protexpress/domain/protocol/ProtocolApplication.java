@@ -82,10 +82,8 @@
  */
 package gov.nih.nci.protexpress.domain.protocol;
 
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.domain.LsidType;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 
@@ -104,13 +102,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -135,7 +131,6 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private LsidType lsid;
     private Date datePerformed = new Date();
     private String comments;
     private String notes;
@@ -183,18 +178,6 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Transient
-    public String getLsid() {
-        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.protocolapplication"), this.id);
-        return this.lsid.getLsid();
     }
 
     /**
@@ -306,7 +289,7 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
      *
      * @return the inputs.
      */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "protapp_inputs",
             joinColumns = { @JoinColumn(name = "protapp_id") },
             inverseJoinColumns = { @JoinColumn(name = "input_id") })
@@ -384,7 +367,11 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
+        return new EqualsBuilder()
+        .append(getId().toString(), p.getId().toString())
+        .append("ProtocolApplication-", "ProtocolApplication-")
+        .append(getProtocol().getName(), p.getProtocol().getName())
+        .isEquals();
     }
 
     /**
@@ -392,6 +379,10 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder()
+        .append(getId().toString())
+        .append("ProtocolApplication-")
+        .append(getProtocol().getName())
+        .toHashCode();
     }
 }

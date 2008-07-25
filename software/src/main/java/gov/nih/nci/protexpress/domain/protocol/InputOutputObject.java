@@ -82,19 +82,21 @@
  */
 package gov.nih.nci.protexpress.domain.protocol;
 
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.domain.LsidType;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -118,10 +120,12 @@ public class InputOutputObject implements Serializable, PersistentObject {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private LsidType lsid;
     private String name;
     private String dataFileURL;
     private String notes;
+
+    private ProtocolApplication outputOfProtocolApplication = null;
+    private ProtocolApplication inputToProtocolApplication = null;
 
     /**
      * protected default constructor for hibernate only.
@@ -154,18 +158,6 @@ public class InputOutputObject implements Serializable, PersistentObject {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Transient
-    public String getLsid() {
-        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.inputoutput"), this.id);
-        return this.lsid.getLsid();
     }
 
     /**
@@ -230,6 +222,52 @@ public class InputOutputObject implements Serializable, PersistentObject {
     }
 
     /**
+     * Gets the outputOfProtocolApplication.
+     *
+     * @return the outputOfProtocolApplication.
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "protapp_outputs",
+            joinColumns = { @JoinColumn(name = "output_id") },
+            inverseJoinColumns = { @JoinColumn(name = "protapp_id") })
+    public ProtocolApplication getOutputOfProtocolApplication() {
+        return outputOfProtocolApplication;
+    }
+
+    /**
+     * Sets the outputOfProtocolApplication.
+     *
+     * @param outputOfProtocolApplication the outputOfProtocolApplication to set.
+     */
+    public void setOutputOfProtocolApplication(
+            ProtocolApplication outputOfProtocolApplication) {
+        this.outputOfProtocolApplication = outputOfProtocolApplication;
+    }
+
+    /**
+     * Gets the inputToProtocolApplication.
+     *
+     * @return the inputToProtocolApplication.
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "protapp_inputs",
+            joinColumns = { @JoinColumn(name = "input_id") },
+            inverseJoinColumns = { @JoinColumn(name = "protapp_id") })
+    public ProtocolApplication getInputToProtocolApplication() {
+        return inputToProtocolApplication;
+    }
+
+    /**
+     * Sets the inputToProtocolApplication.
+     *
+     * @param inputToProtocolApplication the inputToProtocolApplication to set.
+     */
+    public void setInputToProtocolApplication(
+            ProtocolApplication inputToProtocolApplication) {
+        this.inputToProtocolApplication = inputToProtocolApplication;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -252,7 +290,9 @@ public class InputOutputObject implements Serializable, PersistentObject {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), ioObj.getLsid()).append(getName(), ioObj.getName()).isEquals();
+        return new EqualsBuilder()
+        .append(getId().toString(), ioObj.getId().toString())
+        .isEquals();
     }
 
     /**
@@ -260,6 +300,8 @@ public class InputOutputObject implements Serializable, PersistentObject {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).append(getName()).toHashCode();
+        return new HashCodeBuilder()
+        .append(getId().toString())
+        .toHashCode();
     }
 }

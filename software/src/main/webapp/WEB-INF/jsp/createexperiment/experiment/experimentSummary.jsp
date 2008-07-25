@@ -70,12 +70,8 @@
                 <div class="searchresults" style="border-bottom:0;">
                     <table class="newdata3">
                         <tbody>
-                            <s:if test="%{experiment.experimentRun.protocolApplications.size() != 0}">
-                                <tr>
-                                    <td class="label_left">
-                                        No Protocols found.
-                                    </td>
-                                </tr>
+                            <s:if test="%{experiment.experimentRun.protocolApplications.size() == 0}">
+                                <tr><td class="label_left"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.noprotocolsfound" /></td></tr>
                             </s:if>
                             <s:else>
                                 <tr>

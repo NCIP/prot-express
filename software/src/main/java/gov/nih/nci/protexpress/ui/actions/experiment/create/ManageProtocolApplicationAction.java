@@ -103,6 +103,8 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
 
     private String actionResultViewProtocol = "viewProtocol";
     private String actionResultEditProtocol = "editProtocol";
+    private String actionResultSaveAndAddNewProtocol = "saveAndAddNewProtocol";
+    private String actionResultsSaveAndViewExperimentSummary = "saveAndViewExperimentSummary";
 
     /**
      * Review Protocol information.
@@ -131,7 +133,7 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
     }
 
     /**
-     * Save/Updates the protocol applicaiton and protocol information.
+     * Save/Updates the protocol application and protocol information.
      *
      * @return the directive for the next action / page to be directed to
      */
@@ -139,7 +141,7 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
             requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
                     key = "validator.notEmpty", message = "") }
     )
-    public String saveProtocol() {
+    private void saveProtocol() {
         if (getProtocolApplication().getId() == null) {
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
         } else {
@@ -149,7 +151,66 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+    }
+
+    /**
+     * Save/Updates the protocol application and protocol information, redirects to the view protocol screen.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveAndViewProtocol() {
+        this.saveProtocol();
         return this.actionResultViewProtocol;
     }
 
+    /**
+     * Save/Updates the protocol application and protocol information, redirects to the add new protocol screen.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveAndAddNewProtocol() {
+        this.saveProtocol();
+        return this.actionResultSaveAndAddNewProtocol;
+    }
+
+    /**
+     * Save/Updates the protocol application and protocol information, redirects to the experiment summary screen.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String saveAndViewExperimentSummary() {
+        this.saveProtocol();
+        return this.actionResultsSaveAndViewExperimentSummary;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

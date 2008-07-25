@@ -228,6 +228,7 @@ public final class SessionHelper {
     private static void saveInSession(String sessionKey, Object sessionValue) {
         Map session = ActionContext.getContext().getSession();
         if (session != null) {
+            session.remove(sessionKey);
             session.put(sessionKey, sessionValue);
         }
     }

@@ -15,7 +15,7 @@
 <c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateOutputs.action" />
 <c:url var="addNewOutputUrl" value="/ajax/editExperiment/protocolApplication/addNewOutput.action" />
 
-<h3><fmt:message key="protexpress.page.editprotocolapplicationdetails.outputs.caption" /></h3>
+<h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.outputs.caption" /></h3>
 
 <s:form id="manageOutputsForm" action="/ajax/editExperiment/protocolApplication/addNewOutput.action" method="post">
     <fieldset>

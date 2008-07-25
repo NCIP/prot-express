@@ -126,25 +126,25 @@
 <div class="actionsrow">
     <del class="btnwrapper">
         <ul id="btnrow2">
-            <c:url var="experimentProtocolSaveUrl" value="/createExperiment/protocols/manage/saveProtocol.action" />
-            <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
-            <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
+            <c:url var="saveAndViewProtocolUrl" value="/createExperiment/protocols/manage/saveAndViewProtocol.action" />
+            <c:url var="saveAndAddNewProtocolUrl" value="/createExperiment/protocols/manage/saveAndAddNewProtocol.action" />
+            <c:url var="saveAndViewExperimentSummaryUrl" value="/createExperiment/protocols/manage/saveAndViewExperimentSummary.action" />
             <li>
-                <a href="javascript:submitForm('${experimentProtocolSaveUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
+                <a href="javascript:submitForm('${saveAndViewProtocolUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
                     <span class="btn_img">
                         <span class="save"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.save"/></span>
                     </span>
                 </a>
             </li>
             <li>
-                <a href="${addAnotherProtocolUrl}" class="btn" onclick="this.blur();">
+                <a href="javascript:submitForm('${saveAndAddNewProtocolUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
                     <span class="btn_img">
                         <span class="saverepeat"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.addanotherprotocol" /></span>
                     </span>
                 </a>
             </li>
             <li>
-                <a href="${experimentSummaryUrl}" class="btn" onclick="this.blur();">
+                <a href="javascript:submitForm('${saveAndViewExperimentSummaryUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
                     <span class="btn_img">
                         <span class="next"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.button.experimentsummary" /></span>
                     </span>

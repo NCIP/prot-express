@@ -127,10 +127,6 @@ public class ManageExperimentActionTest extends ProtExpressBaseHibernateTest {
         this.action.setExperiment(p);
         this.action.prepare();
         assertEquals(p, this.action.getExperiment());
-
-        this.action.getExperiment().setId(this.experiment.getId());
-        this.action.prepare();
-        assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
     }
 
     public void testLoad() throws Exception {

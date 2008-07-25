@@ -82,10 +82,8 @@
  */
 package gov.nih.nci.protexpress.domain.experiment;
 
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.domain.LsidType;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
@@ -108,7 +106,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -134,7 +131,6 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private LsidType lsid;
     private String name;
     private String notes;
     private Date datePerformed = new Date();
@@ -196,18 +192,6 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Transient
-    public String getLsid() {
-        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.experimentrun"), this.id);
-        return this.lsid.getLsid();
     }
 
     /**
@@ -329,7 +313,10 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), experimentRun.getLsid()).isEquals();
+        return new EqualsBuilder()
+        .append(getId().toString(), experimentRun.getId().toString())
+        .append(getName(), experimentRun.getName())
+        .isEquals();
     }
 
     /**
@@ -337,6 +324,9 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder()
+        .append(getId().toString())
+        .append(getName())
+        .toHashCode();
     }
 }

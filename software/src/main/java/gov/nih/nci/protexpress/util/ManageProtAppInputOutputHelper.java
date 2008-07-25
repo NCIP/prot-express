@@ -83,8 +83,12 @@
 
 package gov.nih.nci.protexpress.util;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -124,12 +128,71 @@ public final class ManageProtAppInputOutputHelper {
     }
 
     /**
+     * Returns a list of potential inputs for a protocol application in the experiment run.
+     *
+     * @param protApp the protocol application.
+     * @return the list of potential inputs.
+     */
+    public static List<InputOutputObject> getPotentialInputs(ProtocolApplication protApp) {
+        List<InputOutputObject> lstPotentialInputs = new ArrayList<InputOutputObject>();
+
+        ExperimentRun expRun = protApp.getExperimentRun();
+        if (expRun != null) {
+            List<ProtocolApplication> lstProtApps = expRun.getProtocolApplications();
+            if (lstProtApps != null) {
+                ListIterator<ProtocolApplication> listIter = lstProtApps.listIterator();
+                while (listIter.hasNext()) {
+                    ProtocolApplication pa = listIter.next();
+                    for (InputOutputObject output : pa.getOutputs()) {
+                        ProtocolApplication inputToPA = output.getInputToProtocolApplication();
+                        if ((inputToPA == null) && (!pa.equals(protApp))) {
+                            lstPotentialInputs.add(output);
+                        }
+                    }
+                }
+            }
+        }
+        removeDuplicateInputs(protApp.getInputs(), lstPotentialInputs);
+        return lstPotentialInputs;
+    }
+
+    /**
+     * Removes potential duplicate inputs from the list.
+     *
+     * @param lstInputs the protocol application inputs.
+     * @param lstPotentialInputs the list of potential inputs.
+     */
+    public static void removeDuplicateInputs(List<InputOutputObject> lstInputs,
+            List<InputOutputObject> lstPotentialInputs) {
+        ListIterator<InputOutputObject> iterPAInputs = lstInputs.listIterator();
+        while (iterPAInputs.hasNext()) {
+            InputOutputObject currentInput = iterPAInputs.next();
+            if ((currentInput.getId() != null)
+                    && !StringUtils.isBlank(currentInput.getId().toString())
+                    && lstPotentialInputs.contains(currentInput)) {
+                lstPotentialInputs.remove(currentInput);
+            }
+        }
+    }
+
+    /**
      * Adds a new input to the protocol application inputs list.
      *
      * @param lst the list of inputs.
      */
     public static void addNewInput(List<InputOutputObject> lst) {
         addNewElementToList(lst);
+    }
+
+    /**
+     * Adds a new input to the protocol application inputs list.
+     *
+     * @param lstInputs the list of inputs.
+     * @param selectedInputId the id of the input to be added to the list of inputs.
+     */
+    public static void addExistingInput(List<InputOutputObject> lstInputs, Long selectedInputId) {
+        InputOutputObject input = ProtExpressRegistry.getExperimentService().getInputOutputObjectById(selectedInputId);
+        lstInputs.add((lstInputs.size() - 1), input);
     }
 
     /**

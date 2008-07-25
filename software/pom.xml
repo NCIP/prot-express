@@ -448,8 +448,8 @@
                 <configuration>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>50</totalBranchRate>
-                        <totalLineRate>50</totalLineRate>
+                        <totalBranchRate>40</totalBranchRate>
+                        <totalLineRate>40</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>
@@ -698,10 +698,10 @@
                                     <get
                                         src="http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.20/bin/${tomcat.home.name}.zip"
                                         dest="${tomcat.temp.dir}/${tomcat.home.name}.zip" usetimestamp="true"/>
-                                        
+
                                     <mkdir dir="${tomcat.home.parent}"/>
                                     <unzip src="${tomcat.temp.dir}/${tomcat.home.name}.zip" dest="${tomcat.home.parent}"/>
-                                    
+
                                     <!-- Apply patch to 5.5.20 using 5.5.17 common/lib/naming-factory.jar -->
                                     <get
                                         src="http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.17/bin/apache-tomcat-5.5.17.zip"
@@ -709,11 +709,11 @@
                                     <unzip src="${tomcat.temp.dir}/apache-tomcat-5.5.17.zip" dest="${tomcat.temp.dir}">
                                         <patternset>
                                             <include name="**/common/lib/naming-factory.jar"/>
-                                        </patternset>                                    
+                                        </patternset>
                                     </unzip>
                                     <copy file="${tomcat.temp.dir}/apache-tomcat-5.5.17/common/lib/naming-factory.jar"
                                         todir="${tomcat.home}/common/lib/" overwrite="true"/>
-                                        
+
                                     <get
                                         src="http://mirrors.ibiblio.org/pub/mirrors/maven2/postgresql/postgresql/8.1-407.jdbc3/postgresql-8.1-407.jdbc3.jar"
                                         dest="${tomcat.home}/common/lib/postgresql-8.1-407.jdbc3.jar" usetimestamp="true"/>
@@ -726,7 +726,7 @@
                                     <get
                                         src="http://repository.jboss.org/maven2/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar"
                                         dest="${tomcat.home}/common/endorsed/jaxb-api-2.1.jar" usetimestamp="true"/>
-                                        
+
                                 </tasks>
                             </configuration>
                             <goals>
@@ -739,9 +739,9 @@
                             <configuration>
                                 <tasks>
                                     <mkdir dir="${tomcat.home}/conf/protExpress" />
-                                    <copy file="${pom.basedir}/target/protExpress/META-INF/jaas.config" 
+                                    <copy file="${pom.basedir}/target/protExpress/META-INF/jaas.config"
                                     todir="${tomcat.home}/conf/protExpress"/>
-                                    
+
                                     <copy file="${pom.basedir}/src/main/tomcat/setenv.bat" todir="${tomcat.home}/bin/"/>
                                     <copy file="${pom.basedir}/src/main/tomcat/setenv.sh" todir="${tomcat.home}/bin/"/>
                                     <copy file="${pom.basedir}/src/main/tomcat/tomcat-users.xml" todir="${tomcat.home}/conf/"/>
