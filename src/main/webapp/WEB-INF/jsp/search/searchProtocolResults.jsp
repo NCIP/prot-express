@@ -4,7 +4,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 <%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
 
-<div class="searchresults">
     <h2><fmt:message key="protexpress.page.search.resultstitle" /></h2>
     <c:url var="sortUrl" value="/ajax/search/doSearch.action" />
     <c:url var="protocolSummaryUrl" value="/protocol/viewProtocolDetails.action" />
@@ -33,4 +32,3 @@
             </display:column>
         </display:table>
     </ajax:displayTag>
-</div>
