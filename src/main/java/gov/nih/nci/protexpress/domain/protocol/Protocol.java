@@ -82,10 +82,8 @@
  */
 package gov.nih.nci.protexpress.domain.protocol;
 
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.domain.LsidType;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 
@@ -98,7 +96,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -124,7 +121,6 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private LsidType lsid;
     private String name;
     private String description;
     private String software;
@@ -164,18 +160,6 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the lsid for the protocol.
-     *
-     * @return the lsid
-     */
-    @Transient
-    public String getLsid() {
-        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.protocol"), this.id);
-        return this.lsid.getLsid();
     }
 
     /**
@@ -356,7 +340,10 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), p.getLsid()).isEquals();
+        return new EqualsBuilder()
+        .append(getId().toString(), p.getId().toString())
+        .append(getName(), p.getName())
+        .isEquals();
     }
 
     /**
@@ -364,6 +351,9 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder()
+        .append(getId().toString())
+        .append(getName())
+        .toHashCode();
     }
 }

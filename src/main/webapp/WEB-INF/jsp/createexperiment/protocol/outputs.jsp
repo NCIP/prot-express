@@ -17,8 +17,8 @@
                 <s:iterator id="output" value="protocolApplication.outputs" status="e">
                 <tr>
                     <td class="alignright">${e.index + 1}</td>
-                    <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true"/></td>
-                    <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}"/></td>
+                    <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true" cssStyle="width:99%"/></td>
+                    <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" cssStyle="width:99%"/></td>
                     <td><s:textarea name="protocolApplication.outputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
                     <td class="action">
                         <s:if test="protocolApplication.outputs.size > 1">

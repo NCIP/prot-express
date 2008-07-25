@@ -82,10 +82,8 @@
  */
 package gov.nih.nci.protexpress.domain.experiment;
 
-import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.domain.LsidType;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 
@@ -133,7 +131,6 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private LsidType lsid;
     private String name;
     private String description;
     private String hypothesis;
@@ -177,18 +174,6 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the lsid.
-     *
-     * @return the lsid
-     */
-    @Transient
-    public String getLsid() {
-        lsid = new LsidType(ProtExpressConfiguration.getApplicationConfigurationBundle()
-                .getString("lsid.namespace.experiment"), this.id);
-        return this.lsid.getLsid();
     }
 
     /**
@@ -412,7 +397,10 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
             return false;
         }
 
-        return new EqualsBuilder().append(getLsid(), exp.getLsid()).isEquals();
+        return new EqualsBuilder()
+            .append(getId().toString(), exp.getId().toString())
+            .append(getName(), exp.getName())
+            .isEquals();
     }
 
     /**
@@ -420,6 +408,9 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getLsid()).toHashCode();
+        return new HashCodeBuilder()
+            .append(getId().toString())
+            .append(getName())
+            .toHashCode();
     }
 }

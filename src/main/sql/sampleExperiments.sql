@@ -40,14 +40,14 @@ INSERT INTO protocol_application (id, creation_date, creator, modification_date,
 
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (11, 'aliquot_01.mzXML', 'Aliquot 01', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (13, 'tandem.xml', 'Tandem XML Input', '');
+INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (14, 'fasta.xml', 'FASTA file', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (17, 'aliquot_01.mzXML', 'Aliquote 1 mzXML File', '');
-INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (18, 'aliquot_01.xtan.xml', 'Native X!Tandem Output Aliquot 01', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (21, 'data.xtandem.aliquot.01.xml', 'Data XTandem Aliquot 1', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (22, 'aliquot_01.pep.xml', 'PepXML file for aliquot 01', 'NB=Press [view] link to see MS/MS Search Results;');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (25, 'aliquot_01.pep.xml', 'aliquot_01.pep.xml', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (26, 'output.xml', 'Final output', '');
 INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (12, 'ipi.HUMAN.fasta.20050124', 'unfrac.fasta', 'Some Notes. ');
-INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (14, 'aliquot_01.xtan.xml', 'Native X!Tandem Output Aliquot 01', 'Some Output notes. ');
+INSERT INTO input_output_object (id, data_file_url, name, notes) VALUES (18, 'aliquot_01.xtan.xml', 'Native X!Tandem Output Aliquot 01', 'Some Output notes. ');
 
 
 

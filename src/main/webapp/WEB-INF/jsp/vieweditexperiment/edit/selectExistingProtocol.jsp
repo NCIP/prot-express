@@ -4,7 +4,7 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
 
-<h3><fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.caption" /></h3>
+<h3>${experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.caption" /></h3>
 
 <div class="tabs">
     <s:url id="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">

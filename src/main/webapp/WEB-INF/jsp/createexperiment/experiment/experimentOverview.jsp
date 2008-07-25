@@ -71,10 +71,10 @@
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
-                        <s:datetimepicker
-                                    name="experiment.datePerformed"
-                                    toggleType="fade"
-                                    displayFormat="MM/dd/yyyy" required="*"/>
+                        <s:textfield theme="xhtml" name="experiment.datePerformed" required="true" size="10" maxlength="10">
+                            <s:param name="value"><s:date name="experiment.datePerformed" format="MM/dd/yyyy"/></s:param>
+                        </s:textfield>
+                        <a href="javascript://noop/" onclick="expDatePerformed.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
@@ -125,7 +125,12 @@
                     </del>
                 </div>
             </s:form>
+            <script type="text/javascript">
+                var expDatePerformed = new Epoch('expDatePerformedPopup', 'popup', document.getElementById('createExperimentForm_experiment_datePerformed'));
+            </script>
         </div>
         <!--/ADD CONTENT HERE-->
     </div>
 </body>
+
+

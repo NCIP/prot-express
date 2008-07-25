@@ -122,6 +122,8 @@
             <result name="input">/WEB-INF/jsp/createexperiment/protocol/editProtocol.jsp</result>
             <result name="viewProtocol">/WEB-INF/jsp/createexperiment/protocol/reviewProtocol.jsp</result>
             <result name="editProtocol">/WEB-INF/jsp/createexperiment/protocol/editProtocol.jsp</result>
+            <result name="saveAndAddNewProtocol" type="redirect-action">createExperiment/protocols/add/addAnotherProtocol</result>
+            <result name="saveAndViewExperimentSummary" type="redirect-action">createExperiment/experimentSummary</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -222,6 +224,7 @@
         <action name="ajax/editExperiment/protocolApplication/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ProtocolApplicationDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/vieweditexperiment/edit/protocolApplicationDetails.jsp</result>
+            <result name="manageInputs">/WEB-INF/jsp/vieweditexperiment/edit/manageInputs.jsp</result>
             <result name="addInputs">/WEB-INF/jsp/vieweditexperiment/edit/manageInputs.jsp</result>
             <result name="addOutputs">/WEB-INF/jsp/vieweditexperiment/edit/manageOutputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
