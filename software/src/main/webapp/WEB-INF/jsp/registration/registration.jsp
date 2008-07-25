@@ -17,7 +17,7 @@
     <div class="formbox">
         <div id="boxinner">
             <h3><fmt:message key="registration.create.header" /></h3>
-            <p class="instructions">Welcome to protExpress. Submit the form to below to request access to protExpress. Required fields are highlighted and have <span class="required"><span class="asterisk">*</span>asterisks<span class="asterisk">*</span></span>.</p>
+            <p class="info">Welcome to protExpress. Submit the form to below to request access to protExpress. Required fields are highlighted and have <span class="required"><span class="asterisk">*</span>asterisks<span class="asterisk">*</span></span>.</p>
 
 		    <s:actionerror/>
 		    <s:form action="registration/save" method="post" id="regForm" theme="xhtml">
