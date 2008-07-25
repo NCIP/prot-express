@@ -4,13 +4,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
 <title><fmt:message key="protexpress.page.search.caption" /></title>
-<script type="text/javascript">
-    // Define the variables that will be used for the date controls in subsequent page.
-    // Variables have to be defined in the parent page, due to scope problems.
-    // These variables will be referred to in the appropriate page for displaying the calendar popup controls.
 
-    var fromDate, toDate;
-</script>
 <body>
     <!-- Breadcrumb -->
     <div id="breadcrumb">
@@ -54,15 +48,9 @@
                                 <fmt:message key="protexpress.page.search.name" />: <s:textfield name="searchParameters.name" key="protexpress.page.search.name" size="25" />
                             </td>
                             <td id="date" colspan="2">
-						        <s:textfield name="searchParameters.fromDate" required="true" size="10" maxlength="10">
-						            <s:param name="value"><s:date name="searchParameters.fromDate" format="MM/dd/yyyy"/></s:param>
-						        </s:textfield>
-						        <a href="javascript://noop/" onclick="fromDate.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>                            
+                                <protExpress:datefield formname="searchForm" name="${searchParameters.fromDate}" sname="searchParameters.fromDate" />
                                 -
-						        <s:textfield name="searchParameters.toDate" required="true" size="10" maxlength="10">
-						            <s:param name="value"><s:date name="searchParameters.toDate" format="MM/dd/yyyy"/></s:param>
-						        </s:textfield>
-						        <a href="javascript://noop/" onclick="toDate.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>                            
+                                <protExpress:datefield formname="searchForm" name="${searchParameters.toDate}" sname="searchParameters.toDate" />
                             </td>
                         </tr>
                     </tbody>
@@ -72,10 +60,6 @@
                 </protExpress:buttonRow>
             </s:form>
             <div class="clear"></div>
-		<script type="text/javascript">
-		    toDate = new Epoch('toDatePopup', 'popup', document.getElementById('searchForm_searchParameters_toDate'));
-		    fromDate = new Epoch('fromDatePopup', 'popup', document.getElementById('searchForm_searchParameters_fromDate'));
-		</script>            
         </div>
         
         <div class="searchresults" id="searchresults">
