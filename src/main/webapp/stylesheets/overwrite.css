@@ -1,4 +1,12 @@
- #boxinner
+/*
+USE THIS FILE TO OVERRIDE THE CSS DEFINED ELSEWHERE. 
+
+NEVER MODIFY THE PROVIDED CSS FOR ANY FRAMEWORKS, LIBRARIES, EXTERNAL TEAMS, UI TEAMS, etc..
+
+*** ALWAYS LOAD THIS CSS LAST within your <head></head>****
+*/
+
+#boxinner
 { background:#fff repeat-x 0 0; }
 
 
