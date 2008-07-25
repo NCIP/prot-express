@@ -86,7 +86,6 @@ import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
 import gov.nih.nci.protexpress.domain.LsidType;
-import gov.nih.nci.protexpress.domain.Persistent;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 
@@ -121,6 +120,8 @@ import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
+
 /**
  * Class representing a protocol application.
  *
@@ -129,7 +130,7 @@ import org.hibernate.validator.Valid;
 @Entity
 @Table(name = "protocol_application")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProtocolApplication implements Serializable, Auditable, Persistent {
+public class ProtocolApplication implements Serializable, Auditable, PersistentObject {
 
     private static final long serialVersionUID = 1L;
 

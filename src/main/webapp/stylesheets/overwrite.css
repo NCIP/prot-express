@@ -1,0 +1,31 @@
+ #boxinner
+{ background:#fff repeat-x 0 0; }
+
+
+TABLE.form
+{ width:93%; margin:10px auto; }
+TABLE.form INPUT:focus, TABLE.form SELECT:focus, TABLE.form TEXTAREA:focus
+{ background:#ffe; }
+TABLE.form TH
+{ background:#858178 url("../images/bg_header_gray.gif") repeat-x; font-size:125%; font-weight:bold; padding:5px; margin:0; color:#e3e6ec; border-top:15px solid #fff; border-bottom:10px solid #fff }
+TABLE.form TD
+{ padding:3px; font-size:92%; vertical-align:top }
+TABLE.form TD TD, TABLE.form TD TD TD
+{ font-size:100%; }
+ 
+TABLE.form TD.tdLabel
+{ width:28%; text-align:right; font-weight:bold; }
+
+TABLE.form
+{ width:93%; margin:10px auto; }
+TABLE.form INPUT:focus, TABLE.form SELECT:focus, TABLE.form TEXTAREA:focus
+{ background:#ffe; }
+TABLE.form TH
+{ background:#858178 url("../images/bg_header_gray.gif") repeat-x; font-size:125%; font-weight:bold; padding:5px; margin:0; color:#e3e6ec; border-top:15px solid #fff; border-bottom:10px solid #fff }
+TABLE.form TD
+{ padding:3px; font-size:92%; vertical-align:top }
+TABLE.form TD TD, TABLE.form TD TD TD
+{ font-size:100%; }
+
+TABLE.form TD.tdLabel
+{ width:28%; text-align:right; font-weight:bold; }

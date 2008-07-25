@@ -82,7 +82,7 @@
  */
 package gov.nih.nci.protexpress.service;
 
-import gov.nih.nci.protexpress.domain.Persistent;
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
 
 /**
  * Service of utility methods that are not attached to a specific class.
@@ -106,7 +106,7 @@ public interface ProtExpressService {
      * @param fieldValue the value of the field
      * @return true if the object is the one and only object with the given value for the given field
      */
-    boolean isFieldUnique(Persistent bean, String fieldName, Object fieldValue);
+    boolean isFieldUnique(PersistentObject bean, String fieldName, Object fieldValue);
     /**
      * clear the hibernate session.
      *

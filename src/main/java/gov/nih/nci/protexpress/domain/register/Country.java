@@ -1,12 +1,12 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The ProtExpress
+ * source code form and machine readable, binary, object code form. The caarray-common-jar
  * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees and 5AM Solutions, Inc. (5AM). To the extent
  * government employees are authors, any rights in such works shall be subject
  * to Title 17 of the United States Code, section 105.
  *
- * This ProtExpress Software License (the License) is between NCI and You. You (or
+ * This caarray-common-jar Software License (the License) is between NCI and You. You (or
  * Your) shall mean a person or an entity, and all other entities that control,
  * are controlled by, or are under common control with the entity. Control for
  * purposes of this definition means (i) the direct or indirect power to cause
@@ -17,10 +17,10 @@
  * This License is granted provided that You agree to the conditions described
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
  * no-charge, irrevocable, transferable and royalty-free right and license in
- * its rights in the ProtExpress Software to (i) use, install, access, operate,
+ * its rights in the caarray-common-jar Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the ProtExpress Software; (ii) distribute and
- * have distributed to and by third parties the ProtExpress Software and any
+ * and prepare derivative works of the caarray-common-jar Software; (ii) distribute and
+ * have distributed to and by third parties the caarray-common-jar Software and any
  * modifications and derivative works thereof; and (iii) sublicense the
  * foregoing rights set out in (i) and (ii) to third parties, including the
  * right to license such rights to further third parties. For sake of clarity,
@@ -80,69 +80,133 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.data.validator;
+package gov.nih.nci.protexpress.domain.register;
 
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
 
 /**
- * Class validator that uses a thread local to allow the property validators to access the current bean.
- * @param <T> the class the validation will run against.
- * @author Scott Miller
+ *
  */
-public class ContextualClassValidator<T> extends ClassValidator<T> {
-    private static final long serialVersionUID = 1L;
-    private static ThreadLocal<PersistentObject> currentBeanThreadLocal = new ThreadLocal<PersistentObject>();
+@Entity
+@org.hibernate.annotations.Entity(mutable = false)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+public class Country implements Comparable<Country>, PersistentObject {
 
-    /**
-     * Get the bean currently being validated in this thread.
-     *
-     * @return the bean that was last passed to the getInvalidValues methods in this thread.
-     */
-    public static PersistentObject getCurrentBean() {
-        return currentBeanThreadLocal.get();
-    }
 
-    /**
-     * Constructs the class validator.
-     *
-     * @param beanClazz the class to validate.
-     */
-    public ContextualClassValidator(Class<T> beanClazz) {
-        super(beanClazz);
-        setCurrentBean(null);
-    }
-
-    private void setCurrentBean(PersistentObject bean) {
-        currentBeanThreadLocal.set(bean);
-    }
-
-    /**
+    private static final long serialVersionUID = 3434506314749437341L;
+    private static final String PREFERRED_COUNTRY = "UNITED STATES";
+    private Long id;
+    
+    private String code;
+    private String name;
+    private String printableName;
+    private String iso3;
+    private String numcode;
+    
+    /** 
      * {@inheritDoc}
      */
-    @Override
-    public InvalidValue[] getInvalidValues(T bean, String propertyName) {
-        try {
-            setCurrentBean((PersistentObject) bean);
-            return super.getInvalidValues(bean, propertyName);
-        } finally {
-            setCurrentBean(null);
-        }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+    
+    @SuppressWarnings({"PMD.UnusedPrivateMethod", "unused" })
+    private void setId(Long id) {
+        this.id = id;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the code
      */
-    @Override
-    public InvalidValue[] getInvalidValues(T bean) {
-        try {
-            setCurrentBean((PersistentObject) bean);
-            return super.getInvalidValues(bean);
-        } finally {
-            setCurrentBean(null);
+    @Column(unique = true)
+    public String getCode() {
+        return code;
+    }
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    /**
+     * @return the printable_name
+     */
+    public String getPrintableName() {
+        return printableName;
+    }
+    /**
+     * @param printableName the printable_name to set
+     */
+    public void setPrintableName(String printableName) {
+        this.printableName = printableName;
+    }
+    /**
+     * @return the iso3
+     */
+    @Column(unique = true)
+    public String getIso3() {
+        return iso3;
+    }
+    /**
+     * @param iso3 the iso3 to set
+     */
+    public void setIso3(String iso3) {
+        this.iso3 = iso3;
+    }
+    /**
+     * @return the numcode
+     */
+    public String getNumcode() {
+        return numcode;
+    }
+    /**
+     * @param numcode the numcode to set
+     */
+    public void setNumcode(String numcode) {
+        this.numcode = numcode;
+    }
+
+    /**
+     * Compares countries by name, putting a preferred country ahead of all others.
+     * @param o other country to compare to
+     * @return result of comparison
+     */
+    public int compareTo(Country o) {
+        if (this.name.equals(o.name)) {
+            return 0;
         }
+
+        if (this.name.equals(PREFERRED_COUNTRY)) {
+            return -1;
+        }
+
+        if (o.name.equals(PREFERRED_COUNTRY)) {
+            return 1;
+        }
+
+        return this.name.compareToIgnoreCase(o.name);
     }
 }

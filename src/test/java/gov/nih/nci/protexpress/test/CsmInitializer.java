@@ -105,7 +105,12 @@ public class CsmInitializer {
             "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD, UPDATE_DATE) "
                     + "VALUES ('user1', 'Test 1', 'User','password', sysdate);",
             "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) "
-                    + "VALUES ('fb_inv1', 'Test 1', 'User', sysdate);", "commit;"};
+                    + "VALUES ('protExpressTestUser1', 'Test1', 'User', sysdate);", 
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) "
+                    + "VALUES ('protExpressTestUser2', 'Test2', 'User', sysdate);", 
+            "INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, UPDATE_DATE) "
+                    + "VALUES ('protExpressTestUser3', 'Test3', 'User', sysdate);", 
+                    "commit;"};
 
     private Configuration csmHibernateConfig;
     private final String[] dropScript;

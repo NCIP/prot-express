@@ -82,6 +82,7 @@
  */
 package gov.nih.nci.protexpress.security.test;
 
+
 /**
  * @author Scott Miller
  *
@@ -89,14 +90,15 @@ package gov.nih.nci.protexpress.security.test;
 public class LdapLoginModuleTest extends LoginModuleTest {
 
     public void testIncorrectPasswordLoginAgainstLdap() throws Exception {
-        validateFailedLogin("fb_inv1", "unknownPassowrd");
+        validateFailedLogin("protExpressTestUser1", "unknownPassowrd");
     }
 
     public void testSuccessfulLoginAgainstLdapWithLocalAccount() throws Exception {
-        validateSuccessfulLogin("fb_inv1", "f1rebird05", true);
+        validateSuccessfulLogin("protExpressTestUser1", "Sm0704**", true);
     }
 
     public void testSuccessfulLoginAgainstLdapWithNoLocalAccount() throws Exception {
-        validateSuccessfulLogin("fb_inv2", "f1rebird05", false);
+        validateSuccessfulLogin("protExpressTestUser1", "Sm0704**", false);
     }
+    
 }

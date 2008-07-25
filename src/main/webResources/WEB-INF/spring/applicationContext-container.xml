@@ -6,6 +6,8 @@
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
     <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ProtExpressDb" />
+    
+    <jee:jndi-lookup id="mailSession" cache="true" jndi-name="java:comp/env/mail/ProtExpressMail" />
 
     <!-- Hibernate SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -29,7 +31,13 @@
             </props>
         </property>
     </bean>
-
+    
+    <bean id="emailUtil" class="gov.nih.nci.protexpress.ui.actions.registration.EmailUtil">
+        <property name="mailSession">
+            <ref bean="mailSession" />
+        </property>
+    </bean>
+    
     <bean id="menu" class="net.sf.navigator.menu.MenuLoader">
         <property name="menuConfig" value="/WEB-INF/struts-menu/menu-config.xml" />
     </bean>

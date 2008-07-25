@@ -82,15 +82,19 @@
  */
 package gov.nih.nci.protexpress;
 
-import java.util.ResourceBundle;
-
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.FormatConversionService;
+import gov.nih.nci.protexpress.service.GenericDataService;
 import gov.nih.nci.protexpress.service.ProtExpressService;
 import gov.nih.nci.protexpress.service.ProtocolService;
+import gov.nih.nci.protexpress.service.RegistrationService;
 import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
+
+import java.util.ResourceBundle;
+
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
@@ -115,6 +119,10 @@ public final class ProtExpressRegistry {
     private ProtExpressService protExpressService;
     private FormatConversionService xar22FormatConversionService;
     private UserProvisioningManager userProvisioningManager;
+    private RegistrationService registrationService;
+    private DataSource dataSource;
+    private GenericDataService genericDataService;
+
 
     private ProtExpressRegistry() {
         try {
@@ -215,5 +223,47 @@ public final class ProtExpressRegistry {
      */
     public static ResourceBundle getApplicationResourceBundle() {
         return PROT_EXPRESS_RESOURCE_BUNDLE;
+    }
+
+    /**
+     * @return service to handle registration activities
+     */
+    public static RegistrationService getRegistrationService() {
+        return ProtExpressRegistry.getInstance().registrationService;
+    }
+    
+    /**
+     * @param registrationService service to set
+     */
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    /**
+     * @return protExpress data source
+     */
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    /**
+     * @param dataSource ds to set
+     */
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+    
+    /**
+     * @return the generic data service
+     */
+    public static GenericDataService getGenericDataService() {
+        return ProtExpressRegistry.getInstance().genericDataService;
+    }
+
+    /**
+     * @param genericDataService service to set
+     */
+    public void setGenericDataService(GenericDataService genericDataService) {
+        this.genericDataService = genericDataService;
     }
 }

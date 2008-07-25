@@ -86,7 +86,6 @@ import gov.nih.nci.protexpress.ProtExpressConfiguration;
 import gov.nih.nci.protexpress.domain.Auditable;
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
 import gov.nih.nci.protexpress.domain.LsidType;
-import gov.nih.nci.protexpress.domain.Persistent;
 import gov.nih.nci.protexpress.domain.audit.AuditInfo;
 import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 
@@ -119,6 +118,8 @@ import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
 
+import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
+
 /**
  * Class representing an experiment.
  *
@@ -127,7 +128,7 @@ import org.hibernate.validator.Valid;
 @Entity
 @Table(name = "experiment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Experiment implements Serializable, Persistent, Auditable {
+public class Experiment implements Serializable, PersistentObject, Auditable {
 
     private static final long serialVersionUID = 1L;
 
