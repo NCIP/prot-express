@@ -9,13 +9,13 @@
 <c:set var="divNewInputsId" value="detail-content" />
 
 <c:url var="addNewInputUrl" value="/ajax/editExperiment/protocolApplication/addNewInput.action" />
-
 <fieldset>
     <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.addnewinputstitle" /></legend>
     <div class="searchresults">
         <table class="newdata2">
             <tr>
                 <th class="alignright"><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.column.count" /></th>
+                <th><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.column.type" /></th>
                 <th><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.column.name" /></th>
                 <th><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.column.filename" /></th>
                 <th><fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.column.notes" /></th>
@@ -24,12 +24,24 @@
 
             <s:iterator id="input" value="protocolApplication.inputs" status="e">
                 <c:choose>
-                    <c:when test="${(id != null) && (outputOfProtocolApplication != null)}"><s:set name="attribReadOnly" value="true" /></c:when>
-                    <c:when test="${(id != null) && (outputOfProtocolApplication == null)}"><s:set name="attribReadOnly" value="false" /></c:when>
-                    <c:when test="${(id == null) && (outputOfProtocolApplication == null)}"><s:set name="attribReadOnly" value="false" /></c:when>
+                    <c:when test="${(id != null) && (outputOfProtocolApplication != null)}">
+                        <s:set name="attribReadOnly" value="true" />
+                        <c:url var="imgInputTypeUrl" value="/images/ico_linked.gif" />
+                    </c:when>
+                    <c:when test="${(id != null) && (outputOfProtocolApplication == null)}">
+                        <s:set name="attribReadOnly" value="false" />
+                        <c:url var="imgInputTypeUrl" value="/images/ico_existing.gif" />
+                    </c:when>
+                    <c:when test="${(id == null) && (outputOfProtocolApplication == null)}">
+                        <s:set name="attribReadOnly" value="false" />
+                        <c:url var="imgInputTypeUrl" value="/images/ico_new.gif" />
+                    </c:when>
                 </c:choose>
                 <tr>
                     <td class="alignright">${e.index + 1}</td>
+                    <td>
+                       <protExpress:protocolInputInfo  imgInputTypeUrl="${imgInputTypeUrl}" inputName="${name}" outputOfProtocolName="${outputOfProtocolApplication.protocol.name}"/>
+                    </td>
                     <td class="title"><s:textfield name="protocolApplication.inputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" /></td>
                     <td><s:textfield name="protocolApplication.inputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%"/></td>
                     <td><s:textarea name="protocolApplication.inputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" readonly="%{attribReadOnly}" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
@@ -58,3 +70,7 @@
         </table>
     </div>
 </fieldset>
+
+<script type="text/javascript">
+    var mySticky = "Here is a link to the</a>";
+</script>
