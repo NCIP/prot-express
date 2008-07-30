@@ -134,6 +134,7 @@
 
         <action name="createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/create/manageInputs.jsp</result>
+            <result name="addNewInput">/WEB-INF/jsp/experiment/create/manageInputs.jsp</result>
             <result name="success" type="redirect-action">createExperiment/protocols/outputs/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
@@ -148,7 +149,7 @@
         <action name="createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/create/manageOutputs.jsp</result>
             <result name="success" type="redirect-action">createExperiment/protocols/manage/reviewProtocol</result>
-            <result name="addNewOutput"  type="redirect-action">createExperiment/protocols/outputs/load</result>
+            <result name="addNewOutput">/WEB-INF/jsp/experiment/create/manageOutputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
         <!-- /Create Experiment Actions -->

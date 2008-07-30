@@ -16,7 +16,7 @@
 <c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateInputs.action" />
 
 <h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.caption" /></h3>
-
+<s:actionerror ></s:actionerror>
 <s:form id="manageInputsForm" action="/ajax/editExperiment/protocolApplication/addNewInput.action" method="post">
     <!-- New Inputs List -->
     <c:set var="addNewInputUrlTarget" value="/ajax/editExperiment/protocolApplication/addNewInput.action" />

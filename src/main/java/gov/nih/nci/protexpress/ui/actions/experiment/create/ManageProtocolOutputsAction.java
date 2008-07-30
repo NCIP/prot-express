@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -144,6 +145,11 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      */
     @SkipValidation
     public String saveOutputsToSession() {
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
+            addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
+            return this.actionResultAddNewOutput;
+        }
         return saveInputsOutputsToSession(getProtocolApplication().getOutputs());
     }
 

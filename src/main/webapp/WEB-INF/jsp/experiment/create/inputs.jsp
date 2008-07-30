@@ -8,7 +8,7 @@
   <c:set var="formId" value="manageInputsForm" />
   <c:set var="divId" value="divContent" />
   <c:url var="saveUrl" value="/createExperiment/protocols/inputs/saveInputsToSession.action" />
-
+ <s:actionerror ></s:actionerror>
     <s:form id="manageInputsForm" action="createExperiment/protocols/inputs/addNewInput" method="post" >
         <!-- New Inputs List -->
         <c:set var="addNewInputUrlTarget" value="/ajax/createExperiment/protocols/inputs/addNewInput.action" />

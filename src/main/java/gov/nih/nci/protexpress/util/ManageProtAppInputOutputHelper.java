@@ -128,6 +128,22 @@ public final class ManageProtAppInputOutputHelper {
     }
 
     /**
+     * Determines if an input name is empty.
+     *
+     * @param lst the list of inputs/outputs.
+     * @return isValid value to determine if all inputs have names.
+     */
+    public static boolean isNameEmpty(List<InputOutputObject> lst) {
+        boolean isValid = true;
+        for (InputOutputObject obj : lst) {
+            if (isValid & StringUtils.isBlank(obj.getName())) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
+    /**
      * Returns a list of potential inputs for a protocol application in the experiment run.
      *
      * @param protApp the protocol application.

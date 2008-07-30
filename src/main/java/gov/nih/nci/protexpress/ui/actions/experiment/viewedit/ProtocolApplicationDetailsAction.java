@@ -241,6 +241,10 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     @SkipValidation
     public String updateInputs() {
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getInputs())) {
+            addActionError(getText("protexpress.page.manageinputs.error.name.empty"));
+            return this.actionResultAddInputs;
+        }
         return save("protocol.inputs.update.success");
     }
 
@@ -252,6 +256,10 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     @SkipValidation
     public String updateOutputs() {
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
+            addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
+            return this.actionResultAddOutputs;
+        }
         return save("protocol.outputs.update.success");
     }
 
