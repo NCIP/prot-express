@@ -1,0 +1,15 @@
+<profilesXml>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                 <jdbc.url>jdbc:postgresql://cbiodb580.nci.nih.gov:5457/protexpress</jdbc.url>
+                 <jdbc.username>protexpqa</jdbc.username>
+                 <jdbc.password>pr0t8292</jdbc.password>
+            </properties>
+        </profile>
+    </profiles>
+</profilesXml>

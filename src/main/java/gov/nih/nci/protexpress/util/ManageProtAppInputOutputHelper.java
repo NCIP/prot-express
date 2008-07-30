@@ -139,7 +139,7 @@ public final class ManageProtAppInputOutputHelper {
         ExperimentRun expRun = protApp.getExperimentRun();
         if (expRun != null) {
             List<ProtocolApplication> lstProtApps = expRun.getProtocolApplications();
-            if (lstProtApps != null) {
+            if ((lstProtApps != null) && (lstProtApps.size() > 0)) {
                 ListIterator<ProtocolApplication> listIter = lstProtApps.listIterator();
                 while (listIter.hasNext()) {
                     ProtocolApplication pa = listIter.next();
@@ -157,6 +157,33 @@ public final class ManageProtAppInputOutputHelper {
     }
 
     /**
+     * Returns a list of potential inputs for a protocol application during the create process..
+     *
+     * @return the list of potential inputs.
+     */
+    public static List<InputOutputObject> getPotentialInputs() {
+        List<InputOutputObject> lstPotentialInputs = new ArrayList<InputOutputObject>();
+
+        ExperimentRun expRun = ProtExpressRegistry.getExperimentService()
+            .getExperimentRunById(SessionHelper.getExperimentRunIdFromSession());
+        if (expRun != null) {
+            List<ProtocolApplication> lstProtApps = expRun.getProtocolApplications();
+            if ((lstProtApps != null) && (lstProtApps.size() > 0)) {
+                for (ProtocolApplication pa : lstProtApps) {
+                    for (InputOutputObject output : pa.getOutputs()) {
+                        if (output.getInputToProtocolApplication() == null) {
+                            lstPotentialInputs.add(output);
+                        }
+                    }
+                }
+            }
+        }
+        //removeDuplicateInputs(protApp.getInputs(), lstPotentialInputs);
+        return lstPotentialInputs;
+    }
+
+
+    /**
      * Removes potential duplicate inputs from the list.
      *
      * @param lstInputs the protocol application inputs.
@@ -164,6 +191,25 @@ public final class ManageProtAppInputOutputHelper {
      */
     public static void removeDuplicateInputs(List<InputOutputObject> lstInputs,
             List<InputOutputObject> lstPotentialInputs) {
+        ListIterator<InputOutputObject> iterPAInputs = lstInputs.listIterator();
+        while (iterPAInputs.hasNext()) {
+            InputOutputObject currentInput = iterPAInputs.next();
+            if ((currentInput.getId() != null)
+                    && !StringUtils.isBlank(currentInput.getId().toString())
+                    && lstPotentialInputs.contains(currentInput)) {
+                lstPotentialInputs.remove(currentInput);
+            }
+        }
+    }
+
+    /**
+     * Removes potential duplicate inputs from the list.
+     *
+     * @param lstPotentialInputs the list of potential inputs.
+     */
+    public static void removeDuplicateInputs(List<InputOutputObject> lstPotentialInputs) {
+        ProtocolApplication protApp = SessionHelper.getProtocolApplicationFromSession();
+        List<InputOutputObject> lstInputs = protApp.getInputs();
         ListIterator<InputOutputObject> iterPAInputs = lstInputs.listIterator();
         while (iterPAInputs.hasNext()) {
             InputOutputObject currentInput = iterPAInputs.next();
