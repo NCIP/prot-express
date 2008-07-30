@@ -6,9 +6,13 @@
 
 <%@ attribute name="imgUrl" required="true" type="java.lang.String"%>
 <%@ attribute name="bodyText" required="true" type="java.lang.String"%>
+<%@ attribute name="altText" required="true" type="java.lang.String"%>
 
-<a href="javascript://noop/" onclick="this.blur(); return false;"
+<!--  <a href="javascript://noop/" onclick="this.blur(); return false;"
             onmouseover="return overlib('${bodyText}', BUBBLE, BUBBLETYPE, 'quotation', TEXTSIZE, 'x-small');"
             onmouseout="nd();">
     <img src="${imgUrl}" alt="" />
+</a> -->
+<a href="javascript://noop/" onclick="this.blur(); return false;"
+    <img src="${imgUrl}" alt="${altText}" />
 </a>

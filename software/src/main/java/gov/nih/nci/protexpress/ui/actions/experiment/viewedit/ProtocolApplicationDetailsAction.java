@@ -213,6 +213,9 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     @SkipValidation
     public String deleteInput() {
         ManageProtAppInputOutputHelper.deleteInput(getProtocolApplication().getInputs(), getDeleteIndex());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
+                getProtocolApplication()));
         return this.actionResultAddInputs;
     }
 
@@ -224,6 +227,9 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     @SkipValidation
     public String deleteOutput() {
         ManageProtAppInputOutputHelper.deleteOutput(getProtocolApplication().getOutputs(), getDeleteIndex());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
+                getProtocolApplication()));
         return this.actionResultAddOutputs;
     }
 

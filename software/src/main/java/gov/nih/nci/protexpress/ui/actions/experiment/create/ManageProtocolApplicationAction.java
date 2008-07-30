@@ -170,6 +170,7 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
      */
     public String saveAndAddNewProtocol() {
         this.saveProtocol();
+        SessionHelper.removeProtocolApplicationFromSession();
         return this.actionResultSaveAndAddNewProtocol;
     }
 
@@ -180,6 +181,7 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
      */
     public String saveAndViewExperimentSummary() {
         this.saveProtocol();
+        SessionHelper.removeProtocolApplicationFromSession();
         return this.actionResultsSaveAndViewExperimentSummary;
     }
 }

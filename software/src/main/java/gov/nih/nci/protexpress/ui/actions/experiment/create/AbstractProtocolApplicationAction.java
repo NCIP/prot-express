@@ -82,6 +82,7 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.SessionHelper;
@@ -125,6 +126,9 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
         setExperimentInformation();
         if (SessionHelper.getProtocolApplicationFromSession() != null) {
             setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
+        } else if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService()
+                    .getProtocolApplicationById(getProtocolApplicationId()));
         }
     }
 
@@ -190,19 +194,6 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
         }
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * Deletes the specified input from the protocol application.
-     *
-     * @return the directive for the next action / page to be directed to.
-     */
-    @SkipValidation
-    public String deleteInput() {
-        if (getDeleteIndex().intValue() > 0) {
-            deleteInputOutput(getProtocolApplication().getInputs(), getDeleteIndex().intValue());
-        }
-        return ActionSupport.INPUT;
     }
 
     /**

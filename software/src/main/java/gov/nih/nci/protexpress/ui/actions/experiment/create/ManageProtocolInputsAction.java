@@ -82,7 +82,11 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -101,7 +105,8 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     private static final long serialVersionUID = 1L;
 
     private String actionResultAddNewInput = "addNewInput";
-
+    private List<InputOutputObject> potentialInputs = new ArrayList<InputOutputObject>();
+    private Long selectedInputId;
 
     /**
      * Loads Protocol Inputs data.
@@ -111,8 +116,9 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     @SkipValidation
     public String load() {
         if (getProtocolApplication().getInputs().size() == 0) {
-            getProtocolApplication().getInputs().add(new InputOutputObject(null));
+            ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
         }
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
         return ActionSupport.INPUT;
     }
 
@@ -133,9 +139,39 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
      */
     @SkipValidation
     public String addNewInput() {
-        getProtocolApplication().getInputs().add(new InputOutputObject(null));
+        ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewInput;
+    }
+
+    /**
+     * Adds a potential input (output of another protocol) to the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String addExistingInput() {
+        ManageProtAppInputOutputHelper.addExistingInput(getProtocolApplication().getInputs(), getSelectedInputId());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddNewInput;
+    }
+
+    /**
+     * Deletes the specified input from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String deleteInput() {
+        ManageProtAppInputOutputHelper.deleteInput(getProtocolApplication().getInputs(), getDeleteIndex());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddNewInput;
     }
 
     /**
@@ -146,5 +182,41 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     @SkipValidation
     public String saveInputsToSession() {
         return saveInputsOutputsToSession(getProtocolApplication().getInputs());
+    }
+
+    /**
+     * Gets the potentialInputs.
+     *
+     * @return the potentialInputs.
+     */
+    public List<InputOutputObject> getPotentialInputs() {
+        return potentialInputs;
+    }
+
+    /**
+     * Sets the potentialInputs.
+     *
+     * @param potentialInputs the potentialInputs to set.
+     */
+    public void setPotentialInputs(List<InputOutputObject> potentialInputs) {
+        this.potentialInputs = potentialInputs;
+    }
+
+    /**
+     * Gets the selectedInputId.
+     *
+     * @return the selectedInputId.
+     */
+    public Long getSelectedInputId() {
+        return selectedInputId;
+    }
+
+    /**
+     * Sets the selectedInputId.
+     *
+     * @param selectedInputId the selectedInputId to set.
+     */
+    public void setSelectedInputId(Long selectedInputId) {
+        this.selectedInputId = selectedInputId;
     }
 }
