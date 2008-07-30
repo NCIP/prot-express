@@ -181,6 +181,11 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
      */
     @SkipValidation
     public String saveInputsToSession() {
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getInputs())) {
+            addActionError(getText("protexpress.page.manageinputs.error.name.empty"));
+            return this.actionResultAddNewInput;
+        }
         return saveInputsOutputsToSession(getProtocolApplication().getInputs());
     }
 

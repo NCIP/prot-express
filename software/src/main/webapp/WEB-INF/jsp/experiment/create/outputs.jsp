@@ -3,6 +3,7 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
+<s:actionerror ></s:actionerror>
 <s:form id="protocolApplicationOutputsForm" method="post">
     <div class="searchresults" >
         <div id="divInputOutput">
