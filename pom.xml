@@ -340,10 +340,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <generatePackage>gov.nih.nci.protexpress.xml.xar2_2</generatePackage>
+                    <generatePackage>gov.nih.nci.protexpress.xml.xar2_3</generatePackage>
                     <schemaDirectory>src/main/xsd</schemaDirectory>
                     <schemaIncludes>
-                        <value>xar2.2/expTypes.xsd</value>
+                        <value>xar2.3/expTypes.xsd</value>
                         <value>bindings/JaxbBindings.xsd</value>
                     </schemaIncludes>
                 </configuration>
@@ -438,7 +438,7 @@
                 <configuration>
                     <configLocation>protExpressCheckstyle.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
-                    <excludes>jsp/**, org/apache/jsp/tag/**, **/xar2_2/**, gov/nih/nci/protexpress/ui/filters/UserFilter*</excludes>
+                    <excludes>jsp/**, org/apache/jsp/tag/**, **/xar2_3/**, gov/nih/nci/protexpress/ui/filters/UserFilter*</excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -456,7 +456,7 @@
                             <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
                             <exclude>jsp/**</exclude>
                             <exclude>org/apache/jsp/tag/**</exclude>
-                            <exclude>**/xar2_2/**</exclude>
+                            <exclude>**/xar2_3/**</exclude>
                         </excludes>
                     </instrumentation>
                     <formats>
@@ -478,7 +478,7 @@
                     <targetJdk>1.5</targetJdk>
                     <excludes>
                         <exclude>jsp/**</exclude>
-                        <exclude>**/xar2_2/**</exclude>
+                        <exclude>**/xar2_3/**</exclude>
                         <exclude>org/apache/jsp/tag/**</exclude>
                         <exclude>gov/nih/nci/protexpress/data/persistent/HibernateFieldLength*</exclude>
                     </excludes>
@@ -527,7 +527,7 @@
                                 <excludes>
                                     <exclude>org/apache/jsp/tag/**</exclude>
                                     <exclude>jsp/**</exclude>
-                                    <exclude>**/xar2_2/**</exclude>
+                                    <exclude>**/xar2_3/**</exclude>
                                     <exclude>gov/nih/nci/protexpress/ui/filters/**</exclude>
                                     <exclude>**/TomcatCsmLdapLoginModule*</exclude>
                                 </excludes>

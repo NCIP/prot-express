@@ -88,7 +88,7 @@ import gov.nih.nci.protexpress.service.GenericDataService;
 import gov.nih.nci.protexpress.service.ProtExpressService;
 import gov.nih.nci.protexpress.service.ProtocolService;
 import gov.nih.nci.protexpress.service.RegistrationService;
-import gov.nih.nci.protexpress.service.impl.Xar22FormatConversionServiceImpl;
+import gov.nih.nci.protexpress.service.impl.Xar23FormatConversionServiceImpl;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
 
@@ -117,7 +117,7 @@ public final class ProtExpressRegistry {
     private ProtocolService protocolService;
     private ExperimentService experimentService;
     private ProtExpressService protExpressService;
-    private FormatConversionService xar22FormatConversionService;
+    private FormatConversionService xar23FormatConversionService;
     private UserProvisioningManager userProvisioningManager;
     private RegistrationService registrationService;
     private DataSource dataSource;
@@ -126,7 +126,7 @@ public final class ProtExpressRegistry {
 
     private ProtExpressRegistry() {
         try {
-            setXar22FormatConversionService(new Xar22FormatConversionServiceImpl());
+            setXar23FormatConversionService(new Xar23FormatConversionServiceImpl());
             this.userProvisioningManager = SecurityServiceProvider.getUserProvisioningManager("protExpress");
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -183,17 +183,17 @@ public final class ProtExpressRegistry {
     }
 
     /**
-     * @return the xar22FormatConversionService
+     * @return the xar23FormatConversionService
      */
-    public static FormatConversionService getXar22FormatConversionService() {
-        return ProtExpressRegistry.getInstance().xar22FormatConversionService;
+    public static FormatConversionService getXar23FormatConversionService() {
+        return ProtExpressRegistry.getInstance().xar23FormatConversionService;
     }
 
     /**
-     * @param xar22FormatConversionService the xar22FormatConversionService to set
+     * @param xar23FormatConversionService the xar23FormatConversionService to set
      */
-    public void setXar22FormatConversionService(FormatConversionService xar22FormatConversionService) {
-        this.xar22FormatConversionService = xar22FormatConversionService;
+    public void setXar23FormatConversionService(FormatConversionService xar23FormatConversionService) {
+        this.xar23FormatConversionService = xar23FormatConversionService;
     }
 
     /**
@@ -231,7 +231,7 @@ public final class ProtExpressRegistry {
     public static RegistrationService getRegistrationService() {
         return ProtExpressRegistry.getInstance().registrationService;
     }
-    
+
     /**
      * @param registrationService service to set
      */
@@ -252,7 +252,7 @@ public final class ProtExpressRegistry {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     /**
      * @return the generic data service
      */
