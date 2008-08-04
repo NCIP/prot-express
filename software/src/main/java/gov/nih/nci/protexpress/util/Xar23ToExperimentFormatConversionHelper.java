@@ -86,21 +86,21 @@ package gov.nih.nci.protexpress.util;
 import java.util.List;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
+import gov.nih.nci.protexpress.xml.xar2_3.ExperimentArchiveType;
 
 
 /**
- * Format conversion helper class for the Xar.xml 2.2 format.
+ * Format conversion helper class for the Xar.xml 2.3 format.
  *
  * @author Krishna Kanchinadam
  */
 
-public class Xar22ToExperimentFormatConversionHelper {
+public class Xar23ToExperimentFormatConversionHelper {
     /**
      * Default constructor.
      *
      */
-    public Xar22ToExperimentFormatConversionHelper() {
+    public Xar23ToExperimentFormatConversionHelper() {
     }
 
    /**

@@ -135,7 +135,7 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
     public String export() throws JAXBException {
         if (ExperimentExportFileType.Xar2_2.equals(getFileType())) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ProtExpressRegistry.getXar22FormatConversionService().marshallExperiments(getExperiment(), os);
+            ProtExpressRegistry.getXar23FormatConversionService().marshallExperiments(getExperiment(), os);
             this.inputStream = new ByteArrayInputStream(os.toByteArray());
         }
         return ActionSupport.SUCCESS;

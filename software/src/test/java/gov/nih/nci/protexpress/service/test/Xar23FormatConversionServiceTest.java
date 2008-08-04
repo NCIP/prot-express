@@ -98,11 +98,11 @@ import javax.xml.bind.DatatypeConverter;
 
 
 /**
- * Class to test the xar 22 conversion service.
+ * Class to test the xar 23 conversion service.
  *
  * @author Scott Miller
  */
-public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
+public class Xar23FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     private List<Experiment> experiments;
     private List<Protocol> protocols;
     private FormatConversionService fcs;
@@ -117,7 +117,7 @@ public class Xar22FormatConversionServiceTest extends ProtExpressBaseCsmTest {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        this.fcs = ProtExpressRegistry.getXar22FormatConversionService();
+        this.fcs = ProtExpressRegistry.getXar23FormatConversionService();
         setupProtocols();
 
         this.experiments = new ArrayList<Experiment>();

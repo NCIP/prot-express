@@ -80,114 +80,121 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service.impl;
+
+package gov.nih.nci.protexpress.util;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.util.ExperimentToXar22FormatConversionHelper;
-import gov.nih.nci.protexpress.util.Xar22ToExperimentFormatConversionHelper;
-import gov.nih.nci.protexpress.xml.xar2_2.ExperimentArchiveType;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
+import java.util.HashMap;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
 
 /**
- * Format conversion service for the Xar.xml 2.2 format.
+ * Utility class to parse an experiment into its constituents.
  *
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  */
-public class Xar22FormatConversionServiceImpl implements FormatConversionService {
 
-    private static final QName QNAME = new QName("http://cpas.fhcrc.org/exp/xml", "ExperimentArchive");
-    private static final String SCHEMA_LOCATION = "https://www.labkey.org/download/XarSchema/V2.2/expTypes.xsd";
+public class ExperimentParser {
 
-    private JAXBContext jaxbContext;
+    private Experiment experiment;
+    private final HashMap<Long, ExperimentRun> experimentRuns = new HashMap<Long, ExperimentRun>();
+    private final HashMap<Long, Protocol> protocols = new HashMap<Long, Protocol>();
+    private final HashMap<Long, InputOutputObject> startingInputs = new HashMap<Long, InputOutputObject>();
+
+
 
     /**
      * Default constructor.
      *
-     * @throws JAXBException thrown when the jaxb context can not be initialized
+     * @param experiment the experiment
      */
-    public Xar22FormatConversionServiceImpl() throws JAXBException {
-        this.jaxbContext = JAXBContext.newInstance(ExperimentArchiveType.class.getPackage().getName());
+    public ExperimentParser(Experiment experiment) {
+        setExperiment(experiment);
+        this.parse();
     }
 
     /**
-     * {@inheritDoc}
+     * Parses the given experiment.
      */
-    public void marshallExperiments(Experiment experiment, File output) throws JAXBException {
-        getNewMarshaller().marshal(convertToExperimentArchive(experiment), output);
+    private void parse() {
+        parseExperimentRuns();
+        parseProtocols();
+        parseStartingInputs();
+    }
+
+    private void parseExperimentRuns() {
+        for (ExperimentRun expRun : getExperiment().getExperimentRuns()) {
+            getExperimentRuns().put(expRun.getId(), expRun);
+        }
+    }
+
+    private void parseProtocols() {
+        for (ExperimentRun expRun : getExperiment().getExperimentRuns()) {
+            for (ProtocolApplication protApp : expRun.getProtocolApplications()) {
+                getProtocols().put(protApp.getProtocol().getId(), protApp.getProtocol());
+            }
+        }
+    }
+
+    private void parseStartingInputs() {
+        for (ExperimentRun expRun : getExperiment().getExperimentRuns()) {
+            for (ProtocolApplication protApp : expRun.getProtocolApplications()) {
+                for (InputOutputObject input : protApp.getInputs()) {
+                    if (input.getOutputOfProtocolApplication() == null) {
+                        getStartingInputs().put(input.getId(), input);
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public void marshallExperiments(Experiment experiment, OutputStream output) throws JAXBException {
-        getNewMarshaller().marshal(convertToExperimentArchive(experiment), output);
-    }
-
-    /**
-     * Method to get a new, configured marshaller.
+     * Gets the experiment.
      *
-     * @return the marchaller
-     * @throws JAXBException
+     * @return the experiment.
      */
-    private Marshaller getNewMarshaller() throws JAXBException {
-        Marshaller marshaller = this.jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
-        return marshaller;
+    public Experiment getExperiment() {
+        return experiment;
     }
 
     /**
-     * Converts the list of experiments to xar 2.2 archive data.
+     * Gets the experimentRuns.
      *
-     * @param experiments the experiments to convert
-     * @return the xar 2.2 jaxb ready data
+     * @return the experimentRuns.
      */
-    private JAXBElement<ExperimentArchiveType> convertToExperimentArchive(Experiment experiment) {
-       ExperimentToXar22FormatConversionHelper expToXar22Helper = new ExperimentToXar22FormatConversionHelper();
-       ExperimentArchiveType experimentArchive = expToXar22Helper.getExperimentArchiveData(experiment);
-       return new JAXBElement<ExperimentArchiveType>(QNAME, ExperimentArchiveType.class, experimentArchive);
+    public HashMap<Long, ExperimentRun> getExperimentRuns() {
+        return experimentRuns;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<Experiment> unmarshallExperiments(File input) throws JAXBException {
-        Unmarshaller u = this.jaxbContext.createUnmarshaller();
-        JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
-        return convertToExperiments(experimentArchive.getValue());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<Experiment> unmarshallExperiments(InputStream input) throws JAXBException {
-        Unmarshaller u = this.jaxbContext.createUnmarshaller();
-        JAXBElement<ExperimentArchiveType> experimentArchive = (JAXBElement<ExperimentArchiveType>) u.unmarshal(input);
-        return convertToExperiments(experimentArchive.getValue());
-    }
-
-    /**
-     * converts the xar 2.2 experiment archive data to the internal data model.
+     * Gets the protocols.
      *
-     * @param experimentArchive the experiment archive
-     * @return the list of experiments.
+     * @return the protocols.
      */
-    private List<Experiment> convertToExperiments(ExperimentArchiveType experimentArchive) {
-        Xar22ToExperimentFormatConversionHelper xar22ToExpHelper = new Xar22ToExperimentFormatConversionHelper();
-        return xar22ToExpHelper.getExperimentData(experimentArchive);
+    public HashMap<Long, Protocol> getProtocols() {
+        return protocols;
     }
+
+    /**
+     * Gets the startingInputs.
+     *
+     * @return the startingInputs.
+     */
+    public HashMap<Long, InputOutputObject> getStartingInputs() {
+        return startingInputs;
+    }
+
+    /**
+     * Sets the experiment.
+     *
+     * @param experiment the experiment to set.
+     */
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
 }
