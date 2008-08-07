@@ -80,7 +80,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.registration;
+package gov.nih.nci.protexpress.util;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.ConfigParamEnum;
@@ -90,7 +90,7 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 
 /**
  * Helper class for retrieving system configuration.
- * 
+ *
  * @author dkokotov
  */
 public final class ConfigurationHelper {

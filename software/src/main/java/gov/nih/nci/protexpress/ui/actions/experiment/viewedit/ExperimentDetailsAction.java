@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.util.UserHolder;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -102,6 +103,7 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
     private static final long serialVersionUID = 1L;
     private Experiment experiment = null;
     private Long experimentId;
+    private String actionResultViewExperiment = "viewExperiment";
 
     /**
      * Action Constructor.
@@ -169,6 +171,24 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
         ProtExpressRegistry.getProtExpressService().clear();
 
         return ActionSupport.SUCCESS;
+    }
+
+    /* (non-Javadoc)
+     * @see gov.nih.nci.protexpress.ui.actions.experiment.viewedit.AbstractExperimentDetailsAction#load()
+     */
+    /**
+     * Overrides the default implementation of the method. If user does not have access to the experiment,
+     * they are re-directed to a read-only view of the experiment.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @Override
+    public String load() {
+        if (!getExperiment().getAuditInfo().getCreator().equals(UserHolder.getUser().getLoginName())) {
+            return this.actionResultViewExperiment;
+        }
+
+        return super.load();
     }
 
 }

@@ -105,7 +105,8 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
 
     private static final long serialVersionUID = 1L;
     private Experiment experiment = new Experiment(null);
-    private ExperimentExportFileType fileType = null;
+    private ExperimentExportFileType fileType = ExperimentExportFileType.Xar2_3;
+    private Long experimentId;
 
     private InputStream inputStream = null;
 
@@ -115,6 +116,8 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
     public void prepare() throws Exception {
         if (getExperiment() != null && getExperiment().getId() != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperiment().getId()));
+        } else if (getExperimentId() != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
         }
     }
 
@@ -133,7 +136,7 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
      */
     @SkipValidation
     public String export() throws JAXBException {
-        if (ExperimentExportFileType.Xar2_2.equals(getFileType())) {
+        if (ExperimentExportFileType.Xar2_3.equals(getFileType())) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ProtExpressRegistry.getXar23FormatConversionService().marshallExperiments(getExperiment(), os);
             this.inputStream = new ByteArrayInputStream(os.toByteArray());
@@ -169,4 +172,24 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
     public void setFileType(ExperimentExportFileType fileType) {
         this.fileType = fileType;
     }
+
+    /**
+     * Gets the experimentId.
+     *
+     * @return the experimentId.
+     */
+    public Long getExperimentId() {
+        return experimentId;
+    }
+
+    /**
+     * Sets the experimentId.
+     *
+     * @param experimentId the experimentId to set.
+     */
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
+    }
+
+
 }

@@ -97,7 +97,7 @@ public class EnumTypeConverterTest extends TestCase {
         Enum convertedValue = converter.convertFromString(null, ExperimentExportFileType.class);
         assertEquals(null, convertedValue);
 
-        convertedValue = converter.convertFromString(ExperimentExportFileType.Xar2_2.name(), ExperimentExportFileType.class);
-        assertEquals(ExperimentExportFileType.Xar2_2, convertedValue);
+        convertedValue = converter.convertFromString(ExperimentExportFileType.Xar2_3.name(), ExperimentExportFileType.class);
+        assertEquals(ExperimentExportFileType.Xar2_3, convertedValue);
     }
 }

@@ -83,6 +83,7 @@
 
 package gov.nih.nci.protexpress.util;
 
+import gov.nih.nci.protexpress.domain.ConfigParamEnum;
 import gov.nih.nci.protexpress.domain.CpasType;
 import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
@@ -161,7 +162,7 @@ public class ExperimentToXar23FormatConversionHelper {
 
     private ExperimentType getExperimentTypeElement(Experiment exp) {
         ExperimentType xarExpTypeElement = getObjectFactory().createExperimentType();
-        xarExpTypeElement.setAbout(getLsid());
+        xarExpTypeElement.setAbout(getLsid(ConfigParamEnum.LSID_NAMESPACE_EXPERIMENT, exp.getId()));
         xarExpTypeElement.setComments(exp.getNotes());
         xarExpTypeElement.setExperimentDescriptionURL(exp.getUrl());
         xarExpTypeElement.setHypothesis(exp.getHypothesis());
@@ -194,7 +195,7 @@ public class ExperimentToXar23FormatConversionHelper {
 
     private ProtocolBaseType getProtocolBaseTypeElement(Protocol protocol, String cpasType) {
         ProtocolBaseType xarProtocolBaseTypeElement = getObjectFactory().createProtocolBaseType();
-        xarProtocolBaseTypeElement.setAbout(getLsid());
+        xarProtocolBaseTypeElement.setAbout(getLsid(ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, protocol.getId()));
         xarProtocolBaseTypeElement.setApplicationType(cpasType);
         xarProtocolBaseTypeElement.setInstrument(protocol.getInstrument());
         xarProtocolBaseTypeElement.setName(protocol.getName());
@@ -239,7 +240,7 @@ public class ExperimentToXar23FormatConversionHelper {
 
     private DataBaseType getDataBaseTypeElement(InputOutputObject ioObject) {
         DataBaseType xarDataBaseTypeElement = getObjectFactory().createDataBaseType();
-        xarDataBaseTypeElement.setAbout(getLsid());
+        xarDataBaseTypeElement.setAbout(getLsid(ConfigParamEnum.LSID_NAMESPACE_INPUT_OUTPUT, ioObject.getId()));
         xarDataBaseTypeElement.setCpasType(CpasType.DATA.getDisplayName());
         xarDataBaseTypeElement.setDataFileUrl(ioObject.getDataFileURL());
         xarDataBaseTypeElement.setName(ioObject.getName());
@@ -251,7 +252,7 @@ public class ExperimentToXar23FormatConversionHelper {
 
     private MaterialBaseType getMaterialBaseTypeElement(InputOutputObject ioObject) {
         MaterialBaseType xarMaterialBaseTypeElement = getObjectFactory().createMaterialBaseType();
-        xarMaterialBaseTypeElement.setAbout(getLsid());
+        xarMaterialBaseTypeElement.setAbout(getLsid(ConfigParamEnum.LSID_NAMESPACE_INPUT_OUTPUT, ioObject.getId()));
         xarMaterialBaseTypeElement.setCpasType(CpasType.MATERIAL.getDisplayName());
         xarMaterialBaseTypeElement.setName(ioObject.getName());
         xarMaterialBaseTypeElement.setProperties(getPropertyCollectionTypeElement(this.propertyKeyName,
@@ -275,9 +276,10 @@ public class ExperimentToXar23FormatConversionHelper {
     private ExperimentRunType getExperimentRunTypeElement(ExperimentRun expRun) {
         ExperimentRunType xarExpRunTypeElement = getObjectFactory().createExperimentRunType();
 
-        xarExpRunTypeElement.setAbout(getLsid());
+        xarExpRunTypeElement.setAbout(getLsid(ConfigParamEnum.LSID_NAMESPACE_EXPERIMENT_RUN, expRun.getId()));
         xarExpRunTypeElement.setComments(StringUtils.EMPTY);
-        xarExpRunTypeElement.setExperimentLSID(getLsid());
+        xarExpRunTypeElement.setExperimentLSID(getLsid(ConfigParamEnum.LSID_NAMESPACE_EXPERIMENT,
+                expRun.getExperiment().getId()));
         xarExpRunTypeElement.setName(expRun.getName());
         xarExpRunTypeElement.setProperties(getPropertyCollectionTypeElement(this.propertyKeyName,
                 expRun.getNotes(), SimpleTypeNames.STRING, getOntologyEntryUri()));
@@ -305,15 +307,15 @@ public class ExperimentToXar23FormatConversionHelper {
             ProtocolApplication protApp, String cpasType) {
         ProtocolApplicationBaseType xarProtocolApplicationBaseTypeElement =
             getObjectFactory().createProtocolApplicationBaseType();
-
-
-        xarProtocolApplicationBaseTypeElement.setAbout(getLsid());
+        xarProtocolApplicationBaseTypeElement.setAbout(getLsid(
+                ConfigParamEnum.LSID_NAMESPACE_PROTOCOL_APPLICATION, protApp.getId()));
         //xarProtocolApplicationBaseTypeElement.setActionSequence(); //TODO
         xarProtocolApplicationBaseTypeElement.setActivityDate(DateHelper.getDate(protApp.getDatePerformed()));
         xarProtocolApplicationBaseTypeElement.setComments(StringUtils.EMPTY);
         xarProtocolApplicationBaseTypeElement.setCpasType(cpasType);
-        xarProtocolApplicationBaseTypeElement.setName(getProtocolApplicationName());
-        xarProtocolApplicationBaseTypeElement.setProtocolLSID(getLsid());
+        xarProtocolApplicationBaseTypeElement.setName(getProtocolApplicationName(protApp));
+        xarProtocolApplicationBaseTypeElement.setProtocolLSID(getLsid(
+                ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, protApp.getProtocol().getId()));
         xarProtocolApplicationBaseTypeElement.setProperties(getPropertyCollectionTypeElement(this.propertyKeyName,
                 protApp.getNotes(), SimpleTypeNames.STRING, getOntologyEntryUri()));
 
@@ -334,12 +336,12 @@ public class ExperimentToXar23FormatConversionHelper {
                 DataLSID xarDataLSIDElement = getObjectFactory().createInputOutputRefsTypeDataLSID();
                 xarDataLSIDElement.setCpasType(CpasType.DATA.getDisplayName());
                 xarDataLSIDElement.setDataFileUrl(input.getDataFileURL());
-                xarDataLSIDElement.setValue(getLsid());
+                xarDataLSIDElement.setValue(getLsid(ConfigParamEnum.LSID_NAMESPACE_INPUT_OUTPUT, input.getId()));
                 xarInputOutputRefsTypeElement.getDataLSID().add(xarDataLSIDElement);
             } else {
                 MaterialLSID xarMaterialLSIDElement = getObjectFactory().createInputOutputRefsTypeMaterialLSID();
                 xarMaterialLSIDElement.setCpasType(CpasType.MATERIAL.getDisplayName());
-                xarMaterialLSIDElement.setValue(getLsid());
+                xarMaterialLSIDElement.setValue(getLsid(ConfigParamEnum.LSID_NAMESPACE_INPUT_OUTPUT, input.getId()));
                 xarInputOutputRefsTypeElement.getMaterialLSID().add(xarMaterialLSIDElement);
             }
         }
@@ -353,7 +355,9 @@ public class ExperimentToXar23FormatConversionHelper {
         for (InputOutputObject output : protApp.getOutputs()) {
             if (StringUtils.isNotBlank(output.getDataFileURL())) {
                 DataBaseType xarDataBaseTypeElement = getDataBaseTypeElement(output);
-                xarDataBaseTypeElement.setSourceProtocolLSID(getLsid());
+                xarDataBaseTypeElement.setSourceProtocolLSID(getLsid(
+                        ConfigParamEnum.LSID_NAMESPACE_PROTOCOL,
+                        output.getOutputOfProtocolApplication().getProtocol().getId()));
                 xarOutputDataObjectsElement.getData().add(xarDataBaseTypeElement);
             }
         }
@@ -367,7 +371,9 @@ public class ExperimentToXar23FormatConversionHelper {
         for (InputOutputObject output : protApp.getOutputs()) {
             if (StringUtils.isBlank(output.getDataFileURL())) {
                 MaterialBaseType xarMaterialBaseTypeElement = getMaterialBaseTypeElement(output);
-                xarMaterialBaseTypeElement.setSourceProtocolLSID(getLsid());
+                xarMaterialBaseTypeElement.setSourceProtocolLSID(getLsid(
+                        ConfigParamEnum.LSID_NAMESPACE_PROTOCOL,
+                        output.getOutputOfProtocolApplication().getProtocol().getId()));
                 xarOutputMaterialsElement.getMaterial().add(xarMaterialBaseTypeElement);
             }
         }
@@ -401,15 +407,23 @@ public class ExperimentToXar23FormatConversionHelper {
         this.experimentParser = experimentParser;
     }
 
-    private String getLsid() {
-        return "LSIDDDDDD_PE";
+    private String getLsid(ConfigParamEnum configParamEnum, Long objectId) {
+        return LsidGeneratorHelper.getLsid(configParamEnum, objectId);
     }
 
     private String getOntologyEntryUri() {
-        return "Entry_URI_PE";
+        StringBuffer ontologyEntryUri = new StringBuffer();
+        return ontologyEntryUri
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.ONTOLOGY_ENTRY_URI.name()))
+            .toString();
     }
 
-    private String getProtocolApplicationName() {
-        return "PROT_APP_NAME_PE";
+    private String getProtocolApplicationName(ProtocolApplication protApp) {
+        StringBuffer protocolApplicationName = new StringBuffer();
+        return protocolApplicationName
+            .append(protApp.getProtocol().getName())
+            .append(".ProtocolApplication.")
+            .append(protApp.getId().toString())
+            .toString();
     }
 }
