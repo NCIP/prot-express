@@ -24,7 +24,7 @@
 
             <display:column class="action" titleKey="protexpress.page.search.experimentresults.column.status">
                 <c:choose>
-                    <c:when test="${statusCompleted}">
+                    <c:when test="${statusCompleted.booleanValue == Boolean.TRUE}">
                         <span title="Complete">
                             <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
                         </span>
@@ -45,10 +45,10 @@
                 </c:if>
             </display:column>
             <display:column class="action" titleKey="protexpress.page.search.experimentresults.column.download">
-                <c:url var="experimentDownloadUrl" value="/notYetImplemented.html">
-                    <c:param name="experiment.id" value="${row.id}" />
+                <c:url var="experimentDownloadUrl" value="/ajax/experiment/export.action">
+                    <c:param name="experimentId" value="${row.id}" />
                 </c:url>
-                <c:if test="${statusCompleted}">
+                <c:if test="${statusCompleted.booleanValue == Boolean.TRUE}">
                     <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.search.experimentresults.icon.download.alt" />" /></a>
                 </c:if>
             </display:column>

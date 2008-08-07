@@ -62,8 +62,8 @@
                             <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
                                 <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
-                            <c:url var="experimentDownloadUrl" value="/notYetImplemented.html">
-                                <c:param name="experiment.id" value="${experiment.id}" />
+                            <c:url var="experimentDownloadUrl" value="/ajax/experiment/export.action">
+                                <c:param name="experimentId" value="${experiment.id}" />
                             </c:url>
                             <tr>
                                 <td><a href="${viewExperimentDetailsUrl}">${experiment.name}</a></td>
@@ -71,7 +71,7 @@
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
                                 <td class="action">
                                      <c:choose>
-                                        <c:when test="${statusCompleted}">
+                                        <c:when test="${statusCompleted.booleanValue == Boolean.TRUE}">
                                             <span title="Complete">
                                                 <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
                                             </span>
@@ -87,8 +87,10 @@
                                     <a href="${editExperimentDetailsUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
                                 </td>
                                 <td class="action">
-                                    <c:if test="${statusCompleted}">
-                                        <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" /></a>
+                                    <c:if test="${statusCompleted == Boolean.TRUE}">
+                                        <a href="${experimentDownloadUrl}">
+                                            <img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" />
+                                        </a>
                                     </c:if>
                                 </td>
                             </tr>

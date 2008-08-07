@@ -83,14 +83,14 @@
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
 /**
- * @author Scott Miller
+ * @author Scott Miller, Krishna Kanchinadam
  *
  */
 public enum ExperimentExportFileType {
     /**
-     * The type for XAR 2.2.
+     * The type for XAR 2.3.
      */
-    Xar2_2("XAR 2.2");
+    Xar2_3("XAR 2.3");
 
     private String displayName;
 

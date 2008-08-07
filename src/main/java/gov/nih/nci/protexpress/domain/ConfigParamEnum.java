@@ -125,7 +125,90 @@ public enum ConfigParamEnum {
      */
     DEVELOPMENT_MODE,
     /**
-     * caArray version number, for schema migration purposes.
+     * protExpress version number, for schema migration purposes.
      */
-    SCHEMA_VERSION;
+    SCHEMA_VERSION,
+    /**
+     * Lsid Base.
+     */
+    LSID_BASE,
+    /**
+     * Lsid Separator.
+     */
+    LSID_SEPARATOR,
+    /**
+     * Lsid Authority.
+     */
+    LSID_AUTHORITY,
+    /**
+     * Lsid Revision.
+     */
+    LSID_REVISION,
+    /**
+     * Lsid Protocol Namespace.
+     */
+    LSID_NAMESPACE_PROTOCOL,
+    /**
+     * Lsid Experiment Namespace.
+     */
+    LSID_NAMESPACE_EXPERIMENT,
+    /**
+     * Lsid ExperimentRun Namespace.
+     */
+    LSID_NAMESPACE_EXPERIMENT_RUN,
+    /**
+     * Lsid InputOutput Namespace.
+     */
+    LSID_NAMESPACE_INPUT_OUTPUT,
+    /**
+     * Lsid ProtocolApplication Namespace.
+     */
+    LSID_NAMESPACE_PROTOCOL_APPLICATION,
+    /**
+     * Ontology Entry URI String value.
+     */
+    ONTOLOGY_ENTRY_URI;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

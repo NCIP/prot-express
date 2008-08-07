@@ -138,7 +138,7 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     private String notes;
     private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
-    private Boolean statusCompleted = false;
+    private Boolean statusCompleted = Boolean.TRUE;
     private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 

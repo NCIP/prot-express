@@ -140,8 +140,8 @@ public class ExperimentExportActionTest extends ProtExpressBaseHibernateTest  {
 
     public void testExport() throws Exception {
         this.action.setExperiment(this.experiment);
-        this.action.setFileType(ExperimentExportFileType.Xar2_2);
-        assertEquals("XAR 2.2", ExperimentExportFileType.Xar2_2.getDisplayName());
+        this.action.setFileType(ExperimentExportFileType.Xar2_3);
+        assertEquals("XAR 2.3", ExperimentExportFileType.Xar2_3.getDisplayName());
         assertEquals(ActionSupport.SUCCESS, this.action.export());
     }
 }

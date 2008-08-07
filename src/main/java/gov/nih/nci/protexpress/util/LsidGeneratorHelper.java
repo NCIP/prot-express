@@ -1,12 +1,12 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caarray-war
+ * source code form and machine readable, binary, object code form. The ProtExpress
  * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees and 5AM Solutions, Inc. (5AM). To the extent
  * government employees are authors, any rights in such works shall be subject
  * to Title 17 of the United States Code, section 105.
  *
- * This caarray-war Software License (the License) is between NCI and You. You (or
+ * This ProtExpress Software License (the License) is between NCI and You. You (or
  * Your) shall mean a person or an entity, and all other entities that control,
  * are controlled by, or are under common control with the entity. Control for
  * purposes of this definition means (i) the direct or indirect power to cause
@@ -17,10 +17,10 @@
  * This License is granted provided that You agree to the conditions described
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
  * no-charge, irrevocable, transferable and royalty-free right and license in
- * its rights in the caarray-war Software to (i) use, install, access, operate,
+ * its rights in the ProtExpress Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caarray-war Software; (ii) distribute and
- * have distributed to and by third parties the caarray-war Software and any
+ * and prepare derivative works of the ProtExpress Software; (ii) distribute and
+ * have distributed to and by third parties the ProtExpress Software and any
  * modifications and derivative works thereof; and (iii) sublicense the
  * foregoing rights set out in (i) and (ii) to third parties, including the
  * right to license such rights to further third parties. For sake of clarity,
@@ -80,81 +80,53 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.registration;
+
+package gov.nih.nci.protexpress.util;
 
 import gov.nih.nci.protexpress.domain.ConfigParamEnum;
-import gov.nih.nci.protexpress.domain.register.RegistrationRequest;
-import gov.nih.nci.protexpress.util.ConfigurationHelper;
-
-import java.text.MessageFormat;
-import java.util.Collections;
-
-import javax.mail.MessagingException;
-
-import org.apache.commons.configuration.DataConfiguration;
 
 /**
- * @author John Hedden (Amentra, Inc.)
+ * Helper class to generate the appropriate LSID values. LSIDs are multi-part
+ * strings with the parts separated by colons, withe the form:
+ *        urn:lsid:AuthorityID:NamespaceID:ObjectID:RevisionID
+ * where,
+ *        AuthorityID: An Internet domain name.
+ *        NamespaceID: A namespace identifier, unique within the authority.
+ *        ObjectID: An object identifier, unique within the namespace.
+ *        RevisionID: An optional version string.
  *
+ * @author Krishna Kanchinadam
  */
-public final class EmailHelper {
 
-    private EmailHelper() {
-        // nothing here.
+//urn:lsid:genologics.com:Experiment.pub1:Project.77.3
+
+public final class LsidGeneratorHelper {
+    /**
+     * Default constructor.
+     *
+     */
+    private LsidGeneratorHelper() {
     }
 
     /**
-     * @param registrationRequest request
-     * @throws MessagingException on other error
+     * Given a ConfigParamEnum and the object id, returns the appropriate LSID string.
+     *
+     * @param configParamEnum the ConfigParamEnum.
+     * @param objectId id of the object for which the LSID is to be generated.
+     * @return the LSID string.
      */
-    public static void registerEmail(RegistrationRequest registrationRequest) throws MessagingException {
-        DataConfiguration config = ConfigurationHelper.getConfiguration();
-
-        if (!config.getBoolean(ConfigParamEnum.SEND_CONFIRM_EMAIL.name())) {
-            return;
-        }
-
-        String subject = config.getString(ConfigParamEnum.CONFIRM_EMAIL_SUBJECT.name());
-        String from = config.getString(ConfigParamEnum.EMAIL_FROM.name());
-        String mailBodyPattern = config.getString(ConfigParamEnum.CONFIRM_EMAIL_CONTENT.name());
-        String mailBody = MessageFormat.format(mailBodyPattern, registrationRequest.getId());
-
-        EmailUtil.sendMail(Collections.singletonList(registrationRequest.getEmail()), from, subject, mailBody);
+    public static String getLsid(ConfigParamEnum configParamEnum, Long objectId) {
+        StringBuffer objectLsid = new StringBuffer();
+        return objectLsid
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_BASE.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_AUTHORITY.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(configParamEnum.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(objectId.toString())
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
+            .toString();
     }
-
-    /**
-     * @param registrationRequest request
-     * @throws MessagingException on error
-     */
-    public static void registerEmailAdmin(RegistrationRequest registrationRequest) throws MessagingException {
-        DataConfiguration config = ConfigurationHelper.getConfiguration();
-        if (!config.getBoolean(ConfigParamEnum.SEND_ADMIN_EMAIL.name())) {
-            return;
-        }
-
-        String subject = config.getString(ConfigParamEnum.REG_EMAIL_SUBJECT.name());
-        String from = registrationRequest.getEmail();
-        String admin = config.getString(ConfigParamEnum.REG_EMAIL_TO.name());
-
-        String mailBody = "Registration Request:\n"
-            + "First Name: " + registrationRequest.getFirstName() + "\n"
-            + "Middle Initial: " + registrationRequest.getMiddleInitial() + "\n"
-            + "Last Name: " + registrationRequest.getLastName() + "\n"
-            + "Email: " + registrationRequest.getEmail() + "\n"
-            + "Phone: " + registrationRequest.getPhone() + "\n"
-            + "Fax: " + registrationRequest.getFax() + "\n"
-            + "Organization: " + registrationRequest.getOrganization() + "\n"
-            + "Address1: " + registrationRequest.getAddress1() + "\n"
-            + "Address2: " + registrationRequest.getAddress2() + "\n"
-            +  "City: " + registrationRequest.getCity() + "\n"
-            + "State: " + ((registrationRequest.getState() != null)? registrationRequest.getState().getName() : "")
-                + "\n"
-            + "Province: " + registrationRequest.getProvince() + "\n"
-            + "Country: " + registrationRequest.getCountry().getPrintableName() + "\n"
-            + "Zip: " + registrationRequest.getZip() + "\n"
-            + "Role: " + registrationRequest.getRole();
-
-        EmailUtil.sendMail(Collections.singletonList(admin), from, subject, mailBody);
-    }
-
 }

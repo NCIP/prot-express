@@ -102,6 +102,19 @@
         </action>
         <!-- /Protocol Actions -->
 
+        <!-- Experiment Export Action -->
+        <action name="ajax/experiment/export" method="export" class="gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportAction">
+            <result name="success" type="stream">
+                <param name="contentType">txt/xml;charset=UTF-8</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="experiment.xar.xml"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+            <result name="input" type="chain">experiment/management/load</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- /Experiment Export Action -->
+
         <!-- Create Experiment Actions -->
         <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageExperimentAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/create/experimentOverview.jsp</result>
@@ -158,6 +171,7 @@
         <action name="viewExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/viewDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/viewDetails.jsp</result>
+            <result name="viewExperiment">/WEB-INF/jsp/experiment/viewDetails.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -197,6 +211,7 @@
         <action name="editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/editDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/editDetails.jsp</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

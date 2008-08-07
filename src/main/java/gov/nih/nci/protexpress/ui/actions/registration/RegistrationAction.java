@@ -88,6 +88,7 @@ import gov.nih.nci.protexpress.domain.ConfigParamEnum;
 import gov.nih.nci.protexpress.domain.register.Country;
 import gov.nih.nci.protexpress.domain.register.RegistrationRequest;
 import gov.nih.nci.protexpress.domain.register.State;
+import gov.nih.nci.protexpress.util.ConfigurationHelper;
 import gov.nih.nci.security.authentication.helper.LDAPHelper;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.UserSearchCriteria;
