@@ -86,8 +86,6 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.util.UserHolder;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
@@ -104,6 +102,7 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
     private Experiment experiment = null;
     private Long experimentId;
     private String actionResultViewExperiment = "viewExperiment";
+    private String actionResultDelete = "delete";
 
     /**
      * Action Constructor.
@@ -118,9 +117,6 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
     public void prepare() throws Exception {
         if (getExperimentId() != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
-            if (StringUtils.isBlank(getSelectedNodeId())) {
-                setSelectedNodeId(getExperimentId().toString());
-            }
         }
     }
 
@@ -191,4 +187,14 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
         return super.load();
     }
 
+    /**
+     * Deletes the protocol application from the run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String delete() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experiment.delete.success"));
+        ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
+        return actionResultDelete;
+    }
 }

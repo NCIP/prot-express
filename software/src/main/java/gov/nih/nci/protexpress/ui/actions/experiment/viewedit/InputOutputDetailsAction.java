@@ -101,6 +101,7 @@ public class InputOutputDetailsAction extends ProtocolApplicationDetailsAction i
 
     private InputOutputObject inputOutputObject = new InputOutputObject(null);
     private Long inputOutputObjectId;
+    private String actionResultDelete = "delete";
 
     /**
      * Action Constructor.
@@ -116,12 +117,19 @@ public class InputOutputDetailsAction extends ProtocolApplicationDetailsAction i
         if (getInputOutputObjectId() != null) {
             setInputOutputObject(ProtExpressRegistry.getExperimentService()
                     .getInputOutputObjectById(getInputOutputObjectId()));
-            StringBuffer sb = new StringBuffer();
-            setSelectedNodeId(
-                    sb.append(getProtocolApplicationId().toString())
-                    .append(".")
-                    .append(getInputOutputObjectId().toString())
-                    .toString());
+        }
+
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService().
+                    getProtocolApplicationById(getProtocolApplicationId()));
+        }
+
+        if (getExperimentRunId() != null) {
+            setExperimentRun(ProtExpressRegistry.getExperimentService().getExperimentRunById(getExperimentRunId()));
+        }
+
+        if (getExperimentId() != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
         }
     }
 
@@ -191,5 +199,35 @@ public class InputOutputDetailsAction extends ProtocolApplicationDetailsAction i
         ProtExpressRegistry.getProtExpressService().clear();
 
         return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * Deletes the input data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String deleteInput() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("input.delete.success"));
+        // If not an output of any other protocol application, can be deleted directly.
+        // If an output of a previous protocol application, only the association should be broken.
+        if (getInputOutputObject().getOutputOfProtocolApplication() != null) {
+            getInputOutputObject().setInputToProtocolApplication(null);
+            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getInputOutputObject());
+        } else {
+            ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInputOutputObject());
+        }
+
+        return actionResultDelete;
+    }
+
+    /**
+     * Deletes the output data.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String deleteOutput() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("output.delete.success"));
+        ProtExpressRegistry.getExperimentService().deleteInputOutputObject(getInputOutputObject());
+        return actionResultDelete;
     }
 }

@@ -86,7 +86,6 @@ import gov.nih.nci.protexpress.domain.HibernateFieldLength;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -226,7 +225,7 @@ public class InputOutputObject implements Serializable, PersistentObject {
      *
      * @return the outputOfProtocolApplication.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "protapp_outputs",
             joinColumns = { @JoinColumn(name = "output_id") },
             inverseJoinColumns = { @JoinColumn(name = "protapp_id") })
@@ -249,7 +248,7 @@ public class InputOutputObject implements Serializable, PersistentObject {
      *
      * @return the inputToProtocolApplication.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "protapp_inputs",
             joinColumns = { @JoinColumn(name = "input_id") },
             inverseJoinColumns = { @JoinColumn(name = "protapp_id") })

@@ -219,6 +219,7 @@
             <result name="input">/WEB-INF/jsp/experiment/edit/experimentDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/experimentDetails.jsp</result>
             <result name="refreshTree">/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp</result>
+            <result name="delete" type="redirect-action">home/home</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -227,6 +228,15 @@
             <result name="success">/WEB-INF/jsp/experiment/edit/experimentRunDetails.jsp</result>
             <result name="addNewProtocol">/WEB-INF/jsp/experiment/edit/addNewProtocol.jsp</result>
             <result name="selectExistingProtocol">/WEB-INF/jsp/experiment/edit/selectExistingProtocol.jsp</result>
+            <result name="delete" type="chain">ajax/editExperiment/experiment/load</result>
+            <result name="editExperimentRun" type="redirect-action">
+                <param name="actionName">load</param>
+                <param name="namespace">ajax/editExperiment/experimentRun</param>
+                <param name="parse">true</param>
+                <param name="experimentId">${experimentId}</param>
+                <param name="experimentRunId">${newExperimentRunId}</param>
+                <param name="successMessage">${successMessage}</param>
+            </result>
             <result name="editProtocolApplication" type="redirect-action">
                 <param name="actionName">load</param>
                 <param name="namespace">ajax/editExperiment/protocolApplication</param>
@@ -244,18 +254,21 @@
             <result name="manageInputs">/WEB-INF/jsp/experiment/edit/manageInputs.jsp</result>
             <result name="addInputs">/WEB-INF/jsp/experiment/edit/manageInputs.jsp</result>
             <result name="addOutputs">/WEB-INF/jsp/experiment/edit/manageOutputs.jsp</result>
+            <result name="delete" type="chain">ajax/editExperiment/experimentRun/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/editExperiment/input/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/edit/inputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/inputDetails.jsp</result>
+            <result name="delete" type="chain">ajax/editExperiment/protocolApplication/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/editExperiment/output/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.InputOutputDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/edit/outputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/outputDetails.jsp</result>
+            <result name="delete" type="chain">ajax/editExperiment/protocolApplication/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

@@ -19,6 +19,8 @@
 </c:if>
 <s:form id="editExperimentRunForm" action="/ajax/editExperiment/experimentRun/saveExperimentRun.action" method="post">
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
+    <s:hidden name="experimentId" value="%{experiment.id}"/>
+
     <fieldset class="leftfield">
         <legend><fmt:message key="protexpress.page.editexperimentrundetails.overviewtitle" /></legend>
         <table class="form3">
@@ -45,10 +47,13 @@
     <c:url var="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
         <c:param name="experimentRunId" value="${experimentRun.id}" />
     </c:url>
+    <c:url var="repeatExperimentRunUrl" value="/ajax/editExperiment/experimentRun/repeat.action" />
+    <c:url var="deleteExperimentRunUrl" value="/ajax/editExperiment/experimentRun/delete.action" />
+
     <protExpress:buttonRow>
-        <protExpress:button style="copy" textKey="protexpress.page.editexperimentrundetails.buttons.repeat" id="copy" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="copy" textKey="protexpress.page.editexperimentrundetails.buttons.repeat" id="copy" onclick="ProtExpress.submitAjaxFormToUrl('editExperimentRunForm', 'detail-content', '${repeatExperimentRunUrl}'); return false;"/>
         <protExpress:button style="save" textKey="protexpress.page.editexperimentrundetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editExperimentRunForm', 'detail-content'); return false;"/>
-        <protExpress:button style="delete" textKey="protexpress.page.editexperimentrundetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:deleteButton style="delete" textKey="protexpress.page.editexperimentrundetails.buttons.delete" id="delete" deleteConfirmText="experimentrun.delete.confirm"  onclick="ProtExpress.submitAjaxFormToUrl('editExperimentRunForm', 'detail-content', '${deleteExperimentRunUrl}'); this.blur(); return false;"/>
         <protExpress:button style="add_folder" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol" id="add_folder" onclick="ProtExpress.loadDiv('${addNewProtocolUrl}', 'detail-content', true); this.blur(); return false;"/>
     </protExpress:buttonRow>
 </s:form>

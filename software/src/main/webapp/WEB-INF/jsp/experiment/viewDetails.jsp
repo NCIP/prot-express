@@ -29,11 +29,6 @@
                 <c:set var="treeMode" value="VIEW" />
                 <%@ include file="/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp"%>
             </div>
-            <c:if test="${selectedNodeId != null}">
-                <script>
-                    // selectTreeNode('${selectedNodeId}');
-                </script>
-            </c:if>
             <!-- /TREE COLUMN -->
             <!-- DETAIL COLUMN -->
             <div id="detailcol">

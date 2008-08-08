@@ -345,6 +345,24 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
     }
 
     /**
+     * Returns a copy of the protocol application.
+     *
+     * @param srcProtApp the source protocol application to copy.
+     * @return the new object.
+     */
+    public static ProtocolApplication getCopy(ProtocolApplication srcProtApp) {
+
+        ProtocolApplication newProtApp = new ProtocolApplication(
+                srcProtApp.getDatePerformed(),
+                srcProtApp.getExperimentRun(),
+                srcProtApp.getProtocol());
+
+        newProtApp.setComments(srcProtApp.getComments());
+        newProtApp.setNotes(srcProtApp.getNotes());
+        return newProtApp;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
