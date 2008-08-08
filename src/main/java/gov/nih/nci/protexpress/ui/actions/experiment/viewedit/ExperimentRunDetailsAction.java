@@ -111,6 +111,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     private ExperimentRun experimentRun = null;
     private Long experimentRunId;
     private Long newProtAppId;
+    private Long newExperimentRunId;
 
     private Protocol protocol = new Protocol(null);
     private Long protocolId;
@@ -122,6 +123,8 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     private String actionResultAddNewProtocol = "addNewProtocol";
     private String actionResultSelectExistingProtocol = "selectExistingProtocol";
     private String actionResultEditProtocolApplicationDetails = "editProtocolApplication";
+    private String actionResultDelete = "delete";
+    private String actionResultEditExperimentRun = "editExperimentRun";
 
     /**
      * Action Constructor.
@@ -136,7 +139,9 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     public void prepare() throws Exception {
         if (getExperimentRunId() != null) {
             setExperimentRun(ProtExpressRegistry.getExperimentService().getExperimentRunById(getExperimentRunId()));
-            setSelectedNodeId(getExperimentRunId().toString());
+        }
+        if (getExperimentId() != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
         }
     }
 
@@ -392,5 +397,52 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
     public void setNewProtAppId(Long newProtAppId) {
         this.newProtAppId = newProtAppId;
     }
+
+    /**
+     * Repeats the Run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String repeat() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experimentrun.repeat.success"));
+        ExperimentRun newExpRun = ExperimentRun.getCopy(getExperimentRun());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(newExpRun);
+        ProtExpressRegistry.getProtExpressService().clear();
+
+     // set the appropriate id's to pass as parameters to the next action, for editing the newly created run.
+        setNewExperimentRunId(newExpRun.getId());
+        setExperimentId(newExpRun.getExperiment().getId());
+        return actionResultEditExperimentRun;
+    }
+
+    /**
+     * Deletes the protocol application from the run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String delete() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("experimentrun.delete.success"));
+        ProtExpressRegistry.getExperimentService().deleteExperimentRun(getExperimentRun());
+        return actionResultDelete;
+    }
+
+    /**
+     * Gets the newExperimentRunId.
+     *
+     * @return the newExperimentRunId.
+     */
+    public Long getNewExperimentRunId() {
+        return newExperimentRunId;
+    }
+
+    /**
+     * Sets the newExperimentRunId.
+     *
+     * @param newExperimentRunId the newExperimentRunId to set.
+     */
+    public void setNewExperimentRunId(Long newExperimentRunId) {
+        this.newExperimentRunId = newExperimentRunId;
+    }
+
 
 }

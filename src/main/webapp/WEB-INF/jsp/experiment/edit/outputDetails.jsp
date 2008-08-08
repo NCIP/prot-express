@@ -20,7 +20,9 @@
 </c:if>
 <s:form id="editOutputForm" action="/ajax/editExperiment/output/saveOutput.action" method="post">
     <s:hidden name="inputOutputObjectId" value="%{inputOutputObject.id}"/>
-    <s:hidden name="protocolApplicationId" value="%{protocolApplicationId}"/>
+    <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
+    <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
+    <s:hidden name="experimentId" value="%{experiment.id}"/>
     <table class="form">
         <tr>
             <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.output.name" />:</td>
@@ -37,9 +39,11 @@
             </td>
         </tr>
     </table>
+    <c:url var="deleteOutputUrl" value="/ajax/editExperiment/output/deleteOutput.action" />
     <protExpress:buttonRow>
         <protExpress:button style="save" textKey="protexpress.page.outputdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editOutputForm', 'detail-content'); return false;"/>
-        <protExpress:button style="delete" textKey="protexpress.page.outputdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:deleteButton style="delete" textKey="protexpress.page.outputdetails.buttons.delete" id="delete" deleteConfirmText="output.delete.confirm"  onclick="ProtExpress.submitAjaxFormToUrl('editOutputForm', 'detail-content', '${deleteOutputUrl}'); this.blur(); return false;"/>
+
     </protExpress:buttonRow>
 </s:form>
 

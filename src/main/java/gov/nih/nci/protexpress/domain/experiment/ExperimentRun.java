@@ -291,6 +291,28 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
     }
 
     /**
+     * Returns a copy of the experiment run.
+     *
+     * @param srcExpRun the source experiment run to copy.
+     * @return the new object.
+     */
+    public static ExperimentRun getCopy(ExperimentRun srcExpRun) {
+
+        ExperimentRun newExpRun = new ExperimentRun(srcExpRun.getName());
+        newExpRun.setDatePerformed(srcExpRun.getDatePerformed());
+        newExpRun.setExperiment(srcExpRun.getExperiment());
+        newExpRun.setNotes(srcExpRun.getNotes());
+        for (ProtocolApplication protApp : srcExpRun.getProtocolApplications()) {
+            ProtocolApplication newProtApp = ProtocolApplication.getCopy(protApp);
+            newProtApp.setExperimentRun(newExpRun);
+            newExpRun.getProtocolApplications().add(newProtApp);
+        }
+
+        return newExpRun;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override

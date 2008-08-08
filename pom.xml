@@ -448,8 +448,8 @@
                 <configuration>
                     <check>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>40</totalBranchRate>
-                        <totalLineRate>40</totalLineRate>
+                        <totalBranchRate>30</totalBranchRate>
+                        <totalLineRate>30</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>
@@ -668,6 +668,7 @@
                                 <srcFile>src/main/sql/csmCreateSchema.sql</srcFile>
                                 <srcFile>src/main/sql/csmBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/extraCreateSchema.sql</srcFile>
+                                <srcFile>src/main/sql/configurationParametersBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/protExpressBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                             </srcFiles>

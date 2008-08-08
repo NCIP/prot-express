@@ -13,14 +13,16 @@
         <c:param name="treeMode" value="EDIT"/>
     </c:url>
     <script type="text/javascript">
-        var actionUrl = '${actionUrl}';   
+        var actionUrl = '${actionUrl}';
         var divElement = document.getElementById('span_${protocolApplicationId}.${inputOutputObject.id}');
         var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>        
+    </script>
 </c:if>
 <s:form id="editInputForm" action="/ajax/editExperiment/input/saveInput.action" method="post">
     <s:hidden name="inputOutputObjectId" value="%{inputOutputObject.id}"/>
-    <s:hidden name="protocolApplicationId" value="%{protocolApplicationId}"/>
+    <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
+    <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
+    <s:hidden name="experimentId" value="%{experiment.id}"/>
     <table class="form">
         <tr>
             <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.input.name" />:</td>
@@ -37,9 +39,17 @@
             </td>
         </tr>
     </table>
+    <c:url var="deleteInputUrl" value="/ajax/editExperiment/input/deleteInput.action" />
+
     <protExpress:buttonRow>
         <protExpress:button style="save" textKey="protexpress.page.inputdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editInputForm', 'detail-content'); return false;"/>
-        <protExpress:button style="delete" textKey="protexpress.page.inputdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <c:choose>
+            <c:when test="${inputOutputObject.outputOfProtocolApplication != null}">
+                <protExpress:deleteButton style="delete" textKey="protexpress.page.inputdetails.buttons.delete" deleteConfirmText="linkedinput.delete.confirm" id="delete" onclick="ProtExpress.submitAjaxFormToUrl('editInputForm', 'detail-content', '${deleteInputUrl}'); this.blur(); return false;" />
+            </c:when>
+            <c:otherwise>
+                <protExpress:deleteButton style="delete" textKey="protexpress.page.inputdetails.buttons.delete" deleteConfirmText="input.delete.confirm" id="delete" onclick="ProtExpress.submitAjaxFormToUrl('editInputForm', 'detail-content', '${deleteInputUrl}'); this.blur(); return false;" />
+            </c:otherwise>
+        </c:choose>
     </protExpress:buttonRow>
 </s:form>
-

@@ -17,7 +17,7 @@
       var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
     </script>
 </c:if>
-<s:form id="editExperimentForm" action="/ajax/editExperiment/experiment/saveExperiment.action" method="post">
+<s:form id="editExperimentForm" action="/ajax/editExperiment/experiment/delete.action" method="post">
     <s:hidden name="experimentId" value="%{experiment.id}"/>
     <fieldset class="leftfield">
         <legend><fmt:message key="protexpress.page.editexperimentdetails.overviewtitle" /></legend>
@@ -82,9 +82,13 @@
         </table>
     </fieldset>
     <div class="clear"><br /></div>
+
+    <c:url var="deleteExperimentUrl" value="/ajax/editExperiment/experiment/delete.action" />
+    <c:url var="saveExperimentUrl" value="/ajax/editExperiment/experiment/saveExperiment.action" />
+
     <protExpress:buttonRow>
-        <protExpress:button style="save" textKey="protexpress.page.editexperimentdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editExperimentForm', 'detail-content'); return false;"/>
-        <protExpress:button style="delete" textKey="protexpress.page.editexperimentdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:button style="save" textKey="protexpress.page.editexperimentdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('editExperimentForm', 'detail-content', '${saveExperimentUrl}'); return false;"/>
+        <protExpress:deleteButton style="delete" textKey="protexpress.page.editexperimentdetails.buttons.delete" id="delete" deleteConfirmText="experiment.delete.confirm"  onclick="document.getElementById('editExperimentForm').submit(); this.blur(); return false;"/>
     </protExpress:buttonRow>
 </s:form>
 

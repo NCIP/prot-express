@@ -28,7 +28,7 @@ public class ExperimentTreeActionTest extends ProtExpressBaseHibernateTest {
         experimentRun.setExperiment(this.experiment);
         experimentRuns.add(experimentRun);
         this.experiment.setExperimentRuns(experimentRuns);
-        
+
         this.theSession.saveOrUpdate(this.experiment);
         this.theSession.flush();
         this.theSession.clear();
@@ -48,7 +48,6 @@ public class ExperimentTreeActionTest extends ProtExpressBaseHibernateTest {
         this.action.setExperimentId(this.experiment.getId());
         this.action.prepare();
         assertNotNull(this.action.getExperiment());
-        assertEquals(this.action.getExperiment().getId().toString(), this.action.getSelectedNodeId());
         assertNull(this.action.getExperimentRun());
         assertNull(this.action.getProtApp());
         assertNull(this.action.getInput());
@@ -59,7 +58,6 @@ public class ExperimentTreeActionTest extends ProtExpressBaseHibernateTest {
         this.action.setExperimentRunId(this.experiment.getExperimentRuns().get(0).getId());
         this.action.prepare();
         assertNotNull(this.action.getExperimentRun());
-        assertEquals(this.action.getExperimentRun().getId().toString(), this.action.getSelectedNodeId());
         assertNotNull(this.action.getExperiment());
         assertNull(this.action.getProtApp());
         assertNull(this.action.getInput());

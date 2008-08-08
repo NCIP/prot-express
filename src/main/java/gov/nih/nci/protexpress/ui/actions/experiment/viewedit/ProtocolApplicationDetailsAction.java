@@ -82,14 +82,14 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.viewedit;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -117,6 +117,8 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     private String actionResultManageInputs = "manageInputs";
     private String actionResultAddInputs = "addInputs";
     private String actionResultAddOutputs = "addOutputs";
+    private String actionResultDelete = "delete";
+
 
     /**
      * Action Constructor.
@@ -136,8 +138,17 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
             setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
         }
 
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
-                getProtocolApplication()));
+        if (getProtocolApplication() != null) {
+            setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
+                    getProtocolApplication()));
+        }
+
+        if (getExperimentRunId() != null) {
+            setExperimentRun(ProtExpressRegistry.getExperimentService().getExperimentRunById(getExperimentRunId()));
+        }
+        if (getExperimentId() != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
+        }
     }
 
     /**
@@ -376,4 +387,15 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
         this.selectedInputId = selectedInputId;
     }
 
+    /**
+     * Deletes the protocol application from the run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String delete() {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.delete.success"));
+        getProtocolApplication().getExperimentRun().getProtocolApplications().remove(getProtocolApplication());
+        ProtExpressRegistry.getExperimentService().deleteProtocolApplication(getProtocolApplication());
+        return actionResultDelete;
+    }
 }

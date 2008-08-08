@@ -19,6 +19,9 @@
 </c:if>
 <s:form id="editProtAppForm" action="/ajax/editExperiment/protocolApplication/saveProtocolApplication.action" method="post">
     <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
+    <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
+    <s:hidden name="experimentId" value="%{experiment.id}"/>
+
     <fieldset class="leftfield">
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.overviewtitle" /></legend>
         <table class="form2">
@@ -80,11 +83,13 @@
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
 
+    <c:url var="deleteProtAppUrl" value="/ajax/editExperiment/protocolApplication/delete.action" />
+
     <protExpress:buttonRow>
         <protExpress:button style="save" textKey="protexpress.page.editprotocolapplicationdetails.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('editProtAppForm', 'detail-content'); return false;"/>
         <protExpress:button style="add_input" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addinput" id="add_input" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'detail-content', true); this.blur(); return false;"/>
         <protExpress:button style="add_output" textKey="protexpress.page.editprotocolapplicationdetails.buttons.addoutput" id="add_output" onclick="ProtExpress.loadDiv('${manageOutputsUrl}', 'detail-content', true); this.blur(); return false;"/>
-        <protExpress:button style="delete" textKey="protexpress.page.editprotocolapplicationdetails.buttons.delete" id="delete" href="javascript:alert('Not Yet Implemented');"/>
+        <protExpress:deleteButton style="delete" textKey="protexpress.page.editprotocolapplicationdetails.buttons.delete" id="delete" deleteConfirmText="protocolapplication.delete.confirm"  onclick="ProtExpress.submitAjaxFormToUrl('editProtAppForm', 'detail-content', '${deleteProtAppUrl}'); this.blur(); return false;"/>
     </protExpress:buttonRow>
 </s:form>
 
