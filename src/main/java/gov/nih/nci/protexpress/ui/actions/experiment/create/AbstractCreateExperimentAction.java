@@ -89,6 +89,7 @@ import gov.nih.nci.protexpress.util.SessionHelper;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -121,7 +122,7 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
     }
 
     /**
-     * Sets thep experiment information.
+     * Sets the experiment information.
      */
     public void setExperimentInformation() {
         Long expId = null;
@@ -146,6 +147,7 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
      *
      * @return the experiment.
      */
+    @CustomValidator(type = "hibernate")
     public Experiment getExperiment() {
         return experiment;
     }
@@ -164,6 +166,7 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
      *
      * @return the experimentRun.
      */
+    @CustomValidator(type = "hibernate")
     public ExperimentRun getExperimentRun() {
         return experimentRun;
     }

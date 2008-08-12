@@ -16,27 +16,9 @@
     <div class="selectedstep"><fmt:message key="protexpress.page.createnewexperiment.steps.addoutputs" /></div>
     <div class="clear"></div>
 </div>
-<fieldset>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.addoutputs.title" /></legend>
-    <c:url var="actionUrlAddOutput" value="/createExperiment/protocols/outputs/addNewOutput.action" />
-    <c:url var="actionUrlSaveOutputs" value="/createExperiment/protocols/outputs/saveOutputsToSession.action" />
-    <jsp:include page="/WEB-INF/jsp/experiment/create/outputs.jsp" />
-</fieldset>
 
-<div class="clear"></div>
-<div class="actionsrow">
-    <del class="btnwrapper">
-        <ul id="btnrow2">
-            <li>
-                <a href="javascript:submitForm('${actionUrlSaveOutputs}', 'protocolApplicationOutputsForm');" class="btn" onclick="this.blur();">
-                    <span class="btn_img">
-                        <span class="next"><fmt:message key="protexpress.page.createnewexperiment.addoutputs.button.continue" /></span>
-                    </span>
-                </a>
-            </li>
-        </ul>
-    </del>
-    <div class="clear"/>
+<div id="divContent">
+    <%@ include file="/WEB-INF/jsp/experiment/create/outputs.jsp"%>
 </div>
 
 <jsp:include page="/WEB-INF/jsp/experiment/create/protocolFooter.jsp" />

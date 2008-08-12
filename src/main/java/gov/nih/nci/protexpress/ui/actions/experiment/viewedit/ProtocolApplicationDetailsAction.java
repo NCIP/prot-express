@@ -95,6 +95,7 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -302,6 +303,7 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      *
      * @return the protocolApplication.
      */
+    @CustomValidator(type = "hibernate")
     public ProtocolApplication getProtocolApplication() {
         return protocolApplication;
     }

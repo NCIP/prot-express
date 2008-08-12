@@ -194,4 +194,13 @@ public final class HibernateFieldLength {
     private HibernateFieldLength() {
 
     }
+
+    /**
+     * Static method for returning a string representation of the integer values.
+     * @param intValue the integer value to be converted to String.
+     * @return the String value.
+     */
+    public static String getStringValue(int intValue) {
+        return intValue + "";
+    }
 }

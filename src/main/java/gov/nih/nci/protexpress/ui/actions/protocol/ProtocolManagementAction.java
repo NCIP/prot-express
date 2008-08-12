@@ -182,7 +182,7 @@ public class ProtocolManagementAction extends ActionSupport implements Preparabl
      * @return the directive for the next action / page to be directed to
      */
     @Validations(
-            emails = {@EmailValidator(fieldName = "protocol.contactPerson.email",
+            emails = {@EmailValidator(fieldName = "contactPerson.email",
                     key = "validator.email", message = "") }
     )
     public String save() {

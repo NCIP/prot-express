@@ -44,10 +44,7 @@
     </fieldset>
     <fieldset class="rightfield">
         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.dateperformedtitle" /> (<fmt:message key="default.date.format"/>)</legend>
-        <s:textfield theme="xhtml" name="protocolApplication.datePerformed" required="true" size="10" maxlength="10">
-            <s:param name="value"><s:date name="protocolApplication.datePerformed" format="MM/dd/yyyy"/></s:param>
-        </s:textfield>
-        <a href="javascript://noop/" onclick="protAppDatePerformed.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>
+        <protExpress:datefield formName="editProtAppForm" htmlField="${protocolApplication.datePerformed}" sname="protocolApplication.datePerformed" theme="xhtml" />
     </fieldset>
      <fieldset class="rightfield">
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.contacttitle" /></legend>
@@ -92,8 +89,4 @@
         <protExpress:deleteButton style="delete" textKey="protexpress.page.editprotocolapplicationdetails.buttons.delete" id="delete" deleteConfirmText="protocolapplication.delete.confirm"  onclick="ProtExpress.submitAjaxFormToUrl('editProtAppForm', 'detail-content', '${deleteProtAppUrl}'); this.blur(); return false;"/>
     </protExpress:buttonRow>
 </s:form>
-
-<script type="text/javascript">
-    protAppDatePerformed = new Epoch('protAppDatePerformedPopup', 'popup', document.getElementById('editProtAppForm_protocolApplication_datePerformed'));
-</script>
 

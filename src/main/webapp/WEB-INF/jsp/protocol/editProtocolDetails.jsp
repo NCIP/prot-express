@@ -79,7 +79,7 @@
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.notes" key="protexpress.contact.notes" labelposition="top" /></p>
+                                <p><s:textarea name="protocol.contactPerson.notes" key="protexpress.contact.notes" rows="4" labelposition="top"></s:textarea></p>
                             </td>
                         </tr>
                     </table>

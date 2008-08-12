@@ -24,7 +24,9 @@
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/protExpress.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/experimentTree.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/pde.js"/>"></script>
-    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/calendar/epoch_classes.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/calendar/calendar.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/calendar/calendar-setup.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/calendar/calendar-en.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/overlib/overlibmws.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/overlib/overlibmws_bubble.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/overlib/overlibmws_filter.js"/>"></script>
@@ -34,7 +36,7 @@
     <link rel="stylesheet" href="<c:url value="/stylesheets/style.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/protExpress.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/treeview.css"/>" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="<c:url value="/stylesheets/calendar/epoch_styles.css"/>" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<c:url value="/stylesheets/calendar/calendar.css"/>" media="screen" type="text/css"/>
     <link rel="stylesheet" href="<c:url value="/stylesheets/overwrite.css"/>" media="screen" type="text/css"/>
   <script type="text/javascript" language="javascript">
       var contextPath = "<%=request.getContextPath()%>";

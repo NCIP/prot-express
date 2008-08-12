@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
 <head><s:head theme="ajax" /></head>
 <title><fmt:message key="protexpress.page.createnewexperiment.overview.caption" /></title>
@@ -71,10 +72,7 @@
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
-                        <s:textfield theme="xhtml" name="experiment.datePerformed" required="true" size="10" maxlength="10">
-                            <s:param name="value"><s:date name="experiment.datePerformed" format="MM/dd/yyyy"/></s:param>
-                        </s:textfield>
-                        <a href="javascript://noop/" onclick="expDatePerformed.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>
+                        <protExpress:datefield formName="createExperimentForm" htmlField="${experiment.datePerformed}" sname="experiment.datePerformed" theme="xhtml" />
                     </fieldset>
                     <fieldset class="rightfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
@@ -125,9 +123,6 @@
                     </del>
                 </div>
             </s:form>
-            <script type="text/javascript">
-                var expDatePerformed = new Epoch('expDatePerformedPopup', 'popup', document.getElementById('createExperimentForm_experiment_datePerformed'));
-            </script>
         </div>
         <!--/ADD CONTENT HERE-->
     </div>

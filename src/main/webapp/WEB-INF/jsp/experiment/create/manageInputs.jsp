@@ -18,4 +18,3 @@
 </div>
 
 <jsp:include page="/WEB-INF/jsp/experiment/create/protocolFooter.jsp" />
-</div>

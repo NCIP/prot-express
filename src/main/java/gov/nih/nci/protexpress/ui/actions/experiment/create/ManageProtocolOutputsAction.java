@@ -133,9 +133,21 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      */
     @SkipValidation
     public String addNewOutput() {
-        getProtocolApplication().getOutputs().add(new InputOutputObject(null));
+        ManageProtAppInputOutputHelper.addNewOutput(getProtocolApplication().getOutputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return actionResultAddNewOutput;
+    }
+
+    /**
+     * Deletes the specified input from the protocol application.
+     *
+     * @return the directive for the next action / page to be directed to.
+     */
+    @SkipValidation
+    public String deleteOutput() {
+        ManageProtAppInputOutputHelper.deleteOutput(getProtocolApplication().getOutputs(), getDeleteIndex());
+        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        return this.actionResultAddNewOutput;
     }
 
     /**

@@ -96,6 +96,7 @@ import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -150,6 +151,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
      *
      * @return the experimentRun.
      */
+    @CustomValidator(type = "hibernate")
     public ExperimentRun getExperimentRun() {
         return experimentRun;
     }
@@ -251,6 +253,7 @@ public class ExperimentRunDetailsAction extends ExperimentDetailsAction implemen
      *
      * @return the protocol.
      */
+    @CustomValidator(type = "hibernate")
     public Protocol getProtocol() {
         return protocol;
     }

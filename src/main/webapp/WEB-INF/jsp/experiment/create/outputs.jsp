@@ -3,50 +3,35 @@
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
 
-<s:actionerror ></s:actionerror>
-<s:form id="protocolApplicationOutputsForm" method="post">
-    <div class="searchresults" >
-        <div id="divInputOutput">
-            <table class="newdata2">
-                <tr>
-                    <th class="alignright"><fmt:message key="protexpress.page.createnewexperiment.addoutputs.column.count" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.addoutputs.column.name" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.addoutputs.column.filename" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.addoutputs.column.notes" /></th>
-                    <th><fmt:message key="protexpress.page.createnewexperiment.addoutputs.column.action" /></th>
-                </tr>
-                <s:iterator id="output" value="protocolApplication.outputs" status="e">
-                <tr>
-                    <td class="alignright">${e.index + 1}</td>
-                    <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true" cssStyle="width:99%"/></td>
-                    <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" cssStyle="width:99%"/></td>
-                    <td><s:textarea name="protocolApplication.outputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
-                    <td class="action">
-                        <s:if test="protocolApplication.outputs.size > 1">
-                            <c:url var="deleteOutputUrl" value="/createExperiment/protocols/outputs/deleteOutput.action">
-                                <c:param name="deleteIndex" value="${e.index}" />
-                            </c:url>
-                            <a href="${deleteOutputUrl}"><img src="<c:url value="/images/ico_delete.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.addoutputs.icon.deletenewoutput.alt" />" /></a>
-                        </s:if>
-                    </td>
-                </tr>
-                </s:iterator>
-                <tr>
-                    <td colspan="5">
-                        <del class="btnwrapper">
-                            <ul id="btnrow2" style="float:right; margin-right:0">
-                                <li>
-                                    <s:url id="actionUrlAddOutput" value="/createExperiment/protocols/outputs/addNewOutput.action"/>
-                                    <a href="javascript:submitForm('${actionUrlAddOutput}', 'protocolApplicationOutputsForm');" class="btn" onclick="this.blur();">
-                                        <span class="btn_img"><span class="addrow"><fmt:message key="protexpress.page.createnewexperiment.addoutputs.button.addanotheroutput" /></span></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </del>
-                    </td>
-                </tr>
-            </table>
-        </div>
+<div>
+  <c:set var="mode" value="CREATE" />
+  <c:set var="formId" value="manageOutputsForm" />
+  <c:set var="divId" value="divContent" />
+  <c:url var="saveUrl" value="/createExperiment/protocols/outputs/saveOutputsToSession.action" />
+ <s:actionerror ></s:actionerror>
+    <s:form id="manageOutputsForm" action="createExperiment/protocols/outputs/addNewOutput" method="post" >
+        <!-- New Outputs List -->
+        <c:set var="addNewOutputUrlTarget" value="/ajax/createExperiment/protocols/outputs/addNewOutput.action" />
+        <c:set var="deleteOutputUrlTarget" value="/ajax/createExperiment/protocols/outputs/deleteOutput.action"/>
+        <fieldset>
+            <legend><fmt:message key="protexpress.page.createnewexperiment.addoutputs.title" /></legend>
+            <%@ include file="/WEB-INF/jsp/experiment/common/manageNewOutputs.jsp"%>
+        </fieldset>
+        <!-- /New Outputs List -->
+    </s:form>
+  <div class="clear"></div>
+  <div class="actionsrow">
+      <del class="btnwrapper">
+          <ul id="btnrow2">
+              <li>
+                  <a href="javascript:submitForm('${saveUrl}', '${formId}');" class="btn" onclick="this.blur();">
+                      <span class="btn_img">
+                          <span class="next"><fmt:message key="protexpress.page.createnewexperiment.addoutputs.button.continue" /></span>
+                      </span>
+                  </a>
+              </li>
+          </ul>
+      </del>
     </div>
-</s:form>
-
+    <div class="clear"/>
+</div>

@@ -38,9 +38,7 @@
     </fieldset>
     <fieldset class="rightfield">
         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.editexperimentrundetails.dateperformedtitle" /> (<fmt:message key="default.date.format"/>)</legend>
-        <s:textfield theme="xhtml" name="experimentRun.datePerformed" required="true" size="10" maxlength="10">
-            <s:param name="value"><s:date name="experimentRun.datePerformed" format="MM/dd/yyyy"/></s:param>
-        </s:textfield><a href="javascript://noop/" onclick="expRunDatePerformed.toggle();"><img src="<c:url value="/images/ico_calendar.gif" />" /></a>
+        <protExpress:datefield formName="editExperimentRunForm" htmlField="${experimentRun.datePerformed}" sname="experimentRun.datePerformed" theme="xhtml" />
     </fieldset>
     <div class="clear"><br /></div>
 
@@ -57,9 +55,6 @@
         <protExpress:button style="add_folder" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol" id="add_folder" onclick="ProtExpress.loadDiv('${addNewProtocolUrl}', 'detail-content', true); this.blur(); return false;"/>
     </protExpress:buttonRow>
 </s:form>
-<script type="text/javascript">
-    expRunDatePerformed = new Epoch('expRunDatePerformedPopup', 'popup', document.getElementById('editExperimentRunForm_experimentRun_datePerformed'));
-</script>
 
 
 

@@ -48,9 +48,9 @@
                                 <fmt:message key="protexpress.page.search.name" />: <s:textfield name="searchParameters.name" key="protexpress.page.search.name" size="25" />
                             </td>
                             <td id="date" colspan="2">
-                                <protExpress:datefield formname="searchForm" name="${searchParameters.fromDate}" sname="searchParameters.fromDate" />
+                                <protExpress:datefield formName="searchForm" htmlField="${searchParameters.fromDate}" sname="searchParameters.fromDate" theme="simple" />
                                 -
-                                <protExpress:datefield formname="searchForm" name="${searchParameters.toDate}" sname="searchParameters.toDate" />
+                                <protExpress:datefield formName="searchForm" htmlField="${searchParameters.toDate}" sname="searchParameters.toDate" theme="simple" />
                             </td>
                         </tr>
                     </tbody>
@@ -61,7 +61,7 @@
             </s:form>
             <div class="clear"></div>
         </div>
-        
+
         <div class="searchresults" id="searchresults">
         <!--/Search Filters-->
         <!--Search Results-->
