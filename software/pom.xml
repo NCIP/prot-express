@@ -670,6 +670,7 @@
                                 <srcFile>src/main/sql/extraCreateSchema.sql</srcFile>
                                 <srcFile>src/main/sql/configurationParametersBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/protExpressBootstrapData.sql</srcFile>
+                                <srcFile>src/main/sql/createNewUser.sql</srcFile>
                                 <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                             </srcFiles>
                         </configuration>
