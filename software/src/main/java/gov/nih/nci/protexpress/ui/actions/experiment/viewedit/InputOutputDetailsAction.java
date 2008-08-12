@@ -87,6 +87,7 @@ import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -138,6 +139,7 @@ public class InputOutputDetailsAction extends ProtocolApplicationDetailsAction i
      *
      * @return the inputOutputObject.
      */
+    @CustomValidator(type = "hibernate")
     public InputOutputObject getInputOutputObject() {
         return inputOutputObject;
     }

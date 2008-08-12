@@ -197,32 +197,6 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
     }
 
     /**
-     * Deletes the specified output from the protocol application.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String deleteOutput() {
-        if (getDeleteIndex().intValue() >= 0) {
-            deleteInputOutput(getProtocolApplication().getOutputs(), getDeleteIndex().intValue());
-        }
-        return ActionSupport.INPUT;
-    }
-
-    /**
-     * Deletes the object at the specified index from the list.
-     *
-     * @param lst the list.
-     * @param index the index of the object to be deleted.
-     */
-    private void deleteInputOutput(List<InputOutputObject> lst, int index) {
-        if (lst != null) {
-            lst.remove(index);
-            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        }
-    }
-
-    /**
      * Gets the deleteIndex.
      *
      * @return the deleteIndex.

@@ -88,6 +88,7 @@ import gov.nih.nci.protexpress.util.UserHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -125,6 +126,7 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
      *
      * @return the experiment.
      */
+    @CustomValidator(type = "hibernate")
     public Experiment getExperiment() {
         return experiment;
     }

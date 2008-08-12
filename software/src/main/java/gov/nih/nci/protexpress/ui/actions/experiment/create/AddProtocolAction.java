@@ -95,9 +95,8 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action for managing create experiment process.
@@ -244,11 +243,6 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      *
      * @return the directive for the next action / page to be directed to
      */
-@Validations(
-    requiredStrings = {
-            @RequiredStringValidator(fieldName = "protocol.name", key = "validator.notEmpty", message = "")
-    }
-)
     private String saveProtocolApplicationInformation() {
         ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
         if (expRun != null) {
@@ -278,6 +272,7 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      *
      * @return the protocol.
      */
+    @CustomValidator(type = "hibernate")
     public Protocol getProtocol() {
         return protocol;
     }

@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.util.SessionHelper;
 import gov.nih.nci.protexpress.util.UserHolder;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
@@ -90,11 +91,8 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 import com.opensymphony.xwork2.validator.annotations.Validations;
-import gov.nih.nci.protexpress.util.SessionHelper;
 
 /**
  * Action for managing experiment information - create, reload and view.
@@ -168,12 +166,6 @@ public class ManageExperimentAction extends AbstractCreateExperimentAction {
 @Validations(
     emails = {
             @EmailValidator(fieldName = "protocol.contactPerson.email", key = "validator.email", message = "")
-        },
-    requiredStrings = {
-            @RequiredStringValidator(fieldName = "experiment.name", key = "validator.notEmpty", message = "")
-        },
-    requiredFields = {
-            @RequiredFieldValidator(fieldName = "experiment.datePerformed", key = "validator.notEmpty", message = "")
         }
     )
 

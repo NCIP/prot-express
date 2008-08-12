@@ -165,6 +165,13 @@
             <result name="addNewOutput">/WEB-INF/jsp/experiment/create/manageOutputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+
+        <action name="ajax/createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
+            <result name="addNewOutput">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
         <!-- /Create Experiment Actions -->
 
         <!-- View Experiment Actions -->
