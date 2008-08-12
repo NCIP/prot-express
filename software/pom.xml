@@ -449,7 +449,7 @@
                     <check>
                         <haltOnFailure>true</haltOnFailure>
                         <totalBranchRate>30</totalBranchRate>
-                        <totalLineRate>30</totalLineRate>
+                        <totalLineRate>31</totalLineRate>
                     </check>
                     <instrumentation>
                         <excludes>
@@ -586,6 +586,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
+                <test.jdbc.url>jdbc:hsqldb:mem:protExpressDevTests</test.jdbc.url>
                 <database.url.prefix>jdbc:postgresql://cbiodb590.nci.nih.gov:5457/</database.url.prefix>
                 <database.name>protexpress</database.name>
                 <jdbc.username>gpsxar</jdbc.username>
