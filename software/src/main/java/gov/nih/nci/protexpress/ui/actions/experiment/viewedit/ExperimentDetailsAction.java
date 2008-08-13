@@ -92,7 +92,7 @@ import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * An abstract base action class for all actions related to the Create Experiment process.
+ * Action class for editing experiment details.
  *
  * @author Krishna Kanchinadam
  */

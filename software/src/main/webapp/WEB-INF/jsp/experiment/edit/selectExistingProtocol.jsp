@@ -7,10 +7,10 @@
 <h3>${experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.caption" /></h3>
 
 <div class="tabs">
-    <s:url id="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
+    <s:url id="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/protocol/addNewProtocol.action">
         <s:param name="experimentRunId" value="experimentRun.id" />
     </s:url>
-    <s:url id="selectExistingProtocolUrl" value="/ajax/editExperiment/experimentRun/selectExistingProtocol.action">
+    <s:url id="selectExistingProtocolUrl" value="/ajax/editExperiment/experimentRun/protocol/selectExistingProtocol.action">
         <s:param name="experimentRunId" value="experimentRun.id" />
     </s:url>
     <s:a href="javascript:http://noop/" onclick="ProtExpress.loadDiv('%{addNewProtocolUrl}', 'detail-content', true)">
@@ -22,7 +22,7 @@
 </div>
 
 <!--Protocol Search Form -->
-<s:form id="searchForm" action="/ajax/editExperiment/experimentRun/searchProtocols" method="post" theme="simple">
+<s:form id="searchForm" action="/ajax/editExperiment/experimentRun/protocol/searchProtocols" method="post" theme="simple">
     <s:hidden name="protocols.sortDirection" />
     <s:hidden name="protocols.sortCriterion" />
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>

@@ -27,6 +27,7 @@
             <div id="treecol">
                 <h2 class="treehead"><fmt:message key="protexpress.page.editexperiment.treeview.title" /></h2>
                 <c:set var="treeMode" value="EDIT" />
+                <c:set var="treeNodeUrlPrefix" value="edit" />
                 <%@ include file="/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp"%>
             </div>
             <!-- /TREE COLUMN -->
