@@ -7,16 +7,10 @@
 <h3>${protocolApplication.protocol.name}</h3>
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
-    <c:url var="actionUrl" value="/ajax/experiment/nav/tree/refreshProtocolApplication.action">
-        <c:param name="protAppId" value="${protocolApplication.id}"/>
-        <c:param name="treeMode" value="EDIT"/>
-    </c:url>
-    <script type="text/javascript">
-        var actionUrl = '${actionUrl}';
-        var divElement = document.getElementById('span_${protocolApplication.id}');
-        var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>
 </c:if>
+
+<jsp:include page="/WEB-INF/jsp/experiment/edit/refreshTree.jsp" />
+
 <s:form id="editProtAppForm" action="/ajax/editExperiment/protocolApplication/saveProtocolApplication.action" method="post">
     <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
@@ -75,9 +69,13 @@
 
     <c:url var="manageInputsUrl" value="/ajax/editExperiment/protocolApplication/manageInputs.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+        <c:param name="experimentRunId" value="${experimentRun.id}" />
+        <c:param name="experimentId" value="${experiment.id}" />
     </c:url>
     <c:url var="manageOutputsUrl" value="/ajax/editExperiment/protocolApplication/manageOutputs.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+        <c:param name="experimentRunId" value="${experimentRun.id}" />
+        <c:param name="experimentId" value="${experiment.id}" />
     </c:url>
 
     <c:url var="deleteProtAppUrl" value="/ajax/editExperiment/protocolApplication/delete.action" />

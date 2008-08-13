@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 
-
 <title><fmt:message key="protexpress.page.editexperiment.title.caption" /></title>
 <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
     <c:param name="experimentId" value="${experiment.id}" />
@@ -25,10 +24,8 @@
         <div id="editview">
             <!--TREE COLUMN-->
             <div id="treecol">
-                <h2 class="treehead"><fmt:message key="protexpress.page.editexperiment.treeview.title" /></h2>
-                <c:set var="treeMode" value="EDIT" />
-                <c:set var="treeNodeUrlPrefix" value="edit" />
-                <%@ include file="/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp"%>
+            <c:set var="treeNodeUrlPrefix" value="edit" />
+            <%@ include file="/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp"%>
             </div>
             <!-- /TREE COLUMN -->
             <!-- DETAIL COLUMN -->

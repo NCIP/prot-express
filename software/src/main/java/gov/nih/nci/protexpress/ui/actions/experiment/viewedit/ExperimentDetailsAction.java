@@ -104,6 +104,7 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
     private Long experimentId;
     private String actionResultViewExperiment = "viewExperiment";
     private String actionResultDelete = "delete";
+    private String treeNodeUrlPrefix = null;
 
     /**
      * Action Constructor.
@@ -199,4 +200,33 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
         ProtExpressRegistry.getExperimentService().deleteExperiment(getExperiment());
         return actionResultDelete;
     }
+
+    /**
+     * Refreshes the Experiment Tree.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String refreshExperimentTree() {
+        return "refreshExperimentTree";
+    }
+
+    /**
+     * Gets the treeNodeUrlPrefix.
+     *
+     * @return the treeNodeUrlPrefix.
+     */
+    public String getTreeNodeUrlPrefix() {
+        return treeNodeUrlPrefix;
+    }
+
+    /**
+     * Sets the treeNodeUrlPrefix.
+     *
+     * @param treeNodeUrlPrefix the treeNodeUrlPrefix to set.
+     */
+    public void setTreeNodeUrlPrefix(String treeNodeUrlPrefix) {
+        this.treeNodeUrlPrefix = treeNodeUrlPrefix;
+    }
+
+
 }

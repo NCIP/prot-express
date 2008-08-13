@@ -13,7 +13,9 @@
     <c:param name="experimentRunId" value="${protocolApplication.experimentRun.id}" />
     <c:param name="experimentId" value="${protocolApplication.experimentRun.experiment.id}" />
 </c:url>
-<c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateInputs.action" />
+<c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateInputs.action">
+    <c:param name="experimentId" value="${protocolApplication.experimentRun.experiment.id}" />
+</c:url>
 
 <h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.caption" /></h3>
 <s:actionerror ></s:actionerror>

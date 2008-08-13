@@ -19,8 +19,8 @@
         <s:iterator id="output" value="protocolApplication.outputs" status="e">
             <tr>
                 <td class="alignright">${e.index + 1}</td>
-                <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" /></td>
-                <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%"/></td>
+                <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
+                <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
                 <td><s:textarea name="protocolApplication.outputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" readonly="%{attribReadOnly}" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
                 <td class="action">
                     <c:if test="${fn:length(protocolApplication.outputs) > 1}">
