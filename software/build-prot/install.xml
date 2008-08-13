@@ -32,7 +32,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	<property name="tools.dir" value="${basedir}/${tools.dist.relative.dir}" />
 	<property name="common.dir.src" value="${basedir}/${common.dist.relative.dir}" />
 	<property name="common.dir.dest" value="${working.dir}/${common.dist.relative.dir}" />
-	<property name="lib.dir.dest" value="${working.dir}/${lib.dist.relative.dir}" />
+	<property name="lib.dir.src" value="${basedir}/${lib.dist.relative.dir}" />
 	<property name="tomcat-conf.dir.dest" value="${working.dir}/${tomcat-conf.dist.relative.dir}" />
 	<property name="db.dir.src" value="${basedir}/${db.dist.relative.dir}" />
 	<property name="db.dir.dest" value="${working.dir}/${db.dist.relative.dir}" />
@@ -340,16 +340,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 		<mkdir dir="${tomcat.temp.dir}" />
 	
 
-		<copy file="${lib.dir.dest}/naming-factory.jar"
-			todir="${tomcat.home}/common/lib/naming-factory.jar" overwrite="true"/>
-		<copy file="${lib.dir.dest}/mail-1.4.jar"
-			todir="${tomcat.home}/common/lib/mail-1.4.jar" overwrite="true"/>
+		<copy file="${lib.dir.src}/naming-factory.jar"
+			todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/mail-1.4.jar"
+			todir="${tomcat.home}/common/lib/" overwrite="true"/>
 		
-		<copy file="${lib.dir.dest}/activation-1.0.2.jar"
-			todir="${tomcat.home}/common/lib/activation-1.0.2.jar" overwrite="true"/>
+		<copy file="${lib.dir.src}/activation-1.0.2.jar"
+			todir="${tomcat.home}/common/lib/" overwrite="true"/>
 			
-		<copy file="${lib.dir.dest}/jaxb-api-2.1.jar"
-			todir="${tomcat.home}/common/endorsed/jaxb-api-2.1.jar" overwrite="true"/>			
+		<copy file="${lib.dir.src}/jaxb-api-2.1.jar"
+			todir="${tomcat.home}/common/endorsed/" overwrite="true"/>			
 			
 	
 	</target>

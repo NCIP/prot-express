@@ -1,9 +1,32 @@
+#####################
+###	DEPLOY SETTINGS	###
+#####################
+ssh.server.username=
+ssh.server.hostname=
+ssh.port=
+ssh.key.file=
+ssh.dir.temp=
+
 ##############################
 ###  APPLICATION SETTINGS  ###
 ##############################
 application.base.path=
 authentication.type=
+
+###################################
+#  URL TO ACCESS THE APPLICATION  #
+###################################
 application.url=
+
+#####################################
+###  APPLICATION SERVER SETTINGS  ###
+#####################################
+tomcat.home=${application.base.path}
+tomcat.hostname=
+tomcat.port.http=
+
+jboss.home=${application.base.path}
+jboss.server.hostname=${tomcat.hostname}
 
 ###########################
 ###  DATABASE SETTINGS  ###
@@ -11,36 +34,24 @@ application.url=
 database.type=
 database.server=
 database.port=
+database.name=
+database.user=
+database.password=
+database.url=
 
-########################
-###  JBOSS SETTINGS  ###
-########################
-jboss.home=
-jboss.server.hostname=
-jboss.server.jndi.port=
-jboss.server.name=
-jboss.server.port=
 
 ##############
 ###  LDAP  ###
 ##############
 ldap.url=
 ldap.basedn=
-
-##################################
-#  Grid Service registration URL #
-##################################
-# Production Grid
-#    grid.index.url=
-# QA Grid
-#    grid.index.url=
-# Training Grid
-grid.index.url=
+ldap.prefix=
 
 ########################
 ###  MAIL  SETTINGS  ###
 ########################
-mail.smtp.server=
+mail.smtp.host=
+mail.smtp.port=
 
 ###################################
 #  PRE-POST VALIDATION PROPERTIES #
