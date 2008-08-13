@@ -268,7 +268,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<attribute name="maven.goal.list"/>
 		<attribute name="maven.dir"/>
 		<sequential>
-			<condition property="mvn.cmd" value="maven">
+			<condition property="mvn.cmd" value="mvn">
 				<or>
 					<os family="unix" />
 					<os family="mac" />

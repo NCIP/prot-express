@@ -13,7 +13,7 @@ CYGWIN*) cygwin=true;;
 OS400*) os400=true;;
 Darwin*) darwin=true;;
 esac
-export CATALINA_OPTS=-Djava.security.auth.login.config=$CATALINA_HOME/webapps/protExpress/META-INF/jaas.config”
+
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -46,4 +46,5 @@ else
   fi
 fi 
 
+export CATALINA_OPTS=-Djava.security.auth.login.config=$PRGDIR/../webapps/protExpress/META-INF/jaas.config
 exec "$PRGDIR"/"$EXECUTABLE" start "$@"
