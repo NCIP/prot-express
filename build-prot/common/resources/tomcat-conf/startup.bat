@@ -8,7 +8,7 @@ rem ---------------------------------------------------------------------------
 
 rem Guess CATALINA_HOME if not defined
 set CURRENT_DIR=%cd%
-set CATALINA_OPTS=-Djava.security.auth.login.config=%CATALINA_HOME%\webapps\protExpress\META-INF\jaas.config
+
 if not "%CATALINA_HOME%" == "" goto gotHome
 set CATALINA_HOME=%CURRENT_DIR%
 if exist "%CATALINA_HOME%\bin\catalina.bat" goto okHome
@@ -22,6 +22,7 @@ echo This environment variable is needed to run this program
 goto end
 :okHome
 
+set CATALINA_OPTS=-Djava.security.auth.login.config=%CATALINA_HOME%\webapps\protExpress\META-INF\jaas.config
 set EXECUTABLE=%CATALINA_HOME%\bin\catalina.bat
 
 rem Check that target executable exists
