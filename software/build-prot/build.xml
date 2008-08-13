@@ -170,8 +170,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 
 	<target name="init" >
-		<echo message="PATH:::====${env.PATH}"/>
-		<echo message="PATH:::====${env.MAVEN_HOME}"/>
 		<mkdir dir="${target.dir}"/>
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.exploded.dir}"/>
@@ -280,7 +278,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<os family="windows" />
 			</condition>
 			<exec executable="${mvn.cmd}" dir="@{maven.dir}" failonerror="true">
-				<arg line="@{maven.profile.list} @{maven.goal.list}"/>				
+				<arg line="@{maven.profile.list} @{maven.goal.list}"/>
+				<arg line="-Dmaven.test.skip=true"/>
 			</exec>
 		</sequential>
 	</macrodef>
