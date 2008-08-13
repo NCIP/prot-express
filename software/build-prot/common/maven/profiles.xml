@@ -1,0 +1,21 @@
+<settings>
+	<profiles>
+		<profile>
+			<id>bda</id>
+			<properties>				
+				<schema.file>@db.protexpress.file.name@</schema.file>
+				<hibernate.drop>@db.protexpress.generate.drop@</hibernate.drop>
+				<hibernate.create>@db.protexpress.generate.create@</hibernate.create>
+				<jdbc.url>jdbc:postgresql://DB_SERVER_NAME:DB_PORT_NUMBER/DB_NAME</jdbc.url>
+				<jdbc.username>DB_USERNAME</jdbc.username>
+				<jdbc.password>DB_USER_PASSWORD</jdbc.password>
+				<ldap.host.url>LDAP_HOSTNAME</ldap.host.url>
+				<ldap.searchbase>LDAP_SEARCHBASE</ldap.searchbase>
+				<ldap.searchprefix>LDAP_SEARCHPREFIX</ldap.searchprefix>
+			</properties>
+		</profile>
+	</profiles>
+	<activeProfiles>		
+		<activeProfile>bda</activeProfile>
+	</activeProfiles>
+</settings>

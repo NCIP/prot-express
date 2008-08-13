@@ -1,0 +1,58 @@
+##############################
+###  APPLICATION SETTINGS  ###
+##############################
+application.base.path=
+authentication.type=
+application.url=
+
+###########################
+###  DATABASE SETTINGS  ###
+###########################
+database.type=
+database.server=
+database.port=
+database.name=
+database.user=
+database.password=
+database.url=
+
+
+#####################
+###  TOMCAT       ###
+#####################
+tomcat.server.hostname=
+tomcat.home=
+tomcat.hostname=
+tomcat.port.http=
+tomcat.port.ajp=
+tomcat.port.ssl=
+tomcat.port.shutdown=
+
+##############
+###  LDAP  ###
+##############
+ldap.url=
+ldap.basedn=
+
+##################################
+#  Grid Service registration URL #
+##################################
+# Production Grid
+#    grid.index.url=
+# QA Grid
+#    grid.index.url=
+# Training Grid
+grid.index.url=
+
+
+########################
+###  MAIL  SETTINGS  ###
+########################
+mail.smtp.server=
+
+###################################
+#  PRE-POST VALIDATION PROPERTIES #
+###################################
+validation.pre.port.list=
+validation.post.http.list=
+validation.post.socket.list=
