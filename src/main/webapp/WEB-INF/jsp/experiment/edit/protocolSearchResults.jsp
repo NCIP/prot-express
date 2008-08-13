@@ -35,7 +35,7 @@
                           <li>
                               <c:choose>
                                   <c:when test="${row.auditInfo.creator == currentUser.loginName}">
-                                      <c:url var="selectAndContinueUrl" value="/ajax/editExperiment/experimentRun/selectProtocolAndContinue.action">
+                                      <c:url var="selectAndContinueUrl" value="/ajax/editExperiment/experimentRun/protocol/selectProtocolAndContinue.action">
                                           <c:param name="protocolId" value="${row.id}" ></c:param>
                                           <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
                                       </c:url>
@@ -46,7 +46,7 @@
                                       </a>
                                   </c:when>
                                   <c:otherwise>
-                                      <c:url var="copyAndContinueUrl" value="/ajax/editExperiment/experimentRun/copyProtocolAndContinue.action">
+                                      <c:url var="copyAndContinueUrl" value="/ajax/editExperiment/experimentRun/protocol/copyProtocolAndContinue.action">
                                           <c:param name="protocolId" value="${row.id}" ></c:param>
                                           <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
                                       </c:url>

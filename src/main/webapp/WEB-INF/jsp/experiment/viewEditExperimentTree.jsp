@@ -5,9 +5,9 @@
 
 <ul class="pde">
     <li>
-		<span id="span_${experiment.id}">
+    <span id="span_${experiment.id}">
         <%@ include file="/WEB-INF/jsp/tree/experimentNode.jsp"%>
-        </span>    
+        </span>
         <%@ include file="/WEB-INF/jsp/tree/experimentRunNodes.jsp"%>
     </li>
 </ul>

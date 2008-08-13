@@ -42,7 +42,7 @@
     </fieldset>
     <div class="clear"><br /></div>
 
-    <c:url var="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/addNewProtocol.action">
+    <c:url var="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/protocol/addNewProtocol.action">
         <c:param name="experimentRunId" value="${experimentRun.id}" />
     </c:url>
     <c:url var="repeatExperimentRunUrl" value="/ajax/editExperiment/experimentRun/repeat.action" />
