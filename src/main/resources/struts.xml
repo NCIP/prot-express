@@ -225,7 +225,7 @@
         <action name="ajax/editExperiment/experiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentDetailsAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/edit/experimentDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/experimentDetails.jsp</result>
-            <result name="refreshTree">/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp</result>
+            <result name="refreshExperimentTree">/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp</result>
             <result name="delete" type="redirect-action">home/home</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
@@ -253,8 +253,8 @@
                 <param name="actionName">load</param>
                 <param name="namespace">ajax/editExperiment/protocolApplication</param>
                 <param name="parse">true</param>
-                <param name="experimentId">${experiment.id}</param>
-                <param name="experimentRunId">${experimentRun.id}</param>
+                <param name="experimentId">${experimentId}</param>
+                <param name="experimentRunId">${experimentRunId}</param>
                 <param name="protocolApplicationId">${newProtAppId}</param>
             </result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />

@@ -7,16 +7,10 @@
 <h3>${experiment.name}</h3>
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
-    <c:url var="actionUrl" value="/ajax/experiment/nav/tree/refreshExperiment.action">
-        <c:param name="experimentId" value="${experiment.id}"/>
-        <c:param name="treeMode" value="EDIT"/>
-    </c:url>
-    <script type="text/javascript">
-      var actionUrl = '${actionUrl}';
-      var divElement = document.getElementById('span_${experiment.id}');
-      var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>
 </c:if>
+
+<jsp:include page="/WEB-INF/jsp/experiment/edit/refreshTree.jsp" />
+
 <s:form id="editExperimentForm" action="/ajax/editExperiment/experiment/delete.action" method="post">
     <s:hidden name="experimentId" value="%{experiment.id}"/>
     <fieldset class="leftfield">

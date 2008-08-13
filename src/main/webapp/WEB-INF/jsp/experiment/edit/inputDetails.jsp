@@ -7,17 +7,10 @@
 <h3>${inputOutputObject.name}</h3>
 <c:if test="${not empty successMessage}">
     <div class="confirm_msg">${successMessage}</div>
-    <c:url var="actionUrl" value="/ajax/experiment/nav/tree/refreshInput.action">
-        <c:param name="protAppId" value="${protocolApplicationId}"/>
-        <c:param name="inputId" value="${inputOutputObject.id}"/>
-        <c:param name="treeMode" value="EDIT"/>
-    </c:url>
-    <script type="text/javascript">
-        var actionUrl = '${actionUrl}';
-        var divElement = document.getElementById('span_${protocolApplicationId}.${inputOutputObject.id}');
-        var aj = new Ajax.Updater(divElement, actionUrl, {asynchronous: true, method: 'post', evalScripts: true, executeScripts: true});
-    </script>
 </c:if>
+
+<jsp:include page="/WEB-INF/jsp/experiment/edit/refreshTree.jsp" />
+
 <s:form id="editInputForm" action="/ajax/editExperiment/input/saveInput.action" method="post">
     <s:hidden name="inputOutputObjectId" value="%{inputOutputObject.id}"/>
     <s:hidden name="protocolApplicationId" value="%{protocolApplication.id}"/>

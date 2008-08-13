@@ -324,7 +324,7 @@ public class ExperimentRunAddProtocolAction extends ExperimentRunDetailsAction i
              // set the appropriate id's to pass as parameters to the next action.
              setNewProtAppId(protApplication.getId());
              setExperimentRunId(getExperimentRun().getId());
-             setExperimentId(getExperimentRun().getExperiment().getId());
+             setExperimentId(getExperiment().getId());
              return actionResultEditProtocolApplicationDetails;
     }
 

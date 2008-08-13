@@ -13,11 +13,14 @@
     <c:param name="experimentRunId" value="${protocolApplication.experimentRun.id}" />
     <c:param name="experimentId" value="${protocolApplication.experimentRun.experiment.id}" />
 </c:url>
-<c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateOutputs.action" />
+<c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateOutputs.action">
+    <c:param name="experimentId" value="${protocolApplication.experimentRun.experiment.id}" />
+</c:url>
 
 <h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.outputs.caption" /></h3>
 <s:actionerror ></s:actionerror>
 <s:form id="manageOutputsForm" action="/ajax/editExperiment/protocolApplication/addNewOutput.action" method="post">
+
     <!-- New Outputs List -->
     <c:set var="addNewOutputUrlTarget" value="/ajax/editExperiment/protocolApplication/addNewOutput.action" />
     <c:set var="deleteOutputUrlTarget" value="/ajax/editExperiment/protocolApplication/deleteOutput.action"/>

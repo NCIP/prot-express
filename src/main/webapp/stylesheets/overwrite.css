@@ -1,5 +1,5 @@
 /*
-USE THIS FILE TO OVERRIDE THE CSS DEFINED ELSEWHERE. 
+USE THIS FILE TO OVERRIDE THE CSS DEFINED ELSEWHERE.
 
 NEVER MODIFY THE PROVIDED CSS FOR ANY FRAMEWORKS, LIBRARIES, EXTERNAL TEAMS, UI TEAMS, etc..
 
@@ -20,7 +20,7 @@ TABLE.form TD
 { padding:3px; font-size:92%; vertical-align:top }
 TABLE.form TD TD, TABLE.form TD TD TD
 { font-size:100%; }
- 
+
 TABLE.form TD.tdLabel
 { width:28%; text-align:right; font-weight:bold; }
 
@@ -37,3 +37,4 @@ TABLE.form TD TD, TABLE.form TD TD TD
 
 TABLE.form TD.tdLabel
 { width:28%; text-align:right; font-weight:bold; }
+

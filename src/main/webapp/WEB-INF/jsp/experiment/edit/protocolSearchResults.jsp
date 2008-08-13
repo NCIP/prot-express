@@ -13,7 +13,7 @@
 
 <div class="tabbed">
     <div class="searchresults">
-      <c:url var="sortUrl" value="/ajax/createExperiment/protocols/add/doSearch.action" />
+      <c:url var="sortUrl" value="/ajax/editExperiment/experimentRun/protocol/searchProtocols.action" />
 
       <s:hidden name="protocolApplication.id" value="protocolApplication.id"/>
       <s:hidden name="experimentId" value="experiment.id"/>
@@ -38,6 +38,7 @@
                                       <c:url var="selectAndContinueUrl" value="/ajax/editExperiment/experimentRun/protocol/selectProtocolAndContinue.action">
                                           <c:param name="protocolId" value="${row.id}" ></c:param>
                                           <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
+                                          <c:param name="experimentId" value="${experiment.id}" ></c:param>
                                       </c:url>
                                       <a href="javascript://noop/" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${selectAndContinueUrl}'); this.blur(); return false;" class="btn" style="text-decoration:none">
                                           <span class="btn_img">
@@ -49,6 +50,7 @@
                                       <c:url var="copyAndContinueUrl" value="/ajax/editExperiment/experimentRun/protocol/copyProtocolAndContinue.action">
                                           <c:param name="protocolId" value="${row.id}" ></c:param>
                                           <c:param name="experimentRunId" value="${experimentRun.id}" ></c:param>
+                                          <c:param name="experimentId" value="${experiment.id}" ></c:param>
                                       </c:url>
                                       <a href="javascript://noop/" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${copyAndContinueUrl}'); this.blur(); return false;" class="btn" style="text-decoration:none">
                                           <span class="btn_img">
