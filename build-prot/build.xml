@@ -278,8 +278,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<os family="windows" />
 			</condition>
 			<exec executable="${mvn.cmd}" dir="@{maven.dir}" failonerror="true">
-				<arg line="@{maven.profile.list} @{maven.goal.list}"/>
-				<arg line="-Dmaven.test.skip=true"/>
+				<arg line="@{maven.profile.list} @{maven.goal.list}"/>				
 			</exec>
 		</sequential>
 	</macrodef>
@@ -455,6 +454,29 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="**/*"/>
 			</fileset>
 		</copy> 
+		
+		<property name="tomcat.temp.dir" value="${target.dir}/tomcat" />
+		<mkdir dir="${tomcat.temp.dir}" />
+		<!-- Apply patch to 5.5.20 using 5.5.17 common/lib/naming-factory.jar -->
+		<get src="http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.17/bin/apache-tomcat-5.5.17.zip"
+			dest="${tomcat.temp.dir}/apache-tomcat-5.5.17.zip" usetimestamp="true"/>
+		<unzip src="${tomcat.temp.dir}/apache-tomcat-5.5.17.zip" dest="${tomcat.temp.dir}">
+			<patternset>
+			    <include name="**/common/lib/naming-factory.jar"/>
+			</patternset>
+		</unzip>
+
+		<copy file="${tomcat.temp.dir}/apache-tomcat-5.5.17/common/lib/naming-factory.jar"
+			todir="${lib.dist.dir}" overwrite="true"/>
+
+		
+		<get src="http://repository.jboss.org/maven2/javax/activation/activation/1.0.2/activation-1.0.2.jar"
+			dest="${lib.dist.dir}/activation-1.0.2.jar" usetimestamp="true"/>
+		<get src="http://repo1.maven.org/maven2/javax/mail/mail/1.4/mail-1.4.jar"
+			dest="${lib.dist.dir}/mail-1.4.jar" usetimestamp="true"/>
+		<get src="http://repository.jboss.org/maven2/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar"
+			dest="${lib.dist.dir}/jaxb-api-2.1.jar" usetimestamp="true"/>
+		
 	</target>
 
 	<!-- Creates upgrader distribution -->
