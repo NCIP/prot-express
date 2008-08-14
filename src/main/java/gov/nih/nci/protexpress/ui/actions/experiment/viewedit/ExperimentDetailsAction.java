@@ -86,6 +86,8 @@ import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.util.UserHolder;
 
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
@@ -183,7 +185,9 @@ public class ExperimentDetailsAction extends AbstractExperimentDetailsAction imp
      */
     @Override
     public String load() {
-        if (!getExperiment().getAuditInfo().getCreator().equals(UserHolder.getUser().getLoginName())) {
+        String servletPath = ServletActionContext.getRequest().getServletPath();
+        if ((servletPath.indexOf("editExperiment/") != -1)
+                && !getExperiment().getAuditInfo().getCreator().equals(UserHolder.getUser().getLoginName())) {
             return this.actionResultViewExperiment;
         }
 
