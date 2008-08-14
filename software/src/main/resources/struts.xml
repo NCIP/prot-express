@@ -227,6 +227,7 @@
             <result name="success">/WEB-INF/jsp/experiment/edit/experimentDetails.jsp</result>
             <result name="refreshExperimentTree">/WEB-INF/jsp/experiment/viewEditExperimentTree.jsp</result>
             <result name="delete" type="redirect-action">home/home</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -234,6 +235,7 @@
             <result name="input">/WEB-INF/jsp/experiment/edit/experimentRunDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/experimentRunDetails.jsp</result>
             <result name="delete" type="chain">ajax/editExperiment/experiment/load</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <result name="editExperimentRun" type="redirect-action">
                 <param name="actionName">load</param>
                 <param name="namespace">ajax/editExperiment/experimentRun</param>
@@ -249,6 +251,7 @@
             <result name="input">/WEB-INF/jsp/experiment/edit/addNewProtocol.jsp</result>
             <result name="addNewProtocol">/WEB-INF/jsp/experiment/edit/addNewProtocol.jsp</result>
             <result name="selectExistingProtocol">/WEB-INF/jsp/experiment/edit/selectExistingProtocol.jsp</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <result name="editProtocolApplication" type="redirect-action">
                 <param name="actionName">load</param>
                 <param name="namespace">ajax/editExperiment/protocolApplication</param>
@@ -267,6 +270,7 @@
             <result name="addInputs">/WEB-INF/jsp/experiment/edit/manageInputs.jsp</result>
             <result name="addOutputs">/WEB-INF/jsp/experiment/edit/manageOutputs.jsp</result>
             <result name="delete" type="chain">ajax/editExperiment/experimentRun/load</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -274,6 +278,7 @@
             <result name="input">/WEB-INF/jsp/experiment/edit/inputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/inputDetails.jsp</result>
             <result name="delete" type="chain">ajax/editExperiment/protocolApplication/load</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -281,6 +286,7 @@
             <result name="input">/WEB-INF/jsp/experiment/edit/outputDetails.jsp</result>
             <result name="success">/WEB-INF/jsp/experiment/edit/outputDetails.jsp</result>
             <result name="delete" type="chain">ajax/editExperiment/protocolApplication/load</result>
+            <result name="viewExperiment" type="chain">viewExperiment/experiment/load</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

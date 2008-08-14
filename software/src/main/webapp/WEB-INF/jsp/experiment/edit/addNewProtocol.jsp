@@ -61,7 +61,7 @@
         <c:param name="experimentId" value="${experiment.id}" />
     </c:url>
     <protExpress:buttonRow>
-        <protExpress:button style="cancel" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.cancel" id="cancel" href="${cancelUrl} }"/>
+        <protExpress:button style="cancel" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.cancel" id="cancel" onclick="ProtExpress.loadDiv('${cancelUrl}', 'detail-content', true);"/>
         <protExpress:button style="save" textKey="protexpress.page.editexperimentrundetails.buttons.addprotocol.buttons.save" id="save" onclick="ProtExpress.submitAjaxForm('addNewProtocolForm', 'detail-content'); return false;"/>
     </protExpress:buttonRow>
 </s:form>
