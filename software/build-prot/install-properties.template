@@ -4,6 +4,7 @@
 application.base.path=
 authentication.type=
 application.url=
+database.drop-schema=
 
 ###########################
 ###  DATABASE SETTINGS  ###
@@ -15,6 +16,9 @@ database.name=
 database.user=
 database.password=
 database.url=
+
+jboss.home=
+jboss.server.hostname=
 
 
 #####################
@@ -33,26 +37,19 @@ tomcat.port.shutdown=
 ##############
 ldap.url=
 ldap.basedn=
+ldap.prefix=
 
-##################################
-#  Grid Service registration URL #
-##################################
-# Production Grid
-#    grid.index.url=
-# QA Grid
-#    grid.index.url=
-# Training Grid
-grid.index.url=
-
-
-########################
-###  MAIL  SETTINGS  ###
-########################
-mail.smtp.server=
+########
+# MAIL
+########
+mail.smtp.host=
+mail.smtp.port=
 
 ###################################
+#  				  #
 #  PRE-POST VALIDATION PROPERTIES #
 ###################################
 validation.pre.port.list=
 validation.post.http.list=
 validation.post.socket.list=
+

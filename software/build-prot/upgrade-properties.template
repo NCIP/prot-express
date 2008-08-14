@@ -13,12 +13,12 @@ application.url=
 #####################################
 ###  APPLICATION SERVER SETTINGS  ###
 #####################################
-tomcat.home=${application.base.path}
+tomcat.home=
 tomcat.hostname=
 tomcat.port.http=
 
-jboss.home=${application.base.path}
-jboss.server.hostname=${tomcat.hostname}
+jboss.home=
+jboss.server.hostname=
 
 ###########################
 ###  DATABASE SETTINGS  ###
@@ -30,7 +30,7 @@ database.name=
 database.user=
 database.password=
 database.url=
-
+extra.property=
 
 ##############
 ###  LDAP  ###
