@@ -220,7 +220,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			maven.profile.list="-P ${protExpress.maven.profile.list}"
 			maven.goal.list="${protExpress.maven.goal.list}"
 			maven.dir="${protExpress.base.dir}"
+			skip.test="true"
 			/>
+		<delete file="${software.dir}/profiles.xml"/>	
+		<maven
+			maven.profile.list="-P ${protExpress.maven.profile.list}"
+			maven.goal.list="test"
+			maven.dir="${protExpress.base.dir}"
+			/>	
 		<copy todir="${protExpress-war.dist.dir}" file="${protExpress.base.dir}/target/protExpress.war"/>
 	</target>
 	<target name="build:protExpress:gen-sql" depends="init">		
@@ -267,6 +274,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		<attribute name="maven.profile.list"/>
 		<attribute name="maven.goal.list"/>
 		<attribute name="maven.dir"/>
+		<attribute name="skip.test" default="false"/>
 		<sequential>
 			<condition property="mvn.cmd" value="mvn">
 				<or>
@@ -277,10 +285,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			<condition property="mvn.cmd" value="mvn.bat">
 				<os family="windows" />
 			</condition>
-			<exec executable="${mvn.cmd}" dir="@{maven.dir}" failonerror="true">
-				<arg line="@{maven.profile.list} @{maven.goal.list}"/>
-				<arg line="-Dmaven.test.skip=true"/>
-			</exec>
+			<if>
+				<equals arg1="@{skip.test}" arg2="true"/>
+				<then>
+					<exec executable="${mvn.cmd}" dir="@{maven.dir}" failonerror="true">
+						<arg line="@{maven.profile.list} @{maven.goal.list}"/>
+						<arg line="-Dmaven.test.skip=true"/>
+					</exec>
+				</then>
+				<else>
+					<exec executable="${mvn.cmd}" dir="@{maven.dir}" failonerror="true">
+						<arg line="@{maven.profile.list} @{maven.goal.list}"/>
+					</exec>					
+				</else>
+			</if>
+
 		</sequential>
 	</macrodef>
 		
