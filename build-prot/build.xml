@@ -227,6 +227,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 			maven.profile.list="-P ${protExpress.maven.profile.list}"
 			maven.goal.list="test"
 			maven.dir="${protExpress.base.dir}"
+			skip.test="${protexpress.skip.test}"
 			/>	
 		<copy todir="${protExpress-war.dist.dir}" file="${protExpress.base.dir}/target/protExpress.war"/>
 	</target>
