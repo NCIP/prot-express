@@ -24,7 +24,6 @@ jboss.server.hostname=
 #####################
 ###  TOMCAT       ###
 #####################
-tomcat.server.hostname=
 tomcat.home=
 tomcat.hostname=
 tomcat.port.http=
