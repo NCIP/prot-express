@@ -30,7 +30,7 @@ database.name=
 database.user=
 database.password=
 database.url=
-extra.property=
+
 
 ##############
 ###  LDAP  ###
