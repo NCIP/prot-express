@@ -12,11 +12,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <decorator:head />
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/prototype.js"/>"></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/effects.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/scriptaculous.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/builder.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/controls.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/dragdrop.js"/>"></script>
-    <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/effects.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/slider.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags.js"/>"></script>
     <script type="text/javascript" language="javascript" src="<c:url value="/scripts/ajaxtags/ajaxtags_controls.js"/>"></script>
@@ -42,4 +42,13 @@
       var contextPath = "<%=request.getContextPath()%>";
   </script>
 </head>
+
+<c:set var="divAjaxBodyId" value="divAjaxBody" />
+<c:set var="peFormId" value="peFormId" />
+
+
+
+
+
+
 

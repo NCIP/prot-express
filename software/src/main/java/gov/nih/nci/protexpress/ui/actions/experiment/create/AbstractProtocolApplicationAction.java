@@ -82,7 +82,6 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.util.SessionHelper;
@@ -94,7 +93,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -104,13 +103,13 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractProtocolApplicationAction extends AbstractCreateExperimentAction implements Preparable {
+public abstract class AbstractProtocolApplicationAction extends AbstractProtocolAction {
     private static final long serialVersionUID = 1L;
 
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             null, null, null);
-    private Long protocolApplicationId;
     private Long deleteIndex;
+    private Long protocolApplicationId;
 
     /**
      * Action Constructor.
@@ -120,43 +119,13 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public void prepare() throws Exception {
-        setExperimentInformation();
-        if (SessionHelper.getProtocolApplicationFromSession() != null) {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        } else if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-        }
-    }
-
-    /**
      * Gets the protocolApplication.
      *
      * @return the protocolApplication.
      */
+    @CustomValidator(type = "hibernate")
     public ProtocolApplication getProtocolApplication() {
         return protocolApplication;
-    }
-
-    /**
-     * Gets the protocolApplicationId.
-     *
-     * @return the protocolApplicationId.
-     */
-    public Long getProtocolApplicationId() {
-        return protocolApplicationId;
-    }
-
-    /**
-     * Sets the protocolApplicationId.
-     *
-     * @param protocolApplicationId the protocolApplicationId to set.
-     */
-    public void setProtocolApplicationId(Long protocolApplicationId) {
-        this.protocolApplicationId = protocolApplicationId;
     }
 
     /**
@@ -166,13 +135,6 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      */
     public void setProtocolApplication(ProtocolApplication protocolApplication) {
         this.protocolApplication = protocolApplication;
-    }
-
-    /**
-     * Resets the protocolApplication.
-     */
-    public void resetProtocolApplication() {
-        this.protocolApplication = new ProtocolApplication(null, null, null);
     }
 
     /**
@@ -212,6 +174,24 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      */
     public void setDeleteIndex(Long deleteIndex) {
         this.deleteIndex = deleteIndex;
+    }
+
+    /**
+     * Gets the protocolApplicationId.
+     *
+     * @return the protocolApplicationId.
+     */
+    public Long getProtocolApplicationId() {
+        return protocolApplicationId;
+    }
+
+    /**
+     * Sets the protocolApplicationId.
+     *
+     * @param protocolApplicationId the protocolApplicationId to set.
+     */
+    public void setProtocolApplicationId(Long protocolApplicationId) {
+        this.protocolApplicationId = protocolApplicationId;
     }
 
 }

@@ -80,168 +80,80 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.create;
-
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
-import gov.nih.nci.protexpress.util.SessionHelper;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
+package gov.nih.nci.protexpress.ui.actions;
 
 /**
- * Action for managing protocols in an experiment.
- *
+ * Enum for managing all action results.
  * @author Krishna Kanchinadam
+ *
  */
 
-@Validation
-public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction implements Preparable {
-    private static final long serialVersionUID = 1L;
 
-
+public enum ActionResultEnum {
     /**
-     * {@inheritDoc}
+     * View Experiment Summary.
      */
-    public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
+    VIEW_EXPERIMENT_SUMMARY("viewExperimentSummary"),
+    /**
+     * View Protocol.
+     */
+    VIEW_PROTOCOL("viewProtocol"),
+    /**
+     * Edit Protocol.
+     */
+    EDIT_PROTOCOL("editProtocol"),
+    /**
+     * Add New Protocol.
+     */
+    ADD_NEW_PROTOCOL("addNewProtocol"),
+    /**
+     * Add New Protocol.
+     */
+    SELECT_EXISTING_PROTOCOL("selectExistingProtocol"),
+    /**
+     * Add New Protocol.
+     */
+    PROTOCOL_SEARCH_RESULTS("protocolSearchResults"),
+    /**
+     * Save and add new protocol.
+     */
+    SAVE_AND_ADD_NEW_PROTOCOL("saveAndAddNewProtocol"),
+    /**
+     * Save and view protocol summary.
+     */
+    VIEW_PROTOCOL_SUMMARY("viewProtocolSummary"),
+    /**
+     * Save and view experiment Summary.
+     */
+    SAVE_AND_VIEW_EXPERIMENT_SUMMARY("saveAndViewExperimentSummary"),
+    /**
+     * Add New Input.
+     */
+    ADD_NEW_INPUT("addNewInput"),
+    /**
+     * Select Existing Input.
+     */
+    SELECT_EXISTING_INPUT("selectExistingInput"),
+    /**
+     * Add New Output.
+     */
+    ADD_NEW_OUTPUT("addNewOutput");
 
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-        } else {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }
-
-        if (getProtocolApplication() != null) {
-            setProtocol(getProtocolApplication().getProtocol());
-        }
-    }
+    private String displayName;
 
     /**
-     * Review Protocol Summary information.
+     * Constructor for ActionResultEnum.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param displayname the action result string.
      */
-    @SkipValidation
-    public String viewProtocolSummary() {
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
+    private ActionResultEnum(String displayname) {
+        this.displayName = displayname;
     }
 
     /**
-     * Loads the protocol and directs to the edit page.
-     *
-     * @return the directive for the next action / page to be directed to
+     * @return the displayName
      */
-    @SkipValidation
-    public String editProtocol() {
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
+    public String getDisplayName() {
+        return this.displayName;
     }
-
-    /**
-     * Save/Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @Validations(
-            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
-                    key = "validator.notEmpty", message = "") }
-    )
-    private void saveProtocol() {
-        if (getProtocolApplication().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        }
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-    }
-
-    /**
-     * Saves the protocol application and protocol information, redirects to the view protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
-    }
-
-    /**
-     * Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String updateProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the add new protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndAddNewProtocol() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_ADD_NEW_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the experiment summary screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewExperimentSummary() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_VIEW_EXPERIMENT_SUMMARY);
-    }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

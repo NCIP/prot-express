@@ -77,16 +77,21 @@
         <action name="home/home" class="gov.nih.nci.protexpress.ui.actions.home.HomeAction" method="load">
             <result name="success">/WEB-INF/jsp/home/home.jsp</result>
         </action>
+        <action name="ajax/home/home" class="gov.nih.nci.protexpress.ui.actions.home.HomeAction" method="load">
+            <result name="success">/WEB-INF/jsp/home/home.jsp</result>
+        </action>
         <!-- /Home Actions -->
 
         <!-- Search Actions -->
         <action name="search/*" class="gov.nih.nci.protexpress.ui.actions.search.SearchAction" method="{1}">
             <result name="input">/WEB-INF/jsp/search/search.jsp</result>
             <result name="success">/WEB-INF/jsp/search/search.jsp</result>
+            <result name="loadSearchForm">/WEB-INF/jsp/search/search.jsp</result>
         </action>
         <action name="ajax/search/*" class="gov.nih.nci.protexpress.ui.actions.search.SearchAction" method="{1}">
             <result name="input">/WEB-INF/jsp/search/searchResults.jsp</result>
             <result name="success">/WEB-INF/jsp/search/searchResults.jsp</result>
+            <result name="loadSearchForm">/WEB-INF/jsp/search/search.jsp</result>
         </action>
         <!-- /Search Actions -->
 
@@ -116,62 +121,51 @@
         <!-- /Experiment Export Action -->
 
         <!-- Create Experiment Actions -->
-        <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageExperimentAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/experimentOverview.jsp</result>
-             <result name="createNewExperiment" type="redirect-action">createExperiment/load</result>
-            <result name="success" type="redirect-action">createExperiment/protocols/add/addNewProtocol</result>
-            <result name="experimentSummary">/WEB-INF/jsp/experiment/create/experimentSummary.jsp</result>
+        <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/experiment/create/experiment/experimentOverview.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="createExperiment/protocols/add/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.AddProtocolAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/addNewProtocol.jsp</result>
-            <result name="success" type="redirect-action">createExperiment/protocols/inputs/load</result>
-            <result name="selectExistingProtocol">/WEB-INF/jsp/experiment/create/selectExistingProtocol.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-       <action name="createExperiment/protocols/manage/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolApplicationAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/editProtocol.jsp</result>
-            <result name="viewProtocol">/WEB-INF/jsp/experiment/create/reviewProtocol.jsp</result>
-            <result name="editProtocol">/WEB-INF/jsp/experiment/create/editProtocol.jsp</result>
-            <result name="saveAndAddNewProtocol" type="redirect-action">createExperiment/protocols/add/addAnotherProtocol</result>
-            <result name="saveAndViewExperimentSummary" type="redirect-action">createExperiment/experimentSummary</result>
+        <action name="ajax/createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/experiment/create/experiment/experimentOverview.jsp</result>
+            <result name="success" type="redirect-action">ajax/createExperiment/protocols/add/addOrSelectProtocol</result>
+            <result name="viewExperimentSummary">/WEB-INF/jsp/experiment/create/experiment/experimentSummary.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/createExperiment/protocols/add/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.AddProtocolAction" method="{1}">
-            <result name="selectExistingProtocol">/WEB-INF/jsp/experiment/create/protocolSearchResults.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/create/protocolSearchResults.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocol.jsp</result>
+            <result name="success" type="redirect-action">ajax/createExperiment/protocols/inputs/load</result>
+            <result name="addNewProtocol">/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocol.jsp</result>
+            <result name="selectExistingProtocol">/WEB-INF/jsp/experiment/create/protocol/selectExistingProtocol.jsp</result>
+            <result name="protocolSearchResults">/WEB-INF/jsp/experiment/create/protocol/protocolSearchResults.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
-        <action name="createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/manageInputs.jsp</result>
-            <result name="addNewInput">/WEB-INF/jsp/experiment/create/manageInputs.jsp</result>
-            <result name="success" type="redirect-action">createExperiment/protocols/outputs/load</result>
+        <action name="ajax/createExperiment/protocols/manage/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolApplicationAction" method="{1}">
+            <result name="input">/WEB-INF/jsp/experiment/create/protocol/editProtocol.jsp</result>
+            <result name="success">/WEB-INF/jsp/experiment/create/protocol/editProtocol.jsp</result>
+            <result name="editProtocol">/WEB-INF/jsp/experiment/create/protocol/editProtocol.jsp</result>
+            <result name="viewProtocolSummary">/WEB-INF/jsp/experiment/create/protocol/protocolSummary.jsp</result>
+            <result name="saveAndAddNewProtocol" type="redirect-action">ajax/createExperiment/protocols/add/addAnotherProtocol</result>
+            <result name="saveAndViewExperimentSummary" type="redirect-action">ajax/createExperiment/viewExperimentSummary</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/createExperiment/protocols/inputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolInputsAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/inputs.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/create/inputs.jsp</result>
-            <result name="addNewInput">/WEB-INF/jsp/experiment/create/inputs.jsp</result>
-            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
-        </action>
-
-        <action name="createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/manageOutputs.jsp</result>
-            <result name="success" type="redirect-action">createExperiment/protocols/manage/reviewProtocol</result>
-            <result name="addNewOutput">/WEB-INF/jsp/experiment/create/manageOutputs.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/create/input/inputs.jsp</result>
+            <result name="success" type="redirect-action">ajax/createExperiment/protocols/outputs/load</result>
+            <result name="addNewInput">/WEB-INF/jsp/experiment/create/input/inputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
         <action name="ajax/createExperiment/protocols/outputs/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.ManageProtocolOutputsAction" method="{1}">
-            <result name="input">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
-            <result name="success">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
-            <result name="addNewOutput">/WEB-INF/jsp/experiment/create/outputs.jsp</result>
+            <result name="input">/WEB-INF/jsp/experiment/create/output/outputs.jsp</result>
+            <result name="success" type="redirect-action">ajax/createExperiment/protocols/manage/viewProtocolSummary</result>
+            <result name="addNewOutput">/WEB-INF/jsp/experiment/create/output/outputs.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
+
         <!-- /Create Experiment Actions -->
 
         <!-- View Experiment Actions -->

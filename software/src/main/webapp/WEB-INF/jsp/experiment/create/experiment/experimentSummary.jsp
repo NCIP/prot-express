@@ -1,37 +1,36 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <head><s:head theme="ajax" /></head>
 <title><fmt:message key="protexpress.page.createnewexperiment.overview.caption" /></title>
 
 <body>
     <!-- Breadcrumb -->
-    <div id="breadcrumb">
-        <a href="<c:url value="/home/home.action" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
-        <a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />" class="selected"><fmt:message key="protexpress.breadcrumb.createnewexperiment" /></a>
-    </div>
+      <c:choose>
+          <c:when test="${experimentRun != null && experimentRun.id != null}"><c:set var="breadCrumbExpText" value="${experimentRun.experiment.name}" /></c:when>
+          <c:otherwise><fmt:message var="breadCrumbExpText" key="protexpress.breadcrumb.createnewexperiment" /></c:otherwise>
+      </c:choose>
+      <protExpress:breadCrumbTrial>
+          <protExpress:breadCrumb href="/ajax/home/home.action" textKey="protexpress.breadcrumb.home" />
+          <protExpress:breadCrumb cssClass="selected" href="/ajax/createExperiment/reloadExperiment.action" textKey="protexpress.breadcrumb.createnewexperiment" insertSymbol="false"/>
+      </protExpress:breadCrumbTrial>
     <!-- /Breadcrumb -->
+
     <!-- Page Help -->
-    <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="protexpress.icon.help.title" /></a>
+        <protExpress:pageHelp/>
     <!-- /Page Help -->
 
     <div class="padme8">
         <!--ADD CONTENT HERE-->
         <h1><fmt:message key="protexpress.page.createnewexperiment.overview.title" /></h1>
         <div class="fadebox">
-            <div id="processflow">
-                <div class="step"><fmt:message key="protexpress.page.createnewexperiment.steps.identifyexperiment" /></div>
-                <div class="arrow"><img src="<c:url value="/images/processarrow.gif" />" alt="" /></div>
-                <div class="step"><fmt:message key="protexpress.page.createnewexperiment.steps.addprotocols" /></div>
-                <div class="arrow"><img src="<c:url value="/images/processarrow.gif" />" alt="" /></div>
-                <div class="selectedstep"><fmt:message key="protexpress.page.createnewexperiment.steps.review" /></div>
-                <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
+            <protExpress:processFlow>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.identifyexperiment" insertNextStepIndicator="true"/>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.addprotocols" insertNextStepIndicator="true"/>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.reviewexperiment" selected="true" />
+            </protExpress:processFlow>
+
             <div class="fadebox">
-                <h2><fmt:message key="protexpress.page.createnewexperiment.steps.review" /></h2>
+                <h2><fmt:message key="protexpress.page.createnewexperiment.steps.reviewexperiment" /></h2>
                 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.info" /></p></div>
             </div>
             <h3>${experiment.name}</h3>

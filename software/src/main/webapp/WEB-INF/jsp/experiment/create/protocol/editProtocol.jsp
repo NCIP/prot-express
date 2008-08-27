@@ -1,9 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<jsp:include page="/WEB-INF/jsp/experiment/create/protocolHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocolHeader.jsp" />
 
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.editprotocol.info" /></p></div>
 <h3><fmt:message key="protexpress.page.createnewexperiment.editprotocol.title" /></h3>
@@ -119,46 +116,16 @@
     </div>
     <!--/Output List-->
 </fieldset>
-<div class="actionsrow">
-    <del class="btnwrapper">
-        <ul id="btnrow2">
-            <c:url var="experimentProtocolSaveUrl" value="/createExperiment/protocols/manage/saveProtocol.action" />
-            <c:url var="reviewProtocolUrl" value="/createExperiment/protocols/manage/reviewProtocol.action" />
-            <c:url var="addAnotherProtocolUrl" value="/createExperiment/protocols/add/addAnotherProtocol.action"></c:url>
-            <c:url var="experimentSummaryUrl" value="/createExperiment/experimentSummary.action" />
 
-            <li>
-                <a href="javascript:submitForm('${experimentProtocolSaveUrl}', 'protocolApplicationForm');" class="btn" onclick="this.blur();">
-                    <span class="btn_img">
-                        <span class="save"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.save"/></span>
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a href="${reviewProtocolUrl}" class="btn" onclick="this.blur();">
-                    <span class="btn_img">
-                        <span class="next"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.reviewprotocol" /></span>
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a href="${addAnotherProtocolUrl}" class="btn" onclick="this.blur();">
-                    <span class="btn_img">
-                        <span class="saverepeat"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.addanotherprotocol" /></span>
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a href="${experimentSummaryUrl}" class="btn" onclick="this.blur();">
-                    <span class="btn_img">
-                        <span class="next"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.button.experimentsummary" /></span>
-                    </span>
-                </a>
-            </li>
-        </ul>
-    </del>
-    <div class="clear"/>
-</div>
+<c:url var="saveProtocolApplicationUrl" value="/ajax/createExperiment/protocols/manage/updateProtocol.action" />
+<c:url var="saveAndNewProtocolUrl" value="/ajax/createExperiment/protocols/manage/saveAndAddNewProtocol.action"></c:url>
+<c:url var="saveAndViewExperimentSummaryUrl" value="/ajax/createExperiment/protocols/manage/saveAndViewExperimentSummary.action" />
 
-<jsp:include page="/WEB-INF/jsp/experiment/create/protocolFooter.jsp" />
+<protExpress:buttonRow>
+    <protExpress:button style="save" textKey="protexpress.page.createnewexperiment.editprotocol.button.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveProtocolApplicationUrl}'); this.blur(); return false;" />
+    <protExpress:button style="saverepeat" textKey="protexpress.page.createnewexperiment.editprotocol.button.addanotherprotocol" id="saverepeat" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndNewProtocolUrl}'); this.blur(); return false;" />
+    <protExpress:button style="next" textKey="protexpress.page.createnewexperiment.editprotocol.button.experimentsummary" id="next" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndViewExperimentSummaryUrl}'); this.blur(); return false;" />
+</protExpress:buttonRow>
+
+<jsp:include page="/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocolFooter.jsp" />
 

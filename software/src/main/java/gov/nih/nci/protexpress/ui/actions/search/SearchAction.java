@@ -113,6 +113,7 @@ public class SearchAction extends ActionSupport {
 
     private Map session;
     private final String searchCriteria = "searchCriteria";
+    private final String actionResultLoadSearchForm = "loadSearchForm";
 
     /**
      * load the search page.
@@ -132,7 +133,7 @@ public class SearchAction extends ActionSupport {
         experiments = new PaginatedListImpl<Experiment>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name", SortOrderEnum.ASCENDING);
         doSearch();
-        return ActionSupport.INPUT;
+        return actionResultLoadSearchForm;
     }
 
     /**
@@ -149,7 +150,7 @@ public class SearchAction extends ActionSupport {
         }
 
         doSearch();
-        return ActionSupport.SUCCESS;
+        return actionResultLoadSearchForm;
     }
 
     /**

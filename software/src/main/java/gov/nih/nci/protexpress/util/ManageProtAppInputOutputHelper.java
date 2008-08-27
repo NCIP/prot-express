@@ -180,7 +180,7 @@ public final class ManageProtAppInputOutputHelper {
     public static List<InputOutputObject> getPotentialInputs() {
         List<InputOutputObject> lstPotentialInputs = new ArrayList<InputOutputObject>();
 
-        ExperimentRun expRun = ProtExpressRegistry.getExperimentService()
+        /*ExperimentRun expRun = ProtExpressRegistry.getExperimentService()
             .getExperimentRunById(SessionHelper.getExperimentRunIdFromSession());
         if (expRun != null) {
             List<ProtocolApplication> lstProtApps = expRun.getProtocolApplications();
@@ -193,7 +193,7 @@ public final class ManageProtAppInputOutputHelper {
                     }
                 }
             }
-        }
+        }*/
         //removeDuplicateInputs(protApp.getInputs(), lstPotentialInputs);
         return lstPotentialInputs;
     }

@@ -21,7 +21,9 @@
         <div id="<decorator:getProperty property="contentCssId" default="content" />" style="margin-bottom: 5px;">
 
             <!-- DECORATED BODY -->
-            <decorator:body />
+            <div id="divAjaxBody">
+                <decorator:body />
+            </div>
             <!-- END DECORATED BODY -->
 
         </div>

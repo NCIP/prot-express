@@ -1,17 +1,15 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <title><fmt:message key="protexpress.page.home.caption" /></title>
 <body>
     <!-- Breadcrumb -->
-    <div id="breadcrumb">
-        <a href="<c:url value="/home/home.action"/>" class="selected"><fmt:message key="protexpress.breadcrumb.home" /></a>
-    </div>
+      <protExpress:breadCrumbTrial>
+          <protExpress:breadCrumb href="/ajax/home/home.action" cssClass="selected" insertSymbol="false" textKey="protexpress.breadcrumb.home" />
+      </protExpress:breadCrumbTrial>
     <!-- /Breadcrumb -->
 
     <!-- Page Help -->
-    <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="protexpress.icon.help.title" /></a>
+        <protExpress:pageHelp/>
     <!-- /Page Help -->
 
     <div class="padme8">
@@ -19,20 +17,10 @@
         <h1><fmt:message key="protexpress.page.home.title" /></h1>
         <p class="homeintro"><fmt:message key="protexpress.page.home.introtext" /></p>
         <!-- Big Buttons -->
-        <div class="home_buttons">
-            <h2><fmt:message key="protexpress.page.home.actionchoice" /></h2>
-
-            <c:url var="createExperimentUrl" value="/createExperiment/createNewExperiment.action" />
-            <c:url var="searchProtexpressUrl" value="/search/loadSearch.action" />
-
-            <div id="btn_home_create">
-                <a href="${createExperimentUrl}" id="btn_home_create_t"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
-            </div>
-            <div id="btn_home_search">
-                <a href="${searchProtexpressUrl}" id="btn_home_search_t"><fmt:message key="protexpress.page.home.search" /></a>
-            </div>
-            <div class="clear"></div>
-        </div>
+            <protExpress:homeButtonRow textKey="protexpress.page.home.actionchoice">
+                <protExpress:homeButton divId="btn_home_create" btnId="btn_home_create_t" href="/ajax/createExperiment/createNewExperiment.action" textKey="protexpress.page.home.createnewexperiment" />
+                <protExpress:homeButton divId="btn_home_search" btnId="btn_home_search_t" href="/ajax/search/loadSearch.action" textKey="protexpress.page.home.search" />
+            </protExpress:homeButtonRow>
         <!-- /Big Buttons -->
         <!-- My Experiments -->
         <div class="myexperiments">

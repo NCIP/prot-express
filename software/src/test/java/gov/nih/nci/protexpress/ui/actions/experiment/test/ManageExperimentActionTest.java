@@ -84,9 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.create.ManageExperimentAction;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
+import gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -97,7 +95,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class ManageExperimentActionTest extends ProtExpressBaseHibernateTest {
 
-    ManageExperimentAction action;
+    CreateExperimentAction action;
     Experiment experiment;
 
     /**
@@ -106,7 +104,7 @@ public class ManageExperimentActionTest extends ProtExpressBaseHibernateTest {
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        this.action = new ManageExperimentAction();
+        this.action = new CreateExperimentAction();
 
         this.experiment = new Experiment("Name - Test Experiment 1");
         this.experiment.setDescription("Description - Test Experiment 1");
@@ -127,10 +125,6 @@ public class ManageExperimentActionTest extends ProtExpressBaseHibernateTest {
         this.action.setExperiment(p);
         this.action.prepare();
         assertEquals(p, this.action.getExperiment());
-    }
-
-    public void testLoad() throws Exception {
-        assertEquals(ActionSupport.INPUT, this.action.load());
     }
 
     public void testSaveOrUpdate() throws Exception {
