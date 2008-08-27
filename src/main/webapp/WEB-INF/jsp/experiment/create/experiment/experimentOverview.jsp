@@ -1,44 +1,37 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-
-<head><s:head theme="ajax" /></head>
-<title><fmt:message key="protexpress.page.createnewexperiment.overview.caption" /></title>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <body>
     <!-- Breadcrumb -->
-    <div id="breadcrumb">
-        <a href="<c:url value="/home/home.action" />"><fmt:message key="protexpress.breadcrumb.home" /></a>&nbsp;<span class="&gt;">&gt;</span>
-        <a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />" class="selected">
-            <s:if test="experiment != null && experiment.id != null">${experiment.name}</s:if>
-            <s:else><fmt:message key="protexpress.breadcrumb.createnewexperiment" /></s:else>
-        </a>
-    </div>
+      <c:choose>
+          <c:when test="${experimentRun != null && experimentRun.id != null}"><c:set var="breadCrumbExpText" value="${experimentRun.experiment.name}" /></c:when>
+          <c:otherwise><fmt:message var="breadCrumbExpText" key="protexpress.breadcrumb.createnewexperiment" /></c:otherwise>
+      </c:choose>
+      <protExpress:breadCrumbTrial>
+          <protExpress:breadCrumb href="/ajax/home/home.action" textKey="protexpress.breadcrumb.home" />
+          <protExpress:breadCrumb cssClass="selected" href="/ajax/createExperiment/reloadExperiment.action" text="${breadCrumbExpText}" insertSymbol="false"/>
+      </protExpress:breadCrumbTrial>
     <!-- /Breadcrumb -->
+
     <!-- Page Help -->
-    <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="protexpress.icon.help.title" /></a>
+        <protExpress:pageHelp/>
     <!-- /Page Help -->
 
     <div class="padme8">
         <!--ADD CONTENT HERE-->
         <h1><fmt:message key="protexpress.page.createnewexperiment.overview.title" /></h1>
         <div class="fadebox">
-            <div id="processflow">
-                <div class="selectedstep"><fmt:message key="protexpress.page.createnewexperiment.steps.identifyexperiment" /></div>
-                <div class="arrow"><img src="<c:url value="/images/processarrow.gif" />" alt="" /></div>
-                <div class="step"><fmt:message key="protexpress.page.createnewexperiment.steps.addprotocols" /></div>
-                <div class="arrow"><img src="<c:url value="/images/processarrow.gif" />" alt="" /></div>
-                <div class="step"><fmt:message key="protexpress.page.createnewexperiment.steps.review" /></div>
-                <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
+            <protExpress:processFlow>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.identifyexperiment" selected="true" insertNextStepIndicator="true"/>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.addprotocols" insertNextStepIndicator="true"/>
+                <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.reviewexperiment" />
+            </protExpress:processFlow>
+
             <div class="fadebox">
                 <h2><fmt:message key="protexpress.page.createnewexperiment.steps.identifyexperiment" /></h2>
                 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.info" /></p></div>
             </div>
 
-            <s:form id="createExperimentForm" action="createExperiment/save.action" method="post">
+            <s:form id="createExperimentForm" action="ajax/createExperiment/save.action" method="post">
                 <div class="centerfield">
                     <fieldset class="leftfield">
                         <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" /></legend>
@@ -101,27 +94,12 @@
                     </fieldset>
                     <div class="clear"></div>
                 </div>
-                <div class="actionsrow">
-                    <del class="btnwrapper">
-                        <ul id="btnrow2">
-                            <li>
-                                <c:url var="cancelUrl" value="/home/home.action" />
-                                <a href="${cancelUrl}" class="btn" onclick="this.blur();">
-                                    <span class="btn_img">
-                                        <span class="cancel"><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.button.back" /></span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:document.getElementById('createExperimentForm').submit();" class="btn" onclick="this.blur();">
-                                    <span class="btn_img">
-                                        <span class="savecontinue"><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.button.saveandcontinue" /></span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </del>
-                </div>
+
+                <c:url var="cancelUrl" value="/ajax/home/home.action" />
+                <protExpress:buttonRow>
+                    <protExpress:button style="cancel" textKey="protexpress.page.createnewexperiment.identifyexperiment.button.back" id="cancel" onclick="ProtExpress.loadDiv('${cancelUrl}', 'divAjaxBody', true);"/>
+                    <protExpress:button style="savecontinue" textKey="protexpress.page.createnewexperiment.identifyexperiment.button.saveandcontinue" id="save" onclick="ProtExpress.submitAjaxForm('createExperimentForm', 'divAjaxBody'); return false;"/>
+                </protExpress:buttonRow>
             </s:form>
         </div>
         <!--/ADD CONTENT HERE-->

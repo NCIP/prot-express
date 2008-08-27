@@ -80,168 +80,37 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.create;
+package gov.nih.nci.protexpress.ui.actions;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
-import gov.nih.nci.protexpress.util.SessionHelper;
+import java.util.Map;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.apache.struts2.interceptor.SessionAware;
 
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * Action for managing protocols in an experiment.
+ * Base action class with session aware for protExpress.
  *
  * @author Krishna Kanchinadam
  */
-
-@Validation
-public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction implements Preparable {
+public class ProtExpressBaseActionWithSession extends ProtExpressBaseAction
+        implements SessionAware {
     private static final long serialVersionUID = 1L;
-
+    private Map session;
 
     /**
-     * {@inheritDoc}
+     * Gets the session object.
+     * @return session the session.
      */
-    public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-        } else {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }
-
-        if (getProtocolApplication() != null) {
-            setProtocol(getProtocolApplication().getProtocol());
-        }
+    public Map getSession() {
+        return session;
     }
 
     /**
-     * Review Protocol Summary information.
-     *
-     * @return the directive for the next action / page to be directed to
+     * Sets the session object.
+     * @param session the session to survive
      */
-    @SkipValidation
-    public String viewProtocolSummary() {
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
-    }
-
-    /**
-     * Loads the protocol and directs to the edit page.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String editProtocol() {
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @Validations(
-            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
-                    key = "validator.notEmpty", message = "") }
-    )
-    private void saveProtocol() {
-        if (getProtocolApplication().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        }
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-    }
-
-    /**
-     * Saves the protocol application and protocol information, redirects to the view protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
-    }
-
-    /**
-     * Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String updateProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the add new protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndAddNewProtocol() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_ADD_NEW_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the experiment summary screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewExperimentSummary() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_VIEW_EXPERIMENT_SUMMARY);
+    public void setSession(Map session) {
+        this.session = session;
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

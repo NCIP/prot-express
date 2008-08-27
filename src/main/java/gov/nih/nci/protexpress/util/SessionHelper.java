@@ -99,7 +99,6 @@ import com.opensymphony.xwork2.ActionContext;
 
 public final class SessionHelper {
     private static final String SESSION_EXPERIMENT_ID = "sessionExperimentId";
-    private static final String SESSION_EXPERIMENT_RUN_ID = "sessionExperimentRunId";
     private static final String SESSION_PROTOCOL_APPLICATION = "sessionProtocolApplication";
 
     /**
@@ -135,31 +134,6 @@ public final class SessionHelper {
     }
 
     /**
-     * Gets the ExperimentRun Id from Session.
-     *
-     * @return the experiment run id stored in session.
-     */
-    public static Long getExperimentRunIdFromSession() {
-        return (Long) retrieveFromSession(getSessionExperimentRunIdKey());
-    }
-
-    /**
-     * Save ExperimentRun Id in session.
-     *
-     * @param experimentRunId the experimentRun id.
-     */
-    public static void saveExperimentRunIdInSession(Long experimentRunId) {
-        saveInSession(getSessionExperimentRunIdKey(), experimentRunId);
-    }
-
-    /**
-     * Remove ExperimentRun Id from session.
-     */
-    public static void removeExperimentRunIdFromSession() {
-        removeFromSession(getSessionExperimentRunIdKey());
-    }
-
-    /**
      * Gets the Protocol Application from Session.
      *
      * @return the protocol application object stored in session.
@@ -185,22 +159,10 @@ public final class SessionHelper {
     }
 
     /**
-     * Saves experiment and experiment run id in session.
-     *
-     * @param experimentId the experiment id.
-     * @param experimentRunId the experiment run id.
-     */
-    public static void saveExperimentAndRunIdsInSession(Long experimentId, Long experimentRunId) {
-        saveExperimentIdInSession(experimentId);
-        saveExperimentRunIdInSession(experimentRunId);
-    }
-
-    /**
      * Removes Experiment and Protocol Information from session.
      */
     public static void removeExperimentAndProtocolInformationFromSession() {
         removeExperimentIdFromSession();
-        removeExperimentRunIdFromSession();
         removeProtocolApplicationFromSession();
     }
 
@@ -228,7 +190,7 @@ public final class SessionHelper {
     private static void saveInSession(String sessionKey, Object sessionValue) {
         Map session = ActionContext.getContext().getSession();
         if (session != null) {
-            session.remove(sessionKey);
+            removeFromSession(sessionKey);
             session.put(sessionKey, sessionValue);
         }
     }
@@ -241,7 +203,7 @@ public final class SessionHelper {
      */
     private static void removeFromSession(String sessionKey) {
         Map session = ActionContext.getContext().getSession();
-        if (session != null) {
+        if ((session != null)) {
             session.remove(sessionKey);
         }
     }
@@ -253,15 +215,6 @@ public final class SessionHelper {
      */
     private static String getSessionExperimentIdKey() {
         return SESSION_EXPERIMENT_ID;
-    }
-
-    /**
-     * Gets the sessionExperimentRunId.
-     *
-     * @return the sessionExperimentRunId.
-     */
-    private static String getSessionExperimentRunIdKey() {
-        return SESSION_EXPERIMENT_RUN_ID;
     }
 
     /**

@@ -84,10 +84,11 @@ package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.contact.ContactPerson;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
+import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 import gov.nih.nci.protexpress.util.SessionHelper;
 
@@ -95,6 +96,7 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -105,7 +107,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class AddProtocolAction extends AbstractProtocolApplicationAction {
+public class AddProtocolAction extends AbstractProtocolApplicationAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private Protocol protocol = new Protocol(null);
@@ -115,7 +117,38 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
             0, null, ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
             SortOrderEnum.ASCENDING);
 
-    private String actionResultSelectExistingProtocol = "selectExistingProtocol";
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() throws Exception {
+        Long expId = getExperimentId();
+        if (expId == null) {
+            expId = SessionHelper.getExperimentIdFromSession();
+        }
+
+        if (expId != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+            setExperimentRun(getExperiment().getExperimentRuns().get(0));
+        }
+
+        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
+        } else {
+            logDebugMessage("No Protocol application object in session.");
+        }
+    }
+
+    /**
+     * Add or select a protocol.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String addOrSelectProtocol() {
+        SessionHelper.removeProtocolApplicationFromSession();
+        setProtocolApplication(new ProtocolApplication(null, null, null));
+        return ActionSupport.INPUT;
+    }
 
     /**
      * Add a new protocol to the experiment.
@@ -124,9 +157,9 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String addNewProtocol() {
-        resetProtocolApplication();
+        setProtocolApplication(new ProtocolApplication(null, null, null));
         SessionHelper.removeProtocolApplicationFromSession();
-        return ActionSupport.INPUT;
+        return getActionResult(ActionResultEnum.ADD_NEW_PROTOCOL);
     }
 
     /**
@@ -136,8 +169,6 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String addAnotherProtocol() {
-        resetProtocolApplication();
-        SessionHelper.removeProtocolApplicationFromSession();
         return addNewProtocol();
     }
 
@@ -148,13 +179,12 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String selectExistingProtocol() {
-        getSearchParameters().setSearchAllUsers(false);
         protocols = new PaginatedListImpl<Protocol>(0, null,
                 ProtExpressRegistry.MAX_RESULTS_PER_PAGE, 1, null, "name",
                 SortOrderEnum.ASCENDING);
 
         doSearch();
-        return this.actionResultSelectExistingProtocol;
+        return getActionResult(ActionResultEnum.SELECT_EXISTING_PROTOCOL);
     }
 
     /**
@@ -179,7 +209,7 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
                         getProtocols().getSortCriterion(),
                         getProtocols().getSortDirection()));
 
-        return actionResultSelectExistingProtocol;
+        return getActionResult(ActionResultEnum.PROTOCOL_SEARCH_RESULTS);
     }
 
     /**
@@ -188,9 +218,9 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-        if (expRun != null) {
-            getProtocol().setContactPerson(ContactPerson.getCopy(getExperiment().getContactPerson()));
+        if (getExperimentRun() != null) {
+            getProtocol().setContactPerson(ContactPerson.getCopy(getExperimentRun()
+                    .getExperiment().getContactPerson()));
             return saveProtocolApplicationInformation();
         }
 
@@ -204,8 +234,7 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String selectProtocolAndContinue() {
-        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-        if (expRun != null) {
+        if (getExperimentRun() != null) {
             Protocol sourceProtocol = null;
             if (getProtocolId() != null) {
                 sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
@@ -225,8 +254,7 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      */
     @SkipValidation
     public String copyProtocolAndContinue() {
-        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-        if (expRun != null) {
+        if (getExperimentRun() != null) {
             Protocol sourceProtocol = null;
             if (getProtocolId() != null) {
                 sourceProtocol = ProtExpressRegistry.getProtocolService().getProtocolById(getProtocolId());
@@ -244,13 +272,12 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction {
      * @return the directive for the next action / page to be directed to
      */
     private String saveProtocolApplicationInformation() {
-        ExperimentRun expRun = getExperiment().getExperimentRuns().get(0);
-        if (expRun != null) {
-            getProtocolApplication().setDatePerformed(expRun.getDatePerformed());
+        if (getExperimentRun() != null) {
+            getProtocolApplication().setDatePerformed(getExperimentRun().getDatePerformed());
             getProtocolApplication().setNotes(getProtocol().getNotes());
             getProtocolApplication().setProtocol(getProtocol());
-            getProtocolApplication().setExperimentRun(expRun);
-            expRun.getProtocolApplications().add(getProtocolApplication());
+            getProtocolApplication().setExperimentRun(getExperimentRun());
+            getExperimentRun().getProtocolApplications().add(getProtocolApplication());
 
             SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         }

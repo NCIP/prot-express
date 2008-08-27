@@ -163,7 +163,7 @@ public class SearchActionTest extends ProtExpressBaseHibernateTest {
     }
 
     public void testExperimentSearch() throws Exception {
-        assertEquals(ActionSupport.INPUT, action.loadSearch());
+        assertEquals("loadSearchForm", action.loadSearch());
         assertNotNull(null, action.getExperiments().getList());
 
         action.getExperiments().setSortDirection(SortOrderEnum.DESCENDING);
@@ -200,7 +200,7 @@ public class SearchActionTest extends ProtExpressBaseHibernateTest {
     public void testProtocolSearch() throws Exception {
         action.getSearchParameters().setSearchType(SearchType.PROTOCOLS);
 
-        assertEquals(ActionSupport.INPUT, action.loadSearch());
+        assertEquals("loadSearchForm", action.loadSearch());
         assertNotNull(null, action.getProtocols().getList());
 
         action.getProtocols().setSortDirection(SortOrderEnum.DESCENDING);

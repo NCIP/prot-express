@@ -80,140 +80,114 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.create;
+package gov.nih.nci.protexpress.ui.actions;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
-import gov.nih.nci.protexpress.util.SessionHelper;
+import org.apache.log4j.Logger;
+import com.opensymphony.xwork2.ActionSupport;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * Action for managing protocols in an experiment.
+ * Base action class for protExpress.
  *
  * @author Krishna Kanchinadam
  */
-
-@Validation
-public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction implements Preparable {
+public class ProtExpressBaseAction extends ActionSupport {
     private static final long serialVersionUID = 1L;
-
+    private Logger protExpressLogger = Logger.getLogger(this.getClass().getName());
+    private String successMessage = null;
+    private String errorMessage = null;
 
     /**
-     * {@inheritDoc}
+     * Logs a debug message.
+     * @param message the debug message.
      */
-    public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-        } else {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }
-
-        if (getProtocolApplication() != null) {
-            setProtocol(getProtocolApplication().getProtocol());
-        }
+    protected void logDebugMessage(String message) {
+        getProtExpressLogger().debug(message);
     }
 
     /**
-     * Review Protocol Summary information.
+     * Logs an error message.
+     * @param message the error message.
+     */
+    protected void logErrorMessage(String message) {
+        getProtExpressLogger().error(message);
+    }
+
+    /**
+     * Gets the protExpressLogger.
      *
+     * @return the protExpressLogger.
+     */
+    public Logger getProtExpressLogger() {
+        return protExpressLogger;
+    }
+
+    /**
+     * Sets the protExpressLogger.
+     *
+     * @param protExpressLogger the protExpressLogger to set.
+     */
+    public void setProtExpressLogger(Logger protExpressLogger) {
+        this.protExpressLogger = protExpressLogger;
+    }
+
+    /**
+     * Gets the successMessage.
+     *
+     * @return the successMessage.
+     */
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    /**
+     * Sets the successMessage.
+     *
+     * @param successMessage the successMessage to set.
+     */
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    /**
+     * Gets the errorMessage.
+     *
+     * @return the errorMessage.
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * Sets the errorMessage.
+     *
+     * @param errorMessage the errorMessage to set.
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    /**
+     * Returns the directive for the next action/page to be displayed to the user.
+     *
+     * @param resultEnum the enum for which the result string needs to be looked up.
      * @return the directive for the next action / page to be directed to
      */
-    @SkipValidation
-    public String viewProtocolSummary() {
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
+    public String getActionResult(ActionResultEnum resultEnum) {
+        return resultEnum.getDisplayName();
     }
-
-    /**
-     * Loads the protocol and directs to the edit page.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    public String editProtocol() {
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @Validations(
-            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
-                    key = "validator.notEmpty", message = "") }
-    )
-    private void saveProtocol() {
-        if (getProtocolApplication().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        }
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-    }
-
-    /**
-     * Saves the protocol application and protocol information, redirects to the view protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
-    }
-
-    /**
-     * Updates the protocol application and protocol information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String updateProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the add new protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndAddNewProtocol() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_ADD_NEW_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the experiment summary screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewExperimentSummary() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_VIEW_EXPERIMENT_SUMMARY);
-    }
-
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

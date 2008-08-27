@@ -256,8 +256,9 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
      *
      * @return the experiment
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "experiment_id", nullable = false)
+    @Valid
     public Experiment getExperiment() {
         return this.experiment;
     }

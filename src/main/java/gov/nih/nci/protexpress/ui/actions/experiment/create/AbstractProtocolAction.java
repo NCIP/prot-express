@@ -82,99 +82,47 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.util.SessionHelper;
-import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.EmailValidator;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * Action for managing experiment information - create, reload and view.
+ * An abstract base action class for all actions related to the Create Experiment/protocol process.
  *
  * @author Krishna Kanchinadam
  */
 
 @Validation
-public class ManageExperimentAction extends AbstractCreateExperimentAction {
+public abstract class AbstractProtocolAction extends AbstractCreateExperimentAction {
     private static final long serialVersionUID = 1L;
 
-    private String actionResultExperimentSummary = "experimentSummary";
-    private String actionResultCreateNewExperiment = "createNewExperiment";
+    private Protocol protocol;
 
     /**
-     * create a new experiment.
-     *
-     * @return the directive for the next action / page to be directed to
+     * Action Constructor.
      */
-    @SkipValidation
-    public String createNewExperiment() {
-        SessionHelper.removeExperimentAndProtocolInformationFromSession();
-        return actionResultCreateNewExperiment;
+    public AbstractProtocolAction() {
+        super();
     }
 
     /**
-     * load.
+     * Gets the protocol.
      *
-     * @return the directive for the next action / page to be directed to
+     * @return the protocol.
      */
-    @SkipValidation
-    public String load() {
-        User user = UserHolder.getUser();
-        if (user != null) {
-            getExperiment().getContactPerson().setEmail(user.getEmailId());
-            getExperiment().getContactPerson().setFirstName(user.getFirstName());
-            getExperiment().getContactPerson().setLastName(user.getLastName());
-        }
-
-        return ActionSupport.INPUT;
+    @CustomValidator(type = "hibernate")
+    public Protocol getProtocol() {
+        return protocol;
     }
 
     /**
-     * re-load the experiment page.
+     * Sets the protocol.
      *
-     * @return the directive for the next action / page to be directed to
+     * @param protocol
+     *            the protocol to set.
      */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String reloadCreateNewExperiment() {
-        SessionHelper.removeProtocolApplicationFromSession();
-        return ActionSupport.INPUT;
-    }
-
-    /**
-     * re-load the experiment information and display the summary page.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    @SkipValidation
-    @SuppressWarnings("unchecked")
-    public String experimentSummary() {
-        return actionResultExperimentSummary;
-    }
-
-    /**
-     * Saves the experiment overview information.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-@Validations(
-    emails = {
-            @EmailValidator(fieldName = "protocol.contactPerson.email", key = "validator.email", message = "")
-        }
-    )
-
-    public String save() {
-        getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
-        getExperimentRun().setNotes(getExperiment().getNotes());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
-        ProtExpressRegistry.getProtExpressService().clear();
-        SessionHelper.saveExperimentAndRunIdsInSession(getExperiment().getId(), getExperimentRun().getId());
-        return ActionSupport.SUCCESS;
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
     }
 }

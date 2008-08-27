@@ -82,16 +82,19 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -101,12 +104,30 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ManageProtocolInputsAction extends AbstractProtocolApplicationAction {
+public class ManageProtocolInputsAction extends AbstractProtocolApplicationAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private String actionResultAddNewInput = "addNewInput";
     private List<InputOutputObject> potentialInputs = new ArrayList<InputOutputObject>();
     private Long selectedInputId;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() throws Exception {
+        Long expId = getExperimentId();
+        if (expId == null) {
+            expId = SessionHelper.getExperimentIdFromSession();
+        }
+
+        if (expId != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+            setExperimentRun(getExperiment().getExperimentRuns().get(0));
+        }
+
+        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
+        }
+    }
 
     /**
      * Loads Protocol Inputs data.
@@ -143,7 +164,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return actionResultAddNewInput;
+        return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
     }
 
     /**
@@ -157,7 +178,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return this.actionResultAddNewInput;
+        return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
     }
 
     /**
@@ -171,7 +192,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return this.actionResultAddNewInput;
+        return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
     }
 
     /**
@@ -184,7 +205,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
         if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getInputs())) {
             addActionError(getText("protexpress.page.manageinputs.error.name.empty"));
-            return this.actionResultAddNewInput;
+            return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
         }
         return saveInputsOutputsToSession(getProtocolApplication().getInputs());
     }

@@ -82,13 +82,16 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -98,10 +101,29 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ManageProtocolOutputsAction extends AbstractProtocolApplicationAction {
+public class ManageProtocolOutputsAction extends AbstractProtocolApplicationAction  implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private String actionResultAddNewOutput = "addNewOutput";
+    /**
+     * {@inheritDoc}
+     */
+    public void prepare() throws Exception {
+        Long expId = getExperimentId();
+        if (expId == null) {
+            expId = SessionHelper.getExperimentIdFromSession();
+        }
+
+        if (expId != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+            setExperimentRun(getExperiment().getExperimentRuns().get(0));
+        }
+
+        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
+        }  else {
+            logDebugMessage("No Protocol object in session.");
+        }
+    }
 
     /**
      * Loads Protocol Outputs data.
@@ -135,7 +157,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
     public String addNewOutput() {
         ManageProtAppInputOutputHelper.addNewOutput(getProtocolApplication().getOutputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return actionResultAddNewOutput;
+        return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
     }
 
     /**
@@ -147,7 +169,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
     public String deleteOutput() {
         ManageProtAppInputOutputHelper.deleteOutput(getProtocolApplication().getOutputs(), getDeleteIndex());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return this.actionResultAddNewOutput;
+        return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
     }
 
     /**
@@ -160,7 +182,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
         if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
             addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
-            return this.actionResultAddNewOutput;
+            return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
         }
         return saveInputsOutputsToSession(getProtocolApplication().getOutputs());
     }

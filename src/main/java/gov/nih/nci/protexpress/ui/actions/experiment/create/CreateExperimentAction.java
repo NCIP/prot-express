@@ -85,24 +85,31 @@ package gov.nih.nci.protexpress.ui.actions.experiment.create;
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.util.SessionHelper;
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
- * Action for managing protocols in an experiment.
+ * Action class to create a new experiment.
  *
  * @author Krishna Kanchinadam
  */
 
 @Validation
-public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction implements Preparable {
+public class CreateExperimentAction extends AbstractCreateExperimentAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Action Constructor.
+     */
+    public CreateExperimentAction() {
+        super();
+    }
 
     /**
      * {@inheritDoc}
@@ -115,133 +122,79 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
 
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-        } else {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }
-
-        if (getProtocolApplication() != null) {
-            setProtocol(getProtocolApplication().getProtocol());
+            if (getExperiment().getId() != null) {
+                setExperimentRun(getExperiment().getExperimentRuns().get(0));
+            }
         }
     }
 
     /**
-     * Review Protocol Summary information.
+     * load.
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String viewProtocolSummary() {
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
+    private String load() {
+        resetExperiment();
+        User user = UserHolder.getUser();
+        if (user != null) {
+            getExperiment().getContactPerson().setEmail(user.getEmailId());
+            getExperiment().getContactPerson().setFirstName(user.getFirstName());
+            getExperiment().getContactPerson().setLastName(user.getLastName());
+        }
+        return ActionSupport.INPUT;
     }
 
     /**
-     * Loads the protocol and directs to the edit page.
+     * create a new experiment (run).
      *
      * @return the directive for the next action / page to be directed to
      */
     @SkipValidation
-    public String editProtocol() {
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
+    public String createNewExperiment() {
+        SessionHelper.removeExperimentAndProtocolInformationFromSession();
+        return load();
     }
 
     /**
-     * Save/Updates the protocol application and protocol information.
+     * re-load the experiment page.
      *
      * @return the directive for the next action / page to be directed to
      */
-    @Validations(
-            requiredStrings = {@RequiredStringValidator(fieldName = "protocolApplication.protocol.name",
-                    key = "validator.notEmpty", message = "") }
-    )
-    private void saveProtocol() {
-        if (getProtocolApplication().getId() == null) {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.save.success"));
-        } else {
-            setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        }
-
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+    @SkipValidation
+    @SuppressWarnings("unchecked")
+    public String reloadExperiment() {
+        return ActionSupport.INPUT;
     }
 
     /**
-     * Saves the protocol application and protocol information, redirects to the view protocol screen.
+     * Displays the View Experiment Summary page.
      *
      * @return the directive for the next action / page to be directed to
      */
-    public String saveAndViewProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.VIEW_PROTOCOL_SUMMARY);
+    @SkipValidation
+    @SuppressWarnings("unchecked")
+    public String viewExperimentSummary() {
+        return getActionResult(ActionResultEnum.VIEW_EXPERIMENT_SUMMARY);
     }
 
     /**
-     * Updates the protocol application and protocol information.
+     * Saves the experiment overview information.
      *
      * @return the directive for the next action / page to be directed to
      */
-    public String updateProtocol() {
-        this.saveProtocol();
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
-    }
+    public String save() {
+        getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
+        getExperimentRun().setNotes(getExperiment().getNotes());
+        getExperimentRun().setExperiment(getExperiment());
+        getExperiment().getExperimentRuns().clear();
+        getExperiment().getExperimentRuns().add(getExperimentRun());
 
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the add new protocol screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndAddNewProtocol() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_ADD_NEW_PROTOCOL);
-    }
-
-    /**
-     * Save/Updates the protocol application and protocol information, redirects to the experiment summary screen.
-     *
-     * @return the directive for the next action / page to be directed to
-     */
-    public String saveAndViewExperimentSummary() {
-        this.saveProtocol();
-        SessionHelper.removeProtocolApplicationFromSession();
-        return getActionResult(ActionResultEnum.SAVE_AND_VIEW_EXPERIMENT_SUMMARY);
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
+        ProtExpressRegistry.getProtExpressService().clear();
+        SessionHelper.saveExperimentIdInSession(getExperiment().getId());
+        return ActionSupport.SUCCESS;
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

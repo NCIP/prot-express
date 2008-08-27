@@ -82,13 +82,10 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.util.SessionHelper;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseActionWithSession;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -99,47 +96,18 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractCreateExperimentAction extends ActionSupport implements Preparable {
+public abstract class AbstractCreateExperimentAction extends ProtExpressBaseActionWithSession {
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);
     private ExperimentRun experimentRun = new ExperimentRun("Run");
     private Long experimentId;
-    private String successMessage = null;
 
     /**
      * Action Constructor.
      */
     public AbstractCreateExperimentAction() {
         super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void prepare() throws Exception {
-        setExperimentInformation();
-    }
-
-    /**
-     * Sets the experiment information.
-     */
-    public void setExperimentInformation() {
-        Long expId = null;
-        if (getExperimentId() != null) {
-            expId = getExperimentId();
-        } else if (SessionHelper.getExperimentIdFromSession() != null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-        if ((getExperiment() != null) && (!getExperiment().getExperimentRuns().contains(getExperimentRun()))) {
-            getExperimentRun().setExperiment(getExperiment());
-            getExperiment().getExperimentRuns().add(getExperimentRun());
-        }
     }
 
     /**
@@ -166,7 +134,6 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
      *
      * @return the experimentRun.
      */
-    @CustomValidator(type = "hibernate")
     public ExperimentRun getExperimentRun() {
         return experimentRun;
     }
@@ -199,17 +166,10 @@ public abstract class AbstractCreateExperimentAction extends ActionSupport imple
     }
 
     /**
-     * @return the successMessage
+     * Resets the experiment and run.
      */
-    public String getSuccessMessage() {
-        return this.successMessage;
+    protected void resetExperiment() {
+        setExperiment(new Experiment(null));
+        setExperimentRun(new ExperimentRun("Run"));
     }
-
-    /**
-     * @param successMessage the successMessage to set
-     */
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
-    }
-
 }
