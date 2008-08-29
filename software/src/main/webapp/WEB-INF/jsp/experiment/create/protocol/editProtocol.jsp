@@ -16,11 +16,11 @@
         <table class="form">
             <tr>
                 <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.protocol.name" />:</td>
-                <td class="value"><s:textfield name="protocolApplication.protocol.name"/></td>
+                <td class="value"><s:textfield name="protocol.name"/></td>
             </tr>
             <tr>
                 <td class="label"><fmt:message key="protexpress.protocol.description" />:</td>
-                <td class="value"><s:textarea name="protocolApplication.protocol.description" rows="4"></s:textarea></td>
+                <td class="value"><s:textarea name="protocol.description" rows="4"></s:textarea></td>
             </tr>
         </table>
     </div>
@@ -28,11 +28,11 @@
         <table class="form">
             <tr>
                 <td class="label"><fmt:message key="protexpress.protocol.software" />:</td>
-                <td class="value"><s:textfield name="protocolApplication.protocol.software"/></td>
+                <td class="value"><s:textfield name="protocol.software"/></td>
             </tr>
             <tr>
                 <td class="label"><fmt:message key="protexpress.protocol.instrument" />:</td>
-                <td class="value"><s:textfield name="protocolApplication.protocol.instrument"/></td>
+                <td class="value"><s:textfield name="protocol.instrument"/></td>
             </tr>
             <tr>
                 <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
@@ -43,10 +43,13 @@
 </fieldset>
 </s:form>
 <fieldset>
-    <c:url var="manageInputsUrl" value="/createExperiment/protocols/inputs/update.action">
+    <c:url var="manageInputsUrl" value="/ajax/createExperiment/protocols/inputs/update.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]</legend>
+    <legend>
+        <fmt:message key="protexpress.page.createnewexperiment.editprotocol.inputs" />
+        [<a href="javascript://noop/" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'divAjaxBody', true);"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]
+    </legend>
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">
@@ -80,10 +83,13 @@
     <!--/Input List-->
 </fieldset>
 <fieldset>
-    <c:url var="manageOutputsUrl" value="/createExperiment/protocols/outputs/update.action">
+    <c:url var="manageOutputsUrl" value="/ajax/createExperiment/protocols/outputs/update.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />[<a href="${manageOutputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]</legend>
+    <legend>
+        <fmt:message key="protexpress.page.createnewexperiment.editprotocol.outputs" />
+        [<a href="javascript://noop/" onclick="ProtExpress.loadDiv('${manageOutputsUrl}', 'divAjaxBody', true);"><fmt:message key="protexpress.page.createnewexperiment.editprotocol.addedittext"/></a>]
+    </legend>
     <!--Output List-->
     <div class="searchresults" style="border-bottom:0;">
         <table class="newdata3">

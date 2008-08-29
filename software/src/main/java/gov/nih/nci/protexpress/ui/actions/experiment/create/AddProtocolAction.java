@@ -97,7 +97,6 @@ import org.displaytag.properties.SortOrderEnum;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -110,7 +109,6 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 public class AddProtocolAction extends AbstractProtocolApplicationAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
-    private Protocol protocol = new Protocol(null);
     private Long protocolId;
     private SearchParameters searchParameters = new SearchParameters();
     private PaginatedListImpl<Protocol> protocols = new PaginatedListImpl<Protocol>(
@@ -292,26 +290,6 @@ public class AddProtocolAction extends AbstractProtocolApplicationAction impleme
     @SkipValidation
     public String load() {
         return ActionSupport.INPUT;
-    }
-
-    /**
-     * Gets the protocol.
-     *
-     * @return the protocol.
-     */
-    @CustomValidator(type = "hibernate")
-    public Protocol getProtocol() {
-        return protocol;
-    }
-
-    /**
-     * Sets the protocol.
-     *
-     * @param protocol
-     *            the protocol to set.
-     */
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
     }
 
     /**

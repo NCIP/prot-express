@@ -7,17 +7,32 @@
     <p><fmt:message key="protexpress.page.createnewexperiment.addoutputs.info" /></p>
 </div>
 <h3><span>${experiment.name}</span><span class="gt">&nbsp;&gt;&nbsp;</span><span>${protocolApplication.protocol.name}</span></h3>
-<div id="processflow2">
-    <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.addinputs" insertNextStepIndicator="true"/>
-    <protExpress:processStep selected="true" textKey="protexpress.page.createnewexperiment.steps.addoutputs" insertNextStepIndicator="true"/>
-    <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.reviewprotocol" />
-    <div class="clear"></div>
-</div>
+
+<c:if test="${protocolApplication.id == null}">
+    <div id="processflow2">
+        <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.addinputs" insertNextStepIndicator="true"/>
+        <protExpress:processStep selected="true" textKey="protexpress.page.createnewexperiment.steps.addoutputs" insertNextStepIndicator="true"/>
+        <protExpress:processStep textKey="protexpress.page.createnewexperiment.steps.reviewprotocol" />
+        <div class="clear"></div>
+    </div>
+</c:if>
 
 <div id="divContent">
   <c:set var="formId" value="manageOutputsForm" />
+  <c:set var="divId" value="divAjaxBody" />
 
- <c:url var="saveUrl" value="/ajax/createExperiment/protocols/outputs/saveOutputsToSession.action" />
+    <c:choose>
+        <c:when test="${protocolApplication.id != null}">
+            <c:url var="saveUrl" value="/ajax/createExperiment/protocols/outputs/saveOutputs.action" />
+            <c:url var="cancelUrl" value="/ajax/createExperiment/protocols/manage/editProtocol.action">
+                <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
+            </c:url>
+        </c:when>
+        <c:when test="${protocolApplication.id == null}">
+            <c:url var="saveUrl" value="/ajax/createExperiment/protocols/outputs/saveOutputsToSession.action" />
+        </c:when>
+    </c:choose>
+
  <s:actionerror ></s:actionerror>
     <s:form id="manageOutputsForm" action="ajax/createExperiment/protocols/outputs/addNewOutput" method="post" >
         <!-- New Outputs List -->
@@ -29,9 +44,17 @@
         </fieldset>
         <!-- /New Outputs List -->
     </s:form>
-  <div class="clear"></div>
- <protExpress:buttonRow>
-        <protExpress:button style="next" textKey="protexpress.page.createnewexperiment.addoutputs.button.continue" id="continue" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', 'divAjaxBody', '${saveUrl}'); return false;"/>
+    <div class="clear"></div>
+    <protExpress:buttonRow>
+        <c:choose>
+            <c:when test="${protocolApplication.id != null}">
+                <protExpress:button style="save" textKey="protexpress.page.createnewexperiment.addoutputs.button.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${saveUrl}'); this.blur(); return false;"/>
+                <protExpress:button style="cancel" textKey="protexpress.page.createnewexperiment.addoutputs.button.cancel" id="cancel" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', '${divId}', '${cancelUrl}'); this.blur(); return false;"/>
+            </c:when>
+            <c:when test="${protocolApplication.id == null}">
+                <protExpress:button style="next" textKey="protexpress.page.createnewexperiment.addoutputs.button.continue" id="continue" onclick="ProtExpress.submitAjaxFormToUrl('${formId}', 'divAjaxBody', '${saveUrl}'); return false;"/>
+            </c:when>
+        </c:choose>
     </protExpress:buttonRow>
 
     <jsp:include page="/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocolFooter.jsp" />

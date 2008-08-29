@@ -114,17 +114,17 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
+        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
             setExperimentRun(getExperiment().getExperimentRuns().get(0));
         }
 
-        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService()
+                    .getProtocolApplicationById(getProtocolApplicationId()));
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        } else {
             setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
         }
     }
@@ -139,7 +139,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
         if (getProtocolApplication().getInputs().size() == 0) {
             ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
         }
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(getExperimentRun().getId()));
         return ActionSupport.INPUT;
     }
 
@@ -161,7 +161,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     @SkipValidation
     public String addNewInput() {
         ManageProtAppInputOutputHelper.addNewInput(getProtocolApplication().getInputs());
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(getExperimentRun().getId()));
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
@@ -175,7 +175,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     @SkipValidation
     public String addExistingInput() {
         ManageProtAppInputOutputHelper.addExistingInput(getProtocolApplication().getInputs(), getSelectedInputId());
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(getExperimentRun().getId()));
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
@@ -189,7 +189,7 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
     @SkipValidation
     public String deleteInput() {
         ManageProtAppInputOutputHelper.deleteInput(getProtocolApplication().getInputs(), getDeleteIndex());
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs());
+        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(getExperimentRun().getId()));
         ManageProtAppInputOutputHelper.removeDuplicateInputs(getPotentialInputs());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
@@ -208,6 +208,21 @@ public class ManageProtocolInputsAction extends AbstractProtocolApplicationActio
             return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
         }
         return saveInputsOutputsToSession(getProtocolApplication().getInputs());
+    }
+
+    /**
+     * Persists the inputs to the database.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String saveInputs() {
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getInputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getInputs())) {
+            addActionError(getText("protexpress.page.manageinputs.error.name.empty"));
+            return getActionResult(ActionResultEnum.ADD_NEW_INPUT);
+        }
+        return saveInputsOutputs(getProtocolApplication().getInputs());
     }
 
     /**

@@ -95,6 +95,10 @@ public enum ActionResultEnum {
      */
     VIEW_EXPERIMENT_SUMMARY("viewExperimentSummary"),
     /**
+     * Edit Experiment.
+     */
+    EDIT_EXPERIMENT("editExperiment"),
+    /**
      * View Protocol.
      */
     VIEW_PROTOCOL("viewProtocol"),

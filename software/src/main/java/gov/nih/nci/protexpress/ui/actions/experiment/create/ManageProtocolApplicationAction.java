@@ -103,16 +103,11 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 public class ManageProtocolApplicationAction extends AbstractProtocolApplicationAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
-
     /**
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
+        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
             setExperimentRun(getExperiment().getExperimentRuns().get(0));
@@ -166,7 +161,7 @@ public class ManageProtocolApplicationAction extends AbstractProtocolApplication
             setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
         }
 
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication().getProtocol());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocol());
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
     }

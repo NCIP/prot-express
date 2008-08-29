@@ -4,16 +4,10 @@
 <title><fmt:message key="protexpress.page.createnewexperiment.overview.caption" /></title>
 
 <body>
-    <!-- Breadcrumb -->
-      <c:choose>
-          <c:when test="${experimentRun != null && experimentRun.id != null}"><c:set var="breadCrumbExpText" value="${experimentRun.experiment.name}" /></c:when>
-          <c:otherwise><fmt:message var="breadCrumbExpText" key="protexpress.breadcrumb.createnewexperiment" /></c:otherwise>
-      </c:choose>
-      <protExpress:breadCrumbTrial>
+    <protExpress:breadCrumbTrial>
           <protExpress:breadCrumb href="/ajax/home/home.action" textKey="protexpress.breadcrumb.home" />
-          <protExpress:breadCrumb cssClass="selected" href="/ajax/createExperiment/reloadExperiment.action" textKey="protexpress.breadcrumb.createnewexperiment" insertSymbol="false"/>
+          <protExpress:breadCrumb cssClass="selected" href="/ajax/createExperiment/reloadExperiment.action" text="${experiment.name}" insertSymbol="false"/>
       </protExpress:breadCrumbTrial>
-    <!-- /Breadcrumb -->
 
     <!-- Page Help -->
         <protExpress:pageHelp/>
@@ -36,7 +30,11 @@
             <h3>${experiment.name}</h3>
 
             <fieldset>
-                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.identificationtitle" />&nbsp;[<a href="<c:url value="/createExperiment/reloadCreateNewExperiment.action" />"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.editexperimentsection" /></a>]</legend>
+                <c:url var="reloadExperimentUrl" value="/ajax/createExperiment/reloadExperiment.action" />
+                <legend>
+                    <fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.identificationtitle" />&nbsp;
+                    [<a href="javascript://noop/" onclick="ProtExpress.loadDiv('${reloadExperimentUrl}', 'divAjaxBody', true);"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.editexperimentsection" /></a>]
+                </legend>
                 <fieldset class="leftfield_wide">
                     <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.overviewtitle" /></legend>
                     <table class="form">
@@ -65,7 +63,11 @@
                 <div class="clear"></div>
             </fieldset>
             <fieldset>
-                <legend><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;[<a href="<c:url value="/createExperiment/protocols/add/addAnotherProtocol.action"/>"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.addeditprotocolssection"/></a>]</legend>
+                <c:url var="addAnotherProtocolUrl" value="/ajax/createExperiment/protocols/add/addAnotherProtocol.action" />
+                <legend>
+                    <fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.protocolstitle" />&nbsp;
+                    [<a href="javascript://noop/" onclick="ProtExpress.loadDiv('${addAnotherProtocolUrl}', 'divAjaxBody', true);"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.addeditprotocolssection"/></a>]
+                </legend>
                 <div class="searchresults" style="border-bottom:0;">
                     <table class="newdata3">
                         <tbody>
@@ -82,10 +84,10 @@
                                 </tr>
                                 <c:forEach items="${experiment.experimentRuns}" var="expRun" varStatus="itemCount">
                                     <c:forEach items="${expRun.protocolApplications}" var="protApp">
-                                        <c:url var="protocolViewUrl" value="/createExperiment/protocols/manage/reviewProtocol.action">
+                                        <c:url var="protocolViewUrl" value="/ajax/createExperiment/protocols/manage/reviewProtocol.action">
                                             <c:param name="protocolApplicationId" value="${protApp.id}" />
                                         </c:url>
-                                        <c:url var="protocolEditUrl" value="/createExperiment/protocols/manage/editProtocol.action">
+                                        <c:url var="protocolEditUrl" value="/ajax/createExperiment/protocols/manage/editProtocol.action">
                                             <c:param name="protocolApplicationId" value="${protApp.id}" />
                                         </c:url>
                                         <c:choose>
@@ -93,11 +95,12 @@
                                             <c:otherwise><tr class="odd"></c:otherwise>
                                         </c:choose>
                                             <td class="alignright">${itemCount.count}.</td>
-                                            <td class="title"><a href="${protocolViewUrl}">${protApp.protocol.name}</a></td>
+                                            <td class="title">
+                                                <a href="javascript://noop/" onclick="ProtExpress.loadDiv('${protocolViewUrl}', 'divAjaxBody', true);">${protApp.protocol.name}</a></td>
                                             <td>${fn:length(protApp.inputs)}</td>
                                             <td>${fn:length(protApp.outputs)}</td>
                                             <td  class="action">
-                                                <a href="${protocolEditUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.icon.edit.alt" />" /></a>
+                                                <a href="javascript://noop/" onclick="ProtExpress.loadDiv('${protocolEditUrl}', 'divAjaxBody', true);"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.icon.edit.alt" />" /></a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -107,30 +110,13 @@
                     </table>
                 </div>
             </fieldset>
-            <div class="actionsrow">
-                <del class="btnwrapper">
-                    <ul id="btnrow2">
-                        <li>
-                            <c:url var="homeUrl" value="/home/home.action" />
-                            <a href="${homeUrl}" class="btn" onclick="this.blur();">
-                                <span class="btn_img">
-                                    <span class="saveconfirm"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.button.finished" /></span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <c:url var="editUrl" value="/viewExperiment/experiment/load.action">
-                                <c:param name="experimentId" value="${experiment.id}" />
-                            </c:url>
-                            <a href="${editUrl}" class="btn" onclick="this.blur();">
-                                <span class="btn_img">
-                                    <span class="saverepeat"><fmt:message key="protexpress.page.createnewexperiment.reviewexperiment.button.repeat" /></span>
-                                </span>
-                            </a>
-                       </li>
-                    </ul>
-                </del>
-            </div>
+            <c:url var="homeUrl" value="/ajax/home/home.action" />
+            <c:url var="repeatExperimentRunUrl" value="/createExperiment/repeat.action" />
+            <protExpress:buttonRow>
+                <protExpress:button style="saveconfim" textKey="protexpress.page.createnewexperiment.reviewexperiment.button.finished" id="saveconfirm" onclick="ProtExpress.loadDiv('${homeUrl}', 'divAjaxBody', true); return false;"/>
+                <protExpress:button style="copy" textKey="protexpress.page.createnewexperiment.reviewexperiment.button.repeat" id="save" href="${repeatExperimentRunUrl}"/>
+            </protExpress:buttonRow>
+
         </div>
         <!--/ADD CONTENT HERE-->
     </div>

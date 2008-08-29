@@ -106,6 +106,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -137,6 +138,7 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
     private AuditInfo auditInfo = new AuditInfo();
     private Experiment experiment;
     private List<ProtocolApplication> protocolApplications = new ArrayList<ProtocolApplication>();
+    private Boolean statusCompleted = Boolean.FALSE;
 
     /**
      * protected default constructor for hibernate only.
@@ -312,6 +314,36 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
         return newExpRun;
     }
 
+    /**
+     * Gets the statusCompleted.
+     *
+     * @return the statusCompleted.
+     */
+    @Transient
+    public Boolean getStatusCompleted() {
+        statusCompleted = Boolean.TRUE;
+        // Check for at least One protocol application.
+        // All protApps should have at least one input and one output.
+        if (getProtocolApplications().size() <= 0) {
+            return Boolean.FALSE;
+        }
+        for (ProtocolApplication protApp : getProtocolApplications()) {
+            if (protApp.getStatusCompleted() == Boolean.FALSE) {
+                return Boolean.FALSE;
+            }
+        }
+
+        return statusCompleted;
+    }
+
+    /**
+     * Sets the statusCompleted.
+     *
+     * @param statusCompleted the statusCompleted to set.
+     */
+    public void setStatusCompleted(Boolean statusCompleted) {
+        this.statusCompleted = statusCompleted;
+    }
 
     /**
      * {@inheritDoc}

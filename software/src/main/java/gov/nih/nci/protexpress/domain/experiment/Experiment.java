@@ -138,7 +138,7 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     private String notes;
     private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
-    private Boolean statusCompleted = Boolean.TRUE;
+    private Boolean statusCompleted = Boolean.FALSE;
     private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
@@ -183,6 +183,17 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
      */
     @Transient
     public Boolean getStatusCompleted() {
+        statusCompleted = Boolean.TRUE;
+        // Check for at least experiment run with One protocol application.
+        // All protApps should have at least one input and one output.
+        if (getExperimentRuns().size() <= 0) {
+            return Boolean.FALSE;
+        }
+        for (ExperimentRun expRun : getExperimentRuns()) {
+            if (expRun.getStatusCompleted() == Boolean.FALSE) {
+                return Boolean.FALSE;
+            }
+        }
         return statusCompleted;
     }
 

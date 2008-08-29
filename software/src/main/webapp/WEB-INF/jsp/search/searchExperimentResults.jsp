@@ -48,7 +48,7 @@
                 <c:url var="experimentDownloadUrl" value="/ajax/experiment/export.action">
                     <c:param name="experimentId" value="${row.id}" />
                 </c:url>
-                <c:if test="${statusCompleted.booleanValue == Boolean.TRUE}">
+                <c:if test="${statusCompleted == Boolean.TRUE}">
                     <a href="${experimentDownloadUrl}"><img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.search.experimentresults.icon.download.alt" />" /></a>
                 </c:if>
             </display:column>

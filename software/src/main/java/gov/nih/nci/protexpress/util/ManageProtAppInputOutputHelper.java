@@ -175,13 +175,14 @@ public final class ManageProtAppInputOutputHelper {
     /**
      * Returns a list of potential inputs for a protocol application during the create process..
      *
+     * @param experimentRunId the experiment run id.
      * @return the list of potential inputs.
      */
-    public static List<InputOutputObject> getPotentialInputs() {
+    public static List<InputOutputObject> getPotentialInputs(Long experimentRunId) {
         List<InputOutputObject> lstPotentialInputs = new ArrayList<InputOutputObject>();
 
-        /*ExperimentRun expRun = ProtExpressRegistry.getExperimentService()
-            .getExperimentRunById(SessionHelper.getExperimentRunIdFromSession());
+        ExperimentRun expRun = ProtExpressRegistry.getExperimentService()
+            .getExperimentRunById(experimentRunId);
         if (expRun != null) {
             List<ProtocolApplication> lstProtApps = expRun.getProtocolApplications();
             if ((lstProtApps != null) && (lstProtApps.size() > 0)) {
@@ -193,7 +194,7 @@ public final class ManageProtAppInputOutputHelper {
                     }
                 }
             }
-        }*/
+        }
         //removeDuplicateInputs(protApp.getInputs(), lstPotentialInputs);
         return lstPotentialInputs;
     }

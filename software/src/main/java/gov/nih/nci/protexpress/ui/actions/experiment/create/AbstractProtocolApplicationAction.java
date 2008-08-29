@@ -82,14 +82,16 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
+import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
 
 import java.util.List;
-import java.util.ListIterator;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -103,11 +105,12 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractProtocolApplicationAction extends AbstractProtocolAction {
+public abstract class AbstractProtocolApplicationAction extends AbstractCreateExperimentAction {
     private static final long serialVersionUID = 1L;
 
     private ProtocolApplication protocolApplication = new ProtocolApplication(
             null, null, null);
+    private Protocol protocol = new Protocol(null);
     private Long deleteIndex;
     private Long protocolApplicationId;
 
@@ -123,7 +126,6 @@ public abstract class AbstractProtocolApplicationAction extends AbstractProtocol
      *
      * @return the protocolApplication.
      */
-    @CustomValidator(type = "hibernate")
     public ProtocolApplication getProtocolApplication() {
         return protocolApplication;
     }
@@ -145,17 +147,23 @@ public abstract class AbstractProtocolApplicationAction extends AbstractProtocol
      */
     @SkipValidation
     public String saveInputsOutputsToSession(List<InputOutputObject> lst) {
-        ListIterator<InputOutputObject> listIter = lst.listIterator();
-        while (listIter.hasNext()) {
-            InputOutputObject ioObject = listIter.next();
-            if (StringUtils.isBlank(ioObject.getName())
-                    && StringUtils.isBlank(ioObject.getDataFileURL())
-                    && StringUtils.isBlank(ioObject.getNotes())) {
-                listIter.remove();
-            }
-        }
+        ManageProtAppInputOutputHelper.removeInvalidItems(lst);
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
         return ActionSupport.SUCCESS;
+    }
+
+    /**
+     * Update the protocol inputs/outputs, persist the protocol application object to the database.
+     *
+     * @param lst the list of inputs/outputs.
+     * @return the directive for the next action/page to be directed to.
+     */
+    @SkipValidation
+    public String saveInputsOutputs(List<InputOutputObject> lst) {
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        setProtocolApplicationId(getProtocolApplication().getId());
+        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
     }
 
     /**
@@ -193,5 +201,25 @@ public abstract class AbstractProtocolApplicationAction extends AbstractProtocol
     public void setProtocolApplicationId(Long protocolApplicationId) {
         this.protocolApplicationId = protocolApplicationId;
     }
+
+    /**
+    * Gets the protocol.
+    *
+    * @return the protocol.
+    */
+   @CustomValidator(type = "hibernate")
+   public Protocol getProtocol() {
+       return protocol;
+   }
+
+   /**
+    * Sets the protocol.
+    *
+    * @param protocol
+    *            the protocol to set.
+    */
+   public void setProtocol(Protocol protocol) {
+       this.protocol = protocol;
+   }
 
 }

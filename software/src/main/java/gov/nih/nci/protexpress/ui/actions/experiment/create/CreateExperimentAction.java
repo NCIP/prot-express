@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
 import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.util.SessionHelper;
 import gov.nih.nci.protexpress.util.UserHolder;
@@ -115,11 +116,7 @@ public class CreateExperimentAction extends AbstractCreateExperimentAction imple
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
+        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
             if (getExperiment().getId() != null) {
@@ -184,11 +181,13 @@ public class CreateExperimentAction extends AbstractCreateExperimentAction imple
      * @return the directive for the next action / page to be directed to
      */
     public String save() {
-        getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
-        getExperimentRun().setNotes(getExperiment().getNotes());
-        getExperimentRun().setExperiment(getExperiment());
-        getExperiment().getExperimentRuns().clear();
-        getExperiment().getExperimentRuns().add(getExperimentRun());
+        if (getExperiment().getId() == null) {
+            getExperimentRun().setDatePerformed(getExperiment().getDatePerformed());
+            getExperimentRun().setNotes(getExperiment().getNotes());
+            getExperimentRun().setExperiment(getExperiment());
+            getExperiment().getExperimentRuns().clear();
+            getExperiment().getExperimentRuns().add(getExperimentRun());
+        }
 
         ProtExpressRegistry.getProtExpressService().saveOrUpdate(getExperiment());
         ProtExpressRegistry.getProtExpressService().clear();
@@ -196,5 +195,18 @@ public class CreateExperimentAction extends AbstractCreateExperimentAction imple
         return ActionSupport.SUCCESS;
     }
 
+    /**
+     * Repeats the Run.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    public String repeat() {
+        ExperimentRun newExpRun = ExperimentRun.getCopy(getExperimentRun());
+        ProtExpressRegistry.getProtExpressService().saveOrUpdate(newExpRun);
+        ProtExpressRegistry.getProtExpressService().clear();
+     // set the appropriate id's to pass as parameters to the next action, for editing the newly created run.
+        setExperimentId(getExperiment().getId());
+        return getActionResult(ActionResultEnum.EDIT_EXPERIMENT);
+    }
 }
 
