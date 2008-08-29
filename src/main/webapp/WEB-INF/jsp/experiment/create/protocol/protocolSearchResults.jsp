@@ -30,20 +30,20 @@
                         <li>
                             <c:choose>
                                 <c:when test="${row.auditInfo.creator == currentUser.loginName}">
-                                    <c:url var="selectAndContinueUrl" value="/createExperiment/protocols/add/selectProtocolAndContinue.action">
+                                    <c:url var="selectAndContinueUrl" value="/ajax/createExperiment/protocols/add/selectProtocolAndContinue.action">
                                         <c:param name="protocolId" value="${row.id}" ></c:param>
                                     </c:url>
-                                    <a href="${selectAndContinueUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
+                                    <a href="javascript://noop/" onclick="ProtExpress.loadDiv('${selectAndContinueUrl}', 'divAjaxBody', true);" class="btn" style="text-decoration:none" onclick="this.blur();">
                                         <span class="btn_img">
                                             <span class="add"><fmt:message key="protexpress.page.createnewexperiment.selectexistingprotocol.button.selectandcontinue" /></span>
                                         </span>
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:url var="copyAndContinueUrl" value="/createExperiment/protocols/add/copyProtocolAndContinue.action">
+                                    <c:url var="copyAndContinueUrl" value="/ajax/createExperiment/protocols/add/copyProtocolAndContinue.action">
                                         <c:param name="protocolId" value="${row.id}" ></c:param>
                                     </c:url>
-                                    <a href="${copyAndContinueUrl}" class="btn" style="text-decoration:none" onclick="this.blur();">
+                                    <a href="javascript://noop/" onclick="ProtExpress.loadDiv('${copyAndContinueUrl}', 'divAjaxBody', true);" class="btn" style="text-decoration:none" onclick="this.blur();">
                                         <span class="btn_img">
                                             <span class="add"><fmt:message key="protexpress.page.createnewexperiment.selectexistingprotocol.button.copyandcontinue" /></span>
                                         </span>

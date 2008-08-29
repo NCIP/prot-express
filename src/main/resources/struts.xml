@@ -124,6 +124,12 @@
         <action name="createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction" method="{1}">
             <result name="input">/WEB-INF/jsp/experiment/create/experiment/experimentOverview.jsp</result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+            <result name="editExperiment" type="redirect-action">
+                <param name="actionName">load</param>
+                <param name="namespace">/editExperiment/experiment</param>
+                <param name="parse">true</param>
+                <param name="experimentId">${experimentId}</param>
+            </result>
         </action>
 
         <action name="ajax/createExperiment/*" class="gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction" method="{1}">
@@ -156,6 +162,13 @@
             <result name="input">/WEB-INF/jsp/experiment/create/input/inputs.jsp</result>
             <result name="success" type="redirect-action">ajax/createExperiment/protocols/outputs/load</result>
             <result name="addNewInput">/WEB-INF/jsp/experiment/create/input/inputs.jsp</result>
+            <result name="editProtocol" type="redirect-action">
+                <param name="actionName">editProtocol</param>
+                <param name="namespace">createExperiment/protocols/manage</param>
+                <param name="parse">true</param>
+                <param name="protocolApplicationId">${protocolApplicationId}</param>
+                <param name="successMessage">${successMessage}</param>
+            </result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 
@@ -163,6 +176,13 @@
             <result name="input">/WEB-INF/jsp/experiment/create/output/outputs.jsp</result>
             <result name="success" type="redirect-action">ajax/createExperiment/protocols/manage/viewProtocolSummary</result>
             <result name="addNewOutput">/WEB-INF/jsp/experiment/create/output/outputs.jsp</result>
+            <result name="editProtocol" type="redirect-action">
+                <param name="actionName">editProtocol</param>
+                <param name="namespace">ajax/createExperiment/protocols/manage</param>
+                <param name="parse">true</param>
+                <param name="protocolApplicationId">${protocolApplicationId}</param>
+                <param name="successMessage">${successMessage}</param>
+            </result>
             <interceptor-ref name="protExpressParamsPrepareParamsStack" />
         </action>
 

@@ -45,9 +45,16 @@
     <div class="clear"/>
 
     <c:url var="cancelUrl" value="/ajax/createExperiment/reloadExperiment.action" />
+    <c:url var="saveAndViewExperimentSummaryUrl" value="/ajax/createExperiment/viewExperimentSummary.action" />
     <protExpress:buttonRow>
         <protExpress:button style="cancel" textKey="protexpress.page.createnewexperiment.addnewprotocol.button.back" id="cancel" onclick="ProtExpress.loadDiv('${cancelUrl}', 'divAjaxBody', true);"/>
         <protExpress:button style="savecontinue" textKey="protexpress.page.createnewexperiment.addnewprotocol.button.continue" id="save" onclick="ProtExpress.submitAjaxForm('addNewProtocolForm', 'divAjaxBody'); return false;"/>
+        <protExpress:button style="next" textKey="protexpress.page.createnewexperiment.addnewprotocol.button.viewexperimentsummary" id="next" onclick="ProtExpress.submitAjaxFormToUrl('addNewProtocolForm', 'divAjaxBody', '${saveAndViewExperimentSummaryUrl}'); this.blur(); return false;" />
     </protExpress:buttonRow>
 </s:form>
+
+
+
+
+
 

@@ -108,20 +108,18 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        Long expId = getExperimentId();
-        if (expId == null) {
-            expId = SessionHelper.getExperimentIdFromSession();
-        }
-
+        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
         if (expId != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
             setExperimentRun(getExperiment().getExperimentRuns().get(0));
         }
 
-        if (SessionHelper.getProtocolApplicationFromSession() != null) {
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService()
+                    .getProtocolApplicationById(getProtocolApplicationId()));
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        } else {
             setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }  else {
-            logDebugMessage("No Protocol object in session.");
         }
     }
 
@@ -187,4 +185,18 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
         return saveInputsOutputsToSession(getProtocolApplication().getOutputs());
     }
 
+    /**
+     * Persists the outputs to the database.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    @SkipValidation
+    public String saveOutputs() {
+        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
+        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
+            addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
+            return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
+        }
+        return saveInputsOutputs(getProtocolApplication().getOutputs());
+    }
 }

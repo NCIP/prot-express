@@ -1,10 +1,13 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <fieldset>
-    <c:url var="manageInputsUrl" value="/createExperiment/protocols/inputs/update.action">
+    <c:url var="manageInputsUrl" value="/ajax/createExperiment/protocols/inputs/update.action">
         <c:param name="protocolApplicationId" value="${protocolApplication.id}" />
     </c:url>
-    <legend><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs"/>[<a href="${manageInputsUrl}"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.addedittext"/></a>]</legend>
+    <legend>
+        <fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.inputs"/>
+        [<a href="javascript://noop/" onclick="ProtExpress.loadDiv('${manageInputsUrl}', 'divAjaxBody', true);"><fmt:message key="protexpress.page.createnewexperiment.reviewprotocol.addedittext"/></a>]
+    </legend>
 
     <!--Input List-->
     <div class="searchresults" style="border-bottom:0;">
