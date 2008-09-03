@@ -113,6 +113,14 @@ public class ProtExpressServiceImpl extends HibernateDaoSupport implements ProtE
      * {@inheritDoc}
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void merge(Object object) {
+        getHibernateTemplate().merge(object);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void clear() {
         getHibernateTemplate().clear();
     }

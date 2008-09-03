@@ -99,6 +99,13 @@ public interface ProtExpressService {
     void saveOrUpdate(Object object);
 
     /**
+     * Merges the given hibernate object.
+     *
+     * @param object the object to save
+     */
+    void merge(Object object);
+
+    /**
      * Is the object the one and only object with the value for the given field.
      *
      * @param bean the object to check for uniqueness with

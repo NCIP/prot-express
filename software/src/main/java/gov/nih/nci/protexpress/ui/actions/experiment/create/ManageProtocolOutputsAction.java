@@ -83,7 +83,6 @@
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
 import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
 import gov.nih.nci.protexpress.util.SessionHelper;
@@ -131,7 +130,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
     @SkipValidation
     public String load() {
         if (getProtocolApplication().getOutputs().size() == 0) {
-            getProtocolApplication().getOutputs().add(new InputOutputObject(null));
+            ManageProtAppInputOutputHelper.addNewOutput(getProtocolApplication().getOutputs());
         }
         return ActionSupport.INPUT;
     }
@@ -177,12 +176,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      */
     @SkipValidation
     public String saveOutputsToSession() {
-        ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
-        if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
-            addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
-            return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
-        }
-        return saveInputsOutputsToSession(getProtocolApplication().getOutputs());
+       return save();
     }
 
     /**
@@ -192,11 +186,31 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      */
     @SkipValidation
     public String saveOutputs() {
+       return save();
+    }
+
+    /**
+     * Saves the outputs to session or db.
+     *
+     * @return the directive for the next action / page to be directed to
+     */
+    private String save() {
         ManageProtAppInputOutputHelper.removeInvalidItems(getProtocolApplication().getOutputs());
         if (!ManageProtAppInputOutputHelper.isNameEmpty(getProtocolApplication().getOutputs())) {
             addActionError(getText("protexpress.page.manageoutputs.error.name.empty"));
             return getActionResult(ActionResultEnum.ADD_NEW_OUTPUT);
         }
-        return saveInputsOutputs(getProtocolApplication().getOutputs());
+
+        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
+        if (getProtocolApplication().getId() != null) {
+            ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+            ProtExpressRegistry.getProtExpressService().clear();
+            setProtocolApplicationId(getProtocolApplication().getId());
+            return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
+        } else {
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        }
+
+        return ActionSupport.SUCCESS;
     }
 }
