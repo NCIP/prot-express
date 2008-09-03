@@ -107,19 +107,7 @@ public class ManageProtocolOutputsAction extends AbstractProtocolApplicationActi
      * {@inheritDoc}
      */
     public void prepare() throws Exception {
-        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
-        if (expId != null) {
-            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
-            setExperimentRun(getExperiment().getExperimentRuns().get(0));
-        }
-
-        if (getProtocolApplicationId() != null) {
-            setProtocolApplication(ProtExpressRegistry.getExperimentService()
-                    .getProtocolApplicationById(getProtocolApplicationId()));
-            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        } else {
-            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
-        }
+        this.prepareProtocolInputOutputAction();
     }
 
     /**
