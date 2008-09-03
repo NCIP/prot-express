@@ -82,19 +82,9 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
-import gov.nih.nci.protexpress.ui.actions.ActionResultEnum;
-import gov.nih.nci.protexpress.util.ManageProtAppInputOutputHelper;
-import gov.nih.nci.protexpress.util.SessionHelper;
 
-import java.util.List;
-
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
@@ -137,33 +127,6 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      */
     public void setProtocolApplication(ProtocolApplication protocolApplication) {
         this.protocolApplication = protocolApplication;
-    }
-
-    /**
-     * Update the protocol inputs/outputs, save the protocol application object to session.
-     *
-     * @param lst the list of inputs/outputs.
-     * @return the directive for the next action/page to be directed to.
-     */
-    @SkipValidation
-    public String saveInputsOutputsToSession(List<InputOutputObject> lst) {
-        ManageProtAppInputOutputHelper.removeInvalidItems(lst);
-        SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        return ActionSupport.SUCCESS;
-    }
-
-    /**
-     * Update the protocol inputs/outputs, persist the protocol application object to the database.
-     *
-     * @param lst the list of inputs/outputs.
-     * @return the directive for the next action/page to be directed to.
-     */
-    @SkipValidation
-    public String saveInputsOutputs(List<InputOutputObject> lst) {
-        setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString("protocol.update.success"));
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
-        setProtocolApplicationId(getProtocolApplication().getId());
-        return getActionResult(ActionResultEnum.EDIT_PROTOCOL);
     }
 
     /**

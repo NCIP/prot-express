@@ -139,16 +139,15 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
             setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
         }
 
-        if (getProtocolApplication() != null) {
-            setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
-                    getProtocolApplication()));
-        }
-
         if (getExperimentRunId() != null) {
             setExperimentRun(ProtExpressRegistry.getExperimentService().getExperimentRunById(getExperimentRunId()));
         }
         if (getExperimentId() != null) {
             setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(getExperimentId()));
+        }
+
+        if (getProtocolApplication() != null) {
+            setPotentialInputs();
         }
     }
 
@@ -211,9 +210,7 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     public String addExistingInput() {
         ManageProtAppInputOutputHelper.addExistingInput(getProtocolApplication().getInputs(), getSelectedInputId());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        // remove dupes.
-        ManageProtAppInputOutputHelper.removeDuplicateInputs(getProtocolApplication().
-                getInputs(), getPotentialInputs());
+        setPotentialInputs();
         return this.actionResultAddInputs;
     }
 
@@ -226,8 +223,7 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     public String deleteInput() {
         ManageProtAppInputOutputHelper.deleteInput(getProtocolApplication().getInputs(), getDeleteIndex());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
-                getProtocolApplication()));
+        setPotentialInputs();
         return this.actionResultAddInputs;
     }
 
@@ -240,8 +236,6 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
     public String deleteOutput() {
         ManageProtAppInputOutputHelper.deleteOutput(getProtocolApplication().getOutputs(), getDeleteIndex());
         SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
-        setPotentialInputs(ManageProtAppInputOutputHelper.getPotentialInputs(
-                getProtocolApplication()));
         return this.actionResultAddOutputs;
     }
 
@@ -360,6 +354,15 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      */
     public List<InputOutputObject> getPotentialInputs() {
         return potentialInputs;
+    }
+
+    /**
+     * Sets the potentialInputs.
+     *
+     */
+    public void setPotentialInputs() {
+        setPotentialInputs(ManageProtAppInputOutputHelper
+                .getPotentialInputs(getExperimentRun().getId(), getProtocolApplication()));
     }
 
     /**

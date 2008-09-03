@@ -84,7 +84,7 @@
                                 </tr>
                                 <c:forEach items="${experiment.experimentRuns}" var="expRun" varStatus="itemCount">
                                     <c:forEach items="${expRun.protocolApplications}" var="protApp">
-                                        <c:url var="protocolViewUrl" value="/ajax/createExperiment/protocols/manage/reviewProtocol.action">
+                                        <c:url var="protocolViewUrl" value="/ajax/createExperiment/protocols/manage/viewProtocolSummary.action">
                                             <c:param name="protocolApplicationId" value="${protApp.id}" />
                                         </c:url>
                                         <c:url var="protocolEditUrl" value="/ajax/createExperiment/protocols/manage/editProtocol.action">
