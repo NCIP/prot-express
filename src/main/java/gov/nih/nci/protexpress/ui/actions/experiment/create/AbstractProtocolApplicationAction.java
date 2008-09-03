@@ -82,8 +82,10 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
+import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
+import gov.nih.nci.protexpress.util.SessionHelper;
 
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
@@ -109,6 +111,25 @@ public abstract class AbstractProtocolApplicationAction extends AbstractCreateEx
      */
     public AbstractProtocolApplicationAction() {
         super();
+    }
+
+    /**
+     * prepare method for managing protocol, inputs and outputs.
+     */
+    protected void prepareProtocolInputOutputAction() {
+        Long expId = (getExperimentId() != null) ? getExperimentId() : SessionHelper.getExperimentIdFromSession();
+        if (expId != null) {
+            setExperiment(ProtExpressRegistry.getExperimentService().getExperimentById(expId));
+            setExperimentRun(getExperiment().getExperimentRuns().get(0));
+        }
+
+        if (getProtocolApplicationId() != null) {
+            setProtocolApplication(ProtExpressRegistry.getExperimentService()
+                    .getProtocolApplicationById(getProtocolApplicationId()));
+            SessionHelper.saveProtocolApplicationInSession(getProtocolApplication());
+        } else {
+            setProtocolApplication(SessionHelper.getProtocolApplicationFromSession());
+        }
     }
 
     /**
