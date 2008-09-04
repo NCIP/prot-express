@@ -184,16 +184,7 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     @Transient
     public Boolean getStatusCompleted() {
         statusCompleted = Boolean.TRUE;
-        // Check for at least experiment run with One protocol application.
-        // All protApps should have at least one input and one output.
-        if (getExperimentRuns().size() <= 0) {
-            return Boolean.FALSE;
-        }
-        for (ExperimentRun expRun : getExperimentRuns()) {
-            if (expRun.getStatusCompleted() == Boolean.FALSE) {
-                return Boolean.FALSE;
-            }
-        }
+
         return statusCompleted;
     }
 

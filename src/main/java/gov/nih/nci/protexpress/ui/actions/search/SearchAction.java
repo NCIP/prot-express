@@ -124,7 +124,7 @@ public class SearchAction extends ActionSupport {
     @SuppressWarnings("unchecked")
     public String loadSearch() {
         session = ActionContext.getContext().getSession();
-        if ((session != null) && session.containsKey(this.searchCriteria)) {
+        if ((session != null) && (session.get(this.searchCriteria) != null)) {
             session.remove(this.searchCriteria);
         }
 
@@ -145,7 +145,7 @@ public class SearchAction extends ActionSupport {
     @SuppressWarnings("unchecked")
     public String reloadSearch() {
         session = ActionContext.getContext().getSession();
-        if ((session != null) && session.get(this.searchCriteria) != null) {
+        if ((session != null) && (session.get(this.searchCriteria) != null)) {
             setSearchParameters((SearchParameters) session.get(this.searchCriteria));
         }
 

@@ -59,7 +59,7 @@
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
                                 <td class="action">
                                      <c:choose>
-                                        <c:when test="${statusCompleted.booleanValue == Boolean.TRUE}">
+                                        <c:when test="${experiment.statusCompleted == true}">
                                             <span title="Complete">
                                                 <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
                                             </span>
@@ -75,7 +75,7 @@
                                     <a href="${editExperimentDetailsUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
                                 </td>
                                 <td class="action">
-                                    <c:if test="${experiment.statusCompleted == Boolean.TRUE}">
+                                    <c:if test="${experiment.statusCompleted == true}">
                                         <a href="${experimentDownloadUrl}">
                                             <img src="<c:url value="/images/ico_xar.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.download.alt" />" />
                                         </a>

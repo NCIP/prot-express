@@ -107,7 +107,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -142,8 +141,6 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
     private AuditInfo auditInfo = new AuditInfo();
     private List<InputOutputObject> inputs = new ArrayList<InputOutputObject>();
     private List<InputOutputObject> outputs = new ArrayList<InputOutputObject>();
-
-    private Boolean statusCompleted = Boolean.FALSE;
 
     /**
      * protected default constructor for hibernate only.
@@ -363,31 +360,6 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
         newProtApp.setComments(srcProtApp.getComments());
         newProtApp.setNotes(srcProtApp.getNotes());
         return newProtApp;
-    }
-
-    /**
-     * Gets the statusCompleted.
-     *
-     * @return the statusCompleted.
-     */
-    @Transient
-    public Boolean getStatusCompleted() {
-        statusCompleted = Boolean.TRUE;
-        // Check for at least One Input and One Output.
-        if ((getInputs().size() <= 0) || (getInputs().size() <= 0)) {
-            return Boolean.FALSE;
-        }
-
-        return statusCompleted;
-    }
-
-    /**
-     * Sets the statusCompleted.
-     *
-     * @param statusCompleted the statusCompleted to set.
-     */
-    public void setStatusCompleted(Boolean statusCompleted) {
-        this.statusCompleted = statusCompleted;
     }
 
     /**
