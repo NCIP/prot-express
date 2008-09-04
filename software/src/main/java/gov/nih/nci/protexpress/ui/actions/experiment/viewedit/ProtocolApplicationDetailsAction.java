@@ -286,7 +286,7 @@ public class ProtocolApplicationDetailsAction extends ExperimentRunDetailsAction
      */
     private String save(String messageKey) {
         setSuccessMessage(ProtExpressRegistry.getApplicationResourceBundle().getString(messageKey));
-        ProtExpressRegistry.getProtExpressService().saveOrUpdate(getProtocolApplication());
+        ProtExpressRegistry.getProtExpressService().merge(getProtocolApplication());
         ProtExpressRegistry.getProtExpressService().clear();
         SessionHelper.removeProtocolApplicationFromSession();
         return ActionSupport.SUCCESS;

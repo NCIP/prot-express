@@ -126,6 +126,7 @@ public class ExperimentToXar23FormatConversionHelper {
     private final ObjectFactory objectFactory = new ObjectFactory();
     private ExperimentParser experimentParser;
     private String propertyKeyName = "Notes";
+    private String propertyExperimentDescription = "Description";
 
     /**
      * Default constructor.
@@ -168,6 +169,9 @@ public class ExperimentToXar23FormatConversionHelper {
         xarExpTypeElement.setHypothesis(exp.getHypothesis());
         xarExpTypeElement.setName(exp.getName());
         xarExpTypeElement.setContact(getContactTypeElement(exp.getContactPerson()));
+        xarExpTypeElement.setProperties(getPropertyCollectionTypeElement(
+                this.propertyExperimentDescription, exp.getDescription(),
+                SimpleTypeNames.STRING, getOntologyEntryUri()));
         return xarExpTypeElement;
     }
 
