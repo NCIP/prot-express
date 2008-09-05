@@ -30,7 +30,8 @@
                     <s:if test="%{recentExperiments.size() == 0}">
                         <tr>
                             <td class="label_left">
-                                <fmt:message key="protexpress.page.home.recentexperiments.nonefound" />&nbsp;&nbsp;<a href="${createExperimentUrl}"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
+                                <fmt:message key="protexpress.page.home.recentexperiments.nonefound" />&nbsp;&nbsp;
+                                <a href="<c:url value="/createExperiment/createNewExperiment.action"/>"><fmt:message key="protexpress.page.home.createnewexperiment" /></a>
                             </td>
                         </tr>
                     </s:if>
