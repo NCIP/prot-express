@@ -14,7 +14,7 @@
 
     <div class="padme8">
         <!-- Add Content Here -->
-        <h1><fmt:message key="protexpress.page.home.title" />-  Testing for BDA Team.</h1>
+        <h1><fmt:message key="protexpress.page.home.title" /></h1>
         <p class="homeintro"><fmt:message key="protexpress.page.home.introtext" /></p>
         <!-- Big Buttons -->
             <protExpress:homeButtonRow textKey="protexpress.page.home.actionchoice">
