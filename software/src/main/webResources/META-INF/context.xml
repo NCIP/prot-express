@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/protExpress" docBase="${project.build.directory}/${project.build.finalName}" debug="5" reloadable="true" crossContext="true">
+<Context path="/protExpress"  debug="5" reloadable="true" crossContext="true">
     <Resource name="jdbc/ProtExpressDb"
         auth="Container"
         type="javax.sql.DataSource"
@@ -24,7 +24,7 @@
              mail.transport.protocol="smtp"
              mail.smtp.auth="false"
        />
-        
+
     <Realm className="org.apache.catalina.realm.JAASRealm"
         appName="protExpress"
         userClassNames="gov.nih.nci.protexpress.security.UserPrincipal"
