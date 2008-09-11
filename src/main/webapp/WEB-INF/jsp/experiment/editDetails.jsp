@@ -1,7 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <title><fmt:message key="protexpress.page.editexperiment.title.caption" /></title>
 <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">

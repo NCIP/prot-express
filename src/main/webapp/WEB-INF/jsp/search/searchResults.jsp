@@ -1,4 +1,4 @@
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <!--Search Results-->
 <s:if test="experiments.list != null">
