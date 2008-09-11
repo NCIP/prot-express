@@ -32,66 +32,35 @@
             </div>
 
             <s:form id="createExperimentForm" action="ajax/createExperiment/save.action" method="post">
+                <c:set var="formName" value="createExperimentForm" />
+
                 <div class="centerfield">
-                    <fieldset class="leftfield">
-                        <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" /></legend>
-                        <table class="form3">
-                            <tr>
-                                <td class="label_left">
-                                    <s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top" required="true"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label_left">
-                                    <s:textarea name="experiment.description" key="protexpress.experiment.description" labelposition="top" rows="4"></s:textarea>
-                                </td>
-                            </tr>
-                           <tr>
-                                <td class="label_left">
-                                    <s:textarea name="experiment.hypothesis" key="protexpress.experiment.hypothesis" labelposition="top" rows="4"></s:textarea>
-                                </td>
-                           </tr>
-                           <tr>
-                                <td class="label_left">
-                                    <s:textfield name="experiment.url" key="protexpress.experiment.url" labelposition="top"/>
-                                </td>
-                            </tr>
-                           <tr>
-                                <td class="label_left">
-                                    <s:textarea name="experiment.notes" key="protexpress.experiment.notes" labelposition="top" rows="4"></s:textarea>
-                                </td>
-                           </tr>
-                        </table>
-                    </fieldset>
+                    <!-- Experiment Info -->
+                    <c:set var="title" value="protexpress.page.createnewexperiment.identifyexperiment.overviewtitle" />
+                    <c:set var="nameExperimentName" value="experiment.name" />
+                    <c:set var="nameExperimentDescription" value="experiment.description" />
+                    <c:set var="nameExperimentHypothesis" value="experiment.hypothesis" />
+                    <c:set var="nameExperimentUrl" value="experiment.url" />
+                    <c:set var="nameExperimentNotes" value="experiment.notes" />
+                    <%@ include file="/WEB-INF/jsp/experiment/common/experimentInfo.jsp"%>
+                    <!-- /Experiment Info -->
+
+                    <!-- Experiment Date -->
                     <fieldset class="rightfield">
                         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.dateperformedtitle" /></legend>
                         <protExpress:datefield formName="createExperimentForm" htmlField="${experiment.datePerformed}" sname="experiment.datePerformed" theme="xhtml" />
                     </fieldset>
-                    <fieldset class="rightfield">
-                        <legend><fmt:message key="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" /></legend>
-                        <table class="form3">
-                            <tr>
-                                <td class="label_left">
-                                    <s:textfield name="experiment.contactPerson.firstName" key="protexpress.contact.firstname" labelposition="top" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label_left">
-                                    <s:textfield name="experiment.contactPerson.lastName" key="protexpress.contact.lastname" labelposition="top" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label_left">
-                                    <s:textfield name="experiment.contactPerson.email" key="protexpress.contact.email" labelposition="top" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label_left">
-                                    <s:textarea name="experiment.contactPerson.notes" key="protexpress.contact.notes" labelposition="top" rows="4"></s:textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
+                    <!-- /Experiment Date -->
+
+                    <!-- Experiment Contact -->
+                    <c:set var="title" value="protexpress.page.createnewexperiment.identifyexperiment.contacttitle" />
+                    <c:set var="nameFirstName" value="experiment.contactPerson.firstName" />
+                    <c:set var="nameLastName" value="experiment.contactPerson.lastName" />
+                    <c:set var="nameEmail" value="experiment.contactPerson.email" />
+                    <c:set var="nameNotes" value="experiment.contactPerson.notes" />
+                    <%@ include file="/WEB-INF/jsp/experiment/common/contactPersonInfo.jsp"%>
+                    <!-- /Experiment Contact -->
+
                     <div class="clear"></div>
                 </div>
 

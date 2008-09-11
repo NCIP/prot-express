@@ -141,6 +141,24 @@ var ProtExpress = {
         }
       }
     }
+  },
+  textFieldCounter: function(elementId, labelId, maxLength, counterMessage) {
+    var element = document.getElementById(elementId);
+    var labelElement = document.getElementById(labelId);
+    if (element.value.length > maxLength) {
+        element.value = element.value.substring(0, maxLength);
+    } else {
+        var remainingChars = maxLength - element.value.length;
+        labelElement.innerHTML = remainingChars + " " + counterMessage;
+    }
+  },
+  showDiv: function(divId) {
+    var divElement = document.getElementById(divId);
+    divElement.style.display = "block";
+  },
+  hideDiv: function(divId) {
+    var divElement = document.getElementById(divId);
+    divElement.style.display = "none";
   }
 }
 

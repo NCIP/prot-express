@@ -1,8 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <h3>${experimentRun.name}</h3>
 <c:if test="${not empty successMessage}">
@@ -20,12 +16,12 @@
         <table class="form3">
             <tr>
                 <td class="label_left">
-                    <s:textfield name="experimentRun.name" key="protexpress.experimentrun.name" labelposition="top" required="true"/>
+                    <protExpress:textfield formName="editExperimentRunForm" name="experimentRun.name" key="protexpress.experimentrun.name" required="true" maxlength="50"/>
                 </td>
             </tr>
             <tr>
                 <td class="label_left">
-                    <s:textarea name="experimentRun.notes" key="protexpress.experimentrun.notes" labelposition="top" rows="4" cols="20"></s:textarea>
+                    <protExpress:textarea formName="editExperimentRunForm" name="experimentRun.notes" key="protexpress.experimentrun.notes" />
                 </td>
             </tr>
         </table>

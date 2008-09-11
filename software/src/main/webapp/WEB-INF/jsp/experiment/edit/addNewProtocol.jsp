@@ -26,36 +26,17 @@
 <s:form id="addNewProtocolForm" action="ajax/editExperiment/experimentRun/protocol/saveNewProtocol.action" method="post">
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
     <s:hidden name="experimentId" value="%{experiment.id}" />
-    <div class="twocoltable">
-        <table class="form">
-            <tr>
-                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.protocol.name" />:</td>
-                <td class="value"><s:textfield name="protocol.name"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.description" />:</td>
-                <td class="value"><s:textarea name="protocol.description" rows="2" cols="20"></s:textarea></td>
-            </tr>
-        </table>
-    </div>
-    <div class="twocoltable">
-        <table class="form">
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.software" />:</td>
-                <td class="value"><s:textfield name="protocol.software"></s:textfield></td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.instrument" />:</td>
-                 <td class="value"><s:textfield name="protocol.instrument"></s:textfield></td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
-                 <td class="value"> <s:textarea name="protocol.notes" rows="2" cols="20"></s:textarea></td>
-            </tr>
-        </table>
-    </div>
-    <div class="clear"/>
+
+    <!-- Protocol Info -->
+    <c:set var="formName" value="addNewProtocolForm" />
+    <c:set var="nameProtocolName" value="protocol.name" />
+    <c:set var="nameProtocolDescription" value="protocol.description" />
+    <c:set var="nameProtocolSoftware" value="protocol.software" />
+    <c:set var="nameProtocolInstrument" value="protocol.instrument" />
+    <c:set var="nameProtocolNotes" value="protocol.notes" />
+    <%@ include file="/WEB-INF/jsp/experiment/common/protocolInfo.jsp"%>
+    <!-- /Protocol Info -->
+
     <c:url var="cancelUrl" value="/ajax/editExperiment/experimentRun/load.action">
         <c:param name="experimentRunId" value="${experimentRun.id}" />
         <c:param name="experimentId" value="${experiment.id}" />

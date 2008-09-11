@@ -29,7 +29,7 @@
 
 <protExpress:buttonRow>
     <protExpress:button style="save" textKey="protexpress.page.createnewexperiment.reviewprotocol.button.save" id="save" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndViewProtocolUrl}'); this.blur(); return false;" />
-    <protExpress:button style="saverepeat" textKey="protexpress.page.createnewexperiment.identifyexperiment.button.saveandcontinue" id="saverepeat" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndAddNewProtocolUrl}'); this.blur(); return false;" />
+    <protExpress:button style="saverepeat" textKey="protexpress.page.createnewexperiment.reviewprotocol.button.addanotherprotocol" id="saverepeat" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndAddNewProtocolUrl}'); this.blur(); return false;" />
     <protExpress:button style="next" textKey="protexpress.page.createnewexperiment.reviewprotocol.button.experimentsummary" id="next" onclick="ProtExpress.submitAjaxFormToUrl('protocolApplicationForm', 'divAjaxBody', '${saveAndViewExperimentSummaryUrl}'); this.blur(); return false;" />
 </protExpress:buttonRow>
 

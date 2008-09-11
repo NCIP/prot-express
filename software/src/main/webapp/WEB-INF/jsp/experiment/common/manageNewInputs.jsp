@@ -40,9 +40,16 @@
                 <td class="action">
                    <protExpress:protocolInputInfo imgInputTypeUrl="${imgInputTypeUrl}" altText="${altText}" inputName="${name}" outputOfProtocolName=" "/>
                 </td>
-                <td class="title"><s:textfield name="protocolApplication.inputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
-                <td><s:textfield name="protocolApplication.inputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
-                <td><s:textarea name="protocolApplication.inputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" readonly="%{attribReadOnly}" cssStyle="width:99%; height:40px;" ></s:textarea></td>
+                <td class="title">
+                    <s:textfield name="protocolApplication.inputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/>
+                    <!-- <protExpress:textfield formName="${formId}" name="protocolApplication.inputs[${e.index}].name" key="protexpress.protocol.name" required="true" maxlength="200"/> -->
+                </td>
+                <td>
+                    <s:textfield name="protocolApplication.inputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/>
+                </td>
+                <td>
+                    <s:textarea name="protocolApplication.inputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" readonly="%{attribReadOnly}" cssStyle="width:99%; height:40px;" ></s:textarea>
+                </td>
                 <td class="action">
                     <c:if test="${fn:length(protocolApplication.inputs) > 1}">
                         <c:url var="deleteInputUrl" value="${deleteInputUrlTarget}" >

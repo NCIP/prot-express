@@ -13,65 +13,34 @@
 
 <s:form id="editExperimentForm" action="/ajax/editExperiment/experiment/delete.action" method="post">
     <s:hidden name="experimentId" value="%{experiment.id}"/>
-    <fieldset class="leftfield">
-        <legend><fmt:message key="protexpress.page.editexperimentdetails.overviewtitle" /></legend>
-        <table class="form3">
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="experiment.name" key="protexpress.experiment.name" labelposition="top" required="true"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textarea name="experiment.description" key="protexpress.experiment.description" labelposition="top" rows="4"></s:textarea>
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textarea name="experiment.hypothesis" key="protexpress.experiment.hypothesis" labelposition="top" rows="4"></s:textarea>
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="experiment.url" key="protexpress.experiment.url" labelposition="top"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textarea name="experiment.notes" key="protexpress.experiment.notes" labelposition="top" rows="4"></s:textarea>
-                </td>
-            </tr>
-        </table>
-    </fieldset>
+
+    <c:set var="formName" value="editExperimentForm" />
+    <!-- Experiment Info -->
+    <c:set var="title" value="protexpress.page.editexperimentdetails.overviewtitle" />
+    <c:set var="nameExperimentName" value="experiment.name" />
+    <c:set var="nameExperimentDescription" value="experiment.description" />
+    <c:set var="nameExperimentHypothesis" value="experiment.hypothesis" />
+    <c:set var="nameExperimentUrl" value="experiment.url" />
+    <c:set var="nameExperimentNotes" value="experiment.notes" />
+    <%@ include file="/WEB-INF/jsp/experiment/common/experimentInfo.jsp"%>
+    <!-- /Experiment Info -->
+
+    <!-- Experiment Date -->
     <fieldset class="rightfield">
         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.editexperimentdetails.dateperformedtitle" /> (<fmt:message key="default.date.format"/>)</legend>
         <protExpress:datefield formName="editExperimentForm" htmlField="${experiment.datePerformed}" sname="experiment.datePerformed" theme="xhtml" />
     </fieldset>
-    <fieldset class="rightfield">
-        <legend><fmt:message key="protexpress.page.editexperimentdetails.contacttitle" /></legend>
-        <table class="form3">
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="experiment.contactPerson.firstName" key="protexpress.contact.firstname" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="experiment.contactPerson.lastName" key="protexpress.contact.lastname" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="experiment.contactPerson.email" key="protexpress.contact.email" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textarea name="experiment.contactPerson.notes" key="protexpress.contact.notes" labelposition="top" rows="4"></s:textarea>
-                </td>
-            </tr>
-        </table>
-    </fieldset>
+    <!-- /Experiment Date -->
+
+    <!-- Experiment Contact -->
+    <c:set var="title" value="protexpress.page.editexperimentdetails.contacttitle" />
+    <c:set var="nameFirstName" value="experiment.contactPerson.firstName" />
+    <c:set var="nameLastName" value="experiment.contactPerson.lastName" />
+    <c:set var="nameEmail" value="experiment.contactPerson.email" />
+    <c:set var="nameNotes" value="experiment.contactPerson.notes" />
+    <%@ include file="/WEB-INF/jsp/experiment/common/contactPersonInfo.jsp"%>
+    <!-- /Experiment Contact -->
+
     <div class="clear"><br /></div>
 
     <c:url var="deleteExperimentUrl" value="/ajax/editExperiment/experiment/delete.action" />

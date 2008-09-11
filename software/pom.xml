@@ -144,7 +144,7 @@
         <jdbc.groupId>postgresql</jdbc.groupId>
         <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
         <jdbc.artifactId>postgresql</jdbc.artifactId>
-        <jdbc.version>8.1-407.jdbc3</jdbc.version>
+        <jdbc.version>8.3-603.jdbc3</jdbc.version>
         <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
         <log.dir>logs/</log.dir>
         <source.level>1.5</source.level>
@@ -156,9 +156,9 @@
         <hibernate.create>true</hibernate.create>
         <hibernate.drop>true</hibernate.drop>
         <hibernate.export>false</hibernate.export>
-        <hibernate.version>3.2.4.ga</hibernate.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
         <hibernate.validator.version>3.0.0.ga</hibernate.validator.version>
-        <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
+        <hibernate.annotations.version>3.3.1.GA</hibernate.annotations.version>
         <hibernate.commons.annotations.version>3.3.0.ga</hibernate.commons.annotations.version>
         <schema.file>protExpressSchema.sql</schema.file>
         <jaxb.api.version>2.1</jaxb.api.version>
@@ -223,7 +223,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>hibernate3-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.0-alpha-2</version>
                 <configuration>
                     <components>
                         <component>
@@ -961,10 +961,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>8.1-407.jdbc3</version>
-            <scope>provided</scope>
+            <groupId>${jdbc.groupId}</groupId>
+            <artifactId>${jdbc.artifactId}</artifactId>
+            <version>${jdbc.version}</version>
         </dependency>
 
         <!-- Test only dependencies -->
