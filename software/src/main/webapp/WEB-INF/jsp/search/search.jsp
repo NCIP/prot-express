@@ -1,7 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <title><fmt:message key="protexpress.page.search.caption" /></title>
 

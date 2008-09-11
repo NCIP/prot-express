@@ -1,8 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <h3>${protocolApplication.protocol.name}</h3>
 <c:if test="${not empty successMessage}">

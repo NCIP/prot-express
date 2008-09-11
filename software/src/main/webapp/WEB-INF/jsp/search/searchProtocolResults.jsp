@@ -1,8 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
     <h2><fmt:message key="protexpress.page.search.resultstitle" /></h2>
     <c:url var="sortUrl" value="/ajax/search/doSearch.action" />

@@ -1,9 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
-<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <!--Protocol Search Results List -->
 <c:set var="formId" value="selectExistingProtocolForm" />

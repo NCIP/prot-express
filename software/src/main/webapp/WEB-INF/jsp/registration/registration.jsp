@@ -1,7 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
 <html>
 <head>
 </head>

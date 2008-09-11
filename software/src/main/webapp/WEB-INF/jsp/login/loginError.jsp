@@ -1,3 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
 <c:set var="failedLogin" value="true"/>
 <%@ include file="/WEB-INF/jsp/login/login.jsp"%>

@@ -1,9 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="protExpress" %>
-<%@ taglib uri="http://ajaxtags.org/tags/ajax" prefix="ajax" %>
-<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
 
 <!--Protocol Search Results List -->
 <div class="tabbed">
