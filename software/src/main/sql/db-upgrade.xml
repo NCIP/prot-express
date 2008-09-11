@@ -11,27 +11,30 @@
         <sqlFile path="@db-upgrade.run.dir@/csmDropSchema.sql"/>
     </changeSet>
     <changeSet id="3" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/protExpressSchema.sql"/>
+            <sqlFile path="@db-upgrade.run.dir@/protExpress-drop-schema.sql"/>
     </changeSet>
     <changeSet id="4" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/csmCreateSchema.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/protExpress-create-schema.sql"/>
     </changeSet>
     <changeSet id="5" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/csmBootstrapData.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/csmCreateSchema.sql"/>
     </changeSet>
     <changeSet id="6" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/csmBootstrapData.sql"/>
     </changeSet>
     <changeSet id="7" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
     </changeSet>
     <changeSet id="8" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/protExpressBootstrapData.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
     </changeSet>
     <changeSet id="9" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/createNewUser.sql"/>
+        <sqlFile path="@db-upgrade.run.dir@/protExpressBootstrapData.sql"/>
     </changeSet>
     <changeSet id="10" author="kanchink">
+        <sqlFile path="@db-upgrade.run.dir@/createNewUser.sql"/>
+    </changeSet>
+    <changeSet id="11" author="kanchink">
         <sqlFile path="@db-upgrade.run.dir@/sampleExperiments.sql"/>
     </changeSet>
 </databaseChangeLog>
