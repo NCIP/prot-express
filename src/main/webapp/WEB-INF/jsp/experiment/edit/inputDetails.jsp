@@ -19,16 +19,20 @@
     <table class="form">
         <tr>
             <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.input.name" />:</td>
-            <td class="value"><s:textfield name="inputOutputObject.name"/></td>
+            <td class="value">
+                <protExpress:textfield formName="editInputForm" name="inputOutputObject.name" maxlength="200"/>
+            </td>
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.input.filename" />:</td>
-            <td class="value"><s:textfield name="inputOutputObject.dataFileURL"/></td>
+            <td class="value">
+                <protExpress:textfield formName="editInputForm" name="inputOutputObject.dataFileURL" maxlength="200"/>
+            </td>
         </tr>
         <tr>
             <td class="label"><fmt:message key="protexpress.input.notes" />:</td>
             <td class="value">
-                <s:textarea name="inputOutputObject.notes" rows="4" cols="20" cssStyle="width:90%"></s:textarea>
+                <protExpress:textarea formName="editInputForm" name="inputOutputObject.notes" />
             </td>
         </tr>
     </table>

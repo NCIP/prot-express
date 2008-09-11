@@ -34,56 +34,50 @@
                     <table class="form2">
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.name" key="protexpress.protocol.name" labelposition="top" required="true"/></p>
+                                <p>
+                                    <protExpress:textfield formName="protocolForm" name="protocol.name" key="protexpress.protocol.name" required="true" maxlength="200"/>
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textarea name="protocol.description" key="protexpress.protocol.description" labelposition="top" rows="4"></s:textarea></p>
+                                <p>
+                                    <protExpress:textarea formName="protocolForm" name="protocol.description" key="protexpress.protocol.description" />
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textarea name="protocol.notes" key="protexpress.protocol.notes" rows="4" labelposition="top"></s:textarea></p>
+                                <p>
+                                    <protExpress:textarea formName="protocolForm" name="protocol.notes" key="protexpress.protocol.notes" />
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.software" key="protexpress.protocol.software" labelposition="top"/></p>
+                                <p>
+                                    <protExpress:textfield formName="protocolForm" name="protocol.software" key="protexpress.protocol.software" maxlength="200"/>
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td class="label_left">
-                                <p><s:textfield name="protocol.instrument" key="protexpress.protocol.instrument" labelposition="top"/></p>
+                                <p>
+                                    <protExpress:textfield formName="protocolForm" name="protocol.instrument" key="protexpress.protocol.instrument" maxlength="200"/>
+                                </p>
                             </td>
                         </tr>
                     </table>
                 </fieldset>
-                <fieldset class="rightfield">
-                    <legend><fmt:message key="protexpress.page.editprotocoldetails.contacttitle" /></legend>
-                    <table class="form2">
-                        <tr>
-                            <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.firstName" key="protexpress.contact.firstname" labelposition="top" /></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.lastName" key="protexpress.contact.lastname" labelposition="top" /></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label_left">
-                                <p><s:textfield name="protocol.contactPerson.email" key="protexpress.contact.email" labelposition="top" /></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label_left">
-                                <p><s:textarea name="protocol.contactPerson.notes" key="protexpress.contact.notes" rows="4" labelposition="top"></s:textarea></p>
-                            </td>
-                        </tr>
-                    </table>
-                </fieldset>
+                <!-- Protocol Contact -->
+                <c:set var="formName" value="protocolForm" />
+                <c:set var="title" value="protexpress.page.editprotocoldetails.contacttitle" />
+                <c:set var="nameFirstName" value="protocol.contactPerson.firstName" />
+                <c:set var="nameLastName" value="protocol.contactPerson.lastName" />
+                <c:set var="nameEmail" value="protocol.contactPerson.email" />
+                <c:set var="nameNotes" value="protocol.contactPerson.notes" />
+                <%@ include file="/WEB-INF/jsp/experiment/common/contactPersonInfo.jsp"%>
+                <!-- /Protocol Contact -->
             </s:form>
             <div class="clear"></div>
             <c:if test="${protocol.auditInfo.creator == currentUser.loginName}">

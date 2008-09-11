@@ -12,34 +12,17 @@
 
   <fieldset>
     <legend><fmt:message key="protexpress.page.createnewexperiment.editprotocol.protocoldetailstitle" /></legend>
-    <div class="twocoltable">
-        <table class="form">
-            <tr>
-                <td class="label"><span class="required">*</span>&nbsp;<fmt:message key="protexpress.protocol.name" />:</td>
-                <td class="value"><s:textfield name="protocol.name"/></td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.description" />:</td>
-                <td class="value"><s:textarea name="protocol.description" rows="4"></s:textarea></td>
-            </tr>
-        </table>
-    </div>
-    <div class="twocoltable">
-        <table class="form">
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.software" />:</td>
-                <td class="value"><s:textfield name="protocol.software"/></td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.instrument" />:</td>
-                <td class="value"><s:textfield name="protocol.instrument"/></td>
-            </tr>
-            <tr>
-                <td class="label"><fmt:message key="protexpress.protocol.notes" />:</td>
-                <td class="value"><s:textarea name="protocolApplication.notes" rows="4"></s:textarea></td>
-            </tr>
-        </table>
-    </div>
+
+    <!-- Protocol Info -->
+    <c:set var="formName" value="protocolApplicationForm" />
+    <c:set var="nameProtocolName" value="protocol.name" />
+    <c:set var="nameProtocolDescription" value="protocol.description" />
+    <c:set var="nameProtocolSoftware" value="protocol.software" />
+    <c:set var="nameProtocolInstrument" value="protocol.instrument" />
+    <c:set var="nameProtocolNotes" value="protocolApplication.notes" />
+    <%@ include file="/WEB-INF/jsp/experiment/common/protocolInfo.jsp"%>
+    <!-- /Protocol Info -->
+
 </fieldset>
 </s:form>
 <fieldset>

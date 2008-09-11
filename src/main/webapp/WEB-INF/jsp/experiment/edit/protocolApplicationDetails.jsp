@@ -20,19 +20,29 @@
         <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.overviewtitle" /></legend>
         <table class="form2">
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.name" key="protexpress.protocol.name" required="true" labelposition="top"/></td>
+                <td class="label_left">
+                    <protExpress:textfield formName="editProtAppForm" name="protocolApplication.protocol.name" key="protexpress.protocol.name" required="true" maxlength="200"/>
+                </td>
             </tr>
             <tr>
-                <td class="label_left"><s:textarea name="protocolApplication.protocol.description" key="protexpress.protocol.description" labelposition="top" rows="4"></s:textarea></td>
+                <td class="label_left">
+                    <protExpress:textarea formName="editProtAppForm" name="protocolApplication.protocol.description" key="protexpress.protocol.description" />
+                </td>
             </tr>
             <tr>
-                <td class="label_left"><s:textarea name="protocolApplication.notes" key="protexpress.protocol.notes" labelposition="top" rows="4"></s:textarea></td>
+                <td class="label_left">
+                    <protExpress:textarea formName="editProtAppForm" name="protocolApplication.notes" key="protexpress.protocol.notes" />
+                </td>
             </tr>
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.software" key="protexpress.protocol.software" labelposition="top"/></td>
+                <td class="label_left">
+                    <protExpress:textfield formName="editProtAppForm" name="protocolApplication.protocol.software" key="protexpress.protocol.software" maxlength="200"/>
+                </td>
             </tr>
             <tr>
-                <td class="label_left"><s:textfield name="protocolApplication.protocol.instrument" key="protexpress.protocol.instrument" labelposition="top"/></td>
+                <td class="label_left">
+                    <protExpress:textfield formName="editProtAppForm" name="protocolApplication.protocol.instrument" key="protexpress.protocol.instrument" maxlength="200"/>
+                </td>
             </tr>
         </table>
     </fieldset>
@@ -40,31 +50,17 @@
         <legend><span class="required">*</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.dateperformedtitle" /> (<fmt:message key="default.date.format"/>)</legend>
         <protExpress:datefield formName="editProtAppForm" htmlField="${protocolApplication.datePerformed}" sname="protocolApplication.datePerformed" theme="xhtml" />
     </fieldset>
-     <fieldset class="rightfield">
-        <legend><fmt:message key="protexpress.page.editprotocolapplicationdetails.contacttitle" /></legend>
-        <table class="form3">
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="protocolApplication.protocol.contactPerson.firstName" key="protexpress.contact.firstname" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="protocolApplication.protocol.contactPerson.lastName" key="protexpress.contact.lastname" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textfield name="protocolApplication.protocol.contactPerson.email" key="protexpress.contact.email" labelposition="top" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label_left">
-                    <s:textarea name="protocolApplication.protocol.contactPerson.notes" key="protexpress.contact.notes" labelposition="top" rows="4"></s:textarea>
-                </td>
-            </tr>
-        </table>
-    </fieldset>
+
+    <!-- Protocol Application Contact -->
+    <c:set var="formName" value="editProtAppForm" />
+    <c:set var="title" value="protexpress.page.editprotocolapplicationdetails.contacttitle" />
+    <c:set var="nameFirstName" value="protocolApplication.protocol.contactPerson.firstName" />
+    <c:set var="nameLastName" value="protocolApplication.protocol.contactPerson.lastName" />
+    <c:set var="nameEmail" value="protocolApplication.protocol.contactPerson.email" />
+    <c:set var="nameNotes" value="protocolApplication.protocol.contactPerson.notes" />
+    <%@ include file="/WEB-INF/jsp/experiment/common/contactPersonInfo.jsp"%>
+    <!-- /Protocol Application Contact -->
+
     <div class="clear" />
 
     <c:url var="manageInputsUrl" value="/ajax/editExperiment/protocolApplication/manageInputs.action">
