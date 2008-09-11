@@ -253,6 +253,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="**/*"/>
 			</fileset>
 		</copy> 
+		<copy todir="${db-upgrade.dist.dir}/postgresql" overwrite="true">
+			<fileset dir="${db-install-dynamic.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>	
 		
 		<copy todir="${software.dir}" file="${common.dir}/maven/profiles.xml" overwrite="true">
 			<filterset>
@@ -272,6 +277,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 				<include name="**/*"/>
 			</fileset>
 		</copy>		
+		<copy todir="${db-upgrade.dist.dir}/postgresql" overwrite="true">
+			<fileset dir="${db-install-dynamic.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>	
 
 	</target>
 	<macrodef name="maven">
