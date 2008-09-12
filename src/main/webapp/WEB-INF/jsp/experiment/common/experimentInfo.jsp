@@ -5,7 +5,7 @@
     <table class="form3">
         <tr>
             <td class="label_left">
-                <protExpress:textfield formName="${formName}" name="${nameExperimentName}" key="protexpress.experiment.name" required="true" maxlength="200"/>
+                <protExpress:textfield formName="${formName}" name="${nameExperimentName}" key="protexpress.experiment.name"  required="true" maxlength="200"/>
             </td>
         </tr>
         <tr>

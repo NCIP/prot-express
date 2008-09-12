@@ -35,6 +35,8 @@
 
  <s:actionerror ></s:actionerror>
     <s:form id="manageOutputsForm" action="ajax/createExperiment/protocols/outputs/addNewOutput" method="post" >
+        <c:set var="formName" value="manageOutputsForm" />
+
         <!-- New Outputs List -->
         <c:set var="addNewOutputUrlTarget" value="/ajax/createExperiment/protocols/outputs/addNewOutput.action" />
         <c:set var="deleteOutputUrlTarget" value="/ajax/createExperiment/protocols/outputs/deleteOutput.action"/>

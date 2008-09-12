@@ -14,6 +14,8 @@
 <h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.caption" /></h3>
 <s:actionerror ></s:actionerror>
 <s:form id="manageInputsForm" action="/ajax/editExperiment/protocolApplication/addNewInput.action" method="post">
+    <c:set var="formName" value="manageInputsForm" />
+
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
     <s:hidden name="experimentId" value="%{experiment.id}"/>
 
