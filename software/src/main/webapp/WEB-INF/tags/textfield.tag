@@ -13,6 +13,8 @@
 <%@ attribute name="maxlength" required="false" type="java.lang.String"%>
 <%@ attribute name="readonly" required="false" type="java.lang.String"%>
 <%@ attribute name="style" required="false" type="java.lang.String"%>
+<%@ attribute name="cols" required="false" type="java.lang.String"%>
+<%@ attribute name="nameAlias" required="false" type="java.lang.String"%>
 
 <c:if test="${empty labelposition}">
     <c:set var="labelposition" value="top"/>
@@ -29,6 +31,9 @@
 <c:if test="${empty style}">
     <c:set var="style" value=""/>
 </c:if>
+<c:if test="${empty cols}">
+    <c:set var="cols" value="50" />
+</c:if>
 <c:choose>
     <c:when test="${empty key}">
         <c:set var="label" value="" />
@@ -38,19 +43,48 @@
     </c:otherwise>
 </c:choose>
 
-<c:set var="elementId" value="${formName}_${fn:replace(name, '.', '_')}" />
+<c:set var="sname" value="${formName}_${fn:replace(name, '.', '_')}" />
 <fmt:message var="counterMessage" key="protexpress.textbox.charactersleft" />
 
-<s:textfield
-    name="%{#attr.name}" label="%{#attr.label}" labelposition="%{#attr.labelposition}" required="%{#attr.required}"
-    onkeydown="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.name}_remLenCounter', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
-    onkeyup="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.name}_remLenCounter', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
-    onfocus="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.name}_remLenCounter', '%{#attr.maxlength}', '%{#attr.counterMessage}'); ProtExpress.showDiv('div_%{#attr.name}_remLen')"
-    onblur="ProtExpress.hideDiv('div_%{#attr.name}_remLen')"
-    cssStyle="%{#attr.style}" maxlength="%{#attr.maxlength}" readonly="%{#attr.readonly}" theme="css_xhtml"></s:textfield>
+<c:choose>
+    <c:when test="${empty nameAlias}">
+        <c:set var="divRemLenId" value="div_${sname}_remLen" />
+        <c:set var="labelRemLenCounterId" value="label_${sname}_remLenCounter" />
+        <c:set var="elementId" value="${sname}" />
+    </c:when>
+    <c:otherwise>
+        <c:set var="divRemLenId" value="div_${nameAlias}_remLen" />
+        <c:set var="labelRemLenCounterId" value="label_${nameAlias}_remLenCounter" />
+        <c:set var="elementId" value="${formName}_${nameAlias}" />
+    </c:otherwise>
+</c:choose>
 
-<div id="div_${name}_remLen" class="confirm_msg" style="display:none">
+
+<c:choose>
+    <c:when  test="${empty label}">
+        <s:textfield
+            name="%{#attr.name}" size="%{#attr.cols}"
+            onkeydown="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
+            onkeyup="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
+            onfocus="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}'); ProtExpress.showDiv('%{#attr.divRemLenId}')"
+            onblur="ProtExpress.hideDiv('%{#attr.divRemLenId}')"
+            cssStyle="%{#attr.style}" maxlength="%{#attr.maxlength}" readonly="%{#attr.readonly}"></s:textfield>
+    </c:when>
+    <c:otherwise>
+        <s:textfield
+            name="%{#attr.name}" size="%{#attr.cols}"
+            label="%{#attr.label}" labelposition="%{#attr.labelposition}" required="%{#attr.required}"
+            onkeydown="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
+            onkeyup="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}')"
+            onfocus="ProtExpress.textFieldCounter('%{#attr.elementId}', '%{#attr.labelRemLenCounterId}', '%{#attr.maxlength}', '%{#attr.counterMessage}'); ProtExpress.showDiv('%{#attr.divRemLenId}')"
+            onblur="ProtExpress.hideDiv('%{#attr.divRemLenId}')"
+            cssStyle="%{#attr.style}" maxlength="%{#attr.maxlength}" readonly="%{#attr.readonly}"></s:textfield>
+    </c:otherwise>
+</c:choose>
+
+
+<div id="${divRemLenId}" class="confirm_msg" style="display:none">
     <font size="1" face="arial, helvetica, sans-serif">
-        <label id="${name}_remLenCounter">${counterMessage}</label>
+        <label id="${labelRemLenCounterId}">${counterMessage}</label>
     </font>
 </div>

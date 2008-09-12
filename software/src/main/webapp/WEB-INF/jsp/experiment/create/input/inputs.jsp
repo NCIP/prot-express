@@ -34,6 +34,8 @@
 
  <s:actionerror ></s:actionerror>
     <s:form id="manageInputsForm" action="ajax/createExperiment/protocols/inputs/addNewInput" method="post" >
+        <c:set var="formName" value="manageInputsForm" />
+
         <!-- New Inputs List -->
         <c:set var="addNewInputUrlTarget" value="/ajax/createExperiment/protocols/inputs/addNewInput.action" />
         <c:set var="deleteInputUrlTarget" value="/ajax/createExperiment/protocols/inputs/deleteInput.action"/>

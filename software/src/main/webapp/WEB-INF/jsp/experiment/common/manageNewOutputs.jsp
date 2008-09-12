@@ -15,9 +15,22 @@
         <s:iterator id="output" value="protocolApplication.outputs" status="e">
             <tr>
                 <td class="alignright">${e.index + 1}</td>
-                <td class="title"><s:textfield name="protocolApplication.outputs[%{#e.index}].name" value="%{name}" required="true" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
-                <td><s:textfield name="protocolApplication.outputs[%{#e.index}].dataFileURL" value="%{dataFileURL}" readonly="%{attribReadOnly}" cssStyle="width:99%" maxlength="200"/></td>
-                <td><s:textarea name="protocolApplication.outputs[%{#e.index}].notes" value="%{notes}" rows="2" cols="20" readonly="%{attribReadOnly}" cssStyle="width:99%; height:40px;"  ></s:textarea></td>
+                <td class="title">
+                     <protExpress:textfield formName="${formId}" name="protocolApplication.outputs[${e.index}].name"
+                                            nameAlias="protocolApplication_outputs_${e.index}__name" maxlength="200"
+                                            readonly="%{attribReadOnly}" style="width:99%" />
+                </td>
+                <td>
+                    <protExpress:textfield formName="${formId}" name="protocolApplication.outputs[${e.index}].dataFileURL"
+                                            nameAlias="protocolApplication_outputs_${e.index}__dataFileURL" maxlength="200"
+                                            readonly="%{attribReadOnly}" style="width:99%" />
+                </td>
+                <td>
+                    <protExpress:textarea formName="${formId}" name="protocolApplication.outputs[${e.index}].notes"
+                                            nameAlias="protocolApplication_outputs_${e.index}__notes" maxlength="200"
+                                            rows="2" cols="20" readonly="%{attribReadOnly}" style="width:99%; height:40px;" />
+                </td>
+
                 <td class="action">
                     <c:if test="${fn:length(protocolApplication.outputs) > 1}">
                         <c:url var="deleteOutputUrl" value="${deleteOutputUrlTarget}" >
