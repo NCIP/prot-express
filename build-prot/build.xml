@@ -210,7 +210,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     build:protExpress:gen-sql
     "/>
 <tstamp>
-  <format property="mili.time" pattern="ddMMyyHHmmss"/>
+  <format property="buildTime" pattern="EEE, dd-MMM-yyyy hh:mm:ss aa z"/>
 </tstamp>
   <!-- First Maven Target -->
   <target name="build:protExpress" depends="init">
@@ -220,9 +220,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <filter token="db.protexpress.generate.drop" value="false"/>
         <filter token="db.protexpress.generate.create" value="true"/>
         <filter token="build.svn.url" value="https://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software"/>
-          <filter token="build.tag" value="pe_Test_Tag"/>
-          <filter token="build.time" value="09/19/2008"/>
-          <filter token="build.node" value="NCI CBIIT"/>
+          <filter token="build.tag" value="todo:tag"/>
+          <filter token="build.time" value="${buildTime}"/>
+          <filter token="build.node" value="todo:nodename"/>
       </filterset>
     </copy>
     <maven
