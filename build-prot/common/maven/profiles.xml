@@ -15,7 +15,7 @@
         <build.svn.url>@build.svn.url@</build.svn.url>
         <build.tag>@build.tag@</build.tag>
         <build.time>@build.time@</build.time>
-        <build.node>@buld.node@</build.node>
+        <build.node>@build.node@</build.node>
       </properties>
     </profile>
   </profiles>
