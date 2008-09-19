@@ -221,7 +221,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
         <filter token="db.protexpress.generate.create" value="true"/>
         <filter token="build.svn.url" value="https://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software"/>
           <filter token="build.tag" value="Trunk"/>
-          <filter token="build.time" value="${mili.time}"/>
+          <filter token="build.time" value="09/19/2008"/>
           <filter token="build.node" value="NCI CBIIT"/>
       </filterset>
     </copy>
