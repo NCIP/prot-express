@@ -6,9 +6,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                 <jdbc.url>jdbc:postgresql://cbiodb580.nci.nih.gov:5457/protexpress</jdbc.url>
-                 <jdbc.username>protexpqa</jdbc.username>
-                 <jdbc.password>pr0t8292</jdbc.password>
+                 <jdbc.url>jdbc:postgresql://localhost:5432/protexpress</jdbc.url>
+                 <jdbc.username>postgres</jdbc.username>
+                 <jdbc.password>postgres</jdbc.password>
             </properties>
         </profile>
     </profiles>

@@ -31,3 +31,15 @@
     </c:if>
 </div>
 <!-- END OF protExpress HEADER -->
+
+<!-- TAG INFORMATION -->
+<div id="infobar">
+    <div id="rightinfo">
+        <fmt:message key="build.tag" />:&nbsp;<span><a href="${initParam["build.svn.url"]}" target="blank">${initParam["build.tag"]}</a></span>&nbsp;
+        <span class="bar">|</span>
+        <fmt:message key="build.time" />:&nbsp;<span>${initParam["build.time"]}</span>&nbsp;
+        <span class="bar">|</span>
+        <fmt:message key="build.node" />:&nbsp;<span>${initParam["build.node"]}</span>&nbsp;
+    </div>
+</div>
+<!-- /TAG INFORMATION -->

@@ -80,78 +80,44 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.test;
 
-import java.io.InputStream;
+package gov.nih.nci.protexpress.util;
 
-import gov.nih.nci.protexpress.ProtExpressRegistry;
-import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.service.FormatConversionService;
-import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportAction;
-import gov.nih.nci.protexpress.ui.actions.experiment.ExperimentExportFileType;
-import java.io.File;
-import org.apache.commons.lang.builder.EqualsBuilder;
-
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Scott Miller
+ * Helper class to maintain the protocol action sets in an experiment.
  *
+ * @author Krishna Kanchinadam
  */
-public class ExperimentExportActionTest extends ProtExpressBaseHibernateTest  {
 
-    ExperimentExportAction action;
-    Experiment experiment;
+public final class ProtocolActionSet {
+
+    private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
+     *
      */
-    @Override
-    protected void onSetUp() throws Exception {
-        super.onSetUp();
-        this.action = new ExperimentExportAction();
-
-        this.experiment = new Experiment("Name - Test Experiment 1");
-        this.experiment.setDescription("Description - Test Experiment 1");
-        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
-        this.experiment.setUrl("URL - Test Experiment 1");
-
-        this.theSession.saveOrUpdate(this.experiment);
-        this.theSession.flush();
-        this.theSession.clear();
+    public ProtocolActionSet() {
     }
 
-    public void testPrepare() throws Exception {
-        this.action.setExperiment(null);
-        this.action.prepare();
-        assertEquals(null, this.action.getExperiment());
-
-        Experiment p = new Experiment(null);
-        this.action.setExperiment(p);
-        this.action.prepare();
-        assertEquals(p, this.action.getExperiment());
-
-        this.action.getExperiment().setId(this.experiment.getId());
-        this.action.prepare();
-        assertEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action.getExperiment());
-        assertTrue(EqualsBuilder.reflectionEquals(this.theSession.get(Experiment.class, this.experiment.getId()), this.action
-                .getExperiment()));
+    /**
+     * Gets the protocolActions.
+     *
+     * @return the protocolActions.
+     */
+    public List<ProtocolAction> getProtocolActions() {
+        return protocolActions;
     }
 
-    public void testExport() throws Exception {
-        this.action.setExperiment(this.experiment);
-        this.action.setFileType(ExperimentExportFileType.Xar2_3);
-        assertEquals("XAR 2.3", ExperimentExportFileType.Xar2_3.getDisplayName());
-        assertEquals(ActionSupport.SUCCESS, this.action.export());
-    }
-
-    public void testMarshallExperiment() throws Exception {
-        Experiment exp = ProtExpressRegistry.getExperimentService().getExperimentById(7L);
-        String outputXARFile1 = "target/outputXARFile1.xar.xml";
-        FormatConversionService fcs = ProtExpressRegistry.getXar23FormatConversionService();
-
-        File outFile = new File(outputXARFile1);
-        fcs.marshallExperiments(exp, outFile);
+    /**
+     * Sets the protocolActions.
+     *
+     * @param protocolActions the protocolActions to set.
+     */
+    public void setProtocolActions(List<ProtocolAction> protocolActions) {
+        this.protocolActions = protocolActions;
     }
 }

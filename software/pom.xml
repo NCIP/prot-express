@@ -134,6 +134,12 @@
 
     <!-- Project properties -->
     <properties>
+        <protExpress.version>1.0</protExpress.version>
+        <build.svn.url>SVN URL</build.svn.url>
+        <build.tag>TAG NAME</build.tag>
+        <build.time>BUILD TIME</build.time>
+        <build.node>INSTALLATION LOCATION</build.node>
+        <upt.url>UPT URL</upt.url>
         <database.url.prefix>jdbc:postgresql://localhost:5432/</database.url.prefix>
         <database.name>protexpress</database.name>
         <admin.db.username>postgres</admin.db.username>

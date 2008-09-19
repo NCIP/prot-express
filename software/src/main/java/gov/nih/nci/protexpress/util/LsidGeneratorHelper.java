@@ -129,4 +129,26 @@ public final class LsidGeneratorHelper {
             .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
             .toString();
     }
+
+    /**
+     * Given a ConfigParamEnum and the string id, returns the appropriate LSID string.
+     *
+     * @param configParamEnum the ConfigParamEnum.
+     * @param objectId string id of the object for which the LSID is to be generated.
+     * @return the LSID string.
+     */
+    public static String getLsid(ConfigParamEnum configParamEnum, String objectId) {
+        StringBuffer objectLsid = new StringBuffer();
+        return objectLsid
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_BASE.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_AUTHORITY.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(configParamEnum.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(objectId)
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
+            .toString();
+    }
 }

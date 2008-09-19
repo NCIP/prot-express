@@ -38,3 +38,11 @@ TABLE.form TD TD, TABLE.form TD TD TD
 TABLE.form TD.tdLabel
 { width:28%; text-align:right; font-weight:bold; }
 
+#infobar
+{ background:#858178 url("../images/bg_logoutbar.gif") no-repeat left 0; border-bottom:1px solid #fff; padding:3px 15px 3px 0; font-size:95%; color:#e3e6ec }
+#infobar SPAN
+{ color:#fff }
+#infobar A
+{ text-decoration:underline; color:#fff; font-weight:normal;}
+#rightinfo
+{ text-align:right }

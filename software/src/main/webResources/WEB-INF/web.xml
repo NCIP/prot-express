@@ -24,7 +24,31 @@
     <context-param>
         <param-name>ldapUserIdLabel</param-name>
         <param-value>${ldap.searchprefix}</param-value>
-    </context-param>    
+    </context-param>
+    <context-param>
+        <param-name>protExpressVersion</param-name>
+        <param-value>${protExpress.version}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>build.svn.url</param-name>
+        <param-value>${build.svn.url}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>build.tag</param-name>
+        <param-value>${build.tag}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>build.time</param-name>
+        <param-value>${build.time}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>build.node</param-name>
+        <param-value>${build.node}</param-value>
+    </context-param>
+    <context-param>
+        <param-name>upt.url</param-name>
+        <param-value>${upt.url}</param-value>
+    </context-param>
     <resource-ref>
         <res-ref-name>jdbc/ProtExpressDb</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
@@ -40,7 +64,7 @@
       <res-ref-name>mail/ProtExpressMail</res-ref-name>
       <res-type>javax.mail.Session</res-type>
       <res-auth>Container</res-auth>
-    </resource-ref>    
+    </resource-ref>
     <filter>
         <filter-name>user</filter-name>
         <filter-class>gov.nih.nci.protexpress.ui.filters.UserFilter</filter-class>

@@ -100,12 +100,15 @@ import gov.nih.nci.protexpress.xml.xar2_3.InputOutputRefsType;
 import gov.nih.nci.protexpress.xml.xar2_3.MaterialBaseType;
 import gov.nih.nci.protexpress.xml.xar2_3.ObjectFactory;
 import gov.nih.nci.protexpress.xml.xar2_3.PropertyCollectionType;
+import gov.nih.nci.protexpress.xml.xar2_3.ProtocolActionSetType;
+import gov.nih.nci.protexpress.xml.xar2_3.ProtocolActionType;
 import gov.nih.nci.protexpress.xml.xar2_3.ProtocolApplicationBaseType;
 import gov.nih.nci.protexpress.xml.xar2_3.ProtocolBaseType;
 import gov.nih.nci.protexpress.xml.xar2_3.SimpleTypeNames;
 import gov.nih.nci.protexpress.xml.xar2_3.SimpleValueType;
 import gov.nih.nci.protexpress.xml.xar2_3.InputOutputRefsType.DataLSID;
 import gov.nih.nci.protexpress.xml.xar2_3.InputOutputRefsType.MaterialLSID;
+import gov.nih.nci.protexpress.xml.xar2_3.ProtocolActionType.PredecessorAction;
 import gov.nih.nci.protexpress.xml.xar2_3.ProtocolApplicationBaseType.OutputDataObjects;
 import gov.nih.nci.protexpress.xml.xar2_3.ProtocolApplicationBaseType.OutputMaterials;
 
@@ -127,6 +130,8 @@ public class ExperimentToXar23FormatConversionHelper {
     private ExperimentParser experimentParser;
     private String propertyKeyName = "Notes";
     private String propertyExperimentDescription = "Description";
+    private Long startProtocolActionSequenceNumber = 1L;
+    private Long endProtocolActionSequenceNumber;
 
     /**
      * Default constructor.
@@ -148,9 +153,12 @@ public class ExperimentToXar23FormatConversionHelper {
     public ExperimentArchiveType getExperimentArchiveData() {
         ExperimentArchiveType xarExperimentArchiveType = getExperimentArchiveTypeElement(
                 getExperimentParser().getExperiment());
-        xarExperimentArchiveType.setProtocolDefinitions(getProtocolDefinitions(getExperimentParser().getProtocols()));
+        xarExperimentArchiveType.setProtocolDefinitions(getProtocolDefinitions(
+                getExperimentParser().getExperimentRuns(), getExperimentParser().getProtocols()));
         xarExperimentArchiveType.setStartingInputDefinitions(getStartingInputDefinitions(
                 getExperimentParser().getStartingInputs()));
+        xarExperimentArchiveType.setProtocolActionDefinitions(
+                getProtocolActionDefinitions(getExperimentParser().getExperimentRuns()));
         xarExperimentArchiveType.setExperimentRuns(getExperimentRuns(getExperimentParser().getExperimentRuns()));
         return xarExperimentArchiveType;
     }
@@ -186,15 +194,68 @@ public class ExperimentToXar23FormatConversionHelper {
         return xarContactTypeElement;
     }
 
-    private ExperimentArchiveType.ProtocolDefinitions getProtocolDefinitions(HashMap<Long, Protocol> protocols) {
-        ExperimentArchiveType.ProtocolDefinitions xarProtocolDefinitionElement = getObjectFactory()
-            .createExperimentArchiveTypeProtocolDefinitions();
+    private ExperimentArchiveType.ProtocolDefinitions getProtocolDefinitions(
+            HashMap<Long, ExperimentRun> expRuns, HashMap<Long, Protocol> protocols) {
 
-       for (Protocol protocol : protocols.values()) {
-           xarProtocolDefinitionElement.getProtocol().add(getProtocolBaseTypeElement(protocol,
-                   CpasType.PROTOCOL_APPLICATION.getDisplayName()));
-       }
+        ExperimentArchiveType.ProtocolDefinitions xarProtocolDefinitionElement = getObjectFactory()
+        .createExperimentArchiveTypeProtocolDefinitions();
+
+        // Add start/stop protocols for each experiment run.
+        for (ExperimentRun expRun : expRuns.values()) {
+            xarProtocolDefinitionElement.getProtocol().add(getExperimentRunProtocolBaseTypeElement(expRun));
+            xarProtocolDefinitionElement.getProtocol().add(getExperimentRunOutputProtocolBaseTypeElement(expRun));
+        }
+
+        for (Protocol protocol : protocols.values()) {
+            xarProtocolDefinitionElement.getProtocol().add(getProtocolBaseTypeElement(protocol,
+                    CpasType.PROTOCOL_APPLICATION.getDisplayName()));
+        }
+
+
         return xarProtocolDefinitionElement;
+    }
+
+    private String getStartProtocolName(Long expRunId) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ExperimentRun")
+            .append(expRunId.toString())
+            .append(".StartProtocol");
+
+        return sb.toString();
+    }
+
+    private String getEndProtocolName(Long expRunId) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ExperimentRun")
+            .append(expRunId.toString())
+            .append(".MarkRunOutputs");
+
+        return sb.toString();
+    }
+
+    private ProtocolBaseType getExperimentRunProtocolBaseTypeElement(ExperimentRun expRun) {
+        String protocolDescription = "This protocol is the 'parent' protocol of the experiment run.";
+        String protocolLsid = getLsid(ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, getStartProtocolName(expRun.getId()));
+
+        ProtocolBaseType xarProtocolBaseTypeElement = getObjectFactory().createProtocolBaseType();
+        xarProtocolBaseTypeElement.setAbout(protocolLsid);
+        xarProtocolBaseTypeElement.setApplicationType(CpasType.EXPERIMENT_RUN.getDisplayName());
+        xarProtocolBaseTypeElement.setName(getStartProtocolName(expRun.getId()));
+        xarProtocolBaseTypeElement.setProtocolDescription(protocolDescription);
+        return xarProtocolBaseTypeElement;
+    }
+
+    private ProtocolBaseType getExperimentRunOutputProtocolBaseTypeElement(ExperimentRun expRun) {
+        String protocolDescription = "Mark the output data or materials for the experiment run.  "
+            + "Any and all inputs to an application of this type are considered outputs of the experiment run.";
+        String protocolLsid = getLsid(ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, getEndProtocolName(expRun.getId()));
+
+        ProtocolBaseType xarProtocolBaseTypeElement = getObjectFactory().createProtocolBaseType();
+        xarProtocolBaseTypeElement.setAbout(protocolLsid);
+        xarProtocolBaseTypeElement.setApplicationType(CpasType.EXPERIMENT_RUN_OUTPUT.getDisplayName());
+        xarProtocolBaseTypeElement.setName(getEndProtocolName(expRun.getId()));
+        xarProtocolBaseTypeElement.setProtocolDescription(protocolDescription);
+        return xarProtocolBaseTypeElement;
     }
 
     private ProtocolBaseType getProtocolBaseTypeElement(Protocol protocol, String cpasType) {
@@ -265,6 +326,53 @@ public class ExperimentToXar23FormatConversionHelper {
         return xarMaterialBaseTypeElement;
     }
 
+    private ExperimentArchiveType.ProtocolActionDefinitions
+        getProtocolActionDefinitions(HashMap<Long, ExperimentRun> experimentRuns) {
+
+        ExperimentArchiveType.ProtocolActionDefinitions xarProtocolActionDefsElement =
+            getObjectFactory().createExperimentArchiveTypeProtocolActionDefinitions();
+        for (ExperimentRun expRun : experimentRuns.values()) {
+            xarProtocolActionDefsElement.getProtocolActionSet().add(getProtocolActionSetTypeElement(expRun));
+        }
+
+        return xarProtocolActionDefsElement;
+    }
+
+    private ProtocolActionSetType getProtocolActionSetTypeElement(ExperimentRun expRun) {
+        ProtocolActionSetType xarProtocolActionSetTypeElement = getObjectFactory().createProtocolActionSetType();
+        xarProtocolActionSetTypeElement.setParentProtocolLSID(
+                getLsid(ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, getStartProtocolName(expRun.getId())));
+
+        // Start Protocol Action
+        //xarProtocolActionSetTypeElement.getProtocolAction().add(getProtocolActionTypeElement(expRun));
+
+        ProtocolActionSet protActionSet = getExperimentParser().getProtocolActionSets().get(expRun.getId());
+        for (ProtocolAction protAction : protActionSet.getProtocolActions()) {
+            xarProtocolActionSetTypeElement.getProtocolAction().add(getProtocolActionTypeElement(expRun, protAction));
+        }
+        // Stop protocol action.
+
+        return xarProtocolActionSetTypeElement;
+    }
+
+    private ProtocolActionType getProtocolActionTypeElement(ExperimentRun expRun, ProtocolAction protAction) {
+        ProtocolActionType xarProtocolActionTypeElement = getObjectFactory().createProtocolActionType();
+        xarProtocolActionTypeElement.setActionSequence(protAction.getActionSequenceNumber());
+        xarProtocolActionTypeElement.setChildProtocolLSID(
+                getLsid(ConfigParamEnum.LSID_NAMESPACE_PROTOCOL,
+                        protAction.getProtocolApplication().getProtocol().getId()));
+        // Get Predecessors
+        for (ProtocolApplication parentProtApp : protAction.getParentProtocolApplications()) {
+            PredecessorAction predecessor = getObjectFactory().createProtocolActionTypePredecessorAction();
+            predecessor.setActionSequenceRef(
+                    getExperimentParser().getProtocolActionSequenceNumber().
+                    get((expRun.getId() + "." + parentProtApp.getId())).intValue());
+
+            xarProtocolActionTypeElement.getPredecessorAction().add(predecessor);
+        }
+        return xarProtocolActionTypeElement;
+    }
+
     private ExperimentArchiveType.ExperimentRuns getExperimentRuns(
             HashMap<Long, ExperimentRun> experimentRuns) {
         ExperimentArchiveType.ExperimentRuns xarExperimentRunsElement = getObjectFactory()
@@ -273,7 +381,6 @@ public class ExperimentToXar23FormatConversionHelper {
         for (ExperimentRun expRun : experimentRuns.values()) {
             xarExperimentRunsElement.getExperimentRun().add(getExperimentRunTypeElement(expRun));
         }
-
         return xarExperimentRunsElement;
     }
 
@@ -288,11 +395,9 @@ public class ExperimentToXar23FormatConversionHelper {
         xarExpRunTypeElement.setProperties(getPropertyCollectionTypeElement(this.propertyKeyName,
                 expRun.getNotes(), SimpleTypeNames.STRING, getOntologyEntryUri()));
         xarExpRunTypeElement.setProtocolApplications(getProtocolApplications(expRun));
-//        TODO
-//        Protocol rootProtocol = getProtocolMap().get(1L);
-//        if (rootProtocol != null) {
-//            xarExpRunTypeElement.setProtocolLSID(rootProtocol.getLsid());
-//        }
+        xarExpRunTypeElement.setProtocolLSID(getLsid(
+                ConfigParamEnum.LSID_NAMESPACE_PROTOCOL, getStartProtocolName(expRun.getId())));
+
         return xarExpRunTypeElement;
     }
 
@@ -415,6 +520,10 @@ public class ExperimentToXar23FormatConversionHelper {
         return LsidGeneratorHelper.getLsid(configParamEnum, objectId);
     }
 
+    private String getLsid(ConfigParamEnum configParamEnum, String objectId) {
+        return LsidGeneratorHelper.getLsid(configParamEnum, objectId);
+    }
+
     private String getOntologyEntryUri() {
         StringBuffer ontologyEntryUri = new StringBuffer();
         return ontologyEntryUri
@@ -429,5 +538,43 @@ public class ExperimentToXar23FormatConversionHelper {
             .append(".ProtocolApplication.")
             .append(protApp.getId().toString())
             .toString();
+    }
+
+    /**
+     * Gets the startProtocolActionSequenceNumber.
+     *
+     * @return the startProtocolActionSequenceNumber.
+     */
+    public Long getStartProtocolActionSequenceNumber() {
+        return startProtocolActionSequenceNumber;
+    }
+
+    /**
+     * Sets the startProtocolActionSequenceNumber.
+     *
+     * @param startProtocolActionSequenceNumber the startProtocolActionSequenceNumber to set.
+     */
+    public void setStartProtocolActionSequenceNumber(
+            Long startProtocolActionSequenceNumber) {
+        this.startProtocolActionSequenceNumber = startProtocolActionSequenceNumber;
+    }
+
+    /**
+     * Gets the endProtocolActionSequenceNumber.
+     *
+     * @return the endProtocolActionSequenceNumber.
+     */
+    public Long getEndProtocolActionSequenceNumber() {
+        return endProtocolActionSequenceNumber;
+    }
+
+    /**
+     * Sets the endProtocolActionSequenceNumber.
+     *
+     * @param endProtocolActionSequenceNumber the endProtocolActionSequenceNumber to set.
+     */
+    public void setEndProtocolActionSequenceNumber(
+            Long endProtocolActionSequenceNumber) {
+        this.endProtocolActionSequenceNumber = endProtocolActionSequenceNumber;
     }
 }
