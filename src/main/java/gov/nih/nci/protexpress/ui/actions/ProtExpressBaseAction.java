@@ -97,6 +97,27 @@ public class ProtExpressBaseAction extends ActionSupport {
     private String successMessage = null;
     private String errorMessage = null;
 
+    private String testMessage = "Hello";
+
+
+    /**
+     * Gets the testMessage.
+     *
+     * @return the testMessage.
+     */
+    public String getTestMessage() {
+        return testMessage;
+    }
+
+    /**
+     * Sets the testMessage.
+     *
+     * @param testMessage the testMessage to set.
+     */
+    public void setTestMessage(String testMessage) {
+        this.testMessage = testMessage;
+    }
+
     /**
      * Logs a debug message.
      * @param message the debug message.

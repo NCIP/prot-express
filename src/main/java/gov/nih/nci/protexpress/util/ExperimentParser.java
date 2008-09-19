@@ -89,7 +89,9 @@ import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -97,15 +99,15 @@ import java.util.HashMap;
  *
  * @author Krishna Kanchinadam
  */
-
+@SuppressWarnings("PMD.MagicNumber")
 public class ExperimentParser {
 
     private Experiment experiment;
     private final HashMap<Long, ExperimentRun> experimentRuns = new HashMap<Long, ExperimentRun>();
     private final HashMap<Long, Protocol> protocols = new HashMap<Long, Protocol>();
     private final HashMap<Long, InputOutputObject> startingInputs = new HashMap<Long, InputOutputObject>();
-
-
+    private final HashMap<Long, ProtocolActionSet> protocolActionSets = new HashMap<Long, ProtocolActionSet>();
+    private final HashMap<String, Long> protocolActionSequenceNumber = new HashMap<String, Long>();
 
     /**
      * Default constructor.
@@ -124,6 +126,7 @@ public class ExperimentParser {
         parseExperimentRuns();
         parseProtocols();
         parseStartingInputs();
+        parseProtocolActionSets();
     }
 
     private void parseExperimentRuns() {
@@ -150,6 +153,30 @@ public class ExperimentParser {
                 }
             }
         }
+    }
+
+    private void parseProtocolActionSets() {
+        for (ExperimentRun expRun : getExperiment().getExperimentRuns()) {
+            getProtocolActionSets().put(expRun.getId(), getProtocolActionSet(expRun));
+        }
+    }
+
+    private ProtocolActionSet getProtocolActionSet(ExperimentRun expRun) {
+        ProtocolActionSet protActionSet = new ProtocolActionSet();
+        // For each protocol application, create a protocol action element.
+        for (ProtocolApplication protApp : expRun.getProtocolApplications()) {
+            ProtocolAction protAction = new ProtocolAction();
+            protAction.setProtocolApplication(protApp);
+            protAction.setActionSequenceNumber(100);
+            getProtocolActionSequenceNumber().put((expRun.getId() + "." + protApp.getId()), 100L);
+            // set parent protocols
+            for (InputOutputObject input : protApp.getInputs()) {
+                if (input.getOutputOfProtocolApplication() != null) {
+                    protAction.getParentProtocolApplications().add(input.getOutputOfProtocolApplication());
+                }
+            }
+        }
+        return protActionSet;
     }
 
     /**
@@ -197,4 +224,21 @@ public class ExperimentParser {
         this.experiment = experiment;
     }
 
+    /**
+     * Gets the protocolActionSets.
+     *
+     * @return the protocolActionSets.
+     */
+    public HashMap<Long, ProtocolActionSet> getProtocolActionSets() {
+        return protocolActionSets;
+    }
+
+    /**
+     * Gets the protocolActionSequenceNumber.
+     *
+     * @return the protocolActionSequenceNumber.
+     */
+    public HashMap<String, Long> getProtocolActionSequenceNumber() {
+        return protocolActionSequenceNumber;
+    }
 }
