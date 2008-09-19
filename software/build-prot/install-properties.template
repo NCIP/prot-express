@@ -5,6 +5,7 @@ application.base.path=
 authentication.type=
 application.url=
 database.drop-schema=
+build.node=
 
 ###########################
 ###  DATABASE SETTINGS  ###
