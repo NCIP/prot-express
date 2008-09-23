@@ -184,6 +184,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     <mkdir dir="${download.dir}"/>
   </target>
 
+<target name="svn:getinfo" description="obtain subversion revision info" >	
+	<svn javahl="false">
+	    <status path="${software.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
+	</svn>
+
+	<propertyregex property="protexpress.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
+	<echo message="found svn info: ${svn.url}  ${protexpress.version}" />
+</target>
+
+
   <target name="ivy:clean" description="Clean">
     <ivy:settings file="${ivy.settings.file}" />
     <ivy:cleancache />
@@ -213,16 +223,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
   <format property="buildTime" pattern="EEE, dd-MMM-yyyy hh:mm:ss aa z"/>
 </tstamp>
   <!-- First Maven Target -->
-  <target name="build:protExpress" depends="init">
+  <target name="build:protExpress" depends="init,svn:getinfo">
     <copy todir="${software.dir}" file="${common.dir}/maven/profiles.xml" overwrite="true">
       <filterset>
         <filter token="db.protexpress.file.name" value="${db.protExpress.create-schema.file}"/>
         <filter token="db.protexpress.generate.drop" value="false"/>
         <filter token="db.protexpress.generate.create" value="true"/>
-        <filter token="build.svn.url" value="https://gforge.nci.nih.gov/svnroot/gpsxar/trunk/software"/>
-          <filter token="build.tag" value="todo:tag"/>
+        <filter token="build.svn.url" value="${svn.url}"/>
+          <filter token="build.tag" value="${protexpress.version}"/>
           <filter token="build.time" value="${buildTime}"/>
-          <filter token="build.node" value="todo:nodename"/>
+          <filter token="build.node" value="NCICB"/>
       </filterset>
     </copy>
     <maven
