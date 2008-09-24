@@ -600,6 +600,8 @@ A.btn SPAN.import
 { background:url("../images/ico_import.gif") no-repeat; }
 A.btn SPAN.launch_download
 { background:url("../images/ico_launch_download.gif") no-repeat; }
+A.btn SPAN.xar
+{ background:url("../images/ico_xar.gif") no-repeat; }
 A.btn SPAN.login
 { background:url("../images/ico_login.gif") no-repeat; }
 A.btn SPAN.manage_associations

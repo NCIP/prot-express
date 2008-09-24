@@ -146,12 +146,4 @@ public class ExperimentExportActionTest extends ProtExpressBaseHibernateTest  {
         assertEquals(ActionSupport.SUCCESS, this.action.export());
     }
 
-    public void testMarshallExperiment() throws Exception {
-        Experiment exp = ProtExpressRegistry.getExperimentService().getExperimentById(7L);
-        String outputXARFile1 = "target/outputXARFile1.xar.xml";
-        FormatConversionService fcs = ProtExpressRegistry.getXar23FormatConversionService();
-
-        File outFile = new File(outputXARFile1);
-        fcs.marshallExperiments(exp, outFile);
-    }
 }
