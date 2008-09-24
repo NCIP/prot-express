@@ -394,16 +394,6 @@ public final class ExperimentRunHolder {
     }
 
     /**
-     * Sets the incrementActionSequence.
-     *
-     * @param incrementActionSequence
-     *            the incrementActionSequence to set.
-     */
-    public void setIncrementActionSequence(Integer incrementActionSequence) {
-        this.incrementActionSequence = incrementActionSequence;
-    }
-
-    /**
      * Gets the currentSequenceNumber.
      *
      * @return the currentSequenceNumber.
