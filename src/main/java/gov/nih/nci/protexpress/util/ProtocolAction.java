@@ -98,13 +98,16 @@ public final class ProtocolAction {
 
     private int actionSequenceNumber = 0;
     private ProtocolApplication protocolApplication = null;
-    private List<ProtocolApplication> parentProtocolApplications = new ArrayList<ProtocolApplication>();
+    private List<Integer> predecessorActionNumbers = new ArrayList<Integer>();
 
     /**
      * Default constructor.
-     *
+     * @param protocolApplication the protocol application.
+     * @param actionSequenceNumber the action sequence number.
      */
-    public ProtocolAction() {
+    public ProtocolAction(ProtocolApplication protocolApplication, int actionSequenceNumber) {
+        this.protocolApplication = protocolApplication;
+        this.actionSequenceNumber = actionSequenceNumber;
     }
 
     /**
@@ -144,22 +147,20 @@ public final class ProtocolAction {
     }
 
     /**
-     * Gets the parentProtocolApplications.
+     * Gets the predecessorActionNumbers.
      *
-     * @return the parentProtocolApplications.
+     * @return the predecessorActionNumbers.
      */
-    public List<ProtocolApplication> getParentProtocolApplications() {
-        return parentProtocolApplications;
+    public List<Integer> getPredecessorActionNumbers() {
+        return predecessorActionNumbers;
     }
 
     /**
-     * Sets the parentProtocolApplications.
+     * Sets the predecessorActionNumbers.
      *
-     * @param parentProtocolApplications the parentProtocolApplications to set.
+     * @param predecessorActionNumbers the predecessorActionNumbers to set.
      */
-    public void setParentProtocolApplications(
-            List<ProtocolApplication> parentProtocolApplications) {
-        this.parentProtocolApplications = parentProtocolApplications;
+    public void setPredecessorActionNumbers(List<Integer> predecessorActionNumbers) {
+        this.predecessorActionNumbers = predecessorActionNumbers;
     }
-
 }

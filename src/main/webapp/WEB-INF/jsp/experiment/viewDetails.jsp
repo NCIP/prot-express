@@ -32,24 +32,21 @@
                 <div class="detailbox" id="detail-content">
                     <jsp:include page="/WEB-INF/jsp/experiment/view/experimentDetails.jsp" />
                 </div>
-                <c:if test="${experiment.auditInfo.creator == currentUser.loginName}">
-                    <div class="detailbox">
-                        <div class="actionsrow">
-                            <del class="btnwrapper">
-                                <ul id="btnrow2">
-                                    <li>
-                                        <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
-                                            <c:param name="experimentId" value="${experiment.id}" />
-                                        </c:url>
-                                        <a href="${editExperimentDetailsUrl}" class="btn" onclick="this.blur();">
-                                            <span class="btn_img"><span class="edit"><fmt:message key="protexpress.page.viewexperiment.detailsview.footer.editexperiment" /></span></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </del>
-                        </div>
-                    </div>
-                </c:if>
+                <c:url var="editExperimentDetailsUrl" value="/editExperiment/experiment/load.action">
+                    <c:param name="experimentId" value="${experiment.id}" />
+                </c:url>
+                <c:url var="downloadXarUrl" value="/ajax/experiment/export.action">
+                    <c:param name="experimentId" value="${experiment.id}" />
+                </c:url>
+
+                <div class="detailbox">
+                    <protExpress:buttonRow>
+                        <c:if test="${experiment.auditInfo.creator == currentUser.loginName}">
+                            <protExpress:button href="${editExperimentDetailsUrl}" style="edit" textKey="protexpress.page.viewexperiment.detailsview.footer.editexperiment" id="edit"/>
+                        </c:if>
+                        <protExpress:button href="${downloadXarUrl}" style="xar" textKey="protexpress.page.viewexperiment.detailsview.footer.downloadxar" id="xar"/>
+                    </protExpress:buttonRow>
+                </div>
             </div>
             <!-- /DETAIL COLUMN -->
         </div>
