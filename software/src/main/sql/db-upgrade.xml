@@ -11,11 +11,9 @@
         <sqlFile path="@db-upgrade.run.dir@/csmDropSchema.sql"/>
     </changeSet>
     <changeSet id="3" author="kanchink">
-            <sqlFile path="@db-upgrade.run.dir@/protExpress-drop-schema.sql"/>
+            <sqlFile path="@db-upgrade.run.dir@/protExpressSchema.sql"/>
     </changeSet>
-    <changeSet id="4" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/protExpress-create-schema.sql"/>
-    </changeSet>
+
     <changeSet id="5" author="kanchink">
         <sqlFile path="@db-upgrade.run.dir@/csmCreateSchema.sql"/>
     </changeSet>
