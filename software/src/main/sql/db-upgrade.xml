@@ -32,7 +32,5 @@
     <changeSet id="10" author="kanchink">
         <sqlFile path="@db-upgrade.run.dir@/createNewUser.sql"/>
     </changeSet>
-    <changeSet id="11" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/sampleExperiments.sql"/>
-    </changeSet>
+
 </databaseChangeLog>
