@@ -98,7 +98,6 @@ import java.util.List;
  *
  * @author Krishna Kanchinadam
  */
-@SuppressWarnings("PMD.MagicNumber")
 public final class ExperimentRunHolder {
 
     private ExperimentRun experimentRun;
@@ -116,7 +115,7 @@ public final class ExperimentRunHolder {
     private HashMap<Long, ProtocolAction> protocolActionMap = new HashMap<Long, ProtocolAction>();
 
     private Integer initialActionSequenceNumber = 1;
-    private Integer incrementActionSequence = 5;
+    private final Integer incrementActionSequence = 5;
     private Integer currentSequenceNumber = 1;
 
     private ProtocolAction startProtocolAction;
