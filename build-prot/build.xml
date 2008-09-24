@@ -186,7 +186,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 
 <target name="svn:getinfo" description="obtain subversion revision info" >	
 	<svn javahl="false">
-	    <status path="${software.dir}/.." revisionProperty="svn.revision" urlProperty="svn.url" />
+	    <status path="${software.dir}" revisionProperty="svn.revision" urlProperty="svn.url" />
 	</svn>
 
 	<propertyregex property="protexpress.version" input="${svn.url}" regexp="\/([^\/]+)$" select="\1" casesensitive="false" />
