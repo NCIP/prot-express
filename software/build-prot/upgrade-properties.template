@@ -3,12 +3,17 @@
 ###  APPLICATION SETTINGS  ###
 ##############################
 application.base.path=
-authentication.type=
 
 ###################################
 #  URL TO ACCESS THE APPLICATION  #
 ###################################
 application.url=
+
+########
+# UPT
+########
+upt.url=
+build.node=
 
 #####################################
 ###  APPLICATION SERVER SETTINGS  ###
@@ -38,12 +43,15 @@ database.url=
 ldap.url=
 ldap.basedn=
 ldap.prefix=
+ldap.install=
 
 ########################
 ###  MAIL  SETTINGS  ###
 ########################
 mail.smtp.host=
 mail.smtp.port=
+
+
 
 ###################################
 #  PRE-POST VALIDATION PROPERTIES #

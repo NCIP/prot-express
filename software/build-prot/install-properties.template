@@ -2,10 +2,15 @@
 ###  APPLICATION SETTINGS  ###
 ##############################
 application.base.path=
-authentication.type=
 application.url=
 database.drop-schema=
 build.node=
+
+########
+# UPT
+########
+upt.url=
+
 
 ###########################
 ###  DATABASE SETTINGS  ###
@@ -38,6 +43,7 @@ tomcat.port.shutdown=
 ldap.url=
 ldap.basedn=
 ldap.prefix=
+ldap.install=
 
 ########
 # MAIL
