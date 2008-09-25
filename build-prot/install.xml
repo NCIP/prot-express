@@ -472,6 +472,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         <!--
         <copy todir="${temp.dir}/protExpress-war/" file="${tomcat-conf.dir.dest}/protExpress-ds.xml"/>
         -->
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_INSTALL" value="${ldap.install}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_HOSTNAME" value="${ldap.url}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${build.node}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${upt.url}"/>
+	
+        
         <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USERNAME" value="${database.user}"/>
         <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USER_PASSWORD" value="${database.password}"/>
         <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_SERVER_NAME" value="${database.server}"/>
@@ -485,7 +493,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_NAME" value="${database.name}"/>
         <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_HOSTNAME" value="${ldap.url}"/>
         <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHPREFIX" value="${database.name}"/>
+        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
 
 
         <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_USERNAME" value="${database.user}"/>
