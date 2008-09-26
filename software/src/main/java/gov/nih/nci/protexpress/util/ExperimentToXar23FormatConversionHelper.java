@@ -321,7 +321,11 @@ public class ExperimentToXar23FormatConversionHelper {
         xarProtocolActionSetTypeElement.getProtocolAction().add(getProtocolActionTypeElement(
                 expRunHolder.getStartProtocolAction(), expRunHolder.getStartProtocolLsidString()));
 
-        for (ProtocolAction protAction : expRunHolder.getProtocolActions()) {
+        Integer startIndex = expRunHolder.getInitialActionSequenceNumber();
+        Integer increment = expRunHolder.getIncrementActionSequence();
+        Integer endIndex = expRunHolder.getCurrentSequenceNumber();
+        for (int index = startIndex + increment; index <= endIndex; index += increment) {
+            ProtocolAction protAction = expRunHolder.getProtocolActionSequenceNumberMap().get(index);
             xarProtocolActionSetTypeElement.getProtocolAction().add(getProtocolActionTypeElement(protAction, null));
         }
 
@@ -389,25 +393,35 @@ public class ExperimentToXar23FormatConversionHelper {
         ExperimentRunType.ProtocolApplications xarProtocolApplicationsElement = getObjectFactory()
             .createExperimentRunTypeProtocolApplications();
 
-        // Add start/stop protocol applications for the run.
+        // Add start protocol application for the run.
         xarProtocolApplicationsElement.getProtocolApplication().add(getProtocolApplicationBaseTypeElement(
                 expRunHolder.getStartProtocolApplication(), CpasType.EXPERIMENT_RUN.getDisplayName(),
                 expRunHolder.getStartProtocolAction().getActionSequenceNumber(),
                 expRunHolder.getStartProtocolLsidString(),
                 expRunHolder.getStartProtocolApplicationLsidString()));
 
+     // Add protocol applications for the run.
+        Integer startIndex = expRunHolder.getInitialActionSequenceNumber();
+        Integer increment = expRunHolder.getIncrementActionSequence();
+        Integer endIndex = expRunHolder.getCurrentSequenceNumber();
+        for (int index = startIndex + increment; index <= endIndex; index += increment) {
+            ProtocolAction protAction = expRunHolder.getProtocolActionSequenceNumberMap().get(index);
+            if (protAction != null) {
+                int actionSequenceNumber = protAction.getActionSequenceNumber();
+                xarProtocolApplicationsElement.getProtocolApplication().add(getProtocolApplicationBaseTypeElement(
+                        protAction.getProtocolApplication(),
+                        CpasType.PROTOCOL_APPLICATION.getDisplayName(), actionSequenceNumber, null, null));
+            }
+        }
+
+
+     // Add stop protocol application for the run.
         xarProtocolApplicationsElement.getProtocolApplication().add(getProtocolApplicationBaseTypeElement(
                 expRunHolder.getEndProtocolApplication(), CpasType.EXPERIMENT_RUN_OUTPUT.getDisplayName(),
                 expRunHolder.getEndProtocolAction().getActionSequenceNumber(),
                 expRunHolder.getEndProtocolLsidString(),
                 expRunHolder.getEndProtocolApplicationLsidString()));
 
-        for (ProtocolApplication protApplication : expRunHolder.getExperimentRun().getProtocolApplications()) {
-            int actionSeqNumber = expRunHolder.getProtocolActionMap().get(
-                    protApplication.getId()).getActionSequenceNumber();
-            xarProtocolApplicationsElement.getProtocolApplication().add(getProtocolApplicationBaseTypeElement(
-                    protApplication, CpasType.PROTOCOL_APPLICATION.getDisplayName(), actionSeqNumber, null, null));
-        }
         return xarProtocolApplicationsElement;
     }
 

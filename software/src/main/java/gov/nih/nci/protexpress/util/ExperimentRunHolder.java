@@ -88,9 +88,7 @@ import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Helper class to maintain the Experiment Run, Protocol Application and Action
@@ -111,10 +109,10 @@ public final class ExperimentRunHolder {
     private String startProtocolApplicationLsidString;
     private String endProtocolApplicationLsidString;
 
-    private List<ProtocolAction> protocolActions = new ArrayList<ProtocolAction>();
-    private HashMap<Long, ProtocolAction> protocolActionMap = new HashMap<Long, ProtocolAction>();
+    private HashMap<Integer, ProtocolAction> protocolActionSequenceNumberMap = new HashMap<Integer, ProtocolAction>();
+    private HashMap<Long, ProtocolAction> protocolApplicationIdMap = new HashMap<Long, ProtocolAction>();
 
-    private Integer initialActionSequenceNumber = 1;
+    private final Integer initialActionSequenceNumber = 1;
     private final Integer incrementActionSequence = 5;
     private Integer currentSequenceNumber = 1;
 
@@ -188,20 +186,21 @@ public final class ExperimentRunHolder {
      * Initializes the protocolActions.
      */
     private void initProtocolActions() {
-        this.addStartProtocolAction();
+        this.initStartProtocolAction();
         // Determine the protocol actions.
         setCurrentSequenceNumber(getInitialActionSequenceNumber());
         for (ProtocolApplication protocolApplication : getExperimentRun().getProtocolApplications()) {
-            addProtocolAction(protocolApplication, getCurrentSequenceNumber());
+            initProtocolAction(protocolApplication, getCurrentSequenceNumber());
         }
-        this.addEndProtocolAction();
+        this.initEndProtocolAction();
 
-        // Determine predecessor actions.
-        for (ProtocolAction protAction : getProtocolActions()) {
+        // By now, all protocol actions (type=protocol application) should have been setup properly.
+        // Determine Predecessor actions.
+        for (ProtocolAction protAction : getProtocolActionSequenceNumberMap().values()) {
             boolean includeStartPredecessor = false;
             for (InputOutputObject input : protAction.getProtocolApplication().getInputs()) {
                 if (input.getOutputOfProtocolApplication() != null) {
-                    ProtocolAction predecessorAction = getProtocolActionFromMap(
+                    ProtocolAction predecessorAction = getProtocolActionFromProtocolApplicationIdMap(
                             input.getOutputOfProtocolApplication().getId());
                     protAction.getPredecessorActionNumbers().add(predecessorAction.getActionSequenceNumber());
                 } else {
@@ -215,49 +214,57 @@ public final class ExperimentRunHolder {
         }
     }
 
-    private void addStartProtocolAction() {
+    private void initStartProtocolAction() {
         ProtocolApplication protApp = new ProtocolApplication(
                 getExperimentRun().getDatePerformed(), getExperimentRun(), getStartProtocol());
         startProtocolAction = new ProtocolAction(protApp, getInitialActionSequenceNumber());
         startProtocolAction.getPredecessorActionNumbers().add(getInitialActionSequenceNumber());
     }
 
-    private void addEndProtocolAction() {
+    private void initEndProtocolAction() {
         ProtocolApplication protApp = new ProtocolApplication(
                 getExperimentRun().getDatePerformed(), getExperimentRun(), getEndProtocol());
         endProtocolAction = new ProtocolAction(protApp, getCurrentSequenceNumber() + getIncrementActionSequence());
-        endProtocolAction.getPredecessorActionNumbers().add(getCurrentSequenceNumber());
+        // All prot apps with "orphan" outputs are predecessors to this one.
+        for (ProtocolAction protAction : getProtocolActionSequenceNumberMap().values()) {
+            for (InputOutputObject output : protAction.getProtocolApplication().getOutputs()) {
+                if (output.getInputToProtocolApplication() == null) {
+                    ProtocolAction predecessorAction = getProtocolActionFromProtocolApplicationIdMap(
+                            output.getOutputOfProtocolApplication().getId());
+                    endProtocolAction.getPredecessorActionNumbers().add(predecessorAction.getActionSequenceNumber());
+                }
+            }
+        }
     }
 
-    private void addProtocolAction(ProtocolApplication protocolApplication, int parentSequenceNumber) {
-        if (!getProtocolActionMap().containsKey(protocolApplication.getId())) {
+    private void initProtocolAction(ProtocolApplication protocolApplication, int parentSequenceNumber) {
+        if (!getProtocolApplicationIdMap().containsKey(protocolApplication.getId())) {
             setCurrentSequenceNumber(parentSequenceNumber + getIncrementActionSequence());
             ProtocolAction protAction = new ProtocolAction(protocolApplication,  getCurrentSequenceNumber());
+
+            // Setup the maps.
+            addToProtocolActionSequenceNumberMap(getCurrentSequenceNumber(), protAction);
+            addToProtocolApplicationIdMap(protocolApplication.getId(), protAction);
 
             // Recurse through the child protocols.
             for (InputOutputObject output : protocolApplication.getOutputs()) {
                 if (output.getInputToProtocolApplication() != null) {
-                    addProtocolAction(output.getInputToProtocolApplication(), getCurrentSequenceNumber());
+                    initProtocolAction(output.getInputToProtocolApplication(), getCurrentSequenceNumber());
                 }
             }
-            addToProtocolActionMap(protocolApplication.getId(), protAction);
-            this.addProtocolAction(protAction);
         }
     }
 
-    private void addToProtocolActionMap(Long protAppId,
-            ProtocolAction protAction) {
-        if (!getProtocolActionMap().containsKey(protAppId)) {
-            getProtocolActionMap().put(protAppId, protAction);
-        }
+    private void addToProtocolActionSequenceNumberMap(Integer actionSequenceNumber, ProtocolAction protAction) {
+            getProtocolActionSequenceNumberMap().put(actionSequenceNumber, protAction);
     }
 
-    private ProtocolAction getProtocolActionFromMap(Long protAppId) {
-        return getProtocolActionMap().get(protAppId);
+    private void addToProtocolApplicationIdMap(Long protAppId, ProtocolAction protAction) {
+            getProtocolApplicationIdMap().put(protAppId, protAction);
     }
 
-    private void addProtocolAction(ProtocolAction protAction) {
-        getProtocolActions().add(protAction);
+    private ProtocolAction getProtocolActionFromProtocolApplicationIdMap(Long protAppId) {
+        return getProtocolApplicationIdMap().get(protAppId);
     }
 
     /**
@@ -356,32 +363,12 @@ public final class ExperimentRunHolder {
     }
 
     /**
-     * Gets the protocolActions.
-     *
-     * @return the protocolActions.
-     */
-    public List<ProtocolAction> getProtocolActions() {
-        return protocolActions;
-    }
-
-    /**
      * Gets the initialActionSequenceNumber.
      *
      * @return the initialActionSequenceNumber.
      */
     public Integer getInitialActionSequenceNumber() {
         return initialActionSequenceNumber;
-    }
-
-    /**
-     * Sets the initialActionSequenceNumber.
-     *
-     * @param initialActionSequenceNumber
-     *            the initialActionSequenceNumber to set.
-     */
-    public void setInitialActionSequenceNumber(
-            Integer initialActionSequenceNumber) {
-        this.initialActionSequenceNumber = initialActionSequenceNumber;
     }
 
     /**
@@ -413,23 +400,41 @@ public final class ExperimentRunHolder {
     }
 
     /**
-     * Gets the protocolActionMap.
+     * Gets the protocolActionSequenceNumberMap.
      *
-     * @return the protocolActionMap.
+     * @return the protocolActionSequenceNumberMap.
      */
-    public HashMap<Long, ProtocolAction> getProtocolActionMap() {
-        return protocolActionMap;
+    public HashMap<Integer, ProtocolAction> getProtocolActionSequenceNumberMap() {
+        return protocolActionSequenceNumberMap;
     }
 
     /**
-     * Sets the protocolActionMap.
+     * Sets the protocolActionSequenceNumberMap.
      *
-     * @param protocolActionMap
-     *            the protocolActionMap to set.
+     * @param protocolActionSequenceNumberMap the protocolActionSequenceNumberMap to set.
      */
-    public void setProtocolActionMap(
-            HashMap<Long, ProtocolAction> protocolActionMap) {
-        this.protocolActionMap = protocolActionMap;
+    public void setProtocolActionSequenceNumberMap(
+            HashMap<Integer, ProtocolAction> protocolActionSequenceNumberMap) {
+        this.protocolActionSequenceNumberMap = protocolActionSequenceNumberMap;
+    }
+
+    /**
+     * Gets the protocolApplicationIdMap.
+     *
+     * @return the protocolApplicationIdMap.
+     */
+    public HashMap<Long, ProtocolAction> getProtocolApplicationIdMap() {
+        return protocolApplicationIdMap;
+    }
+
+    /**
+     * Sets the protocolApplicationIdMap.
+     *
+     * @param protocolApplicationIdMap the protocolApplicationIdMap to set.
+     */
+    public void setProtocolApplicationIdMap(
+            HashMap<Long, ProtocolAction> protocolApplicationIdMap) {
+        this.protocolApplicationIdMap = protocolApplicationIdMap;
     }
 
     /**
