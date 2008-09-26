@@ -172,7 +172,7 @@
         <jaxb.xjc.version>2.1.4</jaxb.xjc.version>
         <struts.version>2.0.11.1</struts.version>
         <ldap.install>true</ldap.install>
-        <ldap.host.url>ldaps://ncids4a.nci.nih.gov:636/</ldap.host.url>
+        <ldap.host.url>ldaps://cbioweb-stage-ldap.nci.nih.gov:636/</ldap.host.url>
         <ldap.searchbase>ou=nci,o=nih</ldap.searchbase>
         <ldap.searchprefix>cn</ldap.searchprefix>
         <test.jdbc.url>jdbc:hsqldb:mem:protExpressTests</test.jdbc.url>
