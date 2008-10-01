@@ -239,6 +239,15 @@ public final class ExperimentRunHolder {
 
     private void initProtocolAction(ProtocolApplication protocolApplication, int parentSequenceNumber) {
         if (!getProtocolApplicationIdMap().containsKey(protocolApplication.getId())) {
+            // check for parents. if a parent not processed, return.
+            for (InputOutputObject input : protocolApplication.getInputs()) {
+                if ((input.getOutputOfProtocolApplication() != null)
+                        &&
+                        (!getProtocolApplicationIdMap().containsKey(input.getOutputOfProtocolApplication().getId()))) {
+                    return;
+                }
+            }
+
             setCurrentSequenceNumber(parentSequenceNumber + getIncrementActionSequence());
             ProtocolAction protAction = new ProtocolAction(protocolApplication,  getCurrentSequenceNumber());
 
