@@ -16,4 +16,7 @@
     <sqlFile path="@db-upgrade.run.dir@/update-config-param-dev.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/sampleExperiments.sql"/>
   </changeSet>
+  <changeSet id="2" author="kanchink">
+    <sqlFile path="@db-upgrade.run.dir@/update-config-param-qa.sql"/>
+  </changeSet>
 </databaseChangeLog>
