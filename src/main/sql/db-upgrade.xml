@@ -6,31 +6,14 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
   <changeSet id="1" author="kanchink">
     <sqlFile path="@db-upgrade.run.dir@/extraDropSchema.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/csmDropSchema.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/protExpressSchema.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/csmCreateSchema.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/csmBootstrapData.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/protExpressBootstrapData.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/update-config-param-dev.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/sampleExperiments.sql"/>
   </changeSet>
-    <changeSet id="2" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/csmDropSchema.sql"/>
-    </changeSet>
-    <changeSet id="3" author="kanchink">
-            <sqlFile path="@db-upgrade.run.dir@/protExpressSchema.sql"/>
-    </changeSet>
-
-    <changeSet id="5" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/csmCreateSchema.sql"/>
-    </changeSet>
-    <changeSet id="6" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/csmBootstrapData.sql"/>
-    </changeSet>
-    <changeSet id="7" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
-    </changeSet>
-    <changeSet id="8" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
-    </changeSet>
-    <changeSet id="9" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/protExpressBootstrapData.sql"/>
-    </changeSet>
-    <changeSet id="10" author="kanchink">
-        <sqlFile path="@db-upgrade.run.dir@/createNewUser.sql"/>
-    </changeSet>
-
 </databaseChangeLog>
