@@ -677,6 +677,8 @@
                                 <srcFile>src/main/sql/extraCreateSchema.sql</srcFile>
                                 <srcFile>src/main/sql/configurationParametersBootstrapData.sql</srcFile>
                                 <srcFile>src/main/sql/protExpressBootstrapData.sql</srcFile>
+                                <srcFile>src/main/sql/update-config-param-dev.sql</srcFile>
+                                <srcFile>src/main/sql/sampleExperiments.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </plugin>
