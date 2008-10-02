@@ -16,7 +16,8 @@
         <build.svn.url>@build.svn.url@</build.svn.url>
         <build.tag>@build.tag@</build.tag>
         <build.time>@build.time@</build.time>
-        <build.node>@build.node@</build.node>
+        <build.node>INSTALLATION_LOCATION</build.node>
+        <upt.url>UPT_URL</upt.url>
       </properties>
     </profile>
   </profiles>
