@@ -476,8 +476,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_HOSTNAME" value="${ldap.url}"/>
 	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
 	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${build.node}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${upt.url}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="INSTALLATION_LOCATION" value="${build.node}"/>
+	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="UPT_URL" value="${upt.url}"/>
 	
         
         <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USERNAME" value="${database.user}"/>
