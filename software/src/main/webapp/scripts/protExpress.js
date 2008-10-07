@@ -167,10 +167,12 @@ var ProtExpress = {
   showHelp: function(showNav) {
     var pageHelpTopicElement = document.getElementById("pageHelpTopic");
     var helpTopic = "welcome_help";
+    var helpContext = "protExpress_Online_Help";
+
     if ((pageHelpTopicElement != null) && (pageHelpTopicElement.value != null) && (pageHelpTopicElement.value != "")) {
         helpTopic = pageHelpTopicElement.value;
     }
-    var helpUrl = contextPath + "/help/index.html?";
+    var helpUrl = contextPath + "/help/index.html?context=" + helpContext + "&";
     if (showNav) {
         helpUrl += "single=false&";
     }
