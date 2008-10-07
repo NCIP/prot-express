@@ -7,6 +7,14 @@
 
 <jsp:include page="/WEB-INF/jsp/experiment/edit/refreshTree.jsp" />
 
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_run_details"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <s:form id="editExperimentRunForm" action="/ajax/editExperiment/experimentRun/saveExperimentRun.action" method="post">
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
     <s:hidden name="experimentId" value="%{experiment.id}"/>

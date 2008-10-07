@@ -2,6 +2,13 @@
 
 <jsp:include page="/WEB-INF/jsp/experiment/create/protocol/addOrSelectProtocolHeader.jsp" />
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.create_experiment_edit_protocol"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <div class="info"><p><fmt:message key="protexpress.page.createnewexperiment.editprotocol.info" /></p></div>
 <h3><fmt:message key="protexpress.page.createnewexperiment.editprotocol.title" /></h3>
 <c:if test="${not empty successMessage}">

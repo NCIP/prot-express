@@ -12,9 +12,17 @@
       </protExpress:breadCrumbTrial>
     <!-- /Breadcrumb -->
 
-    <!-- Page Help -->
-        <protExpress:pageHelp/>
-    <!-- /Page Help -->
+<!-- Page Help -->
+    <%@ include file="/WEB-INF/jsp/experiment/common/insertHelp.jsp"%>
+<!-- /Page Help -->
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.create_experiment_overview"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 
     <div class="padme8">
         <!--ADD CONTENT HERE-->

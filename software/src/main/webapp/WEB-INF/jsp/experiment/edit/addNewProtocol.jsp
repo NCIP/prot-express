@@ -19,6 +19,13 @@
     </a>
 </div>
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_add_protocol_to_run"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <s:form id="addNewProtocolForm" action="ajax/editExperiment/experimentRun/protocol/saveNewProtocol.action" method="post">
     <s:hidden name="experimentRunId" value="%{experimentRun.id}"/>
     <s:hidden name="experimentId" value="%{experiment.id}" />

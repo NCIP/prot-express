@@ -13,6 +13,14 @@
 </div>
 <!-- /TABS -->
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.create_experiment_add_new_protocol"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
+
 <s:form id="addNewProtocolForm" action="/ajax/createExperiment/protocols/add/save.action" method="post">
 
     <!-- Protocol Info -->

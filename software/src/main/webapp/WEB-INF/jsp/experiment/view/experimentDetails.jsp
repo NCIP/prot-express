@@ -1,5 +1,13 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.view_experiment_details"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <h3>${experiment.name}</h3>
     <fieldset class="leftfield_wide">
         <legend><fmt:message key="protexpress.page.viewexperimentdetails.overviewtitle" /></legend>

@@ -16,6 +16,13 @@
   </div>
 </c:if>
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.create_experiment_protocol_manage_inputs"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <div id="divContent">
     <c:set var="formId" value="manageInputsForm" />
     <c:set var="divId" value="divAjaxBody" />

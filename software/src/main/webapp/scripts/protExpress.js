@@ -159,8 +159,30 @@ var ProtExpress = {
   hideDiv: function(divId) {
     var divElement = document.getElementById(divId);
     divElement.style.display = "none";
+  },
+  setHelpTopic: function(helpTopicId) {
+    var pageHelpTopicElement = document.getElementById("pageHelpTopic");
+    pageHelpTopicElement.value = helpTopicId;
+  },
+  showHelp: function(showNav) {
+    var pageHelpTopicElement = document.getElementById("pageHelpTopic");
+    var helpTopic = "welcome_help";
+    if ((pageHelpTopicElement != null) && (pageHelpTopicElement.value != null) && (pageHelpTopicElement.value != "")) {
+        helpTopic = pageHelpTopicElement.value;
+    }
+    var helpUrl = contextPath + "/help/index.html?";
+    if (showNav) {
+        helpUrl += "single=false&";
+    }
+    else {
+        helpUrl += "single=true&";
+    }
+
+    helpUrl += "topic=" + helpTopic;
+    window.open(helpUrl, "Help", "titlebar,status,scrollbars,resizable,alwaysRaised,dependent,width=800,height=500");
   }
 }
+
 
 
 

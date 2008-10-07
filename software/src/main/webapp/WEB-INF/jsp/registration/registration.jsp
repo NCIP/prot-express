@@ -1,13 +1,20 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <html>
-<head>
-</head>
-<body>
+    <head>
+    </head>
+  <body>
 
-<!--Page Help-->
-<a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="help" /></a>
-<!--/Page Help-->
+<!-- Page Help -->
+    <%@ include file="/WEB-INF/jsp/experiment/common/insertHelp.jsp"%>
+<!-- /Page Help -->
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.register"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
 
 <h1><fmt:message key="registration.header" /></h1>
 

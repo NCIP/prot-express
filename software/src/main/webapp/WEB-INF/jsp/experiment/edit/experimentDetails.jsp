@@ -27,6 +27,13 @@
     </fieldset>
     <!-- /Experiment Date -->
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_details"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
     <!-- Experiment Contact -->
     <c:set var="title" value="protexpress.page.editexperimentdetails.contacttitle" />
     <c:set var="nameFirstName" value="experiment.contactPerson.firstName" />
