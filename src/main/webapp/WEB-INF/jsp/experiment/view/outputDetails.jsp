@@ -1,4 +1,12 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.view_experiment_output_details"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <h3>${inputOutputObject.name}</h3>
 <form name="edit" id="edit">
     <table class="form">

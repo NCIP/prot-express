@@ -8,9 +8,9 @@
       </protExpress:breadCrumbTrial>
     <!-- /Breadcrumb -->
 
-    <!-- Page Help -->
-        <protExpress:pageHelp/>
-    <!-- /Page Help -->
+<!-- Page Help -->
+    <%@ include file="/WEB-INF/jsp/experiment/common/insertHelp.jsp"%>
+<!-- /Page Help -->
 
     <div class="padme8">
         <!--ADD CONTENT HERE-->

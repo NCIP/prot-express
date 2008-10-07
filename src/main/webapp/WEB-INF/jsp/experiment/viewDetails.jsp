@@ -12,9 +12,10 @@
         <a href="${viewExperimentDetailsUrl}" class="selected"><fmt:message key="protexpress.breadcrumb.viewexperiment" /></a>
     </div>
     <!-- /Breadcrumb -->
-    <!-- Page Help -->
-    <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="protexpress.icon.help.title" /></a>
-    <!-- /Page Help -->
+
+<!-- Page Help -->
+    <%@ include file="/WEB-INF/jsp/experiment/common/insertHelp.jsp"%>
+<!-- /Page Help -->
 
     <div class="padme8">
         <!--ADD CONTENT HERE-->

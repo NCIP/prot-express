@@ -2,6 +2,13 @@
 
 <h3>${experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editexperimentrundetails.buttons.addprotocol.caption" /></h3>
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_select_existing_protocol_to_run"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <div class="tabs">
     <c:url var="addNewProtocolUrl" value="/ajax/editExperiment/experimentRun/protocol/addNewProtocol.action">
         <c:param name="experimentId" value="${experiment.id}" />

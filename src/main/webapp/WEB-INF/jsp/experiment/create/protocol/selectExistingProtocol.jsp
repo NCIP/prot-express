@@ -13,6 +13,13 @@
 </div>
 <!-- /TABS -->
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.create_experiment_select_existing_protocol"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <!--Protocol Search Form -->
 <s:form id="searchForm" action="ajax/createExperiment/protocols/add/selectExistingProtocol" method="post" theme="simple">
     <s:hidden name="protocols.sortDirection" />

@@ -9,6 +9,7 @@
         <pattern>/struts/*</pattern>
         <pattern>/ajax/*</pattern>
         <pattern>/experiment/export*</pattern>
+        <pattern>/help/*</pattern>
     </excludes>
 
     <decorator name="main" page="/WEB-INF/jsp/decorators/main.jsp">

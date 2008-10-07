@@ -11,6 +11,13 @@
 </c:url>
 <c:url var="saveUrl" value="/ajax/editExperiment/protocolApplication/updateInputs.action"  />
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_manage_inputs"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <h3>${protocolApplication.experimentRun.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;${protocolApplication.protocol.name}&nbsp;<span class="&gt;">&gt;&gt;</span>&nbsp;<fmt:message key="protexpress.page.editprotocolapplicationdetails.inputs.caption" /></h3>
 <s:actionerror ></s:actionerror>
 <s:form id="manageInputsForm" action="/ajax/editExperiment/protocolApplication/addNewInput.action" method="post">

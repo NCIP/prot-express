@@ -13,6 +13,6 @@
             onmouseout="nd();">
     <img src="${imgUrl}" alt="" />
 </a> -->
-<a href="javascript://noop/" onclick="this.blur(); return false;"
+<a href="javascript://noop/" onclick="this.blur(); return false;">
     <img src="${imgUrl}" alt="${altText}" />
 </a>

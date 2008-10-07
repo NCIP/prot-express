@@ -6,6 +6,13 @@
 
 <s:form id="selectExistingProtocolForm" method="post" />
 
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.edit_experiment_protocol_search_results"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 <div class="tabbed">
     <div class="searchresults">
       <c:url var="sortUrl" value="/ajax/editExperiment/experimentRun/protocol/searchProtocols.action" />

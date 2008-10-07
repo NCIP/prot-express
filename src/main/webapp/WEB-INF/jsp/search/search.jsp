@@ -10,9 +10,19 @@
         <a href="<c:url value="/search/reloadSearch.action"/>" class="selected"><fmt:message key="protexpress.breadcrumb.search" />
     </div>
     <!-- /Breadcrumb -->
-    <!-- Page Help -->
-    <a href="<c:url value="/notYetImplemented.html"/>" class="helpicon"><fmt:message key="protexpress.icon.help.title" /></a>
-    <!-- /Page Help -->
+
+<!-- Page Help -->
+    <%@ include file="/WEB-INF/jsp/experiment/common/insertHelp.jsp"%>
+<!-- /Page Help -->
+
+
+<!-- Set Page Help Topic Id -->
+<fmt:message var="helpTopicId" key="protexpress.help.search_protexpress"></fmt:message>
+<script type="text/javascript">
+    ProtExpress.setHelpTopic("${helpTopicId}");
+</script>
+<!-- /Set Page Help Topic Id -->
+
 
     <div class="padme8">
         <!-- Add Content Here -->
