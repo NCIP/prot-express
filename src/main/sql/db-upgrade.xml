@@ -20,8 +20,6 @@
     <sqlFile path="@db-upgrade.run.dir@/update-config-param-qa.sql"/>
   </changeSet>
   <changeSet id="3" author="kanchink">
-    <sqlFile path="@db-upgrade.run.dir@/extraDropSchema.sql"/>
-    <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
-    <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/deleteAndInsertConfigParamData.sql"/>
   </changeSet>
 </databaseChangeLog>
