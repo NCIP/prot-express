@@ -19,14 +19,14 @@
             <Item name="protExpress.home" title="protexpress.leftnav.menu.main.login" page="/home/home.action" />
             <Item name="protExpress.register" title="protexpress.leftnav.menu.main.register" page="/registration/input.action" />
             <Item name="protExpressAbout.whatis" title="protexpress.leftnav.menu.main.whatis" page="/notYetImplemented.html" />
-            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="#" onclick="ProtExpress.showHelp('true'); this.blur(); return false;"/>
         </Menu>
         <Menu name="protExpressMain" title="protexpress.leftnav.menu.main.title" onclick="javascript:void(0);">
             <Item name="protExpress.home" title="protexpress.leftnav.menu.main.home" page="/home/home.action" />
             <Item name="protExpress.experimentcreate" title="protexpress.leftnav.menu.main.experimentcreate" page="/createExperiment/createNewExperiment.action" />
             <Item name="protExpress.search" title="protexpress.leftnav.menu.main.search" page="/search/loadSearch.action" />
             <Item name="protExpressAbout.whatis" title="protexpress.leftnav.menu.main.whatis" page="/notYetImplemented.html" />
-            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="/notYetImplemented.html" />
+            <Item name="protExpressAbout.help" title="protexpress.leftnav.menu.main.help" page="#" onclick="ProtExpress.showHelp('true'); this.blur(); return false;"/>
         </Menu>
         <Menu name="globalLinks" title="protexpress.leftnav.menu.globallinks.title" onclick="javascript:void(0);">
             <Item name="globalLinks.ncihome" title="protexpress.leftnav.menu.globallinks.ncihome" location="http://www.cancer.gov/" />
