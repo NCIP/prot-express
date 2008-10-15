@@ -25,7 +25,7 @@
     <c:if test="${pageContext.request.remoteUser != null}">
     <div id="userinfo">
         <fmt:message key="welcome" />, ${currentUserDisplayName} |
-        <a href="<c:url value="/notYetImplemented.html"/>"><fmt:message key="account" /></a> |
+        <!-- <a href="<c:url value="/notYetImplemented.html"/>"><fmt:message key="account" /></a> | -->
         <a href="<c:url value="/logout.jsp"/>"><fmt:message key="logout" /></a>
     </div>
     </c:if>
