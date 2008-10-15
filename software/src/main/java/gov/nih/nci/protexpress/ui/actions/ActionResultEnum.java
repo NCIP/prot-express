@@ -141,7 +141,11 @@ public enum ActionResultEnum {
     /**
      * Add New Output.
      */
-    ADD_NEW_OUTPUT("addNewOutput");
+    ADD_NEW_OUTPUT("addNewOutput"),
+    /**
+     * Forgot Password Action.
+     */
+    FORGOT_PASSWORD("forgotPassword");
 
     private String displayName;
 

@@ -1,12 +1,12 @@
 /**
  * The software subject to this notice and license includes both human readable
- * source code form and machine readable, binary, object code form. The caarray-common-jar
+ * source code form and machine readable, binary, object code form. The ProtExpress
  * Software was developed in conjunction with the National Cancer Institute
  * (NCI) by NCI employees and 5AM Solutions, Inc. (5AM). To the extent
  * government employees are authors, any rights in such works shall be subject
  * to Title 17 of the United States Code, section 105.
  *
- * This caarray-common-jar Software License (the License) is between NCI and You. You (or
+ * This ProtExpress Software License (the License) is between NCI and You. You (or
  * Your) shall mean a person or an entity, and all other entities that control,
  * are controlled by, or are under common control with the entity. Control for
  * purposes of this definition means (i) the direct or indirect power to cause
@@ -17,10 +17,10 @@
  * This License is granted provided that You agree to the conditions described
  * below. NCI grants You a non-exclusive, worldwide, perpetual, fully-paid-up,
  * no-charge, irrevocable, transferable and royalty-free right and license in
- * its rights in the caarray-common-jar Software to (i) use, install, access, operate,
+ * its rights in the ProtExpress Software to (i) use, install, access, operate,
  * execute, copy, modify, translate, market, publicly display, publicly perform,
- * and prepare derivative works of the caarray-common-jar Software; (ii) distribute and
- * have distributed to and by third parties the caarray-common-jar Software and any
+ * and prepare derivative works of the ProtExpress Software; (ii) distribute and
+ * have distributed to and by third parties the ProtExpress Software and any
  * modifications and derivative works thereof; and (iii) sublicense the
  * foregoing rights set out in (i) and (ii) to third parties, including the
  * right to license such rights to further third parties. For sake of clarity,
@@ -80,129 +80,104 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.domain;
+package gov.nih.nci.protexpress.ui.actions.accountinfo;
+
+import gov.nih.nci.protexpress.domain.ConfigParamEnum;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseActionWithSession;
+import gov.nih.nci.protexpress.ui.actions.registration.EmailHelper;
+import gov.nih.nci.protexpress.util.ConfigurationHelper;
+
+import javax.mail.MessagingException;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.fiveamsolutions.nci.commons.web.struts2.action.ActionHelper;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
- * Various configuration parameters.
+ * Action class to handle Change/Forgot Password functionality.
+ *
+ * @author Krishna Kanchinadam
  */
-public enum ConfigParamEnum {
+
+@Validation
+public class ForgotPasswordAction extends ProtExpressBaseActionWithSession {
+    private static final long serialVersionUID = 1L;
+
+    private String loginName;
+    private String emailId;
+
     /**
-     * System Admin email id.
+     * Action Constructor.
      */
-    SYS_ADMIN_EMAIL,
+    public ForgotPasswordAction() {
+        super();
+    }
+
     /**
-     * Registration Email subject line.
+     * Method to submit the forgot password request.
+     * @return the directive for the next action/page to be directed to.
      */
-    REGISTRATION_EMAIL_SUBJECT,
+    public String submitRequest() {
+        try {
+            if (StringUtils.isBlank(getLoginName())) {
+                addActionError(getText("forgotpassword.userNameNotSpecified"));
+                return Action.INPUT;
+            }
+
+            if (StringUtils.isBlank(getEmailId())) {
+                addActionError(getText("forgotpassword.emailIdNotSpecified"));
+                return Action.INPUT;
+            }
+
+            //Send email to user and admin
+            EmailHelper.sendPasswordRequestConfirmationEmailToUser(getEmailId());
+             EmailHelper.sendPasswordRequestEmailToAdmin(getLoginName(), getEmailId());
+             setSuccessMessage(ConfigurationHelper.getConfigurationStringValue(
+                        ConfigParamEnum.FORGOT_PASSWORD_SUCCESS_MESSAGE));
+             return Action.SUCCESS;
+        } catch (MessagingException me) {
+            ActionHelper.saveMessage(getText("forgotpassword.emailFailure"));
+            addActionError(getText(getText("forgotpassword.emailFailure")));
+            return Action.INPUT;
+        }
+    }
+
     /**
-     * Registration Email Body Content, sent to the new user.
+     * Gets the loginName.
+     *
+     * @return the loginName.
      */
-    REGISTRATION_EMAIL_TO_USER_BODY_CONTENT,
+    public String getLoginName() {
+        return loginName;
+    }
+
     /**
-     * Registration success message.
+     * Sets the loginName.
+     *
+     * @param loginName the loginName to set.
      */
-    REGISTRATION_SUCCESS_MESSAGE,
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
     /**
-     * Forgot Password Email Subject Line.
+     * Gets the emailId.
+     *
+     * @return the emailId.
      */
-    FORGOT_PASSWORD_EMAIL_SUBJECT,
+    public String getEmailId() {
+        return emailId;
+    }
+
     /**
-     * Forgot Password Email Body Content, sent to the user.
+     * Sets the emailId.
+     *
+     * @param emailId the emailId to set.
      */
-    FORGOT_PASSWORD_EMAIL_TO_USER_BODY_CONTENT,
-    /**
-     * Forgot Password Success Message.
-     */
-    FORGOT_PASSWORD_SUCCESS_MESSAGE,
-    /**
-     * Development mode flag.  Should only be true for local development purposes.
-     */
-    DEVELOPMENT_MODE,
-    /**
-     * protExpress version number, for schema migration purposes.
-     */
-    SCHEMA_VERSION,
-    /**
-     * Lsid Base.
-     */
-    LSID_BASE,
-    /**
-     * Lsid Separator.
-     */
-    LSID_SEPARATOR,
-    /**
-     * Lsid Authority.
-     */
-    LSID_AUTHORITY,
-    /**
-     * Lsid Revision.
-     */
-    LSID_REVISION,
-    /**
-     * Lsid Protocol Namespace.
-     */
-    LSID_NAMESPACE_PROTOCOL,
-    /**
-     * Lsid Experiment Namespace.
-     */
-    LSID_NAMESPACE_EXPERIMENT,
-    /**
-     * Lsid ExperimentRun Namespace.
-     */
-    LSID_NAMESPACE_EXPERIMENT_RUN,
-    /**
-     * Lsid InputOutput Namespace.
-     */
-    LSID_NAMESPACE_INPUT_OUTPUT,
-    /**
-     * Lsid ProtocolApplication Namespace.
-     */
-    LSID_NAMESPACE_PROTOCOL_APPLICATION,
-    /**
-     * Ontology Entry URI String value.
-     */
-    ONTOLOGY_ENTRY_URI;
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

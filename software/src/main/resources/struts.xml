@@ -73,6 +73,15 @@
         </action>
         <!-- /Registration Actions -->
 
+        <!-- Forgot Password Actions -->
+        <action name="forgotPassword/*"
+            class="gov.nih.nci.protexpress.ui.actions.accountinfo.ForgotPasswordAction" method="{1}">
+            <result name="success">/WEB-INF/jsp/accountinfo/forgotPasswordSuccess.jsp</result>
+            <result name="input">/WEB-INF/jsp/accountinfo/forgotPassword.jsp</result>
+            <interceptor-ref name="protExpressParamsPrepareParamsStack" />
+        </action>
+        <!-- /Forgot Password Actions -->
+
         <!-- Home Actions -->
         <action name="home/home" class="gov.nih.nci.protexpress.ui.actions.home.HomeAction" method="load">
             <result name="success">/WEB-INF/jsp/home/home.jsp</result>
