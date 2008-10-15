@@ -23,11 +23,7 @@
     <div class="formbox">
         <div id="boxinner">
             <h3><fmt:message key="registration.success.header" /></h3>
-            <div class="confirm_msg">
-                <fmt:message key="registration.success.msg">
-                    <fmt:param><a href="<c:url value="/home/home.action" />" tabindex="1"><fmt:message key="registration.here" /></a></fmt:param>
-                </fmt:message>
-            </div>
+                <div class="confirm_msg">${successMessage}</div>
         </div>
     </div>
 </div>

@@ -116,18 +116,7 @@ public final class LsidGeneratorHelper {
      * @return the LSID string.
      */
     public static String getLsid(ConfigParamEnum configParamEnum, Long objectId) {
-        StringBuffer objectLsid = new StringBuffer();
-        return objectLsid
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_BASE.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_AUTHORITY.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(configParamEnum.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(objectId.toString())
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
-            .toString();
+        return getLsid(configParamEnum.name(), objectId.toString());
     }
 
     /**
@@ -138,17 +127,22 @@ public final class LsidGeneratorHelper {
      * @return the LSID string.
      */
     public static String getLsid(ConfigParamEnum configParamEnum, String objectId) {
+        return getLsid(configParamEnum.name(), objectId);
+    }
+
+    private static String getLsid(String configParamEnumName, String objectId) {
         StringBuffer objectLsid = new StringBuffer();
         return objectLsid
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_BASE.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_AUTHORITY.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(configParamEnum.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(objectId)
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
-            .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
-            .toString();
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_BASE.name()))
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_AUTHORITY.name()))
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+        .append(ConfigurationHelper.getConfiguration().getString(configParamEnumName))
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+        .append(objectId)
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_SEPARATOR.name()))
+        .append(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.LSID_REVISION.name()))
+        .toString();
+
     }
 }

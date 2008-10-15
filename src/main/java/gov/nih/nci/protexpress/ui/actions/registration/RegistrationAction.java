@@ -96,16 +96,12 @@ import gov.nih.nci.security.exceptions.internal.CSInternalConfigurationException
 import gov.nih.nci.security.exceptions.internal.CSInternalInsufficientAttributesException;
 import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
 
 import com.fiveamsolutions.nci.commons.web.struts2.action.ActionHelper;
 import com.opensymphony.xwork2.Action;
@@ -130,7 +126,6 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     private Boolean ldapAuthenticate;
     private List<Country> countryList;
     private List<State> stateList;
-    private final Hashtable<String, String> ldapContextParams = new Hashtable<String, String>();
     private String successMessage;
 
     /**
@@ -139,14 +134,6 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     public void prepare() {
         setCountryList(getRegistrationService().getCountries());
         setStateList(getRegistrationService().getStates());
-        ServletContext context = ServletActionContext.getServletContext();
-        Enumeration<String> e = context.getInitParameterNames();
-        while (e.hasMoreElements()) {
-            String param = e.nextElement();
-            if (param.startsWith("ldap")) {
-                ldapContextParams.put(param, context.getInitParameter(param));
-            }
-        }
         registrationRequest = new RegistrationRequest();
         ldapAuthenticate = Boolean.TRUE;
     }
@@ -165,12 +152,13 @@ public class RegistrationAction extends ActionSupport implements Preparable {
             LOGGER.debug("done saving registration request; sending email");
             EmailHelper.registerEmail(getRegistrationRequest());
             EmailHelper.registerEmailAdmin(getRegistrationRequest());
-            setSuccessMessage(ConfigurationHelper.getConfiguration().getString(ConfigParamEnum.THANKS_MESSAGE.name()));
-
+            setSuccessMessage(ConfigurationHelper.getConfigurationStringValue(
+                    ConfigParamEnum.REGISTRATION_SUCCESS_MESSAGE));
             return Action.SUCCESS;
         } catch (MessagingException me) {
             LOGGER.error("Failed to send an email", me);
             ActionHelper.saveMessage(getText("registration.emailFailure"));
+            addActionError(getText("registration.emailFailure"));
             return Action.INPUT;
         }
     }
@@ -181,7 +169,7 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     @Override
     public void validate() {
         super.validate();
-        if (isLdapInstall()) {
+        if (ConfigurationHelper.isLdapInstallation()) {
             validateLdap();
         } else {
             validateNonLdap();
@@ -192,7 +180,8 @@ public class RegistrationAction extends ActionSupport implements Preparable {
         try {
             if (ldapAuthenticate
                     && (StringUtils.isBlank(getPassword())
-                            || !LDAPHelper.authenticate(ldapContextParams , registrationRequest.getLoginName(),
+                            || !LDAPHelper.authenticate(ConfigurationHelper.getLdapContextParameters() ,
+                                    registrationRequest.getLoginName(),
                                                         getPassword().toCharArray(), null))) {
                 addActionError(getText("registration.ldapLookupFailure"));
             }
@@ -316,13 +305,6 @@ public class RegistrationAction extends ActionSupport implements Preparable {
     }
 
     /**
-     * @return is ldap install?
-     */
-    public boolean isLdapInstall() {
-        return Boolean.parseBoolean(ldapContextParams.get("ldap.install"));
-    }
-
-    /**
      * @return the successMessage
      */
     public String getSuccessMessage() {
@@ -334,6 +316,13 @@ public class RegistrationAction extends ActionSupport implements Preparable {
      */
     public void setSuccessMessage(String successMessage) {
         this.successMessage = successMessage;
+    }
+
+    /**
+     * @return is ldap install?
+     */
+    public boolean isLdapInstall() {
+        return ConfigurationHelper.isLdapInstallation();
     }
 }
 

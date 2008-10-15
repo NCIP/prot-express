@@ -82,6 +82,7 @@
  */
 package gov.nih.nci.protexpress;
 
+import gov.nih.nci.protexpress.service.AccountInformationService;
 import gov.nih.nci.protexpress.service.ExperimentService;
 import gov.nih.nci.protexpress.service.FormatConversionService;
 import gov.nih.nci.protexpress.service.GenericDataService;
@@ -120,6 +121,7 @@ public final class ProtExpressRegistry {
     private FormatConversionService xar23FormatConversionService;
     private UserProvisioningManager userProvisioningManager;
     private RegistrationService registrationService;
+    private AccountInformationService accountInformationService;
     private DataSource dataSource;
     private GenericDataService genericDataService;
 
@@ -237,6 +239,20 @@ public final class ProtExpressRegistry {
      */
     public void setRegistrationService(RegistrationService registrationService) {
         this.registrationService = registrationService;
+    }
+
+    /**
+     * @return service to handle account information activities
+     */
+    public static AccountInformationService getAccountInformationService() {
+        return ProtExpressRegistry.getInstance().accountInformationService;
+    }
+
+    /**
+     * @param accountInformationService service to set
+     */
+    public void setAccountInformationService(AccountInformationService accountInformationService) {
+        this.accountInformationService = accountInformationService;
     }
 
     /**

@@ -91,8 +91,6 @@ import java.util.Collections;
 
 import javax.mail.MessagingException;
 
-import org.apache.commons.configuration.DataConfiguration;
-
 /**
  * @author John Hedden (Amentra, Inc.)
  *
@@ -104,19 +102,47 @@ public final class EmailHelper {
     }
 
     /**
+     * Sends the password request to user.
+     *
+     * @param userEmailId the user email id.
+     * @throws MessagingException on other error
+     */
+    public static void sendPasswordRequestConfirmationEmailToUser(String userEmailId) throws MessagingException {
+        String from = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.SYS_ADMIN_EMAIL);
+        String subject = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.FORGOT_PASSWORD_EMAIL_SUBJECT);
+        String mailBody = ConfigurationHelper.getConfigurationStringValue(
+                ConfigParamEnum.FORGOT_PASSWORD_EMAIL_TO_USER_BODY_CONTENT);
+
+        EmailUtil.sendMail(Collections.singletonList(userEmailId), from, subject, mailBody);
+    }
+
+    /**
+     * Sends the password request to admin.
+     *
+     * @param loginName login name of the user.
+     * @param emailId user email id.
+     * @throws MessagingException on other error
+     */
+    public static void sendPasswordRequestEmailToAdmin(String loginName, String emailId) throws MessagingException {
+         String subject = ConfigurationHelper.getConfigurationStringValue(
+                 ConfigParamEnum.FORGOT_PASSWORD_EMAIL_SUBJECT);
+         String admin = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.SYS_ADMIN_EMAIL);
+
+         String mailBody = "Password Reset Request:\n"
+             + "Login Name: " + loginName + "\n";
+
+         EmailUtil.sendMail(Collections.singletonList(admin), emailId, subject, mailBody);
+    }
+
+    /**
      * @param registrationRequest request
      * @throws MessagingException on other error
      */
     public static void registerEmail(RegistrationRequest registrationRequest) throws MessagingException {
-        DataConfiguration config = ConfigurationHelper.getConfiguration();
-
-        if (!config.getBoolean(ConfigParamEnum.SEND_CONFIRM_EMAIL.name())) {
-            return;
-        }
-
-        String subject = config.getString(ConfigParamEnum.CONFIRM_EMAIL_SUBJECT.name());
-        String from = config.getString(ConfigParamEnum.EMAIL_FROM.name());
-        String mailBodyPattern = config.getString(ConfigParamEnum.CONFIRM_EMAIL_CONTENT.name());
+        String from = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.SYS_ADMIN_EMAIL);
+        String subject = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.REGISTRATION_EMAIL_SUBJECT);
+        String mailBodyPattern = ConfigurationHelper.getConfigurationStringValue(
+                ConfigParamEnum.REGISTRATION_EMAIL_TO_USER_BODY_CONTENT);
         String mailBody = MessageFormat.format(mailBodyPattern, registrationRequest.getId());
 
         EmailUtil.sendMail(Collections.singletonList(registrationRequest.getEmail()), from, subject, mailBody);
@@ -127,14 +153,9 @@ public final class EmailHelper {
      * @throws MessagingException on error
      */
     public static void registerEmailAdmin(RegistrationRequest registrationRequest) throws MessagingException {
-        DataConfiguration config = ConfigurationHelper.getConfiguration();
-        if (!config.getBoolean(ConfigParamEnum.SEND_ADMIN_EMAIL.name())) {
-            return;
-        }
-
-        String subject = config.getString(ConfigParamEnum.REG_EMAIL_SUBJECT.name());
         String from = registrationRequest.getEmail();
-        String admin = config.getString(ConfigParamEnum.REG_EMAIL_TO.name());
+        String subject = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.REGISTRATION_EMAIL_SUBJECT);
+        String admin = ConfigurationHelper.getConfigurationStringValue(ConfigParamEnum.SYS_ADMIN_EMAIL);
 
         String mailBody = "Registration Request:\n"
             + "First Name: " + registrationRequest.getFirstName() + "\n"

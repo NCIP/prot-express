@@ -36,13 +36,19 @@
         </property>
     </bean>
 
+    <bean id="accountInformationService" class="gov.nih.nci.protexpress.service.impl.AccountInformationServiceImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
     <bean id="genericDataService" class="gov.nih.nci.protexpress.service.impl.GenericDataServiceImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    
-    
+
+
     <bean id="protExpressRegistry" class="gov.nih.nci.protexpress.ProtExpressRegistry" scope="singleton"
         factory-method="getInstance">
         <property name="protocolService">
@@ -62,6 +68,9 @@
         </property>
         <property name="genericDataService">
             <ref bean="genericDataService" />
+        </property>
+        <property name="accountInformationService">
+            <ref bean="accountInformationService" />
         </property>
     </bean>
 </beans>
