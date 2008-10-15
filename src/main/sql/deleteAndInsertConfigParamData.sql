@@ -1,4 +1,4 @@
-delete * from config_parameter;
+delete from config_parameter;
 
 insert into config_parameter (param, raw_value) values ('SYS_ADMIN_EMAIL', 'NCINCICBGpsXarDevTeam@mail.nih.gov');
 
