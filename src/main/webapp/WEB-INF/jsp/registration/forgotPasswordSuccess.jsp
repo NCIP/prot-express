@@ -11,18 +11,18 @@
 <!-- /Page Help -->
 
 <!-- Set Page Help Topic Id -->
-<fmt:message var="helpTopicId" key="protexpress.help.register_success"></fmt:message>
+<fmt:message var="helpTopicId" key="protexpress.help.forgotpasswordsuccess"></fmt:message>
 <script type="text/javascript">
     ProtExpress.setHelpTopic("${helpTopicId}");
 </script>
 <!-- /Set Page Help Topic Id -->
 
-<h1><fmt:message key="registration.header" /></h1>
+<h1><fmt:message key="forgotpassword.header" /></h1>
 
 <div class="box">
     <div class="formbox">
         <div id="boxinner">
-            <h3><fmt:message key="registration.success.header" /></h3>
+            <h3><fmt:message key="forgotpassword.success.header" /></h3>
                 <div class="confirm_msg">${successMessage}</div>
         </div>
     </div>
