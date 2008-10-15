@@ -19,7 +19,7 @@
   <changeSet id="2" author="kanchink">
     <sqlFile path="@db-upgrade.run.dir@/update-config-param-qa.sql"/>
   </changeSet>
-  <changeSet id="3" author="kanchink">
+  <changeSet id="3" author="masonwi">
     <sqlFile path="@db-upgrade.run.dir@/extraDropSchema.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
