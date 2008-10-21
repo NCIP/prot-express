@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpBook version="5.0" name="protExpress Online Help" context="protExpress_Online_Help" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
+  <CommonWordsToSkip minlen="3">
+    a about after all also am an and another any are as at
+    be because been before being between both but by
+    came can come copyright corp corporation could
+    did do does
+    each etc
+    for from
+    get goes got
+    had has have he her here him himself his how
+    if in inc into is it its
+    let like
+    make many me might more most much must my
+    never nor not now
+    of off on one only or other our out over own
+    reserved rights
+    said same see set shall she should since so some still such
+    take than that the their them then there these they this those though through to too
+    under us use
+    very
+    was way we well were what when where which while who why will with would
+    yes yet you your
+   </CommonWordsToSkip>
+  <ScoringPrefs>
+    <meta name="keywords" weight="100" />
+    <meta name="description" weight="50" />
+    <meta name="summary" weight="50" />
+    <title weight="20" />
+    <h1 weight="15" />
+    <h2 weight="10" />
+    <caption weight="10" />
+    <h3 weight="7" />
+    <th weight="5" />
+    <h4 weight="5" />
+    <h5 weight="4" />
+    <h6 weight="3" />
+    <h7 weight="2" />
+  </ScoringPrefs>
+  <DocumentInfo>
+    <Document title="Welcome to protExpress Online Help" href="WelcometoprotExpressHelp.1.1.html" />
+    <Document title="Using protExpress Online Help" href="WelcometoprotExpressHelp.1.2.html" />
+    <Document title="Working with protExpress" href="WorkingWithprotExpress.2.1.html" />
+    <Document title="Getting Started" href="WorkingWithprotExpress.2.2.html" />
+    <Document title="Registering Users" href="WorkingWithprotExpress.2.3.html" />
+    <Document title="Logging In" href="WorkingWithprotExpress.2.4.html" />
+    <Document title="Resetting Your Password" href="WorkingWithprotExpress.2.5.html" />
+    <Document title="Using the Home Page" href="WorkingWithprotExpress.2.6.html" />
+    <Document title="Searching protExpress" href="WorkingWithprotExpress.2.7.html" />
+    <Document title="Viewing Experiment Details" href="WorkingWithprotExpress.2.8.html" />
+    <Document title="Creating a New Experiment" href="WorkingWithprotExpress.2.9.html" />
+    <Document title="Identifying the Experiment" href="WorkingWithprotExpress.2.10.html" />
+    <Document title="Adding Protocols to an Experiment" href="WorkingWithprotExpress.2.11.html" />
+    <Document title="Adding Inputs" href="WorkingWithprotExpress.2.12.html" />
+    <Document title="Adding Outputs" href="WorkingWithprotExpress.2.13.html" />
+    <Document title="Reviewing the Experiment" href="WorkingWithprotExpress.2.14.html" />
+    <Document title="Managing Protocols" href="WorkingWithprotExpress.2.15.html" />
+    <Document title="Adding a Protocol" href="WorkingWithprotExpress.2.16.html" />
+    <Document title="Editing a Protocol" href="WorkingWithprotExpress.2.17.html" />
+    <Document title="Deleting a Protocol" href="WorkingWithprotExpress.2.18.html" />
+    <Document title="Managing Experiments" href="WorkingWithprotExpress.2.19.html" />
+    <Document title="Working with Experiments" href="WorkingWithprotExpress.2.20.html" />
+    <Document title="Adding an Experiment" href="WorkingWithprotExpress.2.21.html" />
+    <Document title="Editing Experiment Details" href="WorkingWithprotExpress.2.22.html" />
+    <Document title="Applying Protocols to Experiments" href="WorkingWithprotExpress.2.23.html" />
+    <Document title="Adding a Protocol Application" href="WorkingWithprotExpress.2.24.html" />
+    <Document title="Deleting a Protocol Application" href="WorkingWithprotExpress.2.25.html" />
+    <Document title="Working with Global Inputs" href="WorkingWithprotExpress.2.26.html" />
+    <Document title="Adding a Global Input" href="WorkingWithprotExpress.2.27.html" />
+    <Document title="Editing a Global Input" href="WorkingWithprotExpress.2.28.html" />
+    <Document title="Deleting a Global Input" href="WorkingWithprotExpress.2.29.html" />
+    <Document title="Working with Experiment Runs" href="WorkingWithprotExpress.2.30.html" />
+    <Document title="Adding an Experiment Run" href="WorkingWithprotExpress.2.31.html" />
+    <Document title="Editing an Experiment Run" href="WorkingWithprotExpress.2.32.html" />
+    <Document title="Deleting an Experiment Run" href="WorkingWithprotExpress.2.33.html" />
+    <Document title="Exporting Experiment Data" href="WorkingWithprotExpress.2.34.html" />
+    <Document title="protExpress Glossary" href="protExpressGlossary.3.1.html" />
+    <Document title="Using Application Support" href="Application%20Support.4.1.html" />
+  </DocumentInfo>
+  <TopicMap>
+    <Topic name="welcome_help" href="WelcometoprotExpressHelp.1.1.html#1091268" />
+    <Topic name="register" href="WorkingWithprotExpress.2.3.html#1101351" />
+    <Topic name="register_success" href="WorkingWithprotExpress.2.3.html#1101351" />
+    <Topic name="forgot_password" href="WorkingWithprotExpress.2.5.html#1122582" />
+    <Topic name="forgot_password_success" href="WorkingWithprotExpress.2.5.html#1122582" />
+    <Topic name="welcome_home" href="WorkingWithprotExpress.2.6.html#1103539" />
+    <Topic name="search_protexpress" href="WorkingWithprotExpress.2.7.html#1110016" />
+    <Topic name="view_experiment_details" href="WorkingWithprotExpress.2.8.html#1123671" />
+    <Topic name="create_experiment_overview" href="WorkingWithprotExpress.2.9.html#1120386" />
+    <Topic name="create_experiment_summary" href="WorkingWithprotExpress.2.9.html#1120386" />
+    <Topic name="create_experiment_protocol_search_results" href="WorkingWithprotExpress.2.11.html#1114658" />
+    <Topic name="create_experiment_protocol_summary" href="WorkingWithprotExpress.2.11.html#1114658" />
+    <Topic name="edit_experiment_add_protocol_to_run" href="WorkingWithprotExpress.2.11.html#1114658" />
+    <Topic name="create_experiment_add_new_protocol" href="WorkingWithprotExpress.2.11.html#1117668" />
+    <Topic name="create_experiment_select_existing_protocol" href="WorkingWithprotExpress.2.11.html#1117668" />
+    <Topic name="create_experiment_protocol_manage_inputs" href="WorkingWithprotExpress.2.12.html#1119115" />
+    <Topic name="edit_experiment_input_details" href="WorkingWithprotExpress.2.12.html#1119115" />
+    <Topic name="edit_experiment_manage_inputs" href="WorkingWithprotExpress.2.12.html#1119115" />
+    <Topic name="create_experiment_protocol_manage_outputs" href="WorkingWithprotExpress.2.13.html#1115611" />
+    <Topic name="edit_experiment_output_details" href="WorkingWithprotExpress.2.13.html#1115611" />
+    <Topic name="edit_experiment_manage_outputs" href="WorkingWithprotExpress.2.13.html#1115611" />
+    <Topic name="create_experiment_edit_protocol" href="WorkingWithprotExpress.2.14.html#1114688" />
+    <Topic name="view_protocol" href="WorkingWithprotExpress.2.15.html#1112195" />
+    <Topic name="edit_protocol" href="WorkingWithprotExpress.2.17.html#1071261" />
+    <Topic name="edit_experiment_protocol_details" href="WorkingWithprotExpress.2.17.html#1071261" />
+    <Topic name="edit_experiment_protocol_search_results" href="WorkingWithprotExpress.2.19.html#1088523" />
+    <Topic name="view_experiment_output_details" href="WorkingWithprotExpress.2.19.html#1088523" />
+    <Topic name="view_experiment_protocol_details" href="WorkingWithprotExpress.2.19.html#1088523" />
+    <Topic name="edit_experiment_details" href="WorkingWithprotExpress.2.22.html#1081630" />
+    <Topic name="edit_experiment_select_existing_protocol_to_run" href="WorkingWithprotExpress.2.22.html#1081630" />
+    <Topic name="view_experiment_input_details" href="WorkingWithprotExpress.2.26.html#1085260" />
+    <Topic name="view_experiment_run_details" href="WorkingWithprotExpress.2.30.html#1084756" />
+    <Topic name="edit_experiment_run_details" href="WorkingWithprotExpress.2.32.html#1071295" />
+  </TopicMap>
+</WebWorksHelpBook>
