@@ -1,0 +1,41 @@
+function  WWHBookData_AddTOCEntries(P)
+{
+var A=P.fN("Welcome to protExpress Online Help","0");
+var B=A.fN("Using protExpress Online Help","1");
+A=P.fN("Working with protExpress","2");
+B=A.fN("Getting Started","3");
+var C=B.fN("Registering Users","4");
+C=B.fN("Logging In","5");
+C=B.fN("Resetting Your Password","6");
+C=B.fN("Using the Home Page","7");
+B=A.fN("Searching protExpress","8");
+B=A.fN("Viewing Experiment Details","9");
+B=A.fN("Creating a New Experiment","10");
+C=B.fN("Identifying the Experiment","11");
+C=B.fN("Adding Protocols to an Experiment","12");
+C=B.fN("Adding Inputs","13");
+C=B.fN("Adding Outputs","14");
+C=B.fN("Reviewing the Experiment","15");
+B=A.fN("Managing Protocols","16");
+C=B.fN("Adding a Protocol","17");
+C=B.fN("Editing a Protocol","18");
+C=B.fN("Deleting a Protocol","19");
+B=A.fN("Managing Experiments","20");
+C=B.fN("Working with Experiments","21");
+var D=C.fN("Adding an Experiment","22");
+D=C.fN("Editing Experiment Details","23");
+C=B.fN("Applying Protocols to Experiments","24");
+D=C.fN("Adding a Protocol Application","25");
+D=C.fN("Deleting a Protocol Application","26");
+C=B.fN("Working with Global Inputs","27");
+D=C.fN("Adding a Global Input","28");
+D=C.fN("Editing a Global Input","29");
+D=C.fN("Deleting a Global Input","30");
+C=B.fN("Working with Experiment Runs","31");
+D=C.fN("Adding an Experiment Run","32");
+D=C.fN("Editing an Experiment Run","33");
+D=C.fN("Deleting an Experiment Run","34");
+B=A.fN("Exporting Experiment Data","35");
+A=P.fN("protExpress Glossary","36");
+A=P.fN("Using Application Support","37");
+}
