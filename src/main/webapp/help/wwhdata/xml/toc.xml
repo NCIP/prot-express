@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
+  <i t="Welcome to protExpress Online Help" l="0">
+    <i t="Using protExpress Online Help" l="1" />
+  </i>
+  <i t="Working with protExpress" l="2">
+    <i t="Getting Started" l="3">
+      <i t="Registering Users" l="4" />
+      <i t="Logging In" l="5" />
+      <i t="Resetting Your Password" l="6" />
+      <i t="Using the Home Page" l="7" />
+    </i>
+    <i t="Searching protExpress" l="8" />
+    <i t="Viewing Experiment Details" l="9" />
+    <i t="Creating a New Experiment" l="10">
+      <i t="Identifying the Experiment" l="11" />
+      <i t="Adding a Protocol to an Experiment" l="12" />
+      <i t="Working with Inputs" l="13">
+        <i t="Adding an Input" l="14" />
+        <i t="Editing an Input" l="15" />
+        <i t="Deleting an Input" l="16" />
+      </i>
+      <i t="Working with Outputs" l="17" />
+      <i t="Reviewing the Experiment" l="18" />
+    </i>
+    <i t="Managing Protocols" l="19">
+      <i t="Viewing a Protocol" l="20" />
+      <i t="Editing a Protocol" l="21" />
+    </i>
+    <i t="Managing Experiments" l="22">
+      <i t="Working with Experiments" l="23">
+        <i t="Adding an Experiment" l="24" />
+        <i t="Editing Experiment Details" l="25" />
+      </i>
+      <i t="Working with Experiment Runs" l="26">
+        <i t="Adding an Experiment Run" l="27" />
+        <i t="Editing an Experiment Run" l="28" />
+        <i t="Deleting an Experiment Run" l="29" />
+      </i>
+    </i>
+  </i>
+  <i t="protExpress Glossary" l="30" />
+  <i t="Using Application Support" l="31" />
+</WebWorksHelpTOC>

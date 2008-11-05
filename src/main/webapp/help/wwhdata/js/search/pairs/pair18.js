@@ -1,0 +1,25 @@
+function FileData_Pairs(x)
+{
+x.t("summary","following");
+x.t("topic","contains");
+x.t("working","protexpress");
+x.t("protexpress","creating");
+x.t("protexpress","page");
+x.t("new","experiment");
+x.t("clicking","continue");
+x.t("creating","new");
+x.t("welcome","protexpress");
+x.t("continue","experiment");
+x.t("return","welcome");
+x.t("click","finished");
+x.t("finished","experiment");
+x.t("experiment","summary");
+x.t("experiment","topic");
+x.t("experiment","working");
+x.t("experiment","return");
+x.t("experiment","reviewing");
+x.t("information","clicking");
+x.t("reviewing","experiment");
+x.t("following","click");
+x.t("contains","information");
+}
