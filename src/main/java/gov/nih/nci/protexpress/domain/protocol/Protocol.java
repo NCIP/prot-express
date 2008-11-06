@@ -90,11 +90,13 @@ import gov.nih.nci.protexpress.domain.contact.ContactPerson;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -267,7 +269,8 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
     /**
      * @return the auditInfo
      */
-    @Embedded
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "audit_info_id")
     @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
@@ -285,7 +288,8 @@ public class Protocol implements Serializable, PersistentObject, Auditable {
      *
      * @return the contactPerson.
      */
-    @Embedded
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "contact_person_id")
     @Valid
     public ContactPerson getContactPerson() {
         return contactPerson;
