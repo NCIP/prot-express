@@ -13,13 +13,7 @@
     <sqlFile path="@db-upgrade.run.dir@/extraCreateSchema.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/configurationParametersBootstrapData.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/protExpressBootstrapData.sql"/>
-    <sqlFile path="@db-upgrade.run.dir@/update-config-param-dev.sql"/>
     <sqlFile path="@db-upgrade.run.dir@/sampleExperiments.sql"/>
-  </changeSet>
-  <changeSet id="2" author="kanchink">
-    <sqlFile path="@db-upgrade.run.dir@/update-config-param-qa.sql"/>
-  </changeSet>
-  <changeSet id="3" author="kanchink">
-    <sqlFile path="@db-upgrade.run.dir@/deleteAndInsertConfigParamData.sql"/>
+    <sqlFile path="@db-upgrade.run.dir@/update-config-param-dev.sql"/>
   </changeSet>
 </databaseChangeLog>

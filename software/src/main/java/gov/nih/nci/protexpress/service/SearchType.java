@@ -98,7 +98,7 @@ public enum SearchType {
     private String displayName;
 
     /**
-     * Constructor for CpasType.
+     * Constructor for SearchType.
      *
      * @param displayname the display name
      */
