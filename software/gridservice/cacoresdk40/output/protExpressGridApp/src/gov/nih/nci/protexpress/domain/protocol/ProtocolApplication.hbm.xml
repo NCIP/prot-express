@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.protexpress.domain.protocol">
+	<class name="ProtocolApplication" table="protocol_application" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="id">
+			<generator class="assigned" />
+		</id>
+		<!-- Attributes mapping for the ProtocolApplication class -->
+		<property name="datePerformed" type="java.util.Date" column="date_performed"/>
+		<property name="comments" type="string" column="comments"/>
+		<property name="notes" type="string" column="notes"/>
+		<!-- Associations mapping for the ProtocolApplication class -->
+		<many-to-one name="protocol" class="gov.nih.nci.protexpress.domain.protocol.Protocol" column="protocol_id" lazy="proxy" />
+		<set name="outputs" table="protapp_outputs" lazy="true">
+			<cache usage="read-write" />
+			<key column="protapp_id" />
+			<many-to-many class="gov.nih.nci.protexpress.domain.protocol.InputOutputObject" column="output_id" unique="true"/>
+		</set>
+		<many-to-one name="auditInfo" class="gov.nih.nci.protexpress.domain.audit.AuditInfo" column="audit_info_id" unique="true" lazy="proxy" />
+		<set name="inputs" table="protapp_inputs" lazy="true">
+			<cache usage="read-write" />
+			<key column="protapp_id" />
+			<many-to-many class="gov.nih.nci.protexpress.domain.protocol.InputOutputObject" column="input_id" unique="true"/>
+		</set>
+		<many-to-one name="experimentRun" class="gov.nih.nci.protexpress.domain.experiment.ExperimentRun" column="experiment_run_id" lazy="proxy" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.protexpress.domain.experiment">
+	<class name="Experiment" table="experiment" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="id">
+			<generator class="assigned" />
+		</id>
+		<!-- Attributes mapping for the Experiment class -->
+		<property name="name" type="string" column="name"/>
+		<property name="description" type="string" column="description"/>
+		<property name="hypothesis" type="string" column="hypothesis"/>
+		<property name="url" type="string" column="url"/>
+		<property name="notes" type="string" column="notes"/>
+		<property name="datePerformed" type="java.util.Date" column="date_performed"/>
+		<!-- Associations mapping for the Experiment class -->
+		<set name="experimentRuns" lazy="true">
+			<cache usage="read-write" />
+			<key column="experiment_id" />
+			<one-to-many class="gov.nih.nci.protexpress.domain.experiment.ExperimentRun"/>
+		</set>
+		<many-to-one name="contactPerson" class="gov.nih.nci.protexpress.domain.contact.ContactPerson" column="contact_person_id" unique="true" lazy="proxy" />
+		<many-to-one name="auditInfo" class="gov.nih.nci.protexpress.domain.audit.AuditInfo" column="audit_info_id" unique="true" lazy="proxy" />
+	</class>
+</hibernate-mapping>

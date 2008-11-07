@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+  <class name="gov.nih.nci.protexpress.domain.contact.ContactPerson" identity="id">
+    <map-to xml="ContactPerson" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="attribute" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="attribute" />
+    </field>
+    <field name="email" type="string">
+      <bind-xml name="email" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.audit.AuditInfo" identity="id">
+    <map-to xml="AuditInfo" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.audit" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="creator" type="string">
+      <bind-xml name="creator" node="attribute" />
+    </field>
+    <field name="creationDate" type="java.util.Date">
+      <bind-xml name="creationDate" node="attribute" />
+    </field>
+    <field name="lastModifiedDate" type="java.util.Date">
+      <bind-xml name="lastModifiedDate" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.protocol.ProtocolApplication" identity="id">
+    <map-to xml="ProtocolApplication" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="datePerformed" type="java.util.Date">
+      <bind-xml name="datePerformed" node="attribute" />
+    </field>
+    <field name="comments" type="string">
+      <bind-xml name="comments" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.protocol.InputOutputObject" identity="id">
+    <map-to xml="InputOutputObject" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="dataFileURL" type="string">
+      <bind-xml name="dataFileURL" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.protocol.Protocol" identity="id">
+    <map-to xml="Protocol" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="software" type="string">
+      <bind-xml name="software" node="attribute" />
+    </field>
+    <field name="instrument" type="string">
+      <bind-xml name="instrument" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.experiment.ExperimentRun" identity="id">
+    <map-to xml="ExperimentRun" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+    <field name="datePerformed" type="java.util.Date">
+      <bind-xml name="datePerformed" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.protexpress.domain.experiment.Experiment" identity="id">
+    <map-to xml="Experiment" ns-uri="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="hypothesis" type="string">
+      <bind-xml name="hypothesis" node="attribute" />
+    </field>
+    <field name="url" type="string">
+      <bind-xml name="url" node="attribute" />
+    </field>
+    <field name="notes" type="string">
+      <bind-xml name="notes" node="attribute" />
+    </field>
+    <field name="datePerformed" type="java.util.Date">
+      <bind-xml name="datePerformed" node="attribute" />
+    </field>
+  </class>
+</mapping>
+

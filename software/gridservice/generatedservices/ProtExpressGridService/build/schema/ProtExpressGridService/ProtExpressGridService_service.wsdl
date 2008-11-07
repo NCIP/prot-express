@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ProtExpressGridService" targetNamespace="http://protexpress.cagrid.nci.nih.gov/ProtExpressGridService/service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:binding="http://protexpress.cagrid.nci.nih.gov/ProtExpressGridService/bindings" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://protexpress.cagrid.nci.nih.gov/ProtExpressGridService/bindings" location="ProtExpressGridService_bindings.wsdl"/>
+  <wsdl:service name="ProtExpressGridService">
+    <wsdl:port name="ProtExpressGridServicePortTypePort" binding="binding:ProtExpressGridServicePortTypeSOAPBinding">
+      <soap:address location="http://localhost:8080/wsrf/services/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
