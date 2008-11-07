@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.protexpress.domain.protocol">
+	<class name="InputOutputObject" table="input_output_object" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="id">
+			<generator class="assigned" />
+		</id>
+		<!-- Attributes mapping for the InputOutputObject class -->
+		<property name="name" type="string" column="name"/>
+		<property name="dataFileURL" type="string" column="data_file_url"/>
+		<property name="notes" type="string" column="notes"/>
+		<!-- Associations mapping for the InputOutputObject class -->
+		<join table="protapp_outputs" inverse="false" optional="true">
+			<key column="output_id" />
+			<many-to-one name="outputOfProtocolApplication" column="protapp_id" not-null="true"/>
+		</join>
+		<join table="protapp_inputs" inverse="false" optional="true">
+			<key column="input_id" />
+			<many-to-one name="inputToProtocolApplication" column="protapp_id" not-null="true"/>
+		</join>
+	</class>
+</hibernate-mapping>
