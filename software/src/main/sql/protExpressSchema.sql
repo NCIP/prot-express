@@ -1,18 +1,3 @@
-alter table RegistrationRequest drop constraint registrationrequest_state_fk;
-alter table RegistrationRequest drop constraint registrationrequest_country_fk;
-alter table experiment drop constraint FKFAE9DBFD52357A03;
-alter table experiment drop constraint FKFAE9DBFD680A9614;
-alter table experiment_run drop constraint FK7A9E7F49AF0AC241;
-alter table experiment_run drop constraint FK7A9E7F49680A9614;
-alter table protapp_inputs drop constraint FK10307C6E5B24630E;
-alter table protapp_inputs drop constraint FK10307C6EB3B8018C;
-alter table protapp_outputs drop constraint FK3F6C7DADB3B8018C;
-alter table protapp_outputs drop constraint FK3F6C7DADC0C40277;
-alter table protocol drop constraint FKC50A8E9852357A03;
-alter table protocol drop constraint FKC50A8E98680A9614;
-alter table protocol_application drop constraint FK901CE29DB10E818;
-alter table protocol_application drop constraint FK901CE29A15AE766;
-alter table protocol_application drop constraint FK901CE29680A9614;
 drop table Country;
 drop table RegistrationRequest;
 drop table State;
