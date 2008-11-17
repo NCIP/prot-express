@@ -1,0 +1,40 @@
+
+File:	ProtExpressGridApp.war\ProtExpressGridApp-orm.jar\hibernate.cfg.xml
+	1. connection.url
+	2. connection.username
+	3. connection.password
+
+File: 	wsrf\WEB-INF\etc\globus_wsrf_core\server-config.wsdd
+	1. logicalHost
+	2. publishHostName - probably not needed. maybe makes sense to publish the host name by default.
+
+
+File: 	wsrf\WEB-INF\web.xml
+	1. defaultProtocol
+	2. defaultPort
+
+File:	wsrf\WEB-INF\etc\cagrid_ProtExpressGridService\ProtExpressGridService_registration.xml
+	1. ServiceGroupEPR\wsa:address (url to the index server)
+
+File:	wsrf\WEB-INF\etc\cagrid_ProtExpressGridService\serviceMetadata.xml
+	1. hostingResearchCenter\ResearchCenter\@displayName
+	2. hostingResearchCenter\ResearchCenter\@shortName
+	3. hostingResearchCenter\ResearchCenter\Address\@country
+	4. hostingResearchCenter\ResearchCenter\Address\@locality
+	5. hostingResearchCenter\ResearchCenter\Address\@postalCode
+	6. hostingResearchCenter\ResearchCenter\Address\@stateProvince
+	7. hostingResearchCenter\ResearchCenter\Address\@street1
+	8  hostingResearchCenter\ResearchCenter\Address\@street2
+	9. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@affiliation
+	10. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@email
+	11. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@firstName
+	12. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@lastName
+	13. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@phoneNumber
+	14. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@role
+
+
+
+Required Properties (in addition to the ones for above)
+
+1. gridservice.install=true/false (to determine if the service should be installed or not)
+
