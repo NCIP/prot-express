@@ -62,14 +62,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
   -->
   <property name="db-install.src.dir" location="${software.dir}/src/main/sql"/>
   <property name="db-install-dynamic.src.dir" location="${software.dir}/target/hibernate3/sql/"/>
-
+    
   <property name="db-upgrade.src.dir" value="${software.dir}/src/main/sql" />
 
   <!-- Properties that relate to how to call build targets from sub-projects-->
   <!-- Working directory passed to Ant tasks -->
   <property name="protExpress.base.dir" location="${software.dir}"/>
   <property name="protExpress-war.base.dir" location="${software.dir}/src"/>
-
+  <property name="protExpress-grid.src.dir" location="${software.dir}/gridservice"/>
 
   <!-- Maven comamnd line arguments, bda profile is inside profiles.xml that gets copied to ear folder before build to override exiting properties -->
   <property name="protExpress.maven.profile.list" value="local,bda" />
@@ -86,6 +86,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
   <property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/${jboss-conf.dist.relative.dir}" />
   <property name="db-install.dist.dir" location="${dist.exploded.dir}/${db-install.dist.relative.dir}" />
   <property name="db-upgrade.dist.dir" location="${dist.exploded.dir}/${db-upgrade.dist.relative.dir}" />
+  <property name="protExpress-grid.dist.dir" location="${dist.exploded.dir}/${protExpress-grid.dist.relative.dir}" />
 
   <!-- Selenium settings -->
   <property name="selenium.jar" location="${lib.dir}/test-selenium/selenium-server-1.0-beta-1.jar"/>
@@ -432,6 +433,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
       </fileset>
     </copy>
 
+    <copy todir="${protExpress-grid.dist.dir}" overwrite="true">
+      <fileset dir="${protExpress-grid.src.dir}">
+	<exclude name="**/.svn/**"/>
+	<exclude name="props.txt"/>
+      </fileset>
+    </copy>
+
     <property name="tomcat.temp.dir" value="${target.dir}/tomcat" />
     <mkdir dir="${tomcat.temp.dir}" />
     <!-- Apply patch to 5.5.20 using 5.5.17 common/lib/naming-factory.jar -->
@@ -513,6 +521,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
     <copy todir="${common.dist.dir}" overwrite="true">
       <fileset dir="${common.dir}">
         <include name="**/*"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${protExpress-grid.dist.dir}" overwrite="true">
+      <fileset dir="${protExpress-grid.src.dir}">        
+	<exclude name="**/.svn/**"/>
+	<exclude name="props.txt"/>
       </fileset>
     </copy>
 
