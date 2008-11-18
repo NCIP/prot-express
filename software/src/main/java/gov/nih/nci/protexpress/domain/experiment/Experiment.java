@@ -325,9 +325,8 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     /**
      * {@inheritDoc}
      */
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "audit_info_id")
-    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }
@@ -344,7 +343,7 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
      *
      * @return the contactPerson.
      */
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_person_id")
     @Valid
     public ContactPerson getContactPerson() {

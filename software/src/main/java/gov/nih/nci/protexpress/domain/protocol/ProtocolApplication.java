@@ -331,9 +331,8 @@ public class ProtocolApplication implements Serializable, Auditable, PersistentO
     /**
      * {@inheritDoc}
      */
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "audit_info_id")
-    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }

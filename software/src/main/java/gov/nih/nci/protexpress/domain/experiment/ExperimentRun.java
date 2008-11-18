@@ -217,9 +217,8 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
     /**
      * @return the auditInfo
      */
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "audit_info_id")
-    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }

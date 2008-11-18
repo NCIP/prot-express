@@ -129,15 +129,13 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
         return crit;
     }
 
-
-
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     public List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols) {
         String hql = "from " + Protocol.class.getName()
-                + " where creator = :username order by auditInfo.lastModifiedDate desc";
+                + " where auditInfo.creator = :username order by auditInfo.lastModifiedDate desc";
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
         query.setString("username", username);
         return query.setMaxResults(numberOfProtocols).list();
@@ -165,7 +163,7 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     public List<Protocol> getProtocolsForCurrentUserByName(String protocolName) {
         String protocolNameParam = protocolName + "%";
         String hql = "from " + Protocol.class.getName()  + " where lower(name) like ? "
-                + "and creator = ? order by name asc";
+                + "and auditInfo.creator = ? order by name asc";
         return getHibernateTemplate().find(hql, new Object[] {protocolNameParam.toLowerCase(),
                 UserHolder.getUsername()});
     }

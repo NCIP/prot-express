@@ -86,8 +86,6 @@ import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * This class tests the ManageExperimentAction class.
  *

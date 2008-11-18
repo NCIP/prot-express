@@ -138,7 +138,7 @@ public class ExperimentServiceImpl extends HibernateDaoSupport implements Experi
     @SuppressWarnings("unchecked")
     public List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments) {
         String hql = "from " + Experiment.class.getName()
-                + " where creator = :username order by auditInfo.lastModifiedDate desc";
+                + " where auditInfo.creator = :username order by auditInfo.lastModifiedDate desc";
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
         query.setString("username", username);
         return query.setMaxResults(numberOfExperiments).list();

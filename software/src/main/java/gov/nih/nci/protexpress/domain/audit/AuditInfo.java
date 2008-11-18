@@ -83,6 +83,7 @@
 package gov.nih.nci.protexpress.domain.audit;
 
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
+import gov.nih.nci.protexpress.util.UserHolder;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -118,6 +119,13 @@ public class AuditInfo implements Serializable, PersistentObject {
     private String creator;
     private Calendar creationDate = Calendar.getInstance();
     private Calendar lastModifiedDate = Calendar.getInstance();
+
+    /**
+     * Constructor.
+     */
+    public AuditInfo() {
+        setCreator(UserHolder.getUsername());
+    }
 
     /**
      * The id of the object.

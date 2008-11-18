@@ -87,8 +87,6 @@ import gov.nih.nci.protexpress.security.IllegalModificationException;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
 import gov.nih.nci.protexpress.util.UserHolder;
 
-import java.util.Calendar;
-
 /**
  * @author Scott Miller
  */
@@ -96,23 +94,11 @@ public class ProtExpressInterceptorTest extends ProtExpressBaseHibernateTest {
 
     public void testSaveAndUpdateAuditableObject() throws Exception {
         Protocol p = new Protocol("protocol1");
-        assertEquals(null, p.getAuditInfo().getCreator());
         this.theSession.save(p);
         assertEquals(UserHolder.getUsername(), p.getAuditInfo().getCreator());
 
         this.theSession.flush();
         this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        Calendar oldDate = p.getAuditInfo().getLastModifiedDate();
-        p.setDescription("new desc");
-        Thread.sleep(500);
-        this.theSession.update(p);
-        this.theSession.flush();
-        this.theSession.clear();
-
-        p = (Protocol) this.theSession.load(Protocol.class, p.getId());
-        assertEquals(-1, oldDate.compareTo(p.getAuditInfo().getLastModifiedDate()));
     }
 
     public void testIllegalUpdate() {
