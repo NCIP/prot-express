@@ -68,7 +68,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
     <property name="protExpress-war.app-sec-conf.file" value="ApplicationSecurityConfig.xml" />
     <property name="protExpress-war.hibernate.file" value="hibernate.cfg.xml" />
     <property name="protExpress-war.war.file" value="protExpress.war" />
-
+    <property name="protExpress-grid.war.file" value="ProtExpressGridApp.war" />
+    <property name="protExpress-grid.wsrf.dir" value="wsrf" />
+    <property name="protexpress-grid.application.name" value="ProtExpressGridService" />
+ 
     <!-- Paths -->
     <path id="bda-utils.classpath">
         <fileset dir="${bda-utils.dir}">
@@ -340,6 +343,73 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
     </target>
 
 
+    <target name="install:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+    
+    </target>
+
+    <target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+        <copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />        
+	<copy todir="${tomcat.home}/webapps" overwrite="true">
+		<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
+			<include name="**/*"/>
+		</fileset>
+	</copy>
+ 
+    </target>
+
+    <target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+    
+    </target>
+
+    <target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+        <copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />        
+	<copy todir="${tomcat.home}/webapps" overwrite="true">
+		<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
+			<include name="**/*"/>
+		</fileset>
+	</copy>
+ 
+    </target>
+
+
+    <target name="install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+ 
+	<replace dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}">
+		<include name="**/*.wsdl" />
+	</replace>
+	<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
+	<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" token="8080" value="${tomcat.port.http}"/>
+
+	<replaceregexp file="${tomcat.home}/webapps/${grid.dir.dest}/WEB-INF/etc/cagrid_${grid.application.name}/${grid.application.name}_registration.xml"
+		match="(\s+.wsa:Address.).*(.\/wsa:Address.)" 
+		replace="\1${grid.index.url}\2"
+		flags="g"/>
+		
+ 
+ 			<property name="poc.science.string" value=" affiliation=&quot;${grid.poc.science.affiliation}&quot; email=&quot;${grid.poc.science.email}&quot; firstName=&quot;${grid.poc.science.name.first}&quot; lastName=&quot;${grid.poc.science.name.last}&quot; phoneNumber=&quot;${grid.poc.science.phone}&quot; role=&quot;${grid.poc.science.role}&quot; "/>
+ 
+ 			<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${grid.application.name}/serviceMetadata.xml"
+ 				match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)"
+ 				replace="\1${poc.science.string}\2"
+ 				flags="g" byline="true"/>
+ 
+ 			<property name="poc.tech.string" value="${line.separator}
+ &lt;ns9:ResearchCenter displayName=&quot;${grid.poc.tech.researchCenter.displayname}&quot; shortName=&quot;${grid.poc.tech.researchCenter.shortname}&quot; xmlns:ns9=&quot;gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common&quot;&gt;${line.separator}
+ &lt;ns9:Address country=&quot;${grid.poc.tech.addr.country}&quot; locality=&quot;${grid.poc.tech.addr.locality}&quot; postalCode=&quot;${grid.poc.tech.addr.postalCode}&quot; stateProvince=&quot;${grid.poc.tech.addr.stateProvince}&quot; street1=&quot;${grid.poc.tech.addr.street1}&quot; street2=&quot;${grid.poc.tech.addr.street2}&quot;/&gt;${line.separator}
+ &lt;ns9:pointOfContactCollection&gt;${line.separator}
+ &lt;ns9:PointOfContact affiliation=&quot;${grid.poc.tech.affiliation}&quot; email=&quot;${grid.poc.tech.email}&quot; firstName=&quot;${grid.poc.tech.name.first}&quot; lastName=&quot;${grid.poc.tech.name.last}&quot; phoneNumber=&quot;${grid.poc.tech.phone}&quot; role=&quot;${grid.poc.tech.role}&quot;/&gt;${line.separator}
+ &lt;/ns9:pointOfContactCollection&gt;${line.separator}
+ &lt;/ns9:ResearchCenter&gt;${line.separator}
+ "/>
+ 			<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${grid.application.name}/serviceMetadata.xml"
+ 				match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;"
+ 				replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;"
+ 				flags="sg"/>
+ 			<echo message="Updating grid registration.xml"/>
+ 
+ 
+    </target>
+
     <target name="upgrade:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
         <!-- added to ensure working.dirs are fresh for our install -->
         <delete dir="${tomcat.home}/server/${tomcat.server.name}/tmp"/>
@@ -445,6 +515,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         install:tomcat:protExpress-war:re-configure,
         install:tomcat:protExpress-war,
         install:tomcat:configure,
+        install:tomcat:protExpress-grid:re-configure,
+        install:tomcat:protExpress-grid,
         install:tomcat:start
         " />
 
@@ -517,6 +589,42 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
             />
     </target>
 
+
+
+
+    <!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
+    <target name="install:tomcat:protExpress-grid:re-configure" unless="exclude.jboss">
+        <mkdir dir="${temp.dir}/protExpress-war"/>
+        <delete dir="${temp.dir}/protExpress-war"/>
+        <mkdir dir="${temp.dir}/protExpress-war"/>
+        <unzip src="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" dest="${temp.dir}/protExpress-grid"/>
+        
+        <unjar src="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" dest="${temp.dir}/protExpress-grid-orm-jar"/>
+        
+      	
+	<xmlconfig in="${temp.dir}/protExpress-grid-orm-jar/hibernate.cfg.xml" verbose="false">
+	    <update path="(//session-factory)/property[@name='connection.url']" value="${database.url}" />
+	    <update path="(//session-factory)/property[@name='connection.username']" value="${database.user}" />
+	    <update path="(//session-factory)/property[@name='connection.password']" value="${database.password}" />
+	</xmlconfig>
+
+	<jar destfile="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" basedir="${temp.dir}/protExpress-grid-orm-jar" update="false" manifest="${temp.dir}/protExpress-grid-orm-jar/META-INF/MANIFEST.MF"/>	
+	
+	<war destfile="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}"
+	    basedir="${temp.dir}/protExpress-grid"
+	    compress="false"
+	    webxml="${temp.dir}/protExpress-grid/WEB-INF/web.xml"
+	/>	
+    </target>
+
+
+
+
+
+
+
+
+
     <!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
     <target name="upgrade:tomcat" unless="exclude.jboss"
         depends="
@@ -526,6 +634,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         install:init,
         install:tomcat:protExpress-war:re-configure,
         upgrade:tomcat:protExpress-war,
+        install:tomcat:protExpress-grid:re-configure,
+        install:tomcat:protExpress-grid,
         install:tomcat:start
         " />
 
