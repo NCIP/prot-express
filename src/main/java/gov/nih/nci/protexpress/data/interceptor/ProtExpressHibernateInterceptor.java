@@ -114,7 +114,6 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
                     ai.setCreator(UserHolder.getUsername());
                     ai.setCreationDate(Calendar.getInstance());
                     ai.setLastModifiedDate(Calendar.getInstance());
-                    this.
                 }
             }
             return true;
