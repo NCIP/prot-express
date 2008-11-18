@@ -71,6 +71,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
     <property name="protExpress-grid.war.file" value="ProtExpressGridApp.war" />
     <property name="protExpress-grid.wsrf.dir" value="wsrf" />
     <property name="protexpress-grid.application.name" value="ProtExpressGridService" />
+    <property name="protExpress-grid.dir.dist" value="${basedir}/${protExpress-grid.dist.relative.dir}" />
  
     <!-- Paths -->
     <path id="bda-utils.classpath">
