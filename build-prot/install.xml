@@ -349,9 +349,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
     </target>
 
     <target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-        <delete dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" failonerror="false"/>
-        
-
+        <delete failonerror="false">
+	        <fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
+	        	<include name="**/*" />
+		</fileset> 
+	</delete>
         <copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />        
 	<copy todir="${tomcat.home}/webapps" overwrite="true">
 		<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
