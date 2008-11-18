@@ -170,7 +170,30 @@ public final class ManageProtAppInputOutputHelper {
         }
         // Remove any dupe inputs from this list - outputs that have been selected as inputs, but not yet persisted.
         removeDuplicateInputs(protocolApplication.getInputs(), lstPotentialInputs);
+
+        // Remove outputs of all child protocol applications - avoid circular dependancy.
+        List<InputOutputObject> lstOutputsOfChildProtApps = new ArrayList<InputOutputObject>();
+        getChildProtAppOutputs(protocolApplication, lstOutputsOfChildProtApps);
+        removeDuplicateInputs(lstOutputsOfChildProtApps, lstPotentialInputs);
+
         return lstPotentialInputs;
+    }
+
+    /**
+     * Removes child protocol outputs from the list of potential inputs.
+     *
+     * @param protocolApplication the protocol application.
+     * @param lstOutputsOfChildProtApps list of child protocol applicaiton outputs.
+     */
+    private static void getChildProtAppOutputs(ProtocolApplication protocolApplication,
+            List<InputOutputObject> lstOutputsOfChildProtApps) {
+        for (InputOutputObject output : protocolApplication.getOutputs()) {
+            lstOutputsOfChildProtApps.add(output);
+            // recurse through the child protocols.
+            if (output.getInputToProtocolApplication() != null) {
+                getChildProtAppOutputs(output.getInputToProtocolApplication(), lstOutputsOfChildProtApps);
+            }
+        }
     }
 
     /**

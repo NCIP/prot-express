@@ -256,6 +256,7 @@ public class ExperimentServiceTest extends ProtExpressBaseHibernateTest {
         experiment1.setDescription("new comments");
         this.theSession.update(experiment1);
         this.theSession.flush();
+        Thread.sleep(100);
 
         experiments = ProtExpressRegistry.getExperimentService().getMostRecentExperimentsforUser(
                 UserHolder.getUsername(), 2);
