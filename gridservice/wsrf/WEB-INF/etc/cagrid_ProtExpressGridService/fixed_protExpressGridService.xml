@@ -1,0 +1,331 @@
+<ns1:DomainModel projectShortName="ProtExpressGridService" projectVersion="1.0" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="contactPerson">
+     <ns1:UMLClassReference refid="EAID_DB7F7799_D206_421a_B5FB_FE694ED063C4"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_00342699_A9A1_4a48_8522_5BCA63F7A450"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="contactPerson">
+     <ns1:UMLClassReference refid="EAID_DB7F7799_D206_421a_B5FB_FE694ED063C4"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_B7C43EFB_C1CD_403d_8DA2_42D365003DC1"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="protocolApplications">
+     <ns1:UMLClassReference refid="EAID_FA2721CB_CFE1_4812_B20B_0F5774A9828D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="experimentRun">
+     <ns1:UMLClassReference refid="EAID_534FE5E9_C812_42cc_9458_7D53A16F0F1E"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="experimentRuns">
+     <ns1:UMLClassReference refid="EAID_534FE5E9_C812_42cc_9458_7D53A16F0F1E"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="experiment">
+     <ns1:UMLClassReference refid="EAID_B7C43EFB_C1CD_403d_8DA2_42D365003DC1"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="protocol">
+     <ns1:UMLClassReference refid="EAID_00342699_A9A1_4a48_8522_5BCA63F7A450"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_FA2721CB_CFE1_4812_B20B_0F5774A9828D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="inputs">
+     <ns1:UMLClassReference refid="EAID_46749710_90F9_4197_A09F_E6B196D23877"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="inputToProtocolApplication">
+     <ns1:UMLClassReference refid="EAID_FA2721CB_CFE1_4812_B20B_0F5774A9828D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="outputs">
+     <ns1:UMLClassReference refid="EAID_46749710_90F9_4197_A09F_E6B196D23877"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="outputOfProtocolApplication">
+     <ns1:UMLClassReference refid="EAID_FA2721CB_CFE1_4812_B20B_0F5774A9828D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="ContactPerson" id="EAID_DB7F7799_D206_421a_B5FB_FE694ED063C4" packageName="gov.nih.nci.protexpress.domain.contact" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute name="id" publicID="198716700" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns2:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns2:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns2:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns2:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute name="firstName" publicID="198716701" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C40974" conceptDefinition="A word or group of words indicating a person's first (personal or given) name; the name that precedes the surname." conceptName="First Name" order="0"/>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute name="lastName" publicID="198716702" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C40975" conceptDefinition="A word or group of words indicating a person's last (family) name." conceptName="Last Name" order="0"/>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute name="email" publicID="198716703" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25170" conceptDefinition="E-mail is short for &quot;electronic mail&quot; and refers to composing, sending, and receiving messages over electronic communication systems. Most e-mail systems use the Internet." conceptName="E-mail" order="0"/>
+     <ns2:SemanticMetadata conceptCode="C42775" conceptDefinition="A text string identifier for a location to which e-mail can be delivered." conceptName="E-mail Address" order="1"/>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute name="notes" publicID="198716704" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns2:UMLAttribute>
+   </ns2:umlAttributeCollection>
+   <ns3:SemanticMetadata conceptCode="C25461" conceptDefinition="A person acting as a channel for communication between groups." conceptName="Contact Person" order="0" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ExperimentRun" id="EAID_534FE5E9_C812_42cc_9458_7D53A16F0F1E" packageName="gov.nih.nci.protexpress.domain.experiment" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute name="id" publicID="1745282378" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns4:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns4:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="name" publicID="1745282379" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C4705" conceptDefinition="No value exists" conceptName="Carney Syndrome" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C25191" conceptDefinition="A word or group of words indicating the identity of a person usually consisting of a first (personal) name and a last (family) name with an optional middle name.  In some cultural traditions the family name comes first." conceptName="Person Name" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="2"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="notes" publicID="1745282380" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="datePerformed" publicID="1745282381" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C38000" conceptDefinition="Executed and carried through to completion." conceptName="Performed" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="2"/>
+     <ns4:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="3"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="creator" publicID="1745282382" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="creationDate" publicID="1745282383" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="3"/>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute name="lastModifiedDate" publicID="1745282384" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns4:SemanticMetadata conceptCode="C25446" conceptDefinition="The act of alteration or modification; changed or altered in form or character." conceptName="Change" order="3"/>
+     <ns4:SemanticMetadata conceptCode="C25551" conceptDefinition="Coming after all others in time or space or degree or being the only one remaining." conceptName="Last" order="4"/>
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="5"/>
+    </ns4:UMLAttribute>
+   </ns4:umlAttributeCollection>
+   <ns5:SemanticMetadata conceptCode="C47911" conceptDefinition="The act of testing or performing something." conceptName="Run" order="0" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns6:SemanticMetadata conceptCode="C42790" conceptDefinition="A set of actions and observations, performed to verify or falsify a hypothesis or research a causal relationship between phenomena." conceptName="Experiment" order="1" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns7:SemanticMetadata conceptCode="C44173" conceptDefinition="The Experiment is the collection of all the BioAssays that are related by the ExperimentDesign. (caMAGE)" conceptName="Experiment Object" order="2" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Experiment" id="EAID_B7C43EFB_C1CD_403d_8DA2_42D365003DC1" packageName="gov.nih.nci.protexpress.domain.experiment" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns8:umlAttributeCollection xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns8:UMLAttribute name="id" publicID="1634384247" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns8:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns8:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns8:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns8:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="name" publicID="1634384248" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C4705" conceptDefinition="No value exists" conceptName="Carney Syndrome" order="0"/>
+     <ns8:SemanticMetadata conceptCode="C25191" conceptDefinition="A word or group of words indicating the identity of a person usually consisting of a first (personal) name and a last (family) name with an optional middle name.  In some cultural traditions the family name comes first." conceptName="Person Name" order="1"/>
+     <ns8:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="2"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="description" publicID="1634384249" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C25365" conceptDefinition="A written or verbal account, representation, statement, or explanation of something." conceptName="Description" order="0"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="hypothesis" publicID="1634384250" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C28362" conceptDefinition="A tentative proposal made to explain certain observations or facts that requires further investigation to be verified." conceptName="Hypothesis" order="0"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="url" publicID="1634384251" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C42743" conceptDefinition="The global address of documents and other resources on the World Wide Web. The first part of the address indicates what protocol to use, and the second part specifies the IP address or the domain name where the resource is located." conceptName="Uniform Resource Locator" order="0"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="notes" publicID="1634384252" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="datePerformed" publicID="1634384253" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C38000" conceptDefinition="Executed and carried through to completion." conceptName="Performed" order="0"/>
+     <ns8:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="1"/>
+     <ns8:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="2"/>
+     <ns8:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="3"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="creator" publicID="1634384254" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="creationDate" publicID="1634384255" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns8:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns8:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns8:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="3"/>
+    </ns8:UMLAttribute>
+    <ns8:UMLAttribute name="lastModifiedDate" publicID="1634384256" version="1.0">
+     <ns8:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns8:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns8:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns8:SemanticMetadata conceptCode="C25446" conceptDefinition="The act of alteration or modification; changed or altered in form or character." conceptName="Change" order="3"/>
+     <ns8:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="4"/>
+    </ns8:UMLAttribute>
+   </ns8:umlAttributeCollection>
+   <ns9:SemanticMetadata conceptCode="C42790" conceptDefinition="A set of actions and observations, performed to verify or falsify a hypothesis or research a causal relationship between phenomena." conceptName="Experiment" order="0" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns10:SemanticMetadata conceptCode="C44173" conceptDefinition="The Experiment is the collection of all the BioAssays that are related by the ExperimentDesign. (caMAGE)" conceptName="Experiment Object" order="1" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Protocol" id="EAID_00342699_A9A1_4a48_8522_5BCA63F7A450" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns11:umlAttributeCollection xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns11:UMLAttribute name="id" publicID="-179576657" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns11:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns11:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns11:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns11:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="name" publicID="-179576656" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C4705" conceptDefinition="No value exists" conceptName="Carney Syndrome" order="0"/>
+     <ns11:SemanticMetadata conceptCode="C25191" conceptDefinition="A word or group of words indicating the identity of a person usually consisting of a first (personal) name and a last (family) name with an optional middle name.  In some cultural traditions the family name comes first." conceptName="Person Name" order="1"/>
+     <ns11:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="2"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="description" publicID="-179576655" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25365" conceptDefinition="A written or verbal account, representation, statement, or explanation of something." conceptName="Description" order="0"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="software" publicID="-179576654" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C17146" conceptDefinition="A set of coded instructions, which a computer follows in processing data, performing an operation, or solving a logical problem, upon execution of the program." conceptName="Computer Program" order="0"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="instrument" publicID="-179576653" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C16742" conceptDefinition="Any object, or item of electrical or electronic equipment, which is designed to carry out a specific function or set of functions." conceptName="Instrumentation" order="0"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="notes" publicID="-179576652" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="creator" publicID="-179576651" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="creationDate" publicID="-179576650" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns11:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns11:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns11:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="3"/>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute name="lastModifiedDate" publicID="-179576649" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns11:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns11:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns11:SemanticMetadata conceptCode="C25446" conceptDefinition="The act of alteration or modification; changed or altered in form or character." conceptName="Change" order="3"/>
+     <ns11:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="4"/>
+    </ns11:UMLAttribute>
+   </ns11:umlAttributeCollection>
+   <ns12:SemanticMetadata conceptCode="C41111" conceptDefinition="Laboratory protocol used to prepare a Library." conceptName="Library Protocol" order="0" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns13:SemanticMetadata conceptCode="C25320" conceptDefinition="A formal document that describes a complete plan of research activity in the framework of a clinical study; specifically, the study objective(s), design, methodology, eligibility requests for prospective subjects and controls; intervention regimen(s), pro" conceptName="Clinical Study Protocol" order="1" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns14:SemanticMetadata conceptCode="C42651" conceptDefinition="A rule which guides how an activity should be performed." conceptName="Protocol" order="2" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns15:SemanticMetadata conceptCode="C70817" conceptDefinition="The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis." conceptName="Study Protocol" order="3" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="InputOutputObject" id="EAID_46749710_90F9_4197_A09F_E6B196D23877" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns16:umlAttributeCollection xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns16:UMLAttribute name="id" publicID="-1512709736" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns16:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns16:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns16:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns16:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute name="name" publicID="-1512709735" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C4705" conceptDefinition="No value exists" conceptName="Carney Syndrome" order="0"/>
+     <ns16:SemanticMetadata conceptCode="C25191" conceptDefinition="A word or group of words indicating the identity of a person usually consisting of a first (personal) name and a last (family) name with an optional middle name.  In some cultural traditions the family name comes first." conceptName="Person Name" order="1"/>
+     <ns16:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="2"/>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute name="dataFileURL" publicID="-1512709734" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C42743" conceptDefinition="The global address of documents and other resources on the World Wide Web. The first part of the address indicates what protocol to use, and the second part specifies the IP address or the domain name where the resource is located." conceptName="Uniform Resource Locator" order="0"/>
+     <ns16:SemanticMetadata conceptCode="C42883" conceptDefinition="A set of related records (either written or electronic) kept together." conceptName="File" order="1"/>
+     <ns16:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection or single item of factual information, derived from measurement or research, from which conclusions may be drawn." conceptName="Data" order="2"/>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute name="notes" publicID="-1512709733" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns16:UMLAttribute>
+   </ns16:umlAttributeCollection>
+   <ns17:SemanticMetadata conceptCode="C45974" conceptDefinition="In object-oriented programming, an object is a self-contained entity that consists of both data and procedures to manipulate the data." conceptName="Computer Programming Object" order="0" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns18:SemanticMetadata conceptCode="C45281" conceptDefinition="Something perceptible by one or more of the senses, especially by vision or touch; a material thing. (dictionary.com)" conceptName="Object" order="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns19:SemanticMetadata conceptCode="C41106" conceptDefinition="A set of ideas, abstractions, or things in the real world that can be identified with explicit boundaries and meaning and whose properties and behavior follow the same rules." conceptName="Object Class" order="2" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns20:SemanticMetadata conceptCode="C47906" conceptDefinition="Anything coming out of a system." conceptName="Output" order="3" xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns21:SemanticMetadata conceptCode="C47905" conceptDefinition="Anything added into a sytem." conceptName="Input" order="4" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ProtocolApplication" id="EAID_FA2721CB_CFE1_4812_B20B_0F5774A9828D" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="ProtExpressGridService" projectVersion="1.0">
+   <ns22:umlAttributeCollection xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns22:UMLAttribute name="id" publicID="614767420" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C43499" conceptDefinition="A state in the northern Rocky Mountains of western United States. Its capital is Boise." conceptName="Idaho" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C16728" conceptDefinition="A country in Southeastern Asia, comprising the archipelago between the Indian Ocean and the Pacific Ocean." conceptName="Indonesia" order="2"/>
+     <ns22:SemanticMetadata conceptCode="C38238" conceptDefinition="Intradermal injection is a method of drug administration within the substance of the skin, particularly the dermis." conceptName="Intradermal Route of Administration" order="3"/>
+     <ns22:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="4"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="datePerformed" publicID="614767421" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C38000" conceptDefinition="Executed and carried through to completion." conceptName="Performed" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="2"/>
+     <ns22:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="3"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="comments" publicID="614767422" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C49569" conceptDefinition="A subject domain utilized for the submission of information encompassing and representing data, vocabulary or records related to comments." conceptName="Comment Domain" order="1"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="notes" publicID="614767423" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="creator" publicID="614767424" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="creationDate" publicID="614767425" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns22:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="3"/>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute name="lastModifiedDate" publicID="614767426" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C72063" conceptDefinition="No value exists" conceptName="Date Fruit" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C48871" conceptDefinition="A string unique to a time duration of 24 hours between 2 successive midnights defined by the local time zone. The specific representation of a date will depend on which calendar convention is in force as well as local ordering conventions." conceptName="Date" order="2"/>
+     <ns22:SemanticMetadata conceptCode="C25446" conceptDefinition="The act of alteration or modification; changed or altered in form or character." conceptName="Change" order="3"/>
+     <ns22:SemanticMetadata conceptCode="C25164" conceptDefinition="The particular day, month and year an event has happened or will happen." conceptName="Date" order="4"/>
+    </ns22:UMLAttribute>
+   </ns22:umlAttributeCollection>
+   <ns23:SemanticMetadata conceptCode="C44184" conceptDefinition="The use of a protocol with the requisite Parameters and ParameterValues. (caMAGE)" conceptName="Protocol Application Object" order="0" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection/>
+</ns1:DomainModel>

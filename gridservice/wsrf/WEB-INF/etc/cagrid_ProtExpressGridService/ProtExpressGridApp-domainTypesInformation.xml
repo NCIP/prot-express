@@ -1,0 +1,56 @@
+<ns1:DomainTypesInformation xmlns:ns1="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo">
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.contact.ContactPerson">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="firstName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="lastName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="email" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.experiment.ExperimentRun">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="datePerformed" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="creator" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creationDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="lastModifiedDate" javaTypeName="java.util.Date"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.experiment.Experiment">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="hypothesis" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="url" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="datePerformed" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="creator" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creationDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="lastModifiedDate" javaTypeName="java.util.Date"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.protocol.Protocol">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="software" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="instrument" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creator" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creationDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="lastModifiedDate" javaTypeName="java.util.Date"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.protocol.InputOutputObject">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="dataFileURL" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.protexpress.domain.protocol.ProtocolApplication">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="datePerformed" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="comments" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="notes" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creator" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="creationDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="lastModifiedDate" javaTypeName="java.util.Date"/>
+ </ns1:DomainType>
+</ns1:DomainTypesInformation>
