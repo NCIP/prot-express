@@ -118,16 +118,6 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
             }
             return true;
         }
-       /* if (entity instanceof AuditInfo) {
-            if (StringUtils.isNotBlank(UserHolder.getUsername())) {
-                AuditInfo ai = (AuditInfo) entity;
-                ai.setCreator(UserHolder.getUsername());
-                ai.setCreationDate(Calendar.getInstance());
-                ai.setLastModifiedDate(Calendar.getInstance());
-
-                return true;
-            }
-        }*/
         return false;
     }
 
@@ -149,15 +139,6 @@ public class ProtExpressHibernateInterceptor extends EmptyInterceptor {
             }
             return true;
         }
-
-        /*if (entity instanceof AuditInfo) {
-            if (StringUtils.isNotBlank(UserHolder.getUsername())) {
-                AuditInfo ai = (AuditInfo) entity;
-                ai.setLastModifiedDate(Calendar.getInstance());
-                return true;
-            }
-        }*/
-
         return false;
     }
 

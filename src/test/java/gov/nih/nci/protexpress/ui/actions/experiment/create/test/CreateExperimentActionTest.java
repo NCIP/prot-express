@@ -80,127 +80,100 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.service.impl;
+package gov.nih.nci.protexpress.ui.actions.experiment.create.test;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
-import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.domain.protocol.InputOutputObject;
-import gov.nih.nci.protexpress.domain.protocol.ProtocolApplication;
-import gov.nih.nci.protexpress.service.ExperimentService;
-import gov.nih.nci.protexpress.service.SearchParameters;
-import gov.nih.nci.protexpress.util.SearchCriteriaHelper;
+import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
+import gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction;
+import gov.nih.nci.protexpress.util.SessionHelper;
+import gov.nih.nci.protexpress.util.UserHolder;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
-import java.util.List;
+import java.util.Date;
 
-import org.displaytag.properties.SortOrderEnum;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * Default hibernate backed implementation of the experiment service.
+ * This class tests the CreateExperimentAction class.
  *
- * @author Scott Miller, Krishna Kanchinadam
+ * @author Krishna Kanchinadam
  */
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-public class ExperimentServiceImpl extends HibernateDaoSupport implements ExperimentService {
+public class CreateExperimentActionTest extends ProtExpressBaseHibernateTest {
+
+    CreateExperimentAction action;
+    Experiment experiment;
 
     /**
      * {@inheritDoc}
      */
-    public int countMatchingExperiments(SearchParameters params) {
-        return (Integer) getExperimentSearchQuery(params, true, null, null).uniqueResult();
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        this.action = new CreateExperimentAction();
+        SessionHelper.saveExperimentIdInSession(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<Experiment> searchForExperiments(SearchParameters params, int maxResults, int firstResult,
-            String sortProperty, SortOrderEnum sortDir) {
-        return getExperimentSearchQuery(params, false, sortProperty, sortDir).setMaxResults(maxResults).setFirstResult(
-                firstResult).list();
+    public void testPrepare() throws Exception {
+        this.action.setExperiment(null);
+        this.action.prepare();
+        assertEquals(null, this.action.getExperiment());
+
+        Experiment p = new Experiment(null);
+        this.action.setExperiment(p);
+        this.action.prepare();
+        assertEquals(p, this.action.getExperiment());
     }
 
-    private Criteria getExperimentSearchQuery(SearchParameters params, boolean onlyCount,
-            String sortProperty, SortOrderEnum sortDir) {
-        Criteria crit = getHibernateTemplate().getSessionFactory().getCurrentSession().createCriteria(Experiment.class);
+    public void testCreateNewExperiment() throws Exception {
+        User loggedInUser = new User();
+        loggedInUser.setLoginName("foo");
+        loggedInUser.setEmailId("foo@foo.com");
+        loggedInUser.setFirstName("first");
+        loggedInUser.setLastName("last");
+        UserHolder.setUser(loggedInUser);
 
-        crit = SearchCriteriaHelper.getCriteria(crit, params, onlyCount, sortProperty, sortDir);
-        return crit;
+        this.action.createNewExperiment();
+
+        assertNull(SessionHelper.getExperimentIdFromSession());
+        assertNull(SessionHelper.getProtocolApplicationFromSession());
+
+        assertEquals(this.action.getExperiment().getContactPerson().getFirstName(), loggedInUser.getFirstName());
+        assertEquals(this.action.getExperiment().getContactPerson().getLastName(), loggedInUser.getLastName());
+        assertEquals(this.action.getExperiment().getContactPerson().getEmail(), loggedInUser.getEmailId());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<Experiment> getMostRecentExperimentsforUser(String username, int numberOfExperiments) {
-        String hql = "from " + Experiment.class.getName()
-                + " where creator = :username order by auditInfo.lastModifiedDate desc";
-        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
-        query.setString("username", username);
-        return query.setMaxResults(numberOfExperiments).list();
+    public void testReloadExperiment() throws Exception {
+        assertEquals(this.action.reloadExperiment(), ActionSupport.INPUT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Experiment getExperimentById(Long id) {
-        return (Experiment) getHibernateTemplate().load(Experiment.class, id);
+    public void testViewExperimentSummary() throws Exception {
+        assertEquals(this.action.viewExperimentSummary(), "viewExperimentSummary");
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public ExperimentRun getExperimentRunById(Long id) {
-        return (ExperimentRun) getHibernateTemplate().load(ExperimentRun.class, id);
+    public void testSave() throws Exception {
+        this.action.createNewExperiment();
+        this.action.getExperiment().setName("Name - Test Experiment 1");
+        this.action.getExperiment().setDescription("Description - Test Experiment 1");
+        this.action.getExperiment().setHypothesis("Hypothesis - Test Experiment 1");
+        this.action.getExperiment().setUrl("URL - Test Experiment 1");
+        this.action.getExperiment().setDatePerformed(new Date());
+
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        this.theSession.flush();
+        this.theSession.clear();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public InputOutputObject getInputOutputObjectById(Long id) {
-        return (InputOutputObject) getHibernateTemplate().load(InputOutputObject.class, id);
-    }
+    public void testRepeat() throws Exception {
+        this.action.createNewExperiment();
+        this.action.getExperiment().setName("Name - Test Experiment 1");
+        this.action.getExperiment().setDescription("Description - Test Experiment 1");
+        this.action.getExperiment().setHypothesis("Hypothesis - Test Experiment 1");
+        this.action.getExperiment().setUrl("URL - Test Experiment 1");
+        this.action.getExperiment().setDatePerformed(new Date());
 
-    /**
-     * {@inheritDoc}
-     */
-    public ProtocolApplication getProtocolApplicationById(Long id) {
-        return (ProtocolApplication) getHibernateTemplate().load(ProtocolApplication.class, id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteExperiment(Experiment experiment) {
-        getHibernateTemplate().delete(experiment);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteExperimentRun(ExperimentRun experimentRun) {
-        getHibernateTemplate().delete(experimentRun);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteInputOutputObject(InputOutputObject inputOutputObject) {
-        getHibernateTemplate().delete(inputOutputObject);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteProtocolApplication(ProtocolApplication protocolApplication) {
-        getHibernateTemplate().delete(protocolApplication);
+        assertEquals(ActionSupport.SUCCESS, this.action.save());
+        assertEquals(1, this.action.getExperiment().getExperimentRuns().size());
+        assertEquals("editExperiment", this.action.repeat());
+        assertEquals(this.action.getExperiment().getId(), this.action.getExperimentId());
     }
 }
