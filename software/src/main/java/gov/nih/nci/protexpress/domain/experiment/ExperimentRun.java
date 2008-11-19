@@ -94,6 +94,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -217,8 +218,8 @@ public class ExperimentRun implements Serializable, PersistentObject, Auditable 
     /**
      * @return the auditInfo
      */
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "audit_info_id")
+    @Embedded
+    @Valid
     public AuditInfo getAuditInfo() {
         return this.auditInfo;
     }

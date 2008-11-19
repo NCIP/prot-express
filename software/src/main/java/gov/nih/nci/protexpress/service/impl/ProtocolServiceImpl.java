@@ -135,7 +135,7 @@ public class ProtocolServiceImpl extends HibernateDaoSupport implements Protocol
     @SuppressWarnings("unchecked")
     public List<Protocol> getMostRecentProtocolsforUser(String username, int numberOfProtocols) {
         String hql = "from " + Protocol.class.getName()
-                + " where auditInfo.creator = :username order by auditInfo.lastModifiedDate desc";
+                + " where creator = :username order by auditInfo.lastModifiedDate desc";
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
         query.setString("username", username);
         return query.setMaxResults(numberOfProtocols).list();

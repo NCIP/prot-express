@@ -135,17 +135,17 @@ public final class SearchCriteriaHelper {
             crit.add(Restrictions.like("name", "%" + params.getName() + "%").ignoreCase());
         }
 
-        crit.createAlias("auditInfo", "audit");
+       // crit.createAlias("auditInfo", "audit");
         if ((params != null) && !params.getSearchAllUsers()) {
-            crit.add(Restrictions.eq("audit.creator", UserHolder.getUsername()));
+            crit.add(Restrictions.eq("auditInfo.creator", UserHolder.getUsername()));
         }
 
         if ((params != null) && (params.getFromDate() != null)) {
-            crit.add(Restrictions.ge("audit.lastModifiedDate", DateHelper.getDate(params.getFromDate())));
+            crit.add(Restrictions.ge("auditInfo.lastModifiedDate", DateHelper.getDate(params.getFromDate())));
         }
 
         if ((params != null) && (params.getToDate() != null)) {
-            crit.add(Restrictions.le("audit.lastModifiedDate", DateHelper.getDate(params.getToDate())));
+            crit.add(Restrictions.le("auditInfo.lastModifiedDate", DateHelper.getDate(params.getToDate())));
         }
 
         return crit;

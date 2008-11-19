@@ -83,67 +83,28 @@
 package gov.nih.nci.protexpress.domain.audit;
 
 import gov.nih.nci.protexpress.domain.HibernateFieldLength;
-import gov.nih.nci.protexpress.util.UserHolder;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fiveamsolutions.nci.commons.data.persistent.PersistentObject;
 
 /**
  * Class to store the auditing fields.
  *
  * @author Scott Miller
  */
-@Entity
-@Table(name = "audit_info")
+@Embeddable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AuditInfo implements Serializable, PersistentObject {
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
+public class AuditInfo {
     private String creator;
     private Calendar creationDate = Calendar.getInstance();
     private Calendar lastModifiedDate = Calendar.getInstance();
-
-    /**
-     * Constructor.
-     */
-    public AuditInfo() {
-        setCreator(UserHolder.getUsername());
-    }
-
-    /**
-     * The id of the object.
-     *
-     * @return the id, null for new objects
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 
     /**
@@ -197,43 +158,5 @@ public class AuditInfo implements Serializable, PersistentObject {
      */
     public void setLastModifiedDate(Calendar lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof AuditInfo)) {
-            return false;
-        }
-
-        AuditInfo ainfo = (AuditInfo) o;
-
-        if (this.id == null) {
-            return false;
-        }
-
-        return new EqualsBuilder()
-        .append(getId().toString(), ainfo.getId().toString())
-        .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-        .append(getId().toString())
-        .toHashCode();
     }
 }
