@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact" xmlns:gov.nih.nci.protexpress.domain.audit="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.audit" xmlns:gov.nih.nci.protexpress.domain.experiment="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" xmlns:gov.nih.nci.protexpress.domain.protocol="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" targetNamespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.audit" schemaLocation="gov.nih.nci.protexpress.domain.audit.xsd" />
+  <xs:import namespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" schemaLocation="gov.nih.nci.protexpress.domain.experiment.xsd" />
+  <xs:import namespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" schemaLocation="gov.nih.nci.protexpress.domain.protocol.xsd" />
+  <xs:element name="ContactPerson" type="ContactPerson" />
+  <xs:complexType name="ContactPerson">
+    <xs:sequence />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="firstName" type="xs:string" />
+    <xs:attribute name="lastName" type="xs:string" />
+    <xs:attribute name="email" type="xs:string" />
+    <xs:attribute name="notes" type="xs:string" />
+  </xs:complexType>
+</xs:schema>
+
