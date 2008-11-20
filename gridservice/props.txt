@@ -6,7 +6,7 @@ File:	ProtExpressGridApp.war\ProtExpressGridApp-orm.jar\hibernate.cfg.xml
 
 File: 	wsrf\WEB-INF\etc\globus_wsrf_core\server-config.wsdd
 	1. logicalHost
-	2. publishHostName - probably not needed. maybe makes sense to publish the host name by default.
+	2. publishHostName - set to true.
 
 
 File: 	wsrf\WEB-INF\web.xml
@@ -32,6 +32,10 @@ File:	wsrf\WEB-INF\etc\cagrid_ProtExpressGridService\serviceMetadata.xml
 	13. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@phoneNumber
 	14. hostingResearchCenter\ResearchCenter\Address\PointOfContactCollection\@role
 
+File:	wsrf\WEB-INF\etc\cagrid_ProtExpressGridService\jndi-config.xml
+	1. applicationName
+	2. applicationHostName
+	3. applicationHostPort
 
 
 Required Properties (in addition to the ones for above)

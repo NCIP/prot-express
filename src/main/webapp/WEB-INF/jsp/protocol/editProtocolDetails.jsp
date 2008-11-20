@@ -91,7 +91,7 @@
             <div class="clear"></div>
             <c:if test="${protocol.auditInfo.creator == currentUser.loginName}">
                 <div class="actionsrow">
-                    <del class="btnrow2">
+                    <del class="btnwrapper">
                         <ul id="btnrow2">
                             <li>
                                 <c:url var="cancelUrl" value="/protocol/cancel.action">
