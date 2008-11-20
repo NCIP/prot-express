@@ -39,17 +39,17 @@
                 <td class="title">
                      <protExpress:textfield formName="${formId}" name="protocolApplication.inputs[${e.index}].name"
                                             nameAlias="protocolApplication_inputs_${e.index}__name" maxlength="200"
-                                            readonly="%{attribReadOnly}" style="width:99%" />
+                                            readonly="%{attribReadOnly}"  />
                 </td>
                 <td>
                     <protExpress:textfield formName="${formId}" name="protocolApplication.inputs[${e.index}].dataFileURL"
                                             nameAlias="protocolApplication_inputs_${e.index}__dataFileURL" maxlength="200"
-                                            readonly="%{attribReadOnly}" style="width:99%" />
+                                            readonly="%{attribReadOnly}"  />
                 </td>
                 <td>
                     <protExpress:textarea formName="${formId}" name="protocolApplication.inputs[${e.index}].notes"
                                             nameAlias="protocolApplication_inputs_${e.index}__notes" maxlength="200"
-                                            rows="2" cols="20" readonly="%{attribReadOnly}" style="width:99%; height:40px;" />
+                                            rows="2" cols="20" readonly="%{attribReadOnly}" style="height:40px;" />
                 </td>
                 <td class="action">
                     <c:if test="${fn:length(protocolApplication.inputs) > 1}">

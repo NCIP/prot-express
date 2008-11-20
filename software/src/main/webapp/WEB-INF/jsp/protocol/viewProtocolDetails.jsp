@@ -72,7 +72,7 @@
                     <c:param name="protocol.id" value="${protocol.id}" />
                 </c:url>
                 <div class="actionsrow">
-                    <del class="btnrow2">
+                    <del class="btnwrapper">
                         <ul id="btnrow2">
                             <li>
                                 <a href="${editProtocolDetailsUrl}" class="btn" onclick="this.blur();">
