@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/protExpress" debug="5" reloadable="true" crossContext="true" docBase="${project.build.directory}/${project.build.finalName}" >
+<Context path="/protExpress" debug="5" reloadable="true" crossContext="true"  >
     <Resource name="jdbc/ProtExpressDb"
         auth="Container"
         type="javax.sql.DataSource"
