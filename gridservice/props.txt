@@ -42,3 +42,46 @@ Required Properties (in addition to the ones for above)
 
 1. gridservice.install=true/false (to determine if the service should be installed or not)
 
+_________________________________________________________________________________________________________
+
+
+<xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" verbose="false">
+	<update path="//deployment/globalConfiguration/parameter[@name='logicalHost']/@value" value="${grid.logicalHost}"/>
+	<update path="//deployment/globalConfiguration/parameter[@name='publishHostName']/@value" value="${grid.publishHostName}"/>
+</xmlconfig>
+
+<xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" verbose="false">
+	<update path="//web-app/servlet/init-param[param-name='defaultProtocol']/param-value" value="${grid.defaultProtocol}"/>
+	<update path="//web-app/servlet/init-param[param-name='defaultPort']/param-value" value="${grid.defaultPort}"/>
+</xmlconfig>
+
+<xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" verbose="false">
+	<update path="//ServiceGroupRegistrationParameters/ServiceGroupEPR/wsa:Address" value="{grid.index.url}"/>
+</xmlconfig>
+
+<xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" verbose="false">
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/@displayName" value="${grid.poc.tech.researchCenter.displayname}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/@shortName" value="${grid.poc.tech.researchCenter.shortname}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@country" value="${grid.poc.tech.addr.country}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@locality" value="${grid.poc.tech.addr.locality}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@postalCode" value="${grid.poc.tech.addr.postalCode}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@stateProvince" value="${grid.poc.tech.addr.stateProvince}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@street1" value="${grid.poc.tech.addr.street1}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/Address/@stree2" value="${grid.poc.tech.addr.street2}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@affiliation" value="${grid.poc.tech.affiliation}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@email" value="${grid.poc.tech.name.email}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@firstName" value="${grid.poc.tech.name.first}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@lastName" value="${grid.poc.tech.name.last}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@phoneNumber" value="${grid.defaultProtocol}"/>
+	<update path="//ServiceMetadata/hostingResearchCenter/ResearchCenter/pointOfContactCollection/PointOfContact/@role" value="${grid.poc.tech.name.role}"/>
+</xmlconfig>
+
+<xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" verbose="false">
+	<update path="//jndiConfig/service/resource[@name='serviceconfiguration']/parameter[name='cqlQueryProcessorConfig_applicationName']/value" value="${grid.applicationName}"/>
+	<update path="//jndiConfig/service/resource[@name='serviceconfiguration']/parameter[name='cqlQueryProcessorConfig_applicationHostName']/value" value="${grid.applicationHostName}"/>
+	<update path="//jndiConfig/service/resource[@name='serviceconfiguration']/parameter[name='cqlQueryProcessorConfig_applicationhostPort']/value" value="${grid.applicationHostPort}"/>
+</xmlconfig>
+
+
+What is this (install.xml)
+	<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
