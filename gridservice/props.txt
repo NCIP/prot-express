@@ -56,7 +56,7 @@ ________________________________________________________________________________
 </xmlconfig>
 
 <xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" verbose="false">
-	<update path="//ServiceGroupRegistrationParameters/ServiceGroupEPR/wsa:Address" value="{grid.index.url}"/>
+	<update path="//ServiceGroupRegistrationParameters/ServiceGroupEPR/Address" value="{grid.index.url}"/>
 </xmlconfig>
 
 <xmlconfig in="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" verbose="false">
