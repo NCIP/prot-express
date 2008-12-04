@@ -76,7 +76,7 @@ var ProtExpress = {
             formData = formData + '&' + Hash.toQueryString(options.extraArgs);
         }
         var url = options.url || $(formId).action;
-        new Ajax.Updater(divId, url, {parameters: formData, evalScripts: true, insertion: options.insertion} );
+        new Ajax.Updater(divId , url, {parameters: formData, evalScripts: true, insertion: options.insertion} );
     },
     submitAjaxFormToUrl: function(formId, divId, url) {
         var formData = Form.serialize(formId);

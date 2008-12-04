@@ -84,7 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment.create;
 
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
-import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseActionWithSession;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
@@ -96,7 +96,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractCreateExperimentAction extends ProtExpressBaseActionWithSession {
+public abstract class AbstractCreateExperimentAction extends ProtExpressBaseAction {
     private static final long serialVersionUID = 1L;
 
     private Experiment experiment = new Experiment(null);

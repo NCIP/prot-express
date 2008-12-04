@@ -64,6 +64,12 @@
             <result>/notYetImplemented.html</result>
         </action>
 
+        <!-- Login action -->
+        <action name="login">
+         <result>/WEB-INF/jsp/login/login.jsp</result>
+        </action>
+        <!-- /Login Action -->
+
         <!-- Registration Actions -->
         <action name="registration/*"
             class="gov.nih.nci.protexpress.ui.actions.registration.RegistrationAction" method="{1}">

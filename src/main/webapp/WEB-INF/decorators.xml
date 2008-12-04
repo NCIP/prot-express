@@ -8,6 +8,7 @@
         <pattern>/dojo/*</pattern>
         <pattern>/struts/*</pattern>
         <pattern>/ajax/*</pattern>
+        <pattern>/login*</pattern>
         <pattern>/experiment/export*</pattern>
         <pattern>/help/*</pattern>
     </excludes>

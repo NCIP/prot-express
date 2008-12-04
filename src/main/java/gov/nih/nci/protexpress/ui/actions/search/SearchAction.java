@@ -87,6 +87,7 @@ import gov.nih.nci.protexpress.domain.experiment.Experiment;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.service.SearchParameters;
 import gov.nih.nci.protexpress.service.SearchType;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 import gov.nih.nci.protexpress.ui.pagination.PaginatedListImpl;
 
 import java.util.Map;
@@ -100,7 +101,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Krishna Kanchinadam
  */
-public class SearchAction extends ActionSupport {
+public class SearchAction extends ProtExpressBaseAction {
     private static final long serialVersionUID = 1L;
 
     private SearchParameters searchParameters = new SearchParameters();

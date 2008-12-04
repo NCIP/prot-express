@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.home;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 import gov.nih.nci.protexpress.util.UserHolder;
 import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;
@@ -93,7 +94,7 @@ import com.opensymphony.xwork2.ActionSupport;
  *
  * @author Krishna Kanchinadam
  */
-public class HomeAction {
+public class HomeAction extends ProtExpressBaseAction {
     private static final int NUM_RECENT_RESULTS_TO_DISPLAY = 3;
 
     private List<Experiment> recentExperiments;

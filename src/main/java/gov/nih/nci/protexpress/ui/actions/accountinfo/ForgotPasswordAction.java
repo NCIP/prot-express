@@ -83,7 +83,7 @@
 package gov.nih.nci.protexpress.ui.actions.accountinfo;
 
 import gov.nih.nci.protexpress.domain.ConfigParamEnum;
-import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseActionWithSession;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 import gov.nih.nci.protexpress.ui.actions.registration.EmailHelper;
 import gov.nih.nci.protexpress.util.ConfigurationHelper;
 
@@ -102,7 +102,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public class ForgotPasswordAction extends ProtExpressBaseActionWithSession {
+public class ForgotPasswordAction extends ProtExpressBaseAction {
     private static final long serialVersionUID = 1L;
 
     private String loginName;

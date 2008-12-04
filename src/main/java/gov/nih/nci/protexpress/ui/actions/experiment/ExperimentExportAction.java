@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.experiment;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -101,7 +102,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
  * Class to handle the exporting of experiment data.
  * @author Scott Miller
  */
-public class ExperimentExportAction extends ActionSupport implements Preparable {
+public class ExperimentExportAction extends ProtExpressBaseAction implements Preparable {
 
     private static final long serialVersionUID = 1L;
     private Experiment experiment = new Experiment(null);
@@ -190,6 +191,4 @@ public class ExperimentExportAction extends ActionSupport implements Preparable 
     public void setExperimentId(Long experimentId) {
         this.experimentId = experimentId;
     }
-
-
 }
