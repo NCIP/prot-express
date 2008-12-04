@@ -82,7 +82,8 @@
  */
 package gov.nih.nci.protexpress.ui.actions.experiment;
 
-import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
+
 import com.opensymphony.xwork2.validator.annotations.Validation;
 
 /**
@@ -92,7 +93,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
  */
 
 @Validation
-public abstract class AbstractExperimentTreeAction extends ActionSupport {
+public abstract class AbstractExperimentTreeAction extends ProtExpressBaseAction {
     private static final long serialVersionUID = 1L;
 
     private String selectedNodeId;

@@ -84,6 +84,7 @@ package gov.nih.nci.protexpress.ui.actions.protocol;
 
 import gov.nih.nci.protexpress.ProtExpressRegistry;
 import gov.nih.nci.protexpress.domain.protocol.Protocol;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 
 import java.text.MessageFormat;
 
@@ -102,7 +103,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
  * @author Scott Miller
  */
 @Validation
-public class ProtocolManagementAction extends ActionSupport implements Preparable {
+public class ProtocolManagementAction extends ProtExpressBaseAction implements Preparable {
     private static final long serialVersionUID = 1L;
 
     private Protocol protocol = new Protocol(null);

@@ -18,7 +18,27 @@
         </div>
         <div id="homelogin">
             <h1><fmt:message key="login.header" /></h1>
-            <form id="login" name="login" action="j_security_check" method="post">
+            <script type="text/javascript">
+                        function startLogin() {
+                            $('login_progress').show();
+                            <c:choose>
+                                <c:when test="${param.fromAjax == 'true'}">
+                            new Ajax.Request('<c:url value="/home/home.action"/>', { onSuccess: completeLogin });
+                                </c:when>
+                                <c:otherwise>
+                            completeLogin();
+                                </c:otherwise>
+                            </c:choose>
+                        }
+
+                        function completeLogin() {
+                            $('login').submit();
+                        }
+                    </script>
+                    <div id="login_progress" style="display: none; margin: 3px 3px">
+                       <img alt="Indicator" align="absmiddle" src="<c:url value="/images/indicator.gif"/>" /> Logging in
+                    </div>
+            <form id="login" name="login" action="j_security_check" method="post" onsubmit="startLogin(); return false;">
                 <table class="login">
                     <tbody>
                     <c:if test="${not empty failedLogin}">
@@ -38,7 +58,7 @@
                         <td class="value"><input name="j_password" tabindex="2" maxlength="100" size="15" value="" style="width: 90px;" type="password"></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="centered"><input tabindex="3" src="<c:url value="/images/btn_login.gif" />" value="Login" class="button" type="image"></td>
+                        <td colspan="2" class="centered"><input tabindex="3" src="<c:url value="/images/btn_login.gif" />"  value="Login" class="button" type="image"></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="space">&nbsp;</td>

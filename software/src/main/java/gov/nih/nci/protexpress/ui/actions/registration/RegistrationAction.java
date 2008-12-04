@@ -88,6 +88,7 @@ import gov.nih.nci.protexpress.domain.ConfigParamEnum;
 import gov.nih.nci.protexpress.domain.register.Country;
 import gov.nih.nci.protexpress.domain.register.RegistrationRequest;
 import gov.nih.nci.protexpress.domain.register.State;
+import gov.nih.nci.protexpress.ui.actions.ProtExpressBaseAction;
 import gov.nih.nci.protexpress.util.ConfigurationHelper;
 import gov.nih.nci.security.authentication.helper.LDAPHelper;
 import gov.nih.nci.security.authorization.domainobjects.User;
@@ -105,7 +106,6 @@ import org.apache.log4j.Logger;
 
 import com.fiveamsolutions.nci.commons.web.struts2.action.ActionHelper;
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.CustomValidator;
 import com.opensymphony.xwork2.validator.annotations.Validation;
@@ -115,7 +115,7 @@ import com.opensymphony.xwork2.validator.annotations.Validation;
 // CSM requires Hashtable, servletcontext untyped
 @SuppressWarnings({ "PMD.ReplaceHashtableWithMap", "unchecked", "PMD.CyclomaticComplexity" })
 @Validation
-public class RegistrationAction extends ActionSupport implements Preparable {
+public class RegistrationAction extends ProtExpressBaseAction implements Preparable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(RegistrationAction.class);
