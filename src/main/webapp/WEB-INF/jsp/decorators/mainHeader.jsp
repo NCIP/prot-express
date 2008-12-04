@@ -14,7 +14,6 @@
     </div>
 </div>
 <!-- END OF NCI/NIH Header -->
-
 <!-- protExpress HEADER -->
 <div id="protexpressheader">
     <div id="protexpresslogo">
