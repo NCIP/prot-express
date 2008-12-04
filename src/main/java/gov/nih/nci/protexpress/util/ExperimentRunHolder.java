@@ -235,6 +235,19 @@ public final class ExperimentRunHolder {
                 }
             }
         }
+        // If no "orphan" outputs, then list all protocols with no outputs as predecessors.
+        // This will ensure that the end protocol action has at least one predecessor (start protocol).
+        // and avoid an error with parsing the xar file when importing to cpas.
+        if (endProtocolAction.getPredecessorActionNumbers().size() == 0) {
+            for (ProtocolAction protAction : getProtocolActionSequenceNumberMap().values()) {
+                if (protAction.getProtocolApplication().getOutputs().size() == 0) {
+                    endProtocolAction.getPredecessorActionNumbers().add(protAction.getActionSequenceNumber());
+                }
+            }
+            if (startProtocolAction.getProtocolApplication().getOutputs().size() == 0) {
+                endProtocolAction.getPredecessorActionNumbers().add(startProtocolAction.getActionSequenceNumber());
+            }
+        }
     }
 
     private void initProtocolAction(ProtocolApplication protocolApplication, int parentSequenceNumber) {
