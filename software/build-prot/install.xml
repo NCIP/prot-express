@@ -313,21 +313,21 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 			<include name="**/*.wsdl"/>
 		</replace>
 		<!-- server-config.wsdd -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsddkk">
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
 			<replace path="/:deployment/:globalConfiguration/:parameter[@name='logicalHost']/@value" withText="${grid.logicalHost}" />
 			<replace path="/:deployment/:globalConfiguration/:parameter[@name='publishHostName']/@value" withText="${grid.publishHostName}" />			
 		</xmltask>
 		<!-- web.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xmlkk">
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml">
 			<insert path="/web-app/servlet[1]/servlet-class" position="after">
 			<![CDATA[ <init-param><param-name>defaultProtocol</param-name><param-value>${grid.defaultProtocol}</param-value></init-param><init-param><param-name>defaultPort</param-name><param-value>${grid.defaultPort}</param-value></init-param>]]></insert>
 		</xmltask>
 		<!-- cagrid_${protexpress-grid.application.name}/cagrid_${protexpress-grid.application.name}_registration.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xmlkk">
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml">
 			<replace path="/:ServiceGroupRegistrationParameters/:ServiceGroupEPR/wsa:Address/text()" withText="${grid.index.url}" />
 		</xmltask>
 		<!-- cagrid_${protexpress-grid.application.name}/jndi-config.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xmlkk">
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml">
 			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationName']/:value/text()" withText="${grid.applicationName}"/>
 			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostName']/:value/text()" withText="${grid.applicationHostName}"/>
 			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostPort']/:value/text()" withText="${grid.applicationHostPort}"/>
