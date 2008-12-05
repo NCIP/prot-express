@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 $Id: install.xml 4757 2008-05-15 20:43:31Z zengje $
 $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/install.xml $
 -->
-<project name="protExpress-installer" default="install" basedir="."
-    xmlns:ivy="antlib:org.apache.ivy.ant"
-    >
-    <description>
+<project name="protExpress-installer" default="install" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>
         This build file is part of the bda-build-templates project. This is the master install file for the project.  It should be placed in project/software.  This script is copied into the distribution and  executed from the extracted distribution.  It is run by typing "ant" from the master project build.xml or from command line. This script has two flows install and upgrade.
         Install will do the following
             * Install binaries
@@ -29,154 +27,135 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
             * Oracle
         This script requires java and ant to run. Every thing else it needs is included in the distribution.
     </description>
-
-    <!-- Properties file related properties and tasks -->
-    <property environment="env" />
-    <property file="local.properties"/>
-    <property file="project.properties"/>
-    <property name="properties.file" value="${basedir}/install.properties"/>
-    <echo message="Using properties file of ${properties.file}."/>
-    <available file="${properties.file}" property="properties.file.exists" />
-    <fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
-    <replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
-    <replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
-    <property file="${properties.file}" />
-
-    <!-- Generic properties -->
-    <property name="log.dir" value="${basedir}/logs" />
-    <property name="working.dir" value="${basedir}/working" />
-    <property name="temp.dir" value="${working.dir}/temp" />
-
-    <!-- Install Time properties -->
-    <!-- Source and target directories -->
-    <property name="bda-utils.dir" value="bda-utils" />
-    <property name="tools.dir" value="${basedir}/${tools.dist.relative.dir}" />
-    <property name="common.dir.src" value="${basedir}/${common.dist.relative.dir}" />
-    <property name="common.dir.dest" value="${working.dir}/${common.dist.relative.dir}" />
-    <property name="lib.dir.src" value="${basedir}/${lib.dist.relative.dir}" />
-    <property name="tomcat-conf.dir.dest" value="${working.dir}/${tomcat-conf.dist.relative.dir}" />
-    <property name="db.dir.src" value="${basedir}/${db.dist.relative.dir}" />
-    <property name="db.dir.dest" value="${working.dir}/${db.dist.relative.dir}" />
-    <property name="db-install.dir.dest" value="${working.dir}/${db-install.dist.relative.dir}" />
-    <property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}" />
-
-
-
-    <!-- *-ds.xml and WAR -->
-    <property name="protExpress-war.dir.dist" value="${basedir}/${protExpress-war.dist.relative.dir}" />
-    <property name="protExpress-war.ds.file" value="protExpress-ds.xml" />
-    <property name="protExpress-war.app-sec-conf.file" value="ApplicationSecurityConfig.xml" />
-    <property name="protExpress-war.hibernate.file" value="hibernate.cfg.xml" />
-    <property name="protExpress-war.war.file" value="protExpress.war" />
-    <property name="protExpress-grid.war.file" value="ProtExpressGridApp.war" />
-    <property name="protExpress-grid.wsrf.dir" value="wsrf" />
-    <property name="protexpress-grid.application.name" value="ProtExpressGridService" />
-    <property name="protExpress-grid.dir.dist" value="${basedir}/${protExpress-grid.dist.relative.dir}" />
- 
-    <!-- Paths -->
-    <path id="bda-utils.classpath">
-        <fileset dir="${bda-utils.dir}">
-            <include name="**/*.jar" />
-        </fileset>
-    </path>
-    <!-- Task definitions -->
-    <taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml">
-        <classpath>
-            <pathelement location="${bda-utils.dir}/antunit-1.0.jar" />
-        </classpath>
-    </taskdef>
-    <taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath" />
-    <taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
-        <classpath>
-            <pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
-        </classpath>
-    </taskdef>
-    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
-        <classpath>
-            <pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
-            <pathelement location="${bda-utils.dir}/bcel-5.1.jar"/>
-            <pathelement location="${bda-utils.dir}/commons-httpclient-3.0.1.jar"/>
-            <pathelement location="${bda-utils.dir}/commons-logging-1.0.4.jar"/>
-            <pathelement location="${bda-utils.dir}/ivy-1.3.1.jar"/>
-        </classpath>
-    </taskdef>
-    <taskdef resource="liquibasetasks.properties" classpathref="bda-utils.classpath"/>
-
-    <!-- Conditionals -->
-    <available file="${tomcat.home}/conf/server.xml" property="tomcat.exists"/>
-    <!-- protExpress-ear can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
-    <switch value="${database.type}">
-        <case value="oracle">
-            <property name="database.dialect" value="org.hibernate.dialect.OracleDialect"/>
-            <property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.3.0.jar"/>
-            <property name="database.driver" value="oracle.jdbc.driver.OracleDriver"/>
-            <property name="db-upgrade.list.file" value="${db-upgrade.oracle.list.file}"/>
-            <property name="db-upgrade.conf.file" value="${db-upgrade.oracle.conf.file}"/>
-            <property name="database.schema" value="${database.name}"/>
-        </case>
-        <case value="mysql">
-            <property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-            <property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.5.jar"/>
-            <property name="database.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="db-upgrade.list.file" value="${db-upgrade.mysql.list.file}"/>
-            <property name="db-upgrade.conf.file" value="${db-upgrade.mysql.conf.file}"/>
-            <property name="database.schema" value="${database.name}"/>
-        </case>
-        <case value="postgresql">
-            <property name="database.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="database.driver.file" value="${bda-utils.dir}/postgresql-jdbc3-8.3-603.jar"/>
-            <property name="database.driver" value="org.postgresql.Driver"/>
-            <property name="db-upgrade.list.file" value="${db-upgrade.postgresql.list.file}"/>
-            <property name="db-upgrade.conf.file" value="${db-upgrade.postgresql.conf.file}"/>
-            <property name="database.schema" value="public"/>
-        </case>
-        <default>
-            <fail message="Invalid database type ${database.type}"/>
-        </default>
-    </switch>
-
-    <path id="jdbc.driver.classpath">
-        <pathelement location="${database.driver.file}"/>
-    </path>
-
-    <!-- figure out whether to use install-properties.template or upgrade-proprties.template based on the name of the properties file -->
-    <propertyregex property="properties.file.type"
-        input="${properties.file}"
-        regexp=".*(install|upgrade).*"
-        select="\1"
-        />
-    <echo message="Properties file type = ${properties.file.type}"/>
-    <switch value="${properties.file.type}">
-        <case value="install">
-            <property name="properties.template.file" value="install-properties.template" />
-        </case>
-        <case value="upgrade">
-            <property name="properties.template.file" value="upgrade-properties.template" />
-        </case>
-        <default>
-            <fail message="Property file name must include 'install' or 'upgrade' so it can be determined which properties template should be used. If you are not certain include 'upgrade' in the name of your proeprties file."/>
-        </default>
-    </switch>
-
-    <!-- Includes-->
-    <import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
-
-
-    <!-- Read db configs from existing ds.xml if it exists for use in upgrade installs, if already set in properties file values from properties file will be used -->
-    <available file="${jboss.home}/server/${jboss.server.name}/deploy/${protExpress-war.ds.file}" property="ds.exists"/>
-    <if>
-        <isset property="ds.exists"/>
-        <then>
-            <jboss-read-dbconfig
-                jboss.ds-xml.file="${protExpress-war.ds.file}"
-                />
-        </then>
-        <else>
-            <echo message="Warning- could not find ${jboss.home}/server/${jboss.server.name}/deploy/${protExpress-war.ds.file}"/>
-        </else>
-    </if>
-
-    <!-- There is any issue with copying files with a filtersfile, any properties with a value of
+	<!-- Properties file related properties and tasks -->
+	<property environment="env"/>
+	<property file="local.properties"/>
+	<property file="project.properties"/>
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	<echo message="Using properties file of ${properties.file}."/>
+	<available file="${properties.file}" property="properties.file.exists"/>
+	<fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}"/>
+	<!-- Generic properties -->
+	<property name="log.dir" value="${basedir}/logs"/>
+	<property name="working.dir" value="${basedir}/working"/>
+	<property name="temp.dir" value="${working.dir}/temp"/>
+	<!-- Install Time properties -->
+	<!-- Source and target directories -->
+	<property name="bda-utils.dir" value="bda-utils"/>
+	<property name="tools.dir" value="${basedir}/${tools.dist.relative.dir}"/>
+	<property name="common.dir.src" value="${basedir}/${common.dist.relative.dir}"/>
+	<property name="common.dir.dest" value="${working.dir}/${common.dist.relative.dir}"/>
+	<property name="lib.dir.src" value="${basedir}/${lib.dist.relative.dir}"/>
+	<property name="tomcat-conf.dir.dest" value="${working.dir}/${tomcat-conf.dist.relative.dir}"/>
+	<property name="db.dir.src" value="${basedir}/${db.dist.relative.dir}"/>
+	<property name="db.dir.dest" value="${working.dir}/${db.dist.relative.dir}"/>
+	<property name="db-install.dir.dest" value="${working.dir}/${db-install.dist.relative.dir}"/>
+	<property name="db-upgrade.dir.dest" value="${working.dir}/${db-upgrade.dist.relative.dir}"/>
+	<!-- *-ds.xml and WAR -->
+	<property name="protExpress-war.dir.dist" value="${basedir}/${protExpress-war.dist.relative.dir}"/>
+	<property name="protExpress-war.ds.file" value="protExpress-ds.xml"/>
+	<property name="protExpress-war.app-sec-conf.file" value="ApplicationSecurityConfig.xml"/>
+	<property name="protExpress-war.hibernate.file" value="hibernate.cfg.xml"/>
+	<property name="protExpress-war.war.file" value="protExpress.war"/>
+	<property name="protExpress-grid.war.file" value="ProtExpressGridApp.war"/>
+	<property name="protExpress-grid.wsrf.dir" value="wsrf"/>
+	<property name="protexpress-grid.application.name" value="ProtExpressGridService"/>
+	<property name="protExpress-grid.dir.dist" value="${basedir}/${protExpress-grid.dist.relative.dir}"/>
+	<!-- Paths -->
+	<path id="bda-utils.classpath">
+		<fileset dir="${bda-utils.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<!-- Task definitions -->
+	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/antunit-1.0.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="xmlconfig" classname="com.xmlconfig.anttask.XmlConfig" classpathref="bda-utils.classpath"/>
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${bda-utils.dir}/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${bda-utils.dir}/bcel-5.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-httpclient-3.0.1.jar"/>
+			<pathelement location="${bda-utils.dir}/commons-logging-1.0.4.jar"/>
+			<pathelement location="${bda-utils.dir}/ivy-1.3.1.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef resource="liquibasetasks.properties" classpathref="bda-utils.classpath"/>
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpathref="bda-utils.classpath"/>
+	<!-- Conditionals -->
+	<available file="${tomcat.home}/conf/server.xml" property="tomcat.exists"/>
+	<!-- protExpress-ear can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
+	<switch value="${database.type}">
+		<case value="oracle">
+			<property name="database.dialect" value="org.hibernate.dialect.OracleDialect"/>
+			<property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.3.0.jar"/>
+			<property name="database.driver" value="oracle.jdbc.driver.OracleDriver"/>
+			<property name="db-upgrade.list.file" value="${db-upgrade.oracle.list.file}"/>
+			<property name="db-upgrade.conf.file" value="${db-upgrade.oracle.conf.file}"/>
+			<property name="database.schema" value="${database.name}"/>
+		</case>
+		<case value="mysql">
+			<property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+			<property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.5.jar"/>
+			<property name="database.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="db-upgrade.list.file" value="${db-upgrade.mysql.list.file}"/>
+			<property name="db-upgrade.conf.file" value="${db-upgrade.mysql.conf.file}"/>
+			<property name="database.schema" value="${database.name}"/>
+		</case>
+		<case value="postgresql">
+			<property name="database.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="database.driver.file" value="${bda-utils.dir}/postgresql-jdbc3-8.3-603.jar"/>
+			<property name="database.driver" value="org.postgresql.Driver"/>
+			<property name="db-upgrade.list.file" value="${db-upgrade.postgresql.list.file}"/>
+			<property name="db-upgrade.conf.file" value="${db-upgrade.postgresql.conf.file}"/>
+			<property name="database.schema" value="public"/>
+		</case>
+		<default>
+			<fail message="Invalid database type ${database.type}"/>
+		</default>
+	</switch>
+	<path id="jdbc.driver.classpath">
+		<pathelement location="${database.driver.file}"/>
+	</path>
+	<!-- figure out whether to use install-properties.template or upgrade-proprties.template based on the name of the properties file -->
+	<propertyregex property="properties.file.type" input="${properties.file}" regexp=".*(install|upgrade).*" select="\1"/>
+	<echo message="Properties file type = ${properties.file.type}"/>
+	<switch value="${properties.file.type}">
+		<case value="install">
+			<property name="properties.template.file" value="install-properties.template"/>
+		</case>
+		<case value="upgrade">
+			<property name="properties.template.file" value="upgrade-properties.template"/>
+		</case>
+		<default>
+			<fail message="Property file name must include 'install' or 'upgrade' so it can be determined which properties template should be used. If you are not certain include 'upgrade' in the name of your proeprties file."/>
+		</default>
+	</switch>
+	<!-- Includes-->
+	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml"/>
+	<!-- Read db configs from existing ds.xml if it exists for use in upgrade installs, if already set in properties file values from properties file will be used -->
+	<available file="${jboss.home}/server/${jboss.server.name}/deploy/${protExpress-war.ds.file}" property="ds.exists"/>
+	<if>
+		<isset property="ds.exists"/>
+		<then>
+			<jboss-read-dbconfig jboss.ds-xml.file="${protExpress-war.ds.file}"/>
+		</then>
+		<else>
+			<echo message="Warning- could not find ${jboss.home}/server/${jboss.server.name}/deploy/${protExpress-war.ds.file}"/>
+		</else>
+	</if>
+	<!-- There is any issue with copying files with a filtersfile, any properties with a value of
         another property do not get expanded (xx=${yy} @xx@ will be replaced with ${yy} not the
         value).  I have defined a filter set below for these properties, I then two two copies
         one to the resource.dir.temp using the filterset and then one to the desired directory
@@ -184,229 +163,182 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         properties file please add them to the filterset-pre below.
          Also you should include properties that are declared in this file, like database info below.
     -->
-    <property name="resource.dir.temp" value="${working.dir}/tmp" />
-    <filterset id="filterset.pre">
-        <filter token="application.base.path" value="${application.base.path}"/>
-        <filter token="application.url" value="${application.url}"/>
-        <filter token="database.url" value="${database.url}"/>
-        <filter token="database.system.url" value="${database.system.url}"/>
-        <filter token="jboss.home" value="${jboss.home}"/>
-        <!-- added internal properties that may be used in a filtered copy -->
-        <filter token="database.driver" value="${database.driver}"/>
-        <filter token="database.dialect" value="${database.dialect}"/>
-        <filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
-        <!-- added for liquibase -->
-        <filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
-    </filterset>
-
-
-    <!-- Start logging -->
-    <mkdir dir="${log.dir}" />
-    <tstamp>
-        <format property="install.time" pattern="yyyy-MM-dd-HH-mm" />
-    </tstamp>
-    <record name="${log.dir}/install-${install.time}.log" action="start"/>
-
-
-    <!-- Installer section -->
-    <target name="diag">
-        <echoproperties/>
-    </target>
-
-    <!-- Clean up destination directory -->
-    <target name="install:clean" description="Removes all files from the local filesystem">
-        <sleep seconds="5" />
-        <delete dir="${tomcat.home}" quiet="false" />
-    </target>
-
-    <!-- Does directory management and copy some files with filtering to ensure token expansion -->
-    <target name="install:init" description="Does directory management to initialize install">
-        <mkdir dir="${working.dir}" />
-        <delete dir="${working.dir}"/>
-        <mkdir dir="${working.dir}" />
-        <mkdir dir="${resource.dir.temp}"/>
-        <!-- Copy files to ensure values containing variables are expanded, such properties are stored in filterset.pre and then copy with filter files -->
-        <copy todir="${resource.dir.temp}" filtering="true">
-            <fileset dir="${common.dir.src}">
-                <include name="**/*"/>
-            </fileset>
-            <filterset refid="filterset.pre"/>
-        </copy>
-        <copy todir="${common.dir.dest}" filtering="true">
-            <fileset dir="${resource.dir.temp}">
-                <include name="**/*"/>
-            </fileset>
-            <filterset>
-                <filtersfile file="${properties.file}"/>
-                <filtersfile file="project.properties"/>
-            </filterset>
-        </copy>
-        <delete dir="${resource.dir.temp}"/>
-    </target>
-
-    <!-- Wrapper install database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database also calls upgrade:database -->
-
-    <target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="install:init">
-        <echoproperties prefix="database"/>
-        <property name="db.dir.temp" value="${working.dir}/tmp"/>
-        <mkdir dir="${db.dir.temp}"/>
-        <copy todir="${db.dir.temp}" filtering="true">
-            <fileset dir="${db.dir.src}">
-                <include name="**/*"/>
-            </fileset>
-            <filterset refid="filterset.pre"/>
-        </copy>
-        <copy todir="${db.dir.dest}" filtering="true">
-            <fileset dir="${db.dir.temp}">
-                <include name="**/*"/>
-            </fileset>
-            <filterset>
-                <filtersfile file="${properties.file}"/>
-                <filtersfile file="project.properties"/>
-            </filterset>
-        </copy>
-    </target>
-
-    <target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database"
-        depends="
+	<property name="resource.dir.temp" value="${working.dir}/tmp"/>
+	<filterset id="filterset.pre">
+		<filter token="application.base.path" value="${application.base.path}"/>
+		<filter token="application.url" value="${application.url}"/>
+		<filter token="database.url" value="${database.url}"/>
+		<filter token="database.system.url" value="${database.system.url}"/>
+		<filter token="jboss.home" value="${jboss.home}"/>
+		<!-- added internal properties that may be used in a filtered copy -->
+		<filter token="database.driver" value="${database.driver}"/>
+		<filter token="database.dialect" value="${database.dialect}"/>
+		<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
+		<!-- added for liquibase -->
+		<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
+	</filterset>
+	<!-- Start logging -->
+	<mkdir dir="${log.dir}"/>
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm"/>
+	</tstamp>
+	<record name="${log.dir}/install-${install.time}.log" action="start"/>
+	<!-- Installer section -->
+	<target name="diag">
+		<echoproperties/>
+	</target>
+	<!-- Clean up destination directory -->
+	<target name="install:clean" description="Removes all files from the local filesystem">
+		<sleep seconds="5"/>
+		<delete dir="${tomcat.home}" quiet="false"/>
+	</target>
+	<!-- Does directory management and copy some files with filtering to ensure token expansion -->
+	<target name="install:init" description="Does directory management to initialize install">
+		<mkdir dir="${working.dir}"/>
+		<delete dir="${working.dir}"/>
+		<mkdir dir="${working.dir}"/>
+		<mkdir dir="${resource.dir.temp}"/>
+		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in filterset.pre and then copy with filter files -->
+		<copy todir="${resource.dir.temp}" filtering="true">
+			<fileset dir="${common.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="filterset.pre"/>
+		</copy>
+		<copy todir="${common.dir.dest}" filtering="true">
+			<fileset dir="${resource.dir.temp}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy>
+		<delete dir="${resource.dir.temp}"/>
+	</target>
+	<!-- Wrapper install database target, depends on both MySQL and Oracle sub-targets, ifs should ensure only one is run.  Target path can be skipped by exlude.database also calls upgrade:database -->
+	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="install:init">
+		<echoproperties prefix="database"/>
+		<property name="db.dir.temp" value="${working.dir}/tmp"/>
+		<mkdir dir="${db.dir.temp}"/>
+		<copy todir="${db.dir.temp}" filtering="true">
+			<fileset dir="${db.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="filterset.pre"/>
+		</copy>
+		<copy todir="${db.dir.dest}" filtering="true">
+			<fileset dir="${db.dir.temp}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy>
+	</target>
+	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database" depends="
         install:init,
         install:database:prep
         ">
-        <!-- Drop all schema objects or re-create the db -->
-        <database-clean />
-        <!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
-        <switch value="${database.type}">
-            <case value="oracle">
-                <database-install
-                    db.install.create.file.list="${db.install.create.oracle.file.list}"
-                    sql.delimiter="/"
-                    sql.delimitertype="row"
-                    />
-            </case>
-            <case value="postgresql">
-                <database-install
-                    db.install.create.file.list="${db.install.create.postgresql.file.list}"
-                    sql.delimiter="/"
-                    sql.delimitertype="row"
-                    />
-            </case>
-            <case value="mysql">
-                <database-install
-                    db.install.create.file.list="${db.install.create.mysql.file.list}"
-                    />
-            </case>
-        </switch>
-        <database-upgrade database.changelog.file="${db-upgrade.dir.dest}/${database.type}/db-upgrade.xml"/>
-    </target>
+		<!-- Drop all schema objects or re-create the db -->
+		<database-clean/>
+		<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
+		<switch value="${database.type}">
+			<case value="oracle">
+				<database-install db.install.create.file.list="${db.install.create.oracle.file.list}" sql.delimiter="/" sql.delimitertype="row"/>
+			</case>
+			<case value="postgresql">
+				<database-install db.install.create.file.list="${db.install.create.postgresql.file.list}" sql.delimiter="/" sql.delimitertype="row"/>
+			</case>
+			<case value="mysql">
+				<database-install db.install.create.file.list="${db.install.create.mysql.file.list}"/>
+			</case>
+		</switch>
+		<database-upgrade database.changelog.file="${db-upgrade.dir.dest}/${database.type}/db-upgrade.xml"/>
+	</target>
+	<target name="install:tomcat:binaries" description="Unzip JBoss binary" unless="exclude.jboss">
+		<delete dir="${application.base.path}"/>
+		<unzip dest="${application.base.path}" src="${tools.dir}/${tomcat.binaries.file}"/>
+		<move todir="${tomcat.home}">
+			<fileset dir="${application.base.path}/${tomcat.binaries.unzip.dir.name}"/>
+		</move>
+		<if>
+			<os family="unix"/>
+			<then>
+				<chmod dir="${tomcat.home}/bin" perm="ugo+rx" includes="**/*.sh"/>
+			</then>
+		</if>
+	</target>
+	<target name="install:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+		<!-- added to ensure working.dirs are fresh for our install -->
+		<delete dir="${tomcat.home}/server/${tomcat.server.name}/tmp"/>
+		<delete dir="${tomcat.home}/server/${tomcat.server.name}/work"/>
+		<copy file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true"/>
+		<copy todir="${tomcat.home}/bin" file="${tomcat-conf.dir.dest}/startup.bat"/>
+		<copy todir="${tomcat.home}/bin" file="${tomcat-conf.dir.dest}/startup.sh"/>
+		<property name="tomcat.temp.dir" value="${working.dir}/tomcat"/>
+		<mkdir dir="${tomcat.temp.dir}"/>
+		<copy file="${lib.dir.src}/naming-factory.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/mail-1.4.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/activation-1.0.2.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/jaxb-api-2.1.jar" todir="${tomcat.home}/common/endorsed/" overwrite="true"/>
+	</target>
+	<target name="install:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
+	<target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+		<delete failonerror="false">
+			<fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+		<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
+			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
+	<target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+		<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
+			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+	<target name="install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+		<replace dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}">
+			<include name="**/*.wsdl"/>
+		</replace>
+		<!-- server-config.wsdd -->
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsddkk">
+			<replace path="/:deployment/:globalConfiguration/:parameter[@name='logicalHost']/@value" withText="${grid.logicalHost}" />
+			<replace path="/:deployment/:globalConfiguration/:parameter[@name='publishHostName']/@value" withText="${grid.publishHostName}" />			
+		</xmltask>
+		<!-- web.xml -->
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xmlkk">
+			<insert path="/web-app/servlet[1]/servlet-class" position="after">
+			<![CDATA[ <init-param><param-name>defaultProtocol</param-name><param-value>${grid.defaultProtocol}</param-value></init-param><init-param><param-name>defaultPort</param-name><param-value>${grid.defaultPort}</param-value></init-param>]]></insert>
+		</xmltask>
+		<!-- cagrid_${protexpress-grid.application.name}/cagrid_${protexpress-grid.application.name}_registration.xml -->
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xmlkk">
+			<replace path="/:ServiceGroupRegistrationParameters/:ServiceGroupEPR/wsa:Address/text()" withText="${grid.index.url}" />
+		</xmltask>
+		<!-- cagrid_${protexpress-grid.application.name}/jndi-config.xml -->
+		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xmlkk">
+			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationName']/:value/text()" withText="${grid.applicationName}"/>
+			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostName']/:value/text()" withText="${grid.applicationHostName}"/>
+			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostPort']/:value/text()" withText="${grid.applicationHostPort}"/>
+		</xmltask>
 
-    <target name="install:tomcat:binaries" description="Unzip JBoss binary" unless="exclude.jboss">
-        <delete dir="${application.base.path}"/>
-        <unzip dest="${application.base.path}" src="${tools.dir}/${tomcat.binaries.file}" />
-        <move todir="${tomcat.home}">
-            <fileset dir="${application.base.path}/${tomcat.binaries.unzip.dir.name}"/>
-        </move>
-        <if>
-            <os family="unix"/>
-            <then>
-                <chmod dir="${tomcat.home}/bin" perm="ugo+rx"
-                         includes="**/*.sh"/>
-             </then>
-         </if>
-    </target>
-
-    <target name="install:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-        <!-- added to ensure working.dirs are fresh for our install -->
-        <delete dir="${tomcat.home}/server/${tomcat.server.name}/tmp"/>
-        <delete dir="${tomcat.home}/server/${tomcat.server.name}/work"/>
-
-        <copy file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
-        <copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
-
-        <copy todir="${tomcat.home}/bin" file="${tomcat-conf.dir.dest}/startup.bat"/>
-        <copy todir="${tomcat.home}/bin" file="${tomcat-conf.dir.dest}/startup.sh"/>
-
-
-        <property name="tomcat.temp.dir" value="${working.dir}/tomcat" />
-        <mkdir dir="${tomcat.temp.dir}" />
-
-
-        <copy file="${lib.dir.src}/naming-factory.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-        <copy file="${lib.dir.src}/mail-1.4.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-
-        <copy file="${lib.dir.src}/activation-1.0.2.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-
-        <copy file="${lib.dir.src}/jaxb-api-2.1.jar"
-            todir="${tomcat.home}/common/endorsed/" overwrite="true"/>
-
-    </target>
-
-
-    <target name="install:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-    
-    </target>
-
-    <target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-        <delete failonerror="false">
-	        <fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
-	        	<include name="**/*" />
-		</fileset> 
-	</delete>
-        <copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
-        
-	<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
-		<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
-			<include name="**/*"/>
-		</fileset>
-	</copy>
- 
-    </target>
-
-    <target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-    
-    </target>
-
-    <target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-        <copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />        
-        
-	<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
-		<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
-			<include name="**/*"/>
-		</fileset>
-	</copy>
- 
-    </target>
-
-
-    <target name="install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
- 
-	<replace dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}">
-		<include name="**/*.wsdl" />
-	</replace>
-	<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
-	<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" token="8080" value="${tomcat.port.http}"/>
-
-	<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd"
-		match="(.*.logicalHost.*.value=.).*(.\/.)" 
-		replace="\1${tomcat.hostname}\2"
-		flags="g"/>
-
-	<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml"
-		match="(\s+.wsa:Address.).*(.\/wsa:Address.)" 
-		replace="\1${grid.index.url}\2"
-		flags="g"/>
 		
- 
-	<property name="poc.science.string" value=" affiliation=&quot;${grid.poc.science.affiliation}&quot; email=&quot;${grid.poc.science.email}&quot; firstName=&quot;${grid.poc.science.name.first}&quot; lastName=&quot;${grid.poc.science.name.last}&quot; phoneNumber=&quot;${grid.poc.science.phone}&quot; role=&quot;${grid.poc.science.role}&quot; "/>
-
-	<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml"
-		match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)"
-		replace="\1${poc.science.string}\2"
-		flags="g" byline="true"/>
-
-	<property name="poc.tech.string" value="${line.separator}
+		<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
+	
+		<property name="poc.science.string" value=" affiliation=&quot;${grid.poc.science.affiliation}&quot; email=&quot;${grid.poc.science.email}&quot; firstName=&quot;${grid.poc.science.name.first}&quot; lastName=&quot;${grid.poc.science.name.last}&quot; phoneNumber=&quot;${grid.poc.science.phone}&quot; role=&quot;${grid.poc.science.role}&quot; "/>
+		<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)" replace="\1${poc.science.string}\2" flags="g" byline="true"/>
+		<property name="poc.tech.string" value="${line.separator}
 &lt;ns9:ResearchCenter displayName=&quot;${grid.poc.tech.researchCenter.displayname}&quot; shortName=&quot;${grid.poc.tech.researchCenter.shortname}&quot; xmlns:ns9=&quot;gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common&quot;&gt;${line.separator}
 &lt;ns9:Address country=&quot;${grid.poc.tech.addr.country}&quot; locality=&quot;${grid.poc.tech.addr.locality}&quot; postalCode=&quot;${grid.poc.tech.addr.postalCode}&quot; stateProvince=&quot;${grid.poc.tech.addr.stateProvince}&quot; street1=&quot;${grid.poc.tech.addr.street1}&quot; street2=&quot;${grid.poc.tech.addr.street2}&quot;/&gt;${line.separator}
 &lt;ns9:pointOfContactCollection&gt;${line.separator}
@@ -414,110 +346,75 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 &lt;/ns9:pointOfContactCollection&gt;${line.separator}
 &lt;/ns9:ResearchCenter&gt;${line.separator}
 "/>
-	<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml"
-		match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;"
-		replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;"
-		flags="sg"/>
-	<echo message="Updating grid registration.xml"/>
- 
- 
-    </target>
-
-    <target name="upgrade:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-        <!-- added to ensure working.dirs are fresh for our install -->
-        <delete dir="${tomcat.home}/server/${tomcat.server.name}/tmp"/>
-        <delete dir="${tomcat.home}/server/${tomcat.server.name}/work"/>
-        <delete dir="${tomcat.home}/webapps/protExpress"/>
-        <delete file="${tomcat.home}/webapps/${protExpress-war.war.file}"/>
-
-        <copy file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
-        <copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
-
-
-        <property name="tomcat.temp.dir" value="${working.dir}/tomcat" />
-        <mkdir dir="${tomcat.temp.dir}" />
-
-
-        <copy file="${lib.dir.src}/naming-factory.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-        <copy file="${lib.dir.src}/mail-1.4.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-
-        <copy file="${lib.dir.src}/activation-1.0.2.jar"
-            todir="${tomcat.home}/common/lib/" overwrite="true"/>
-
-        <copy file="${lib.dir.src}/jaxb-api-2.1.jar"
-            todir="${tomcat.home}/common/endorsed/" overwrite="true"/>
-
-    </target>
-
-
-    <!-- Wrapper target to configure jboss container, not deployed application -->
-    <target name="install:tomcat:configure" description="Configure tomcat-war" unless="exclude.jboss"
-        depends="install:tomcat:binaries,
+		<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;" replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;" flags="sg"/>
+		<echo message="Updating grid registration.xml"/>
+	</target>
+	<target name="upgrade:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
+		<!-- added to ensure working.dirs are fresh for our install -->
+		<delete dir="${tomcat.home}/server/${tomcat.server.name}/tmp"/>
+		<delete dir="${tomcat.home}/server/${tomcat.server.name}/work"/>
+		<delete dir="${tomcat.home}/webapps/protExpress"/>
+		<delete file="${tomcat.home}/webapps/${protExpress-war.war.file}"/>
+		<copy file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true"/>
+		<property name="tomcat.temp.dir" value="${working.dir}/tomcat"/>
+		<mkdir dir="${tomcat.temp.dir}"/>
+		<copy file="${lib.dir.src}/naming-factory.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/mail-1.4.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/activation-1.0.2.jar" todir="${tomcat.home}/common/lib/" overwrite="true"/>
+		<copy file="${lib.dir.src}/jaxb-api-2.1.jar" todir="${tomcat.home}/common/endorsed/" overwrite="true"/>
+	</target>
+	<!-- Wrapper target to configure jboss container, not deployed application -->
+	<target name="install:tomcat:configure" description="Configure tomcat-war" unless="exclude.jboss" depends="install:tomcat:binaries,
         -install:tomcat:configure:ports
-        ">
-
-    </target>
-    <!-- Configure ports used by JBOSS (either bindings or editing jboss config.files) -->
-    <target name="-install:tomcat:configure:ports" description="Configure protExpress-war" unless="exclude.jboss">
-        <xmlconfig in="${tomcat.home}/conf/server.xml" verbose="false">
-            <update path="(//Connector)[@port=8080]/@port" value="${tomcat.port.http}" />
-            <update path="(//Connector)[@redirectPort=8443]/@redirectPort" value="${tomcat.port.ssl}" />
-            <update path="(//Connector)[@port=8009]/@port" value="${tomcat.port.ajp}" />
-            <update path="(//Connector)[@port=8443]/@port" value="${tomcat.port.ssl}" />
-            <update path="(//Server)[@port=8005]/@port" value="${tomcat.port.shutdown}" />
-        </xmlconfig>
-    </target>
-
-    <!-- Add custom login-config.xml content from snippet from protExpress-war/software/resources/deploy/login-config.${auth.type}-block.xml -->
-    <target name="-install:tomcat:configure:jaas" unless="exclude.tomcat">
-
-    </target>
-
-
-    <!-- Calls to bda macros for basic functionality -->
-    <target name="install:tomcat:stop" if="tomcat.exists" unless="exclude.tomcat">
-        <tomcat-stop tomcat.home="${tomcat.home}"/>
-    </target>
-    <target name="install:tomcat:start"  unless="exclude.jboss">
-        <if>
-            <not>
-                <isset property="exclude.start.servers"/>
-            </not>
-            <then>
-                <tomcat-start tomcat.home="${tomcat.home}"/>
-            </then>
-        </if>
-    </target>
-    <target name="install:validation:pre-install">
-        <validate-pre-install
-            ant.check.version="${ant.minimum.version}"
-            java.check.version.major="${java.major.version}"
-            java.check.version.minor="${java.minor.version}"
-            database.version="${mysql.minimum.version}"
-            />
-    </target>
-    <target name="install:validation:pre-install:ports">
-        <validate-ports-preinstall />
-    </target>
-    <target name="install:validation:post-install">
-        <if>
-            <not>
-                <isset property="exclude.start.servers"/>
-            </not>
-            <then>
-                <validate-post-install />
-            </then>
-        </if>
-    </target>
-    <target name="-install:jboss:configure:update-shutdown" unless="exclude.jboss">
-        <jboss-update-shutdown />
-    </target>
-
-    <!-- Wrapper target to deploy JBOSS container -->
-    <target name="install:tomcat" unless="exclude.jboss"
-        depends="
+        "/>
+	<!-- Configure ports used by JBOSS (either bindings or editing jboss config.files) -->
+	<target name="-install:tomcat:configure:ports" description="Configure protExpress-war" unless="exclude.jboss">
+		<xmlconfig in="${tomcat.home}/conf/server.xml" verbose="false">
+			<update path="(//Connector)[@port=8080]/@port" value="${tomcat.port.http}"/>
+			<update path="(//Connector)[@redirectPort=8443]/@redirectPort" value="${tomcat.port.ssl}"/>
+			<update path="(//Connector)[@port=8009]/@port" value="${tomcat.port.ajp}"/>
+			<update path="(//Connector)[@port=8443]/@port" value="${tomcat.port.ssl}"/>
+			<update path="(//Server)[@port=8005]/@port" value="${tomcat.port.shutdown}"/>
+		</xmlconfig>
+	</target>
+	<!-- Add custom login-config.xml content from snippet from protExpress-war/software/resources/deploy/login-config.${auth.type}-block.xml -->
+	<target name="-install:tomcat:configure:jaas" unless="exclude.tomcat"/>
+	<!-- Calls to bda macros for basic functionality -->
+	<target name="install:tomcat:stop" if="tomcat.exists" unless="exclude.tomcat">
+		<tomcat-stop tomcat.home="${tomcat.home}"/>
+	</target>
+	<target name="install:tomcat:start" unless="exclude.jboss">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<tomcat-start tomcat.home="${tomcat.home}"/>
+			</then>
+		</if>
+	</target>
+	<target name="install:validation:pre-install">
+		<validate-pre-install ant.check.version="${ant.minimum.version}" java.check.version.major="${java.major.version}" java.check.version.minor="${java.minor.version}" database.version="${mysql.minimum.version}"/>
+	</target>
+	<target name="install:validation:pre-install:ports">
+		<validate-ports-preinstall/>
+	</target>
+	<target name="install:validation:post-install">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<validate-post-install/>
+			</then>
+		</if>
+	</target>
+	<target name="-install:jboss:configure:update-shutdown" unless="exclude.jboss">
+		<jboss-update-shutdown/>
+	</target>
+	<!-- Wrapper target to deploy JBOSS container -->
+	<target name="install:tomcat" unless="exclude.jboss" depends="
         install:check,
         install:validation:pre-install,
         install:tomcat:stop,
@@ -531,11 +428,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         install:tomcat:protExpress-grid:re-configure,
         install:tomcat:protExpress-grid,
         install:tomcat:start
-        " />
-
-    <!-- Wrapper target to deploy all containers to one server -->
-    <target name="install" description="Installs and configures JBOSS, creates database, and deploys application"
-        depends="
+        "/>
+	<!-- Wrapper target to deploy all containers to one server -->
+	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application" depends="
         install:check,
         install:validation:pre-install,
         install:tomcat:stop,
@@ -547,100 +442,63 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         install:tomcat:start,
         install:validation:post-install
         "/>
-
-    <!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
-    <target name="install:tomcat:protExpress-war:re-configure" unless="exclude.jboss">
-        <mkdir dir="${temp.dir}/protExpress-war"/>
-        <delete dir="${temp.dir}/protExpress-war"/>
-        <mkdir dir="${temp.dir}/protExpress-war"/>
-        <unzip src="${protExpress-war.dir.dist}/${protExpress-war.war.file}" dest="${temp.dir}/protExpress-war"/>
-        <!--
+	<!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
+	<target name="install:tomcat:protExpress-war:re-configure" unless="exclude.jboss">
+		<mkdir dir="${temp.dir}/protExpress-war"/>
+		<delete dir="${temp.dir}/protExpress-war"/>
+		<mkdir dir="${temp.dir}/protExpress-war"/>
+		<unzip src="${protExpress-war.dir.dist}/${protExpress-war.war.file}" dest="${temp.dir}/protExpress-war"/>
+		<!--
         <copy todir="${temp.dir}/protExpress-war/" file="${tomcat-conf.dir.dest}/protExpress-ds.xml"/>
         -->
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_INSTALL" value="${ldap.install}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_HOSTNAME" value="${ldap.url}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="INSTALLATION_LOCATION" value="${build.node}"/>
-	<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="UPT_URL" value="${upt.url}"/>
-	
-        
-        <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USERNAME" value="${database.user}"/>
-        <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USER_PASSWORD" value="${database.password}"/>
-        <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_SERVER_NAME" value="${database.server}"/>
-        <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_PORT_NUMBER" value="${database.port}"/>
-        <replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_NAME" value="${database.name}"/>
-
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_USERNAME" value="${database.user}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_USER_PASSWORD" value="${database.password}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_SERVER_NAME" value="${database.server}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_PORT_NUMBER" value="${database.port}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_NAME" value="${database.name}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_HOSTNAME" value="${ldap.url}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
-
-
-        <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_USERNAME" value="${database.user}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_USER_PASSWORD" value="${database.password}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_SERVER_NAME" value="${database.server}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_PORT_NUMBER" value="${database.port}"/>
-        <replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_NAME" value="${database.name}"/>
-
-        <xmlconfig in="${temp.dir}/protExpress-war/META-INF/context.xml" verbose="false">
-            <update path="(//Resource)/@mail.smtp.host" value="${mail.smtp.host}" />
-            <update path="(//Resource)/@mail.smtp.port" value="${mail.smtp.port}" />
-        </xmlconfig>
-
-
-        <move file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" tofile="${protExpress-war.dir.dist}/${protExpress-war.war.file}.org"/>
-
-        <war destfile="${protExpress-war.dir.dist}/${protExpress-war.war.file}"
-            basedir="${temp.dir}/protExpress-war"
-            compress="false"
-            webxml="${temp.dir}/protExpress-war/WEB-INF/web.xml"
-            />
-    </target>
-
-
-
-
-    <!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
-    <target name="install:tomcat:protExpress-grid:re-configure" unless="exclude.jboss">
-        <mkdir dir="${temp.dir}/protExpress-war"/>
-        <delete dir="${temp.dir}/protExpress-war"/>
-        <mkdir dir="${temp.dir}/protExpress-war"/>
-        <unzip src="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" dest="${temp.dir}/protExpress-grid"/>
-        
-        <unjar src="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" dest="${temp.dir}/protExpress-grid-orm-jar"/>
-        
-      	
-	<xmlconfig in="${temp.dir}/protExpress-grid-orm-jar/hibernate.cfg.xml" verbose="false">
-	    <update path="(//session-factory)/property[@name='connection.url']" value="${database.url}" />
-	    <update path="(//session-factory)/property[@name='connection.username']" value="${database.user}" />
-	    <update path="(//session-factory)/property[@name='connection.password']" value="${database.password}" />
-	</xmlconfig>
-
-	<jar destfile="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" basedir="${temp.dir}/protExpress-grid-orm-jar" update="false" manifest="${temp.dir}/protExpress-grid-orm-jar/META-INF/MANIFEST.MF"/>	
-	
-	<war destfile="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}"
-	    basedir="${temp.dir}/protExpress-grid"
-	    compress="false"
-	    webxml="${temp.dir}/protExpress-grid/WEB-INF/web.xml"
-	/>	
-    </target>
-
-
-
-
-
-
-
-
-
-    <!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
-    <target name="upgrade:tomcat" unless="exclude.jboss"
-        depends="
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_INSTALL" value="${ldap.install}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_HOSTNAME" value="${ldap.url}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="INSTALLATION_LOCATION" value="${build.node}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/web.xml" token="UPT_URL" value="${upt.url}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USERNAME" value="${database.user}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_USER_PASSWORD" value="${database.password}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_SERVER_NAME" value="${database.server}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_PORT_NUMBER" value="${database.port}"/>
+		<replace file="${temp.dir}/protExpress-war/WEB-INF/classes/jdbc.properties" token="DB_NAME" value="${database.name}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_USERNAME" value="${database.user}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_USER_PASSWORD" value="${database.password}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_SERVER_NAME" value="${database.server}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_PORT_NUMBER" value="${database.port}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="DB_NAME" value="${database.name}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_HOSTNAME" value="${ldap.url}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHBASE" value="${ldap.basedn}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/jaas.config" token="LDAP_SEARCHPREFIX" value="${ldap.prefix}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_USERNAME" value="${database.user}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_USER_PASSWORD" value="${database.password}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_SERVER_NAME" value="${database.server}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_PORT_NUMBER" value="${database.port}"/>
+		<replace file="${temp.dir}/protExpress-war/META-INF/context.xml" token="DB_NAME" value="${database.name}"/>
+		<xmlconfig in="${temp.dir}/protExpress-war/META-INF/context.xml" verbose="false">
+			<update path="(//Resource)/@mail.smtp.host" value="${mail.smtp.host}"/>
+			<update path="(//Resource)/@mail.smtp.port" value="${mail.smtp.port}"/>
+		</xmlconfig>
+		<move file="${protExpress-war.dir.dist}/${protExpress-war.war.file}" tofile="${protExpress-war.dir.dist}/${protExpress-war.war.file}.org"/>
+		<war destfile="${protExpress-war.dir.dist}/${protExpress-war.war.file}" basedir="${temp.dir}/protExpress-war" compress="false" webxml="${temp.dir}/protExpress-war/WEB-INF/web.xml"/>
+	</target>
+	<!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
+	<target name="install:tomcat:protExpress-grid:re-configure" unless="exclude.jboss">
+		<mkdir dir="${temp.dir}/protExpress-war"/>
+		<delete dir="${temp.dir}/protExpress-war"/>
+		<mkdir dir="${temp.dir}/protExpress-war"/>
+		<unzip src="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" dest="${temp.dir}/protExpress-grid"/>
+		<unjar src="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" dest="${temp.dir}/protExpress-grid-orm-jar"/>
+		<xmlconfig in="${temp.dir}/protExpress-grid-orm-jar/hibernate.cfg.xml" verbose="false">
+			<update path="(//session-factory)/property[@name='connection.url']" value="${database.url}"/>
+			<update path="(//session-factory)/property[@name='connection.username']" value="${database.user}"/>
+			<update path="(//session-factory)/property[@name='connection.password']" value="${database.password}"/>
+		</xmlconfig>
+		<jar destfile="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" basedir="${temp.dir}/protExpress-grid-orm-jar" update="false" manifest="${temp.dir}/protExpress-grid-orm-jar/META-INF/MANIFEST.MF"/>
+		<war destfile="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" basedir="${temp.dir}/protExpress-grid" compress="false" webxml="${temp.dir}/protExpress-grid/WEB-INF/web.xml"/>
+	</target>
+	<!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
+	<target name="upgrade:tomcat" unless="exclude.jboss" depends="
         upgrade:check,
         install:validation:pre-install,
         install:tomcat:stop,
@@ -650,11 +508,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         install:tomcat:protExpress-grid:re-configure,
         install:tomcat:protExpress-grid,
         install:tomcat:start
-        " />
-
-    <!-- Wrapper target to upgrade all container. Does not install or configure binaries -->
-    <target name="upgrade" description="Deploys application and runs incremental database build"
-        depends="
+        "/>
+	<!-- Wrapper target to upgrade all container. Does not install or configure binaries -->
+	<target name="upgrade" description="Deploys application and runs incremental database build" depends="
         upgrade:check,
         upgrade:init,
         install:validation:pre-install,
@@ -664,85 +520,71 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
         upgrade:tomcat,
         install:validation:post-install
         "/>
-
-    <target name="upgrade:database" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
-        depends="
+	<target name="upgrade:database" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-upgrade database.changelog.file="${db-upgrade.dir.dest}/${database.type}/db-upgrade.xml"/>
-    </target>
-
-
-    <target name="upgrade:database:gencl" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
-        depends="
+		<database-upgrade database.changelog.file="${db-upgrade.dir.dest}/${database.type}/db-upgrade.xml"/>
+	</target>
+	<target name="upgrade:database:gencl" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-genchangelog/>
-    </target>
-
-    <target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
-        depends="
+		<database-genchangelog/>
+	</target>
+	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-tag/>
-    </target>
-
-    <target name="upgrade:database:rollback" description="Rolls back database to previous tagged version using rollback scripts." unless="exclude.database"
-        depends="
+		<database-tag/>
+	</target>
+	<target name="upgrade:database:rollback" description="Rolls back database to previous tagged version using rollback scripts." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-rollback/>
-    </target>
-
-    <target name="database:diff" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
-        depends="
+		<database-rollback/>
+	</target>
+	<target name="database:diff" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-diff/>
-    </target>
-
-    <target name="database:doc" description="Generates database documentation." unless="exclude.database"
-        depends="
+		<database-diff/>
+	</target>
+	<target name="database:doc" description="Generates database documentation." unless="exclude.database" depends="
         install:init,
         install:database:prep,
         upgrade:init
         ">
-        <database-doc/>
-    </target>
-
-    <target name="upgrade:init">
-        <echo  message="Checking if database properties exist.  If they do not on an upgrade install then ${jboss.home}/server/${jboss.server.name}/deploy/${bda-blueprints-webapp.ds.file} may not exist."/>
-        <property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
-        <properties-exist properties.list="${db.prop.list}"/>
-    </target>
-    <target name="install:check">
-        <if>
-            <not>
-                <contains string="${properties.file}" substring="install"/>
-            </not>
-            <then>
-                <fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'install' in the name."/>
-            </then>
-        </if>
-    </target>
-    <target name="upgrade:check">
-        <if>
-            <not>
-                <contains string="${properties.file}" substring="upgrade"/>
-            </not>
-            <then>
-                <fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'upgrade' in the name."/>
-            </then>
-        </if>
-    </target>
+		<database-doc/>
+	</target>
+	<target name="upgrade:init">
+		<echo message="Checking if database properties exist.  If they do not on an upgrade install then ${jboss.home}/server/${jboss.server.name}/deploy/${bda-blueprints-webapp.ds.file} may not exist."/>
+		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
+		<properties-exist properties.list="${db.prop.list}"/>
+	</target>
+	<target name="install:check">
+		<if>
+			<not>
+				<contains string="${properties.file}" substring="install"/>
+			</not>
+			<then>
+				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'install' in the name."/>
+			</then>
+		</if>
+	</target>
+	<target name="upgrade:check">
+		<if>
+			<not>
+				<contains string="${properties.file}" substring="upgrade"/>
+			</not>
+			<then>
+				<fail message="When calling install targets the properties.file property, '${properties.file}', must contain 'upgrade' in the name."/>
+			</then>
+		</if>
+	</target>
 </project>
