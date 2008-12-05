@@ -16,21 +16,6 @@
             <display:column titleKey="protexpress.page.search.experimentresults.column.dateandtime" >
                 <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${row.auditInfo.lastModifiedDate.time}" />
             </display:column>
-
-            <display:column class="action" titleKey="protexpress.page.search.experimentresults.column.status">
-                <c:choose>
-                    <c:when test="${statusCompleted.booleanValue == Boolean.TRUE}">
-                        <span title="Complete">
-                            <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
-                        </span>
-                    </c:when>
-                    <c:otherwise>
-                        <span title="Incomplete">
-                            <img src="<c:url value="/images/ico_asterisk.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.incomplete.alt" />" />
-                        </span>
-                    </c:otherwise>
-                </c:choose>
-            </display:column>
             <display:column class="action" titleKey="protexpress.page.search.experimentresults.column.edit">
                 <c:if test="${row.auditInfo.creator == currentUser.loginName}">
                     <c:url var="experimentEditUrl" value="/editExperiment/experiment/load.action">

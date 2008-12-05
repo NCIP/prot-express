@@ -47,7 +47,6 @@
                             <th><fmt:message key="protexpress.page.home.recentexperiments.column.experimentname" /></th>
                             <th><fmt:message key="protexpress.page.home.recentexperiments.column.description" /></th>
                             <th><fmt:message key="protexpress.page.home.recentexperiments.column.dateandtime" /></th>
-                            <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.status" /></th>
                             <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.edit" /></th>
                             <th class="action"><fmt:message key="protexpress.page.home.recentexperiments.column.download" /></th>
                         </tr>
@@ -65,20 +64,6 @@
                                 <td><a href="${viewExperimentDetailsUrl}">${experiment.name}</a></td>
                                 <td>${experiment.description}</td>
                                 <td><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${experiment.auditInfo.lastModifiedDate.time}" /></td>
-                                <td class="action">
-                                     <c:choose>
-                                        <c:when test="${experiment.statusCompleted == true}">
-                                            <span title="Complete">
-                                                <img src="<c:url value="/images/ico_check.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.complete.alt" />" />
-                                            </span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span title="Incomplete">
-                                                <img src="<c:url value="/images/ico_asterisk.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.incomplete.alt" />" />
-                                            </span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                  </td>
                                 <td class="action">
                                     <a href="${editExperimentDetailsUrl}"><img src="<c:url value="/images/ico_edit.gif" />" alt="<fmt:message key="protexpress.page.home.recentexperiments.icon.edit.alt" />" /></a>
                                 </td>
