@@ -106,7 +106,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -140,7 +139,6 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
     private String notes;
     private Date datePerformed = new Date();
     private AuditInfo auditInfo = new AuditInfo();
-    private Boolean statusCompleted = Boolean.FALSE;
     private ContactPerson contactPerson = new ContactPerson();
     private List<ExperimentRun> experimentRuns = new ArrayList<ExperimentRun>();
 
@@ -176,27 +174,6 @@ public class Experiment implements Serializable, PersistentObject, Auditable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets the statusCompleted.
-     *
-     * @return the statusCompleted.
-     */
-    @Transient
-    public Boolean getStatusCompleted() {
-        statusCompleted = Boolean.TRUE;
-
-        return statusCompleted;
-    }
-
-    /**
-     * Sets the statusCompleted.
-     *
-     * @param statusCompleted the statusCompleted to set.
-     */
-    public void setStatusCompleted(Boolean statusCompleted) {
-        this.statusCompleted = statusCompleted;
     }
 
     /**
