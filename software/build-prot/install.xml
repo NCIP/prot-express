@@ -62,6 +62,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	<property name="protExpress-war.war.file" value="protExpress.war"/>
 	<property name="protExpress-grid.war.file" value="ProtExpressGridApp.war"/>
 	<property name="protExpress-grid.wsrf.dir" value="wsrf"/>
+	<property name="protExpress-grid.wsrf.src.file" value="wsrf.zip"/>
 	<property name="protexpress-grid.application.name" value="ProtExpressGridService"/>
 	<property name="protExpress-grid.dir.dist" value="${basedir}/${protExpress-grid.dist.relative.dir}"/>
 	<!-- Paths -->
@@ -293,11 +294,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 			</fileset>
 		</delete>
 		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
-		<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
-			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
+		<copy todir="${tomcat.home}/webapps" overwrite="true">
+			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.src.file}">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
+		<unzip src="${tomcat.home}/webapps/${protExpress-grid.wsrf.src.file}" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}"/>
 	</target>
 	<target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
 	<target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
