@@ -38,12 +38,12 @@
                 </td>
                 <td class="title">
                      <protExpress:textfield formName="${formId}" name="protocolApplication.inputs[${e.index}].name"
-                                            nameAlias="protocolApplication_inputs_${e.index}__name" maxlength="200"
+                                            nameAlias="protocolApplication_inputs_${e.index}__name" maxlength="200" cols="25"
                                             readonly="%{attribReadOnly}"  />
                 </td>
                 <td>
                     <protExpress:textfield formName="${formId}" name="protocolApplication.inputs[${e.index}].dataFileURL"
-                                            nameAlias="protocolApplication_inputs_${e.index}__dataFileURL" maxlength="200"
+                                            nameAlias="protocolApplication_inputs_${e.index}__dataFileURL" maxlength="200" cols="25"
                                             readonly="%{attribReadOnly}"  />
                 </td>
                 <td>
