@@ -25,19 +25,6 @@ var Class = {
   }
 }
 
-var $A = Array.from = function(iterable) {
-  if (!iterable) return [];
-  if (iterable.toArray) {
-    return iterable.toArray();
-  } else {
-    var results = [];
-    for (var i = 0, length = iterable.length; i < length; i++)
-      results.push(iterable[i]);
-    return results;
-  }
-}
-
-
 var Abstract = new Object();
 
 Object.extend = function(destination, source) {
@@ -81,7 +68,6 @@ Object.extend(Object, {
 Function.prototype.bind = function() {
   var __method = this, args = $A(arguments), object = args.shift();
   return function() {
-  	if (typeof $A == "function")
     return __method.apply(object, args.concat($A(arguments)));
   }
 }
@@ -89,8 +75,6 @@ Function.prototype.bind = function() {
 Function.prototype.bindAsEventListener = function(object) {
   var __method = this, args = $A(arguments), object = args.shift();
   return function(event) {
-  
-  	if (typeof $A == "function")
     return __method.apply(object, [( event || window.event)].concat(args).concat($A(arguments)));
   }
 }
@@ -534,6 +518,17 @@ Object.extend(Enumerable, {
   member:  Enumerable.include,
   entries: Enumerable.toArray
 });
+var $A = Array.from = function(iterable) {
+  if (!iterable) return [];
+  if (iterable.toArray) {
+    return iterable.toArray();
+  } else {
+    var results = [];
+    for (var i = 0, length = iterable.length; i < length; i++)
+      results.push(iterable[i]);
+    return results;
+  }
+}
 
 Object.extend(Array.prototype, Enumerable);
 
@@ -1604,13 +1599,14 @@ Element.addMethods = function(methods) {
   }
 
   if (typeof HTMLElement != 'undefined') {
-    copy(Element.Methods, HTMLElement.prototype);
+    /* The following code doesn't work with HtmlUnit 1.10: http://tinyurl.com/y7dmst */ 
+    /*copy(Element.Methods, HTMLElement.prototype);
     copy(Element.Methods.Simulated, HTMLElement.prototype, true);
     copy(Form.Methods, HTMLFormElement.prototype);
     [HTMLInputElement, HTMLTextAreaElement, HTMLSelectElement].each(function(klass) {
       copy(Form.Element.Methods, klass.prototype);
     });
-    _nativeExtensions = true;
+    _nativeExtensions = true;*/
   }
 }
 
@@ -1950,7 +1946,7 @@ Form.Methods = {
 
   findFirstElement: function(form) {
     return $(form).getElements().find(function(element) {
-      return element.type != 'hidden' && !element.disabled &&
+      return element.type != 'hidden' && element.type != 'submit' && element.type != 'button' && element.type != 'reset' && !element.disabled &&
         ['input', 'select', 'textarea'].include(element.tagName.toLowerCase());
     });
   },
