@@ -91,7 +91,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 /**
  * Interceptor for prot express.
  *
- * @author Scott Miller
+ * @author Krishna Kanchinadam
  */
 public class CachingHeadersInterceptor extends AbstractInterceptor {
     private static final long serialVersionUID = 1L;
