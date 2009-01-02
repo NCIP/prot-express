@@ -7,6 +7,8 @@
         <interceptors>
             <interceptor name="protExpressParams"
                 class="gov.nih.nci.protexpress.ui.interceptors.DisplayTagParametersInterceptor" />
+            <interceptor name="protExpressCachingHeadersInterceptor"
+                class="gov.nih.nci.protexpress.ui.interceptors.CachingHeadersInterceptor" />
 
             <interceptor-stack name="protExpressParamsPrepareParamsStack">
                 <interceptor-ref name="exception" />
@@ -21,6 +23,7 @@
                 <interceptor-ref name="checkbox" />
                 <interceptor-ref name="staticParams" />
                 <interceptor-ref name="protExpressParams" />
+                <interceptor-ref name="protExpressCachingHeadersInterceptor" />
                 <interceptor-ref name="conversionError" />
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel</param>
@@ -47,6 +50,7 @@
                 <interceptor-ref name="protExpressParams">
                     <param name="excludeParams">dojo\..*</param>
                 </interceptor-ref>
+                <interceptor-ref name="protExpressCachingHeadersInterceptor" />
                 <interceptor-ref name="conversionError" />
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>

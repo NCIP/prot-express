@@ -202,7 +202,10 @@ public final class ExperimentRunHolder {
                 if (input.getOutputOfProtocolApplication() != null) {
                     ProtocolAction predecessorAction = getProtocolActionFromProtocolApplicationIdMap(
                             input.getOutputOfProtocolApplication().getId());
-                    protAction.getPredecessorActionNumbers().add(predecessorAction.getActionSequenceNumber());
+                    Integer predecessorActionNum = predecessorAction.getActionSequenceNumber();
+                    if (!protAction.getPredecessorActionNumbers().contains(predecessorActionNum)) {
+                        protAction.getPredecessorActionNumbers().add(predecessorActionNum);
+                    }
                 } else {
                     includeStartPredecessor = true;
                 }
@@ -231,7 +234,10 @@ public final class ExperimentRunHolder {
                 if (output.getInputToProtocolApplication() == null) {
                     ProtocolAction predecessorAction = getProtocolActionFromProtocolApplicationIdMap(
                             output.getOutputOfProtocolApplication().getId());
-                    endProtocolAction.getPredecessorActionNumbers().add(predecessorAction.getActionSequenceNumber());
+                    Integer predecessorActionNum = predecessorAction.getActionSequenceNumber();
+                    if (!endProtocolAction.getPredecessorActionNumbers().contains(predecessorActionNum)) {
+                        endProtocolAction.getPredecessorActionNumbers().add(predecessorActionNum);
+                    }
                 }
             }
         }
