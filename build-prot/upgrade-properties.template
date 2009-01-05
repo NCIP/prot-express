@@ -1,7 +1,7 @@
 ##############################
 ###  APPLICATION SETTINGS  ###
 ##############################
-application.base.path=
+application.base.path=/usr/local/../local
 build.node=
 
 ########
