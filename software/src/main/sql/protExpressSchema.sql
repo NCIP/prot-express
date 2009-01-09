@@ -9,7 +9,7 @@ drop table IF EXISTS protapp_inputs CASCADE;
 drop table IF EXISTS protapp_outputs CASCADE;
 drop table IF EXISTS protocol CASCADE;
 drop table IF EXISTS protocol_application CASCADE;
-drop sequence hibernate_sequence;
+drop sequence IF EXISTS hibernate_sequence;
 create table Country (id int8 not null, code varchar(255) unique, iso3 varchar(255) unique, name varchar(255), numcode varchar(255), printableName varchar(255), primary key (id));
 create table RegistrationRequest (id int8 not null, address1 varchar(200) not null, address2 varchar(200), city varchar(50) not null, email varchar(50) not null, fax varchar(25), firstName varchar(30) not null, lastName varchar(50) not null, loginName varchar(30), middleInitial varchar(1), organization varchar(200) not null, phone varchar(25) not null, province varchar(50), role varchar(200) not null, zip varchar(10) not null, country_id int8 not null, state_id int8, primary key (id));
 create table State (id int8 not null, code varchar(255) unique, name varchar(255), primary key (id));
