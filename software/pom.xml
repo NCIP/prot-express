@@ -200,6 +200,7 @@
     <build>
         <finalName>protExpress</finalName>
         <plugins>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -439,6 +440,22 @@
     <!-- Reporting configuration -->
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>project-team</report>
+                            <report>mailing-list</report>
+                            <report>cim</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
