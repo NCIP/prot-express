@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta name="" http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="stylesheet" href="css/style.css" media="screen" type="text/css">
+        <link rel="stylesheet" href="css/protExpress.css" media="screen" type="text/css">
+    </head>
+    <body onload="">
+        <table cellspacing="0" cellpadding="0" width="540" style="font:arial;font-size:small;">
+            <tr>
+                <td>
+                    <ol>
+                        <li style="margin-top:-10px"><h3>Generate a UML Model in Enterprise Architect</h3>
+                            <ol>
+                                <li>Create a New Project.</li>
+                                <li>In the Project Browser view, add the Java packages that will be used.</li>
+                                <li>In <strong>Logical View->Logical Model</strong>, create the package structure.</li>
+                                <li>Add the appropriate classes, create the diagrams. For more information, refer to the ....</li>
+                                <li>Ensure that all classes and class attributes have a description. This description will be when the model is loaded (as an XMI file) into SIW.</li>
+                            </ol>
+                        </li>   
+                        <li style="margin-top:-10px"><h3>Export the XMI file from EA</h3>
+                            <ol>
+                                <li>Select <strong>Logical View</strong> in the project browser.</li>
+                                <li>Check <strong>Enable Full EA Roundtrip</strong>.</li>
+                                <li>Export the model to an XMI File, and save it to the local disk.</li>
+                            </ol>
+                        </li>         
+                        <li style="margin-top:-10px"><h3>Annotate the model (xmi file)</h3>
+                            <ol>
+                                <li>Start <a href="http://cadsrsiw.nci.nih.gov">Semantic Integration Workbench (SIW).</a></li>
+                                <li>Load the XMI file into SIW, and go through all the steps..</li>
+                                <li>Ensure that:
+                                    <ol>
+                                        <li>Each attribute of every class has a concept code mapped. SIW attempts to match the attributes to concept codes. In certain cases, no concept code may be mapped by default, or multiple concept codes could be mapped to a single attribute. Review and make changes as appropriate (add concept codes, delete mapped concept codes etc..)</li>
+                                        <li>Classes and attributes are mapped correctly, and concepts are semantically correct.</li>
+                                    </ol>
+                                </li>
+                                <li>Once changes have been done, save the XMI file.</li>
+                            </ol>
+                        </li>   
+                        <li style="margin-top:-10px"><h3>Import the annotated XMI file into EA project</h3>
+                            <ol>
+                                <li>Open the EA project in Enterprise Architect.</li>
+                                <li>Import the annotated XMI file (from the previous step) into EA. <strong>NOTE:</strong> This will overwrite your existing model.</strong>.</li>                                
+                                <li>At this point, the EA project file has all the annotations. Annotations for classes and attributes can be viewed as tagged values (Hit Ctrl+Shirt+6).</li>
+                                <li>You can make changes to the model, export to XMI, run it through SIW and so on...till the model is annotated as much as possible.</li>
+                            </ol>
+                        </li>   
+                        <li style="margin-top:-10px"><h3>Submit the model to EVS Team for review, and load to caDSR</h3>
+                            <ol>
+                                <li>Submit Compatibility Review Submission artifacts/package - This requires submission of the following artifacts:
+                                    <ol>
+                                        <li>Powerpoint presentation - Provides an overview of protExpress, brief summary of the functionality and architecture.</li>
+                                        <li>Vision Document</li>
+                                        <li>Software Architecture Document.</li>
+                                        <li>UML Model - This is a copy of published protExpress model(<strong>protExpressGrid.eap</strong>)</li>
+                                        <li>Semantically Annotated XMI File - This should be the most recent copy of the XMI file submitted to caDSR for loading.</li>
+                                        <li>SIW Report/Error Log - SIW no longer produces a report, and hence this need not be included. The error log can be generated from SIW though.</li>
+                                        <li>UML Loader Checklist</li>
+                                        <li>Value Domain Report - Can be generated via a script <a href="reports.htm">here</a>.</li>
+                                        <li>Vocabulary Report</li>
+                                        <li>Standards Report</li>
+                                        <li>Full CDE Use Report</li>
+                                        <li>Class Documentation/JavaDocs for the published model  - Can be generated via a script <a href="reports.htm">here</a>.</li>
+                                        <li>Adpoter Test Log - <strong>Skipped</strong></li>
+                                        <li>Pointers to Source Code - A text document with URLs to the API and Grid Service source code in SVN.</li>
+                                        <li>Test Approach Document - <strong>Skipped</strong></li>
+                                        <li>Use Case Documentation</li>
+                                    </ol>   
+                                </li>                         
+                             </ol>
+                        </li>            
+                    </ol>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+
