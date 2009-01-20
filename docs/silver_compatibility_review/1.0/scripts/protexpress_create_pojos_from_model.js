@@ -1,6 +1,12 @@
+// Modify the following two values before running the script.
+var GENERATED_JAVA_DIR = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\silver_compatibility_review\\1.0\\temp\\generated_java";
+var eaFilePath = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\analysis_and_design\\models\\protExpressGrid.eap";
+
+
+// Other variables. No need to modify. 
 var DOCUMENTATION_TAG = "documentation";
 var DESCRIPTION_TAG = "description";
-var GENERATED_JAVA_DIR = "c:\\temp\\generated_java";
+var logFileName = GENERATED_JAVA_DIR + "\\log.txt";
 
 var wshShell = WScript.CreateObject("WScript.Shell");
 var repository = WScript.CreateObject("EA.Repository");
@@ -8,11 +14,20 @@ var fso = WScript.CreateObject("Scripting.FileSystemObject");
 mkdirs(GENERATED_JAVA_DIR);
 var log = fso.CreateTextFile(GENERATED_JAVA_DIR + "\\log.txt");
 
-main();
 
-function main() {
+var packageNameContact = "contact";
+var packageNameExperiment = "experiment";
+var packageNameProtocol = "protocol";
+var packageContact = "gov.nih.nci.protexpress.domain.contact";
+var packageExperiment = "gov.nih.nci.protexpress.domain.experiment";
+var packageProtocol = "gov.nih.nci.protexpress.domain.protocol";
+
+
+generateJavaPojos();
+
+function generateJavaPojos() {
     repository = WScript.CreateObject("EA.Repository")
-    var fileOpened = repository.OpenFile("C:\\ncicb_svn\\caarray2\\docs\\analysis_and_design\\models\\caarray_client_model.eap")
+    var fileOpened = repository.OpenFile(eaFilePath);
     if (!fileOpened) {
         alert("Unable to open model file");
         return;
@@ -39,9 +54,9 @@ function writePackage(package) {
 }
 
 function isDomainModelPackage(package) {
-    return package.Name.indexOf("edu.") == 0
-        || package.Name.indexOf("gov.nih.nci.cabio") == 0
-        || package.Name.indexOf("gov.nih.nci.caarray.domain") == 0;
+    return (package.Name == packageNameContact)
+        || (package.Name == packageNameExperiment)
+        || (package.Name == packageNameProtocol);
 }
 
 function writeClasses(package) {
@@ -66,7 +81,17 @@ function writeClass(package, element) {
 }
 
 function writePackageStatement(javaFile, package) {
-    javaFile.WriteLine("package " + package.Name + ";");
+    var packageName = null;
+    if (package.Name == packageNameContact) {
+        packageName = packageContact;
+    }
+    else if (package.Name == packageNameExperiment) {
+        packageName = packageExperiment;
+    }
+    else if (package.Name == packageNameProtocol) {
+        packageName = packageProtocol;
+    }
+    javaFile.WriteLine("package " + packageName + ";");
 }
 
 function writeImports(javaFile, element) {
@@ -90,7 +115,7 @@ function writeImports(javaFile, element) {
 
 function writeImportIfNecessary(javaFile, element, otherClass) {
     if (otherClass.packageID != element.packageID) {
-        javaFile.WriteLine("import " + repository.getPackageByID(otherClass.packageID).Name + "." + otherClass.Name + ";");
+        javaFile.WriteLine("import gov.nih.nci.protexpress.domain." + repository.getPackageByID(otherClass.packageID).Name + "." + otherClass.Name + ";");
     }
 }
 
@@ -285,7 +310,18 @@ function mkdirs(path) {
 }
 
 function getDirectoryPath(package) {
-    return package.Name.replace(/\./g, "\\");
+    var packageName = null;
+    if (package.Name == packageNameContact) {
+        packageName = packageContact;
+    }
+    else if (package.Name == packageNameExperiment) {
+        packageName = packageExperiment;
+    }
+    else if (package.Name == packageNameProtocol) {
+        packageName = packageProtocol;
+    }
+    
+    return packageName.replace(/\./g, "\\");
 }
 
 function hasTaggedValue(tagName, parent) {

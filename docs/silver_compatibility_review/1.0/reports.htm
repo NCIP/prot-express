@@ -21,13 +21,30 @@
                         </li>   
                         <li style="margin-top:-10px"><h3>Generating the Value Domain Report</h3>
                             <ol>
-                                <li>Download the <strong>protexpress_create_value_domain_report.js</strong> file from SVN.</li>
+                                <li>Download the <strong><a target="_new" href="https://gforge.nci.nih.gov/svnroot/gpsxar/trunk/docs/silver_compatibility_review/1.0/scripts/protexpress_create_value_domain_report.js">protexpress_create_value_domain_report.js</a></strong> file from SVN.</li>
                                 <li>Open the Javascript file in a text editor, and modify the following variables:</li>
                                     <ol>
                                         <li><strong>eaFilePath:</strong> The path to the EA Model File (eg: protExpressGrid.eap).</li>
                                         <li><strong>csvFilePath:</strong> Name and location of the report file to be created (eg: 08. protexpress_value_domain_report.csv).</li>
                                     </ol>
                                 <li>Execute the script as described above to generate the report file in CSV format.</li>
+                            </ol>
+                        </li>                                     
+                        <li style="margin-top:-10px"><h3>Generating Javadocs for the model</h3>
+                            <ol>
+                                <li>Download the <strong><a target="_new" href="https://gforge.nci.nih.gov/svnroot/gpsxar/trunk/docs/silver_compatibility_review/1.0/scripts/protexpress_create_pojos_from_model.js">protexpress_create_pojos_from_model.js</a></strong> file from SVN.</li>
+                                <li>Open the Javascript file in a text editor, and modify the following variables:</li>
+                                    <ol>
+                                        <li><strong>eaFilePath:</strong> The path to the EA Model File (eg: protExpressGrid.eap).</li>
+                                        <li><strong>GENERATED_JAVA_DIR:</strong> Location where the java classes will be generated.</li>
+                                    </ol>
+                                <li>Execute the script as described above to the java classes. This will generate the java source files in the folder specified by the variable <strong>GENERATED_JAVA_DIR</strong>.</li>
+                                <li>Browse to the folder specified by <strong>GENERATED_JAVA_DIR</strong>, open a new command prompt and execute the following command:
+                                    <ol>
+                                        <li><strong>javadoc -d javadocs -public -sourcepath . -subpackages gov</strong></li>
+                                    </ol>
+                                </li>
+                                <li>If the above command executes successfullly, a new subfolder named <strong>javadocs</strong> (containing the javadocs) will be created under the folder specified by <strong>GENERATED_JAVA_DIR</strong>.</li>
                             </ol>
                         </li>                                     
                     </ol>
