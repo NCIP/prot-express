@@ -1,7 +1,8 @@
 ##############################
 ###  APPLICATION SETTINGS  ###
 ##############################
-application.base.path=
+application.base.path.linux=
+application.base.path.windows=
 application.url=
 database.drop-schema=
 build.node=
@@ -23,14 +24,14 @@ database.user=
 database.password=
 database.url=
 
-jboss.home=
+jboss.relative.path=
 jboss.server.hostname=
 
 
 #####################
 ###  TOMCAT       ###
 #####################
-tomcat.home=
+tomcat.relative.path=
 tomcat.hostname=
 tomcat.port.http=
 tomcat.port.ajp=
