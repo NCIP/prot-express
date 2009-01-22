@@ -325,12 +325,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</copy>
 		<!-- Set default target on install xml to install -->
 		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1install\2"/>
-		<obfuscate-properties-file
-                        properties.file="${dist.exploded.dir}/install.properties"
-                        required.property.list="application.base.path.linux,application.base.path.windows,database.system.user,database.system.password,
-                            database.server,database.port,database.name,database.user,database.password,mail.smtp.host,jboss.server.hostname"
-                        optional.property.list="ldap.url,ldap.basedn"
-                        />
+
 		<!-- Rename install.xml to build.xml so manual installs will not need to include the -f optoin on ant, simplifying the install proces. -->
 		<move file="${dist.exploded.dir}/install.xml" tofile="${dist.exploded.dir}/build.xml"/>
 		<!-- Copy over BDA macrodefs and librarires -->
@@ -374,6 +369,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 	<!-- Creates the installer distribution used by automated or manual remote installations -->
 	<target name="dist:installer" depends="dist:installer:prep">
+		<obfuscate-properties-file
+			properties.file="${dist.exploded.dir}/install.properties"
+			required.property.list="application.base.path.linux,application.base.path.windows,database.system.user,database.system.password,
+			    database.server,database.port,database.name,database.user,database.password,mail.smtp.host,jboss.server.hostname"
+			optional.property.list="ldap.url,ldap.basedn"
+		/>
 		<delete file="${dist.dir}/${protExpress-war.install.zip.file}"/>
 		<zip destfile="${dist.dir}/${protExpress-war.install.zip.file}" basedir="${dist.exploded.dir}"/>
 	</target>
@@ -403,12 +404,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 		</copy>
 		<!-- Change default target of install.xml to upgrade -->
 		<replaceregexp file="${dist.exploded.dir}/install.xml" byline="true" match="(.project.*default=.)\w+(.\s+.*)" replace="\1upgrade\2"/>
-		<obfuscate-properties-file
-                        properties.file="${dist.exploded.dir}/install.properties"
-                        required.property.list="application.base.path.linux,application.base.path.windows,database.system.user,database.system.password,
-                            database.server,database.port,database.name,database.user,database.password,mail.smtp.host,jboss.server.hostname"
-                        optional.property.list="ldap.url,ldap.basedn"
-                        />
+
 		<!-- Rename install.xml to build.xml to simply install but not having to provide -f option to ant command line -->
 		<move file="${dist.exploded.dir}/install.xml" tofile="${dist.exploded.dir}/build.xml"/>
 		<!-- Copy BDA macrodefs and library files -->
@@ -447,6 +443,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/generic/trunk/software/build.xml $
 	</target>
 	<!-- Creates upgrader distribution -->
 	<target name="dist:upgrader" depends="dist:upgrader:prep">
+		<obfuscate-properties-file
+			properties.file="${dist.exploded.dir}/install.properties"
+			required.property.list="application.base.path.linux,application.base.path.windows,database.system.user,database.system.password,
+			    database.server,database.port,database.name,database.user,database.password,mail.smtp.host,jboss.server.hostname"
+			optional.property.list="ldap.url,ldap.basedn"
+		/>
 		<delete file="${dist.dir}/${protExpress-war.upgrade.zip.file}"/>
 		<zip destfile="${dist.dir}/${protExpress-war.upgrade.zip.file}" basedir="${dist.exploded.dir}"/>
 	</target>
