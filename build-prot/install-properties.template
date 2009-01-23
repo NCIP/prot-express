@@ -4,7 +4,6 @@
 application.base.path.linux=
 application.base.path.windows=
 application.url=
-database.drop-schema=
 build.node=
 
 ########
