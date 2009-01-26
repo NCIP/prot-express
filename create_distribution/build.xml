@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################################################
+#
+# Filename:	build.properties
+# Author:	Krishna Kanchinadam (kanchink@mail.nih.gov)
+# Date:		01/20/2009
+# Purpose:	To create an installer for a given protExpress Tag.
+# $HeadURL: https://gforge.nci.nih.gov/svnroot/security/trunk/software/project.properties $
+#
+##############################################################################################################
+-->
+<project name="protexpress_create_distribution" default="distribution:create" basedir=".">
+	<description>This script is used to create an installer out of an SVN tag for protExpress. The process includes checking out the tag from SVN, and create the installer.</description>
+	<!-- Property file related properties and tasks -->
+	<property name="project.name" value="protexpress-dist"/>
+	<property name="properties.file" value="${basedir}/build.properties"/>
+	<property file="${properties.file}"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property name="output.dir" value="${basedir}/output"/>
+	<property name="log.dir" value="${output.dir}/logs"/>
+	<property name="dist.dir" value="${output.dir}/dist"/>
+	<property name="local.checkout.dir" value="${output.dir}/checkout"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<path id="protexpress-dist.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<!-- Taskdefs -->
+	<taskdef name="svn" classpathref="protexpress-dist.classpath" classname="org.tigris.subversion.svnant.SvnTask"/>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="protexpress-dist.classpath"/>
+	<if>
+		<equals arg1="${svn.project.tag}" arg2=""/>
+		<then>
+			<property name="tag.path" value="trunk/software"/>
+			<property name="tag.name" value="PROTEXPRESS_TRUNK"/>
+		</then>
+		<else>
+			<property name="tag.path" value="tags/${svn.project.tag}"/>
+			<property name="tag.name" value="${svn.project.tag}"/>
+		</else>
+	</if>
+	<property name="svn.checkout.url" value="${svn.project.url}/${tag.path}"/>
+	<property name="local.checkout.tag.dir" value="${local.checkout.dir}/${tag.name}"/>
+	<property name="build-prot.dir" value="${local.checkout.tag.dir}/build-prot"/>
+	<property name="build-prot.antfile" value="${build-prot.dir}/build.xml"/>
+	<property name="build-prot.taskname.dist" value="dist"/>
+	<property name="bda.dist.dir" value="${local.checkout.tag.dir}/install-target/protExpress/dist"/>
+	<property name="bda.installer.zip.name" value="protExpress_install1.0.zip"/>
+	<property name="bda.installer.file.path" value="${bda.dist.dir}/${bda.installer.zip.name}"/>
+	<property name="bda.upgrader.zip.name" value="protExpress_upgrade1.0.zip"/>
+	<property name="bda.upgrader.file.path" value="${bda.dist.dir}/${bda.upgrader.zip.name}"/>
+	<property name="dist.installer.name" value="protExpress_Install_1.0_${tag.name}.zip"/>
+	<property name="dist.installer.file.path" value="${dist.dir}/${dist.installer.name}"/>
+	<property name="dist.upgrader.name" value="protExpress_Upgrade_1.0_${tag.name}.zip"/>
+	<property name="dist.upgrader.file.path" value="${dist.dir}/${dist.upgrader.name}"/>
+	<!-- Targets -->
+	<target name="distribution:create" depends="distribution:echo_properties, distribution:clean, distribution:svn_checkout, distribution:invoke_bda_dist_create, distribution:copy_bda_output_files">
+		<echo message="In distribution:create - Creating the install and upgrade distrubution packages for protExpress tag '${tag.name}'.....''" />
+	</target>
+	<target name="distribution:echo_properties">
+		<echo message="Properties/Variable values set are...."/>
+		<echo message="properties.file = ${properties.file}"/>
+		<echo message="output.dir = ${output.dir}"/>
+		<echo message="log.dir = ${log.dir}"/>
+		<echo message="dist.dir = ${dist.dir}"/>
+		<echo message="lib.dir = ${lib.dir}"/>
+		<echo message="classpath = ${protexpress-dist.classpath}"/>
+		<echo message="tag.path = ${tag.path}"/>
+		<echo message="tag.name = ${tag.name}"/>
+		<echo message="svn.checkout.url = ${svn.checkout.url}"/>
+		<echo message="local.checkout.tag.dir = ${local.checkout.tag.dir}"/>
+		<echo message="build-prot.dir = ${build-prot.dir}"/>
+		<echo message="build-prot.antfile = ${build-prot.antfile}"/>
+		<echo message="build-prot.taskname.dist = ${build-prot.taskname.dist}"/>
+		<echo message="bda.dist.dir = ${bda.dist.dir}"/>
+		<echo message="bda.installer.zip.name = ${bda.installer.zip.name}"/>
+		<echo message="bda.upgrader.zip.name = ${bda.upgrader.zip.name}"/>
+		<echo message="dist.installer.name = ${dist.installer.name}"/>
+		<echo message="dist.upgrader.name = ${dist.upgrader.name}"/>
+		<echo message="bda.installer.file.path = ${bda.installer.file.path}"/>
+		<echo message="bda.upgrader.file.path = ${bda.upgrader.file.path}"/>
+		<echo message="dist.installer.file.path = ${dist.installer.file.path}"/>
+		<echo message="dist.upgrader.file.path = ${dist.upgrader.file.path}"/>
+	</target>
+	<target name="distribution:clean">
+		<delete dir="${output.dir}"/>
+		<mkdir dir="${output.dir}"/>
+	</target>
+	<target name="distribution:svn_checkout">
+		<svn>
+			<checkout url="${svn.checkout.url}" destPath="${local.checkout.tag.dir}"/>
+		</svn>
+	</target>
+	<target name="distribution:invoke_bda_dist_create">
+		<exec osfamily="unix" executable="ant" dir="${build-prot.dir}" failonerror="true">
+			<arg value="${build-prot.taskname.dist}"/>
+		</exec>
+		<exec osfamily="windows" executable="ant.bat" dir="${build-prot.dir}" failonerror="true">
+			<arg value="${build-prot.taskname.dist}"/>
+		</exec>
+	</target>
+	<target name="distribution:copy_bda_output_files">
+		<echo message="Copying the installers from ${bda.dist.dir} to ${output.dir}"/>
+		<echo message="Copying ${bda.installer.file.path} to ${dist.installer.file.path}"/>
+		<copy file="${bda.installer.file.path}" tofile="${dist.installer.file.path}"/>
+		<echo message="Copying ${bda.upgrader.file.path} to ${dist.upgrader.file.path}"/>
+		<copy file="${bda.upgrader.file.path}" tofile="${dist.upgrader.file.path}"/>
+	</target>
+</project>
