@@ -58,7 +58,7 @@
 	<property name="dist.upgrader.file.path" value="${dist.dir}/${dist.upgrader.name}"/>
 	<!-- Targets -->
 	<target name="distribution:create" depends="distribution:echo_properties, distribution:clean, distribution:svn_checkout, distribution:invoke_bda_dist_create, distribution:copy_bda_output_files">
-		<echo message="In distribution:create - Creating the install and upgrade distrubution packages for protExpress tag '${tag.name}'.....''" />
+		<echo message="In distribution:create - Creating the install and upgrade distrubution packages for protExpress tag/trunk '${tag.name}'.....''"/>
 	</target>
 	<target name="distribution:echo_properties">
 		<echo message="Properties/Variable values set are...."/>
