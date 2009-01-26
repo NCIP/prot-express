@@ -1,7 +1,9 @@
 ##############################
 ###  APPLICATION SETTINGS  ###
 ##############################
-application.base.path=/usr/local/../local
+application.base.path.linux=
+application.base.path.windows=
+application.url=
 build.node=
 
 ########
