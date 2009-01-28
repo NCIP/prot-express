@@ -6,11 +6,6 @@ application.base.path.windows=
 application.url=
 build.node=
 
-########
-# UPT
-########
-upt.url=
-
 
 ###########################
 ###  DATABASE SETTINGS  ###
@@ -50,6 +45,13 @@ ldap.install=
 ########
 mail.smtp.host=
 mail.smtp.port=
+
+#################################
+# Grid Service Registration
+#################################
+# Flag to determine if the grid service should be installed/updated.
+grid.install=
+
 
 ###################################
 #  				  #
