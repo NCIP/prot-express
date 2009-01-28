@@ -39,18 +39,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
 	<property file="${properties.file}"/>
 	<!-- Set application.base.path based on platform -->
-        <condition property="application.base.path" value="${application.base.path.linux}">
-                <or>
-                        <os family="unix" />
-                        <os family="mac" />
-                </or>
-        </condition>
-
-        <condition property="application.base.path" value="${application.base.path.windows}">
-                <os family="windows" />
-        </condition>
-        <property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
-        <property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+	<condition property="application.base.path" value="${application.base.path.linux}">
+		<or>
+			<os family="unix"/>
+			<os family="mac"/>
+		</or>
+	</condition>
+	<condition property="application.base.path" value="${application.base.path.windows}">
+		<os family="windows"/>
+	</condition>
+	<property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+	<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
 	<!-- Generic properties -->
 	<property name="log.dir" value="${basedir}/logs"/>
 	<property name="working.dir" value="${basedir}/working"/>
@@ -301,53 +300,52 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	</target>
 	<target name="install:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
 	<target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-		<delete failonerror="false">
-			<fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
-				<include name="**/*"/>
-			</fileset>
-		</delete>
-		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
-		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.src.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
-		<unzip src="${tomcat.home}/webapps/${protExpress-grid.wsrf.src.file}" dest="${tomcat.home}/webapps"/>
-	</target>
-	<target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
-	<target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
-		<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
-			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
+		<if>
+			<equals arg1="${grid.install}" arg2="true"/>
+			<then>
+				<delete failonerror="false">
+					<fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
+						<include name="**/*"/>
+					</fileset>
+				</delete>
+				<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+				<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.src.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
+				<unzip src="${tomcat.home}/webapps/${protExpress-grid.wsrf.src.file}" dest="${tomcat.home}/webapps"/>
+			</then>
+		</if>
 	</target>
 	<target name="install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-		<replace dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}">
-			<include name="**/*.wsdl"/>
-		</replace>
-		<!-- server-config.wsdd -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
-			<replace path="/:deployment/:globalConfiguration/:parameter[@name='logicalHost']/@value" withText="${grid.logicalHost}"/>
-			<replace path="/:deployment/:globalConfiguration/:parameter[@name='publishHostName']/@value" withText="${grid.publishHostName}"/>
-		</xmltask>
-		<!-- web.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml">
-			<insert path="/web-app/servlet[1]/servlet-class" position="after">
-				<![CDATA[ <init-param><param-name>defaultProtocol</param-name><param-value>${grid.defaultProtocol}</param-value></init-param><init-param><param-name>defaultPort</param-name><param-value>${grid.defaultPort}</param-value></init-param>]]>
-			</insert>
-		</xmltask>
-		<!-- cagrid_${protexpress-grid.application.name}/cagrid_${protexpress-grid.application.name}_registration.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml">
-			<replace path="/:ServiceGroupRegistrationParameters/:ServiceGroupEPR/wsa:Address/text()" withText="${grid.index.url}"/>
-		</xmltask>
-		<!-- cagrid_${protexpress-grid.application.name}/jndi-config.xml -->
-		<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml">
-			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationName']/:value/text()" withText="${grid.applicationName}"/>
-			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostName']/:value/text()" withText="${grid.applicationHostName}"/>
-			<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostPort']/:value/text()" withText="${grid.applicationHostPort}"/>
-		</xmltask>
-		<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
-		<property name="poc.science.string" value=" affiliation=&quot;${grid.poc.science.affiliation}&quot; email=&quot;${grid.poc.science.email}&quot; firstName=&quot;${grid.poc.science.name.first}&quot; lastName=&quot;${grid.poc.science.name.last}&quot; phoneNumber=&quot;${grid.poc.science.phone}&quot; role=&quot;${grid.poc.science.role}&quot; "/>
-		<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)" replace="\1${poc.science.string}\2" flags="g" byline="true"/>
-		<property name="poc.tech.string" value="${line.separator}
+		<if>
+			<equals arg1="${grid.install}" arg2="true"/>
+			<then>
+				<replace dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}">
+					<include name="**/*.wsdl"/>
+				</replace>
+				<!-- server-config.wsdd -->
+				<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
+					<replace path="/:deployment/:globalConfiguration/:parameter[@name='logicalHost']/@value" withText="${grid.logicalHost}"/>
+					<replace path="/:deployment/:globalConfiguration/:parameter[@name='publishHostName']/@value" withText="${grid.publishHostName}"/>
+				</xmltask>
+				<!-- web.xml -->
+				<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/web.xml">
+					<insert path="/web-app/servlet[1]/servlet-class" position="after">
+						<![CDATA[ <init-param><param-name>defaultProtocol</param-name><param-value>${grid.defaultProtocol}</param-value></init-param><init-param><param-name>defaultPort</param-name><param-value>${grid.defaultPort}</param-value></init-param>]]>
+					</insert>
+				</xmltask>
+				<!-- cagrid_${protexpress-grid.application.name}/cagrid_${protexpress-grid.application.name}_registration.xml -->
+				<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/${protexpress-grid.application.name}_registration.xml">
+					<replace path="/:ServiceGroupRegistrationParameters/:ServiceGroupEPR/wsa:Address/text()" withText="${grid.index.url}"/>
+				</xmltask>
+				<!-- cagrid_${protexpress-grid.application.name}/jndi-config.xml -->
+				<xmltask failWithoutMatch="true" source="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml" dest="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/jndi-config.xml">
+					<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationName']/:value/text()" withText="${grid.applicationName}"/>
+					<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostName']/:value/text()" withText="${grid.applicationHostName}"/>
+					<replace path="/:jndiConfig/:service/:resource[@name='serviceconfiguration']/:resourceParams/:parameter[:name/text() = 'cqlQueryProcessorConfig_applicationHostPort']/:value/text()" withText="${grid.applicationHostPort}"/>
+				</xmltask>
+				<replace file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/globus_resolution_service/jndi-config.xml" token="localhost:8080" value="${tomcat.hostname}:${tomcat.port.http}"/>
+				<property name="poc.science.string" value=" affiliation=&quot;${grid.poc.science.affiliation}&quot; email=&quot;${grid.poc.science.email}&quot; firstName=&quot;${grid.poc.science.name.first}&quot; lastName=&quot;${grid.poc.science.name.last}&quot; phoneNumber=&quot;${grid.poc.science.phone}&quot; role=&quot;${grid.poc.science.role}&quot; "/>
+				<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="^(\s+&lt;ns3:PointOfContact).*(xmlns:ns3.*&gt;)" replace="\1${poc.science.string}\2" flags="g" byline="true"/>
+				<property name="poc.tech.string" value="${line.separator}
 &lt;ns9:ResearchCenter displayName=&quot;${grid.poc.tech.researchCenter.displayname}&quot; shortName=&quot;${grid.poc.tech.researchCenter.shortname}&quot; xmlns:ns9=&quot;gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common&quot;&gt;${line.separator}
 &lt;ns9:Address country=&quot;${grid.poc.tech.addr.country}&quot; locality=&quot;${grid.poc.tech.addr.locality}&quot; postalCode=&quot;${grid.poc.tech.addr.postalCode}&quot; stateProvince=&quot;${grid.poc.tech.addr.stateProvince}&quot; street1=&quot;${grid.poc.tech.addr.street1}&quot; street2=&quot;${grid.poc.tech.addr.street2}&quot;/&gt;${line.separator}
 &lt;ns9:pointOfContactCollection&gt;${line.separator}
@@ -355,8 +353,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 &lt;/ns9:pointOfContactCollection&gt;${line.separator}
 &lt;/ns9:ResearchCenter&gt;${line.separator}
 "/>
-		<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;" replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;" flags="sg"/>
-		<echo message="Updating grid registration.xml"/>
+				<replaceregexp file="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}/WEB-INF/etc/cagrid_${protexpress-grid.application.name}/serviceMetadata.xml" match="&lt;ns1:hostingResearchCenter&gt;.*&lt;\/ns1:hostingResearchCenter&gt;" replace="&lt;ns1:hostingResearchCenter&gt;${poc.tech.string}&lt;\/ns1:hostingResearchCenter&gt;" flags="sg"/>
+				<echo message="Updating grid registration.xml"/>
+			</then>
+		</if>
 	</target>
 	<target name="upgrade:tomcat:protExpress-war" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
 		<!-- added to ensure working.dirs are fresh for our install -->
@@ -491,18 +491,23 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	</target>
 	<!-- Fixes hibernate dialect and other configurations in code generated at build time.  This is requred because the properties/options selected at build time can be different than those used at install time. -->
 	<target name="install:tomcat:protExpress-grid:re-configure" unless="exclude.jboss">
-		<mkdir dir="${temp.dir}/protExpress-war"/>
-		<delete dir="${temp.dir}/protExpress-war"/>
-		<mkdir dir="${temp.dir}/protExpress-war"/>
-		<unzip src="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" dest="${temp.dir}/protExpress-grid"/>
-		<unjar src="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" dest="${temp.dir}/protExpress-grid-orm-jar"/>
-		<xmlconfig in="${temp.dir}/protExpress-grid-orm-jar/hibernate.cfg.xml" verbose="false">
-			<update path="(//session-factory)/property[@name='connection.url']" value="${database.url}"/>
-			<update path="(//session-factory)/property[@name='connection.username']" value="${database.user}"/>
-			<update path="(//session-factory)/property[@name='connection.password']" value="${database.password}"/>
-		</xmlconfig>
-		<jar destfile="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" basedir="${temp.dir}/protExpress-grid-orm-jar" update="false" manifest="${temp.dir}/protExpress-grid-orm-jar/META-INF/MANIFEST.MF"/>
-		<war destfile="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" basedir="${temp.dir}/protExpress-grid" compress="false" webxml="${temp.dir}/protExpress-grid/WEB-INF/web.xml"/>
+		<if>
+			<equals arg1="${grid.install}" arg2="true"/>
+			<then>
+				<mkdir dir="${temp.dir}/protExpress-war"/>
+				<delete dir="${temp.dir}/protExpress-war"/>
+				<mkdir dir="${temp.dir}/protExpress-war"/>
+				<unzip src="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" dest="${temp.dir}/protExpress-grid"/>
+				<unjar src="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" dest="${temp.dir}/protExpress-grid-orm-jar"/>
+				<xmlconfig in="${temp.dir}/protExpress-grid-orm-jar/hibernate.cfg.xml" verbose="false">
+					<update path="(//session-factory)/property[@name='connection.url']" value="${database.url}"/>
+					<update path="(//session-factory)/property[@name='connection.username']" value="${database.user}"/>
+					<update path="(//session-factory)/property[@name='connection.password']" value="${database.password}"/>
+				</xmlconfig>
+				<jar destfile="${temp.dir}/protExpress-grid/WEB-INF/lib/ProtExpressGridApp-orm.jar" basedir="${temp.dir}/protExpress-grid-orm-jar" update="false" manifest="${temp.dir}/protExpress-grid-orm-jar/META-INF/MANIFEST.MF"/>
+				<war destfile="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" basedir="${temp.dir}/protExpress-grid" compress="false" webxml="${temp.dir}/protExpress-grid/WEB-INF/web.xml"/>
+			</then>
+		</if>
 	</target>
 	<!-- Wrapper target to upgrade jboss container. Does not install or configure binaries -->
 	<target name="upgrade:tomcat" unless="exclude.jboss" depends="
