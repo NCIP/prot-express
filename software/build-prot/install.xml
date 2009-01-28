@@ -314,15 +314,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 			</then>
 		</if>
 	</target>
-	<target name="upgrade:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
-	<target name="upgrade:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-		<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
-		<copy todir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" overwrite="true">
-			<fileset dir="${protExpress-grid.dir.dist}/${protExpress-grid.wsrf.dir}">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
-	</target>
 	<target name="install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
 		<if>
 			<equals arg1="${grid.install}" arg2="true"/>
