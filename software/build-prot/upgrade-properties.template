@@ -15,11 +15,11 @@ application.url=
 #####################################
 ###  APPLICATION SERVER SETTINGS  ###
 #####################################
-tomcat.home=
+tomcat.relative.path=
 tomcat.hostname=
 tomcat.port.http=
 
-jboss.home=
+jboss.relative.path=
 jboss.server.hostname=
 
 ###########################
