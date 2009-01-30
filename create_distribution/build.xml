@@ -48,14 +48,12 @@
 	<property name="build-prot.antfile" value="${build-prot.dir}/build.xml"/>
 	<property name="build-prot.taskname.dist" value="dist"/>
 	<property name="bda.dist.dir" value="${local.checkout.tag.dir}/install-target/protExpress/dist"/>
-	<property name="bda.installer.zip.name" value="protExpress_install1.0.zip"/>
-	<property name="bda.installer.file.path" value="${bda.dist.dir}/${bda.installer.zip.name}"/>
-	<property name="bda.upgrader.zip.name" value="protExpress_upgrade1.0.zip"/>
-	<property name="bda.upgrader.file.path" value="${bda.dist.dir}/${bda.upgrader.zip.name}"/>
-	<property name="dist.installer.name" value="protExpress_Install_1.0_${tag.name}.zip"/>
-	<property name="dist.installer.file.path" value="${dist.dir}/${dist.installer.name}"/>
-	<property name="dist.upgrader.name" value="protExpress_Upgrade_1.0_${tag.name}.zip"/>
-	<property name="dist.upgrader.file.path" value="${dist.dir}/${dist.upgrader.name}"/>
+	<property name="bda.installer.file" value="${bda.dist.dir}/protExpress_install1.0.zip"/>
+	<property name="bda.upgrader.file" value="${bda.dist.dir}/protExpress_upgrade1.0.zip"/>
+	<property name="dist.installer.file" value="${dist.dir}/${dist.filename}_Install_${svn.project.version}_${tag.name}.zip"/>
+	<property name="dist.upgrader.file" value="${dist.dir}/${dist.filename}_Upgrade_${svn.project.version}_${tag.name}.zip"/>
+	<property name="dist.installer.release.file" value="${dist.dir}/${dist.filename}_Install_${svn.project.version}.zip"/>
+	<property name="dist.upgrader.release.file" value="${dist.dir}/${dist.filename}_Upgrade_${svn.project.version}.zip"/>
 	<!-- Targets -->
 	<target name="distribution:create" depends="distribution:echo_properties, distribution:clean, distribution:svn_checkout, distribution:invoke_bda_dist_create, distribution:copy_bda_output_files">
 		<echo message="In distribution:create - Creating the install and upgrade distrubution packages for protExpress tag/trunk '${tag.name}'.....''"/>
@@ -104,9 +102,12 @@
 	</target>
 	<target name="distribution:copy_bda_output_files">
 		<echo message="Copying the installers from ${bda.dist.dir} to ${output.dir}"/>
-		<echo message="Copying ${bda.installer.file.path} to ${dist.installer.file.path}"/>
-		<copy file="${bda.installer.file.path}" tofile="${dist.installer.file.path}"/>
-		<echo message="Copying ${bda.upgrader.file.path} to ${dist.upgrader.file.path}"/>
-		<copy file="${bda.upgrader.file.path}" tofile="${dist.upgrader.file.path}"/>
+		<echo message="Copying ${bda.installer.file} to ${dist.installer.file}"/>
+		<copy file="${bda.installer.file}" tofile="${dist.installer.file}"/>
+		<echo message="Copying ${bda.upgrader.file} to ${dist.upgrader.file}"/>
+		<copy file="${bda.upgrader.file}" tofile="${dist.upgrader.file}"/>
+		<echo message="Copying the distribution files (with tags in the name) to the release files (without tag in the name)."/>
+		<copy file="${dist.installer.file}" tofile="${dist.installer.release.file}"/>
+		<copy file="${dist.upgrader.file}" tofile="${dist.upgrader.release.file}"/>
 	</target>
 </project>
