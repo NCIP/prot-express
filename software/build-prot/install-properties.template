@@ -23,7 +23,7 @@ ldap.prefix=
 mail.smtp.host=
 mail.smtp.port=
 
-grid.install=true
+grid.install=
 
 # If the grid service is being installed, set the properties below.
 ###################################################################
