@@ -24,9 +24,6 @@ mail.smtp.host=
 mail.smtp.port=
 
 grid.install=
-
-# If the grid service is being installed, set the properties below.
-###################################################################
 grid.index.url=
 grid.researchCenter.displayName=
 grid.researchCenter.shortName=
