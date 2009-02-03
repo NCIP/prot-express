@@ -5,9 +5,6 @@ application.build.node=
 
 tomcat.host.name=
 tomcat.host.port=
-tomcat.port.ajp=
-tomcat.port.ssl=
-tomcat.port.shutdown=
 
 database.server=
 database.port=
@@ -23,7 +20,7 @@ ldap.prefix=
 mail.smtp.host=
 mail.smtp.port=
 
-grid.install=true
+grid.install=
 
 # If the grid service is being installed, set the properties below.
 ###################################################################
