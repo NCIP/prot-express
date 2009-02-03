@@ -73,6 +73,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	<property name="protExpress-war.hibernate.file" value="hibernate.cfg.xml"/>
 	<property name="protExpress-war.war.file" value="protExpress.war"/>
 	<property name="protExpress-grid.war.file" value="ProtExpressGridApp.war"/>
+	<property name="protExpress-grid.war.dir" value="ProtExpressGridApp"/>
 	<property name="protExpress-grid.wsrf.dir" value="wsrf"/>
 	<property name="protExpress-grid.wsrf.src.file" value="wsrf.zip"/>
 	<property name="protexpress-grid.application.name" value="ProtExpressGridService"/>
@@ -300,15 +301,16 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/protExpress-war/trunk/software/insta
 	</target>
 	<target name="install:tomcat:protExpress-grid" depends="install:protExpress-grid:deploy,install:protExpress-grid:configure" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat"/>
 	<target name="install:protExpress-grid:deploy" description="Deploy protExpress-war and common libraries" unless="exclude.tomcat">
-		
-				<delete failonerror="false">
-					<fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
-						<include name="**/*"/>
-					</fileset>
-				</delete>
-				<delete file="${tomcat.home}/webapps/${protExpress-grid.war.file}" />
-				<delete file="${tomcat.home}/webapps/${protExpress-grid.wsrf.src.file}" />
-				<if>
+		<delete failonerror="false">
+			<fileset dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		<delete file="${tomcat.home}/webapps/${protExpress-grid.war.file}"/>
+		<delete file="${tomcat.home}/webapps/${protExpress-grid.wsrf.src.file}"/>
+		<delete dir="${tomcat.home}/webapps/${protExpress-grid.wsrf.dir}" />
+		<delete dir="${tomcat.home}/webapps/${protExpress-grid.war.dir}" />
+		<if>
 			<equals arg1="${grid.install}" arg2="true"/>
 			<then>
 				<copy file="${protExpress-grid.dir.dist}/${protExpress-grid.war.file}" todir="${tomcat.home}/webapps" overwrite="true"/>
