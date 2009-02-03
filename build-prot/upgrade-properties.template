@@ -1,61 +1,53 @@
-##############################
-###  APPLICATION SETTINGS  ###
-##############################
-application.base.path.linux=
-application.base.path.windows=
-application.url=
-build.node=
+##### EDITABLE PROPERTIES - START ############################
+##############################################################
+application.install.path=
+application.build.node=
 
+tomcat.host.name=
+tomcat.host.port=
+tomcat.port.ajp=
+tomcat.port.ssl=
+tomcat.port.shutdown=
 
-###################################
-#  URL TO ACCESS THE APPLICATION  #
-###################################
-application.url=
-
-#####################################
-###  APPLICATION SERVER SETTINGS  ###
-#####################################
-tomcat.relative.path=
-tomcat.hostname=
-tomcat.port.http=
-
-jboss.relative.path=
-jboss.server.hostname=
-
-###########################
-###  DATABASE SETTINGS  ###
-###########################
-database.type=
 database.server=
 database.port=
 database.name=
 database.user=
 database.password=
-database.url=
 
-
-##############
-###  LDAP  ###
-##############
+ldap.install=
 ldap.url=
 ldap.basedn=
 ldap.prefix=
-ldap.install=
 
-########################
-###  MAIL  SETTINGS  ###
-########################
 mail.smtp.host=
 mail.smtp.port=
 
-#################################
-# Grid Service Registration
-#################################
-# Flag to determine if the grid service should be installed/updated.
 grid.install=true
 
+# If the grid service is being installed, set the properties below.
+###################################################################
+grid.index.url=
+grid.researchCenter.displayName=
+grid.researchCenter.shortName=
+grid.contactPerson.firstName=
+grid.contactPerson.lastName=
+grid.contactPerson.affiliation=
+grid.contactPerson.addressLine1=
+grid.contactPerson.addressLine2=
+grid.contactPerson.stateProvince=
+grid.contactPerson.localityCity=
+grid.contactPerson.zip=
+grid.contactPerson.country=
+grid.contactPerson.emailId=
+grid.contactPerson.phone=
+grid.contactPerson.role=
+
+##### EDITABLE PROPERTIES - END ##############################
+##############################################################
 
 ###################################
+#  				  #
 #  PRE-POST VALIDATION PROPERTIES #
 ###################################
 validation.pre.port.list=
