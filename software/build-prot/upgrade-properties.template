@@ -12,13 +12,13 @@ database.name=
 database.user=
 database.password=
 
+mail.smtp.host=
+mail.smtp.port=
+
 ldap.install=
 ldap.url=
 ldap.basedn=
 ldap.prefix=
-
-mail.smtp.host=
-mail.smtp.port=
 
 grid.install=
 grid.index.url=
