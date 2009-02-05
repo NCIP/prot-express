@@ -3,7 +3,7 @@ var REVIEWED_TAG = "CURATOR_REVIEWED";
 var ENUMERATED_TAG = "CADSR_ValueDomainType";
 
 var eaFilePath = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\analysis_and_design\\models\\protExpressGrid.eap";
-var csvFilePath = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\silver_compatibility_review\\1.0\\artifacts\\08. protexpress_value_domain_report.csv";
+var csvFilePath = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\silver_compatibility_review\\1.0\\artifacts\\protexpress_value_domain_report.csv";
 
 var wshShell = WScript.CreateObject("WScript.Shell");
 var fso;
