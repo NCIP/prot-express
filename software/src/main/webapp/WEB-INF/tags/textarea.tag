@@ -83,8 +83,7 @@
     </c:otherwise>
 </c:choose>
 
-
-<div id="${divRemLenId}" class="confirm_msg" style="display:none">
+<div id="${divRemLenId}" class="textlen_msg" style="display:none">
     <font size="1" face="arial, helvetica, sans-serif">
         <label id="${labelRemLenCounterId}">${counterMessage}</label>
     </font>
