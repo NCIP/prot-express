@@ -1,11 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div id="footernav">
-    <a href="<c:url value="/notYetImplemented.html"/>"><fmt:message key="contact.us" /></a>
+    <a href="mailto:ncicb@pop.nci.nih.gov"><fmt:message key="contact.us" /></a>
     <a href="http://www.nih.gov/about/privacy.htm"><fmt:message key="privacy.notice" /></a>
     <a href="http://www.nih.gov/about/disclaim.htm"><fmt:message key="disclaimer" /></a>
     <a href="http://www3.cancer.gov/accessibility/nci508.htm"><fmt:message key="accessibiity" /></a>
-    <a href="<c:url value="/notYetImplemented.html"/>" class="last"><fmt:message key="protexpress.support" /></a>
+    <a href="http://ncicb.nci.nih.gov/NCICB/support" class="last"><fmt:message key="protexpress.support" /></a>
 </div>
 
 <div id="partnerlogos">
