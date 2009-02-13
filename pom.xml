@@ -5,7 +5,7 @@
     <!-- Project Information -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.nih.nci</groupId>
-    <artifactId>ProtExpress</artifactId>
+    <artifactId>protExpress</artifactId>
     <packaging>war</packaging>
     <name>Prot Express</name>
     <version>1.0-SNAPSHOT</version>
