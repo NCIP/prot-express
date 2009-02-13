@@ -80,28 +80,27 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package gov.nih.nci.protexpress.ui.actions.experiment.create.test;
+package gov.nih.nci.protexpress.ui.actions.experiment.viewedit.test;
 
+import gov.nih.nci.protexpress.domain.contact.ContactPerson;
+import gov.nih.nci.protexpress.domain.experiment.Experiment;
+import gov.nih.nci.protexpress.domain.experiment.ExperimentRun;
+import gov.nih.nci.protexpress.domain.protocol.Protocol;
 import gov.nih.nci.protexpress.test.ProtExpressBaseHibernateTest;
-import gov.nih.nci.protexpress.ui.actions.experiment.create.AddProtocolAction;
-import gov.nih.nci.protexpress.ui.actions.experiment.create.CreateExperimentAction;
-import gov.nih.nci.protexpress.util.UserHolder;
-import gov.nih.nci.security.authorization.domainobjects.User;
-
-import java.util.Date;
-
-import com.opensymphony.xwork2.ActionSupport;
+import gov.nih.nci.protexpress.ui.actions.experiment.viewedit.ExperimentRunAddProtocolAction;
 
 /**
- * This class tests the CreateExperimentAction class.
+ * This class tests the ExperimentRunAddProtocolAction class.
  *
  * @author Krishna Kanchinadam
  */
-public class AddProtocolActionTest extends ProtExpressBaseHibernateTest {
+public class ExperimentRunAddProtocolActionTest extends ProtExpressBaseHibernateTest {
 
-    AddProtocolAction action;
-    User loggedInUser = new User();
-    CreateExperimentAction createExperimentAction;
+    ExperimentRunAddProtocolAction action;
+    ContactPerson contactPerson;
+    Experiment experiment;
+    ExperimentRun experimentRun;
+    Protocol protocol;
 
     /**
      * {@inheritDoc}
@@ -109,31 +108,48 @@ public class AddProtocolActionTest extends ProtExpressBaseHibernateTest {
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        this.action = new AddProtocolAction();
+        this.action = new ExperimentRunAddProtocolAction();
 
-        loggedInUser.setLoginName("foo");
-        loggedInUser.setEmailId("foo@foo.com");
-        loggedInUser.setFirstName("first");
-        loggedInUser.setLastName("last");
-        UserHolder.setUser(loggedInUser);
+        contactPerson = new ContactPerson();
+        contactPerson.setFirstName("Contact");
+        contactPerson.setLastName("LastName");
 
-        this.createExperimentAction = new CreateExperimentAction();
-        this.createExperimentAction.createNewExperiment();
-        this.createExperimentAction.getExperiment().setName("Name - Test Experiment 1");
-        this.createExperimentAction.getExperiment().setDescription("Description - Test Experiment 1");
-        this.createExperimentAction.getExperiment().setHypothesis("Hypothesis - Test Experiment 1");
-        this.createExperimentAction.getExperiment().setUrl("URL - Test Experiment 1");
-        this.createExperimentAction.getExperiment().setDatePerformed(new Date());
+        this.experiment = new Experiment("Name - Test Experiment 1");
+        this.experiment.setDescription("Description - Test Experiment 1");
+        this.experiment.setHypothesis("Hypothesis - Test Experiment 1");
+        this.experiment.setUrl("URL - Test Experiment 1");
+        this.experiment.setContactPerson(contactPerson);
 
-        assertEquals(ActionSupport.SUCCESS, this.createExperimentAction.save());
+        this.theSession.saveOrUpdate(this.experiment);
+        this.experimentRun = new ExperimentRun("Run");
+        this.experimentRun.setDatePerformed(this.experiment.getDatePerformed());
+        this.experimentRun.setExperiment(this.experiment);
+        this.theSession.saveOrUpdate(this.experimentRun);
+
+        this.protocol = new Protocol("Prot1");
+        this.protocol.setDescription("a new protocol");
+        this.theSession.saveOrUpdate(this.protocol);
+        assertNotNull(this.protocol.getId());
+
+        assertNotNull(this.experiment.getId());
+        assertNotNull(this.experimentRun.getId());
+        assertNotNull(this.protocol.getId());
+        assertNotNull(this.experimentRun.getExperiment());
+        assertNotNull(this.experiment.getContactPerson());
         this.theSession.flush();
         this.theSession.clear();
-        this.action.setExperiment(this.createExperimentAction.getExperiment());
-        this.action.setExperimentRun(this.createExperimentAction.getExperimentRun());
     }
 
-    public void testAddOrSelectProtocol() throws Exception {
-        assertEquals(ActionSupport.INPUT, this.action.addOrSelectProtocol());
+    public void testPrepare() throws Exception {
+        this.action.setExperimentId(this.experiment.getId());
+        this.action.setExperimentRunId(this.experimentRun.getId());
+        this.action.setProtocolId(this.protocol.getId());
+        this.action.prepare();
+        assertNotNull(this.action.getExperiment());
+        assertEquals("Name - Test Experiment 1", this.action.getExperiment().getName());
+        assertNotNull(this.action.getExperimentRun());
+        assertEquals(this.action.getExperimentRun().getExperiment(), this.action.getExperiment());
+        assertNotNull(this.action.getProtocol());
     }
 
     public void testAddNewProtocol() throws Exception {
@@ -148,20 +164,26 @@ public class AddProtocolActionTest extends ProtExpressBaseHibernateTest {
         assertEquals("selectExistingProtocol", this.action.selectExistingProtocol());
     }
 
-    public void testDoSearch() throws Exception {
-        assertEquals("protocolSearchResults", this.action.doSearch());
+    public void testSearchProtocols() throws Exception {
+        assertEquals("selectExistingProtocol", this.action.searchProtocols());
     }
 
-    public void testSave() throws Exception {
-        assertEquals(ActionSupport.SUCCESS, this.action.save());
+    public void testSaveNewProtocol() throws Exception {
+        this.testPrepare();
+        this.action.prepare();
+        assertEquals("editProtocolApplication", this.action.saveNewProtocol());
     }
 
     public void testSelectProtocolAndContinue() throws Exception {
-        assertEquals(ActionSupport.SUCCESS, this.action.selectProtocolAndContinue());
+        this.testPrepare();
+        this.action.prepare();
+        assertEquals("editProtocolApplication", this.action.selectProtocolAndContinue());
     }
 
     public void testCopyProtocolAndContinue() throws Exception {
-        assertEquals(ActionSupport.SUCCESS, this.action.copyProtocolAndContinue());
+        this.testPrepare();
+        this.action.prepare();
+        assertEquals("editProtocolApplication", this.action.copyProtocolAndContinue());
     }
 
 }
