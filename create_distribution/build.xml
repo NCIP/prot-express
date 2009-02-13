@@ -108,6 +108,8 @@
 		<copy file="${bda.upgrader.file}" tofile="${dist.upgrader.file}"/>
 		<echo message="Copying the distribution files (with tags in the name) to the release files (without tag in the name)."/>
 		<copy file="${dist.installer.file}" tofile="${dist.installer.release.file}"/>
+		<unzip src="${dist.installer.release.file}" dest="${dist.dir}/Install" />
 		<copy file="${dist.upgrader.file}" tofile="${dist.upgrader.release.file}"/>
+		<unzip src="${dist.upgrader.release.file}" dest="${dist.dir}/Upgrade" />
 	</target>
 </project>
