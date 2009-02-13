@@ -434,7 +434,8 @@ TD.title
 
 
 /* Confirmation or Error Messages */
-
+.textlen_msg
+{ padding:0px;  }
 .confirm_msg
 { background:#fff3ad; border:1px solid #d89723; padding:15px; margin-bottom:15px;  }
 .error_msg
