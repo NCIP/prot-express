@@ -40,11 +40,71 @@ grid.contactPerson.role=
 ##### EDITABLE PROPERTIES - END ##############################
 ##############################################################
 
+############################################
+###  DERIVED PROPERTIES - DO NOT MODIFY  ###
+############################################
+
+### APPLICATION SETTINGS ###
+############################
+application.base.path.linux=${application.install.path}
+application.base.path.windows=${application.install.path}
+build.node=${application.build.node}
+application.url=http://${tomcat.hostname}:${tomcat.port.http}/protExpress
+
+###  APPLICATION SERVER SETTINGS  ###
+#####################################
+tomcat.relative.path=${tomcat.binaries.relative.dir}
+tomcat.hostname=${tomcat.host.name}
+tomcat.port.http=${tomcat.host.port}
+jboss.relative.path=${tomcat.binaries.relative.dir}
+jboss.server.hostname=${tomcat.host.name}
+
+###  DATABASE SETTINGS  ###
+###########################
+database.type=postgresql
+database.url=jdbc:postgresql://${database.server}:${database.port}/${database.name}
+
+
+###  GRID SERVICE REGISTRATION SETTINGS ###
+###########################################
+
+grid.logicalHost=${tomcat.host.name}
+grid.publishHostName=true
+grid.defaultProtocol=http
+grid.defaultPort=${tomcat.host.port}
+grid.applicationName=ProtExpressGridApp
+grid.applicationHostName=http://${tomcat.host.name}
+grid.applicationHostPort=${tomcat.host.port}
+
+grid.poc.tech.researchCenter.displayname=${grid.researchCenter.displayName}
+grid.poc.tech.researchCenter.shortname=${grid.researchCenter.shortName}
+grid.poc.tech.addr.country=${grid.contactPerson.country}
+grid.poc.tech.addr.locality=${grid.contactPerson.localityCity}
+grid.poc.tech.addr.postalCode=${grid.contactPerson.zip}
+grid.poc.tech.addr.stateProvince=${grid.contactPerson.stateProvince}
+grid.poc.tech.addr.street1=${grid.contactPerson.addressLine1}
+grid.poc.tech.addr.street2=${grid.contactPerson.addressLine2}
+grid.poc.tech.affiliation=${grid.contactPerson.affiliation}
+grid.poc.tech.name.last=${grid.contactPerson.lastName}
+grid.poc.tech.name.first=${grid.contactPerson.firstName}
+grid.poc.tech.phone=${grid.contactPerson.phone}
+grid.poc.tech.email=${grid.contactPerson.emailId}
+grid.poc.tech.role=${grid.contactPerson.role}
+
+grid.poc.science.affiliation=${grid.contactPerson.affiliation}
+grid.poc.science.name.last=${grid.contactPerson.lastName}
+grid.poc.science.name.first=${grid.contactPerson.firstName}
+grid.poc.science.phone=${grid.contactPerson.phone}
+grid.poc.science.email=${grid.contactPerson.emailId}
+grid.poc.science.role=${grid.contactPerson.role}
+grid.external.host=
+grid.external.port=
+
+
 ###################################
 #  				  #
 #  PRE-POST VALIDATION PROPERTIES #
 ###################################
-validation.pre.port.list=
-validation.post.http.list=
-validation.post.socket.list=
-
+validation.pre.port.list=${tomcat.port.http},${tomcat.port.ajp},${tomcat.port.ssl},${tomcat.port.shutdown}
+validation.post.http.list=${tomcat.port.http}
+validation.post.socket.list=${tomcat.port.http},${tomcat.port.ajp},${tomcat.port.ssl},${tomcat.port.shutdown}
