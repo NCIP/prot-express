@@ -1,0 +1,4 @@
+14. Pointers to SVN repository for software code :
+
+The following location contains the source code:
+https://gforge.nci.nih.gov/plugins/scmsvn/viewcvs.php/trunk/software/?root=gpsxar
