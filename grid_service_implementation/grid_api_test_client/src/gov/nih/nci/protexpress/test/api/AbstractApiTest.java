@@ -210,7 +210,6 @@ public class AbstractApiTest {
         logForSilverCompatibility(TRAVERSE_OBJECT_GRAPH, obj.getClass().getName());
         for(Method method : theMethods){
             if(isGetter(method)) {
-
                 try {
                     Object value = method.invoke(obj, null);
                     String displayValue = "";
@@ -231,6 +230,7 @@ public class AbstractApiTest {
 
     protected static boolean isGetter(Method method){
           if(!method.getName().startsWith("get"))      return false;
+          if (method.getName().equals("getClass")) return false;
           if(method.getParameterTypes().length != 0)   return false;
           if(void.class.equals(method.getReturnType())) return false;
           return true;

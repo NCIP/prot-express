@@ -1,5 +1,5 @@
 Testsuite: gov.nih.nci.protexpress.test.api.grid.experiment.GridRetrieveProtocolData
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.281 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.25 sec
 ------------- Standard Output ---------------
 
 
@@ -35,7 +35,6 @@ TRAVERSING OBJECT GRAPH FOR CLASS: gov.nih.nci.protexpress.domain.protocol.Proto
           getLastModifiedDate(): Fri Sep 26 08:17:57 EDT 2008
           getSoftware(): 
           getInstrument(): 
-          getClass(): class gov.nih.nci.protexpress.domain.protocol.Protocol
 ------------- ---------------- ---------------
 
-Testcase: testRetrieveExperimenData took 0.265 sec
+Testcase: testRetrieveExperimenData took 0.25 sec

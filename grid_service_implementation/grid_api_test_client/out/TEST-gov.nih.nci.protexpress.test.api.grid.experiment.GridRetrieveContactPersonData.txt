@@ -1,5 +1,5 @@
 Testsuite: gov.nih.nci.protexpress.test.api.grid.experiment.GridRetrieveContactPersonData
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 2.719 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 2.688 sec
 ------------- Standard Output ---------------
 
 
@@ -30,7 +30,6 @@ TRAVERSING OBJECT GRAPH FOR CLASS: gov.nih.nci.protexpress.domain.contact.Contac
           getFirstName(): Kris
           getLastName(): Kanchinadam
           getNotes(): Kris K. is the contact person listed for this experiment. Any queries may be directed to him.
-          getClass(): class gov.nih.nci.protexpress.domain.contact.ContactPerson
 ------------- ---------------- ---------------
 
-Testcase: testRetrieveExperimenData took 2.703 sec
+Testcase: testRetrieveExperimenData took 2.672 sec

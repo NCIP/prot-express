@@ -1,5 +1,5 @@
 Testsuite: gov.nih.nci.protexpress.test.api.grid.experiment.GridRetrieveExperimentData
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.406 sec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.469 sec
 ------------- Standard Output ---------------
 
 
@@ -37,7 +37,6 @@ TRAVERSING OBJECT GRAPH FOR CLASS: gov.nih.nci.protexpress.domain.experiment.Exp
           getLastModifiedDate(): Fri Sep 26 08:17:42 EDT 2008
           getHypothesis(): This will contain the hypothesis of the experiment. 
           getExperimentRuns(): 
-          getClass(): class gov.nih.nci.protexpress.domain.experiment.Experiment
 ------------- ---------------- ---------------
 
-Testcase: testRetrieveExperimenData took 0.39 sec
+Testcase: testRetrieveExperimenData took 0.469 sec
