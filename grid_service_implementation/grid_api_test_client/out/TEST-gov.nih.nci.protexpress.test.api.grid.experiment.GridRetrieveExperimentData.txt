@@ -1,0 +1,43 @@
+Testsuite: gov.nih.nci.protexpress.test.api.grid.experiment.GridRetrieveExperimentData
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.406 sec
+------------- Standard Output ---------------
+
+
+
+######################################################################################################################################
+####################################----------TEST PROPERTIES---------------------#####################################################
+######################################################################################################################################
+-----------SERVER_HOSTNAME: protexpress.nci.nih.gov
+-----------SERVER_PORT: 28080
+-----------GRID_SERVER_HOSTNAME: protexpress.nci.nih.gov
+-----------GRID_SERVER_PORT: 28080
+-----------EXPERIMENT_ID: 1
+-----------EXPERIMENT_RUN_ID: 4
+-----------PROTOCOL_ID: 7
+-----------PROTOCOL_APPLICATION_ID: 18
+-----------INPUT_OUTPUT_ID: 34
+-----------CONTACT_PERSON_ID: 69
+######################################################################################################################################
+######################################################################################################################################
+
+
+
+TEST NAME: Retrieving Information for gov.nih.nci.protexpress.domain.experiment.Experiment with ID=1
+API CALL: Grid query(CQLQuery)
+TRAVERSING OBJECT GRAPH FOR CLASS: gov.nih.nci.protexpress.domain.experiment.Experiment
+          getName(): Example 1 from CPAS
+          getId(): 1
+          getDescription(): This is an example of a XAR file. 
+          getUrl(): https://www.labkey.org/wiki/home/Documentation/Archive/2.1/page.view?name=tutorial2
+          getContactPerson(): 
+          getNotes(): 
+          getDatePerformed(): Mon Sep 22 00:00:00 EDT 2008
+          getCreator(): user1
+          getCreationDate(): Mon Sep 22 16:55:07 EDT 2008
+          getLastModifiedDate(): Fri Sep 26 08:17:42 EDT 2008
+          getHypothesis(): This will contain the hypothesis of the experiment. 
+          getExperimentRuns(): 
+          getClass(): class gov.nih.nci.protexpress.domain.experiment.Experiment
+------------- ---------------- ---------------
+
+Testcase: testRetrieveExperimenData took 0.39 sec

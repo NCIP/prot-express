@@ -1,0 +1,394 @@
+<ns1:DomainModel projectDescription="protExpress Model" projectLongName="protExpress" projectShortName="protExpress" projectVersion="1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="inputToProtocolApplication">
+     <ns1:UMLClassReference refid="62C228BB-1DBE-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="inputs">
+     <ns1:UMLClassReference refid="62C228BB-1DBD-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="experimentRun">
+     <ns1:UMLClassReference refid="62C228BB-1DBA-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="protocolApplications">
+     <ns1:UMLClassReference refid="62C228BB-1DBE-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="protocol">
+     <ns1:UMLClassReference refid="62C228BB-1DBC-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="">
+     <ns1:UMLClassReference refid="62C228BB-1DBE-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="outputOfProtocolApplication">
+     <ns1:UMLClassReference refid="62C228BB-1DBE-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="outputs">
+     <ns1:UMLClassReference refid="62C228BB-1DBD-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="experiment">
+     <ns1:UMLClassReference refid="62C228BB-1DBB-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="experimentRuns">
+     <ns1:UMLClassReference refid="62C228BB-1DBA-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="contactPerson">
+     <ns1:UMLClassReference refid="62C228BB-1DB9-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="62C228BB-1DBC-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="contactPerson">
+     <ns1:UMLClassReference refid="62C228BB-1DB9-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="62C228BB-1DBB-BCC2-E040-BB89AD43499A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="ContactPerson" description="Encapsulates the information for a Protocol and/or Experiment contact person." id="62C228BB-1DB9-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.contact" projectName="protExpress" projectVersion="1">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="Last Name of the contact person. " name="lastName" publicID="2613015" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C40975" conceptDefinition="A word or group of words indicating a person's last (family) name. (NCI)" conceptName="Last Name" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.Long" description="Id for the Contact person. " name="id" publicID="2613013" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns2:ValueDomain longName="java.lang.Long">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="First Name of the contact person. " name="firstName" publicID="2837777" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C40974" conceptDefinition="A word or group of words indicating a person's first (personal) name. (NCI)" conceptName="First Name" order="0"/>
+     <ns2:SemanticMetadata conceptCode="C25509" conceptDefinition="Preceding all others in time or space or degree." conceptName="First" order="1"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="E-Mail Id for the contact person. " name="email" publicID="2238020" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C42775" conceptDefinition="An e-mail address identifies a location to which e-mail can be delivered. A modern Internet e-mail address (using SMTP) is a string of the form jsmith@domain.example. (from Wikipedia)" conceptName="E-mail Address" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="Additional notes about the Contact person." name="notes" publicID="2837778" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+   </ns2:umlAttributeCollection>
+   <ns3:SemanticMetadata conceptCode="C25461" conceptDefinition="a channel for communication between groups" conceptName="Contact Person" order="0" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ExperimentRun" description="The application of an experimental procedure to a specific set of inputs, producing a specific set of outputs." id="62C228BB-1DBA-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.experiment" projectName="protExpress" projectVersion="1">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute dataTypeName="java.util.Date" description="Date/Time when the experiment run was last modified. " name="lastModifiedDate" publicID="2837784" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C25551" conceptDefinition="Coming after all others in time or space or degree or being the only one remaining." conceptName="Last" order="2"/>
+     <ns4:SemanticMetadata conceptCode="C25446" conceptDefinition="alteration or modification." conceptName="Change" order="1"/>
+     <ns4:ValueDomain longName="java.util.Date">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="Creator of the Experiment Run. " name="creator" publicID="2837782" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="Name of the Experiment Run." name="name" publicID="2641822" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="Notes/Additional information for the experiment run. " name="notes" publicID="2837780" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.util.Date" description="Date the Run was performed. " name="datePerformed" publicID="2837781" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C38000" conceptDefinition="Performed; carried out." conceptName="Performed" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns4:ValueDomain longName="java.util.Date">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.Long" description="Id for the Experiment Run." name="id" publicID="2837779" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns4:ValueDomain longName="java.lang.Long">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.util.Date" description="Date/Time when the experiment run was created. " name="creationDate" publicID="2837783" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42620" conceptDefinition="Brought into existence." conceptName="Creation" order="1"/>
+     <ns4:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns4:ValueDomain longName="java.util.Date">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+   </ns4:umlAttributeCollection>
+   <ns5:SemanticMetadata conceptCode="C42790" conceptDefinition="In the scientific method, an experiment is a set of actions and observations, performed to verify or falsify a hypothesis or research a causal relationship between phenomena. The experiment is a cornerstone of the empirical approach to knowledge. (from Wikipedia)" conceptName="Experiment" order="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns6:SemanticMetadata conceptCode="C47911" conceptDefinition="The act of testing or performing something." conceptName="Run" order="0" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Experiment" description="A set of lab procedures (&quot;runs&quot;) executed on specified inputs and producing one or more outputs.  The set of runs are analyzed together to support some result." id="62C228BB-1DBB-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.experiment" projectName="protExpress" projectVersion="1">
+   <ns7:umlAttributeCollection xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns7:UMLAttribute dataTypeName="java.util.Date" description="Date the experiment was performed. " name="datePerformed" publicID="2837787" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns7:SemanticMetadata conceptCode="C38000" conceptDefinition="Performed; carried out." conceptName="Performed" order="1"/>
+     <ns7:ValueDomain longName="java.util.Date">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Name of the experiment. " name="name" publicID="2619942" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Experiment's URL, if applicable. " name="url" publicID="2837785" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C42743" conceptDefinition="A Uniform Resource Locator is an Internet address which tells a browser where to find an Internet resource. (from http://www.computeruser.com)" conceptName="Uniform Resource Locator" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Creator of the experiment. " name="creator" publicID="2711727" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Hypothesis for the experiment. " name="hypothesis" publicID="2619943" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C28362" conceptDefinition="A tentative proposal made to explain certain observations or facts that requires further investigation to be verified." conceptName="Hypothesis" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the experiment was last modified. " name="lastModifiedDate" publicID="2837788" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns7:SemanticMetadata conceptCode="C25551" conceptDefinition="Coming after all others in time or space or degree or being the only one remaining." conceptName="Last" order="2"/>
+     <ns7:SemanticMetadata conceptCode="C25446" conceptDefinition="alteration or modification." conceptName="Change" order="1"/>
+     <ns7:ValueDomain longName="java.util.Date">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.Long" description="Id for the experiment. " name="id" publicID="2619941" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns7:ValueDomain longName="java.lang.Long">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Description for the experiment. " name="description" publicID="2727139" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the experiment was created. " name="creationDate" publicID="2619948" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns7:SemanticMetadata conceptCode="C42620" conceptDefinition="Brought into existence." conceptName="Creation" order="1"/>
+     <ns7:ValueDomain longName="java.util.Date">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Additional notes/information for the experiment." name="notes" publicID="2837786" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+   </ns7:umlAttributeCollection>
+   <ns8:SemanticMetadata conceptCode="C42790" conceptDefinition="In the scientific method, an experiment is a set of actions and observations, performed to verify or falsify a hypothesis or research a causal relationship between phenomena. The experiment is a cornerstone of the empirical approach to knowledge. (from Wikipedia)" conceptName="Experiment" order="0" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Protocol" description="Represents a protocol." id="62C228BB-1DBC-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="protExpress" projectVersion="1">
+   <ns9:umlAttributeCollection xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns9:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the protocol was created." name="creationDate" publicID="2754254" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns9:SemanticMetadata conceptCode="C42620" conceptDefinition="Brought into existence." conceptName="Creation" order="1"/>
+     <ns9:ValueDomain longName="java.util.Date">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Description for the protocol." name="description" publicID="2837789" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Name of the protocol." name="name" publicID="2754252" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.Long" description="Id for the Protocol" name="id" publicID="2754251" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns9:ValueDomain longName="java.lang.Long">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Instruments, hardware used for the protocol. " name="instrument" publicID="2837791" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C16742" conceptDefinition="Any object, or item of electrical or electronic equipment, which is designed to carry out a specific function or set of functions." conceptName="Instrumentation" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the protocol was last modified. " name="lastModifiedDate" publicID="2837793" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C25446" conceptDefinition="alteration or modification." conceptName="Change" order="1"/>
+     <ns9:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns9:SemanticMetadata conceptCode="C25551" conceptDefinition="Coming after all others in time or space or degree or being the only one remaining." conceptName="Last" order="2"/>
+     <ns9:ValueDomain longName="java.util.Date">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Additional information/notes about the protocol." name="notes" publicID="2837792" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Creator of the protocol. " name="creator" publicID="2754250" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+    <ns9:UMLAttribute dataTypeName="java.lang.String" description="Software used for the protocol. " name="software" publicID="2837790" version="1.0">
+     <ns9:SemanticMetadata conceptCode="C17146" conceptDefinition="data and instructions stored in the computer in a format to be used by the computer for its processing functions." conceptName="Computer Program" order="0"/>
+     <ns9:ValueDomain longName="java.lang.String">
+      <ns9:enumerationCollection/>
+     </ns9:ValueDomain>
+    </ns9:UMLAttribute>
+   </ns9:umlAttributeCollection>
+   <ns10:SemanticMetadata conceptCode="C70817" conceptDefinition="The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis." conceptName="Study Protocol" order="0" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="InputOutputObject" description="Class representing either of the following inputs and/or outputs: 1. Material input/output - a biological sample or a processed derivative of a sample.  2. Data input/output." id="62C228BB-1DBD-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="protExpress" projectVersion="1">
+   <ns11:umlAttributeCollection xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns11:UMLAttribute dataTypeName="java.lang.String" description="Additional notes/information for the input/output. " name="notes" publicID="2837797" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns11:ValueDomain longName="java.lang.String">
+      <ns11:enumerationCollection/>
+     </ns11:ValueDomain>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute dataTypeName="java.lang.Long" description="Id of the input/output." name="id" publicID="2837794" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns11:ValueDomain longName="java.lang.Long">
+      <ns11:enumerationCollection/>
+     </ns11:ValueDomain>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute dataTypeName="java.lang.String" description="Name of the input/output. " name="name" publicID="2837795" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns11:ValueDomain longName="java.lang.String">
+      <ns11:enumerationCollection/>
+     </ns11:ValueDomain>
+    </ns11:UMLAttribute>
+    <ns11:UMLAttribute dataTypeName="java.lang.String" description="Location of the data input/output. If this field is null, it signifies a Material (Sample) input/output." name="dataFileURL" publicID="2837796" version="1.0">
+     <ns11:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection of facts from which conclusions may be drawn." conceptName="Data" order="2"/>
+     <ns11:SemanticMetadata conceptCode="C42743" conceptDefinition="A Uniform Resource Locator is an Internet address which tells a browser where to find an Internet resource. (from http://www.computeruser.com)" conceptName="Uniform Resource Locator" order="0"/>
+     <ns11:SemanticMetadata conceptCode="C42883" conceptDefinition="A set of related records (either written or electronic) kept together." conceptName="File" order="1"/>
+     <ns11:ValueDomain longName="java.lang.String">
+      <ns11:enumerationCollection/>
+     </ns11:ValueDomain>
+    </ns11:UMLAttribute>
+   </ns11:umlAttributeCollection>
+   <ns12:SemanticMetadata conceptCode="C47905" conceptDefinition="Anything added into a sytem." conceptName="Input" order="2" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns13:SemanticMetadata conceptCode="C47906" conceptDefinition="Anything coming out of a system." conceptName="Output" order="1" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns14:SemanticMetadata conceptCode="C45974" conceptDefinition="In object-oriented programming, an object is a self-contained entity that consists of both data and procedures to manipulate the data. (pcwebopaedia.com)" conceptName="Computer Programming Object" order="0" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ProtocolApplication" description="An object representing the application of a protocol within the context of an ExperimentRun." id="62C228BB-1DBE-BCC2-E040-BB89AD43499A" packageName="gov.nih.nci.protexpress.domain.protocol" projectName="protExpress" projectVersion="1">
+   <ns15:umlAttributeCollection xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns15:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the protocol was last updated. " name="lastModifiedDate" publicID="2837802" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns15:SemanticMetadata conceptCode="C25446" conceptDefinition="alteration or modification." conceptName="Change" order="1"/>
+     <ns15:SemanticMetadata conceptCode="C25551" conceptDefinition="Coming after all others in time or space or degree or being the only one remaining." conceptName="Last" order="2"/>
+     <ns15:ValueDomain longName="java.util.Date">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.lang.String" description="Comments for the protocol application." name="comments" publicID="2837799" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+     <ns15:ValueDomain longName="java.lang.String">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.util.Date" description="Date the protocol was applied in the context of an Experiment Run." name="datePerformed" publicID="2837798" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C38000" conceptDefinition="Performed; carried out." conceptName="Performed" order="1"/>
+     <ns15:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns15:ValueDomain longName="java.util.Date">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.util.Date" description="Date/Time the protocol application was created. " name="creationDate" publicID="2837801" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns15:SemanticMetadata conceptCode="C42620" conceptDefinition="Brought into existence." conceptName="Creation" order="1"/>
+     <ns15:ValueDomain longName="java.util.Date">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.lang.Long" description="Id of the protocol application object." name="id" publicID="2727250" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns15:ValueDomain longName="java.lang.Long">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.lang.String" description="Additional notes/information about the protocol application. " name="notes" publicID="2727152" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C42619" conceptDefinition="A brief written record." conceptName="Note" order="0"/>
+     <ns15:ValueDomain longName="java.lang.String">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+    <ns15:UMLAttribute dataTypeName="java.lang.String" description="Creator of the protocol application. " name="creator" publicID="2837800" version="1.0">
+     <ns15:SemanticMetadata conceptCode="C42628" conceptDefinition="Indicates the person or authoritative body who brought the item into existence." conceptName="Created By" order="0"/>
+     <ns15:ValueDomain longName="java.lang.String">
+      <ns15:enumerationCollection/>
+     </ns15:ValueDomain>
+    </ns15:UMLAttribute>
+   </ns15:umlAttributeCollection>
+   <ns16:SemanticMetadata conceptCode="C44184" conceptDefinition="The use of a protocol with the requisite Parameters and ParameterValues." conceptName="Protocol Application" order="0" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection/>
+</ns1:DomainModel>

@@ -1,0 +1,83 @@
+  
+<ehcache>
+
+	<diskStore path="java.io.tmpdir"/>
+
+	<defaultCache
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.protexpress.domain.protocol.Protocol"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.protexpress.domain.protocol.ProtocolApplication"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.protexpress.domain.protocol.ProtocolApplication.outputs"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.protexpress.domain.protocol.ProtocolApplication.inputs"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.protexpress.domain.experiment.ExperimentRun"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.protexpress.domain.experiment.ExperimentRun.protocolApplications"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.protexpress.domain.experiment.Experiment"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.protexpress.domain.experiment.Experiment.experimentRuns"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.protexpress.domain.protocol.InputOutputObject"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.protexpress.domain.contact.ContactPerson"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+</ehcache>

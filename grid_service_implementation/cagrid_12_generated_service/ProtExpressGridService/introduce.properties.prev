@@ -1,0 +1,11 @@
+#Introduce Properties
+#Fri Feb 13 10:37:03 EST 2009
+introduce.skeleton.services.list=ProtExpressGridService
+introduce.skeleton.extensions=cagrid_metadata,data
+introduce.skeleton.timestamp=0
+introduce.skeleton.service.name=ProtExpressGridService
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=C\:\\dev\\tools\\cacore\\generatedservices\\ProtExpressGridService
+introduce.skeleton.namespace.domain=http\://protexpress.cagrid.nci.nih.gov/ProtExpressGridService
+introduce.soap.binding.excludes=\ gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata -x http\://gov.nih.nci.cagrid.data/DataServiceExceptions -x gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol -x gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common

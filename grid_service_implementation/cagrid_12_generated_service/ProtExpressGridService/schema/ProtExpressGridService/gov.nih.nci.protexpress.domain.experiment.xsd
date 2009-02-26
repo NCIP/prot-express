@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" xmlns:gov.nih.nci.protexpress.domain.contact="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact" xmlns:gov.nih.nci.protexpress.domain.protocol="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" targetNamespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.experiment" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.contact" schemaLocation="gov.nih.nci.protexpress.domain.contact.xsd" />
+  <xs:import namespace="gme://caCORE.caCORE/3.2/gov.nih.nci.protexpress.domain.protocol" schemaLocation="gov.nih.nci.protexpress.domain.protocol.xsd" />
+  <xs:element name="ExperimentRun" type="ExperimentRun" />
+  <xs:complexType name="ExperimentRun">
+    <xs:sequence>
+      <xs:element name="protocolApplications" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.protexpress.domain.protocol:ProtocolApplication" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="experiment" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Experiment" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="notes" type="xs:string" />
+    <xs:attribute name="datePerformed" type="xs:dateTime" />
+    <xs:attribute name="creator" type="xs:string" />
+    <xs:attribute name="creationDate" type="xs:dateTime" />
+    <xs:attribute name="lastModifiedDate" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="Experiment" type="Experiment" />
+  <xs:complexType name="Experiment">
+    <xs:sequence>
+      <xs:element name="experimentRuns" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ExperimentRun" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="contactPerson" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.protexpress.domain.contact:ContactPerson" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="hypothesis" type="xs:string" />
+    <xs:attribute name="url" type="xs:string" />
+    <xs:attribute name="notes" type="xs:string" />
+    <xs:attribute name="datePerformed" type="xs:dateTime" />
+    <xs:attribute name="creator" type="xs:string" />
+    <xs:attribute name="creationDate" type="xs:dateTime" />
+    <xs:attribute name="lastModifiedDate" type="xs:dateTime" />
+  </xs:complexType>
+</xs:schema>
+

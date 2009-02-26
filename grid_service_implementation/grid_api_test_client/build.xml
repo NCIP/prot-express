@@ -1,0 +1,73 @@
+<project name="protExpressRemoteClientTest" default="compile" basedir=".">
+	<description>This script is used to test the protExpress Remote API calls.</description>
+	<!-- ******************************************************************* -->
+	<!-- ** PROPERTIES                          ** -->
+	<!-- ******************************************************************* -->
+	<property name="project.name" value="protExpressRemoteClientTest"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="classes.dir" value="${basedir}/classes"/>
+	<property name="out.dir" value="${basedir}/out"/>
+	<property name="properties.file" value="${basedir}/build.properties"/>
+	<property file="${properties.file}"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<!-- ******************************************************************* -->
+	<!-- ** BUILD                             ** -->
+	<!-- ******************************************************************* -->
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+	</target>
+	<target name="compile" depends="echo_properties">
+		<mkdir dir="${classes.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	<target name="echo_properties">
+		<echo message="Properties/Variable values set are...."/>
+		<echo message="properties.file = ${properties.file}"/>
+		<echo message="server.hostname = ${server.hostname}"/>
+		<echo message="server.port = ${server.port}"/>
+		<echo message="grid.server.hostname = ${grid.server.hostname}"/>
+		<echo message="grid.server.port = ${grid.server.port}"/>
+		<echo message="experiment.id = ${experiment.id}"/>
+		<echo message="experimentrun.id = ${experimentrun.id}"/>
+		<echo message="protocol.id = ${protocol.id}"/>
+		<echo message="protocolapplication.id = ${protocolapplication.id}"/>
+		<echo message="inputoutputobject.id = ${inputoutputobject.id}"/>
+		<echo message="contactperson.id = ${contactperson.id}"/>
+	</target>
+	<target name="runGridTests" depends="compile">
+		<junit printsummary="on" failureproperty="junit.failure" fork="true" forkmode="once" maxmemory="256m">
+			<sysproperty key="server.hostname" value="${server.hostname}"/>
+			<sysproperty key="server.port" value="${server.port}"/>
+			<sysproperty key="grid.server.hostname" value="${grid.server.hostname}"/>
+			<sysproperty key="grid.server.port" value="${grid.server.port}"/>
+			<sysproperty key="experiment.id" value="${experiment.id}"/>
+			<sysproperty key="experimentrun.id" value="${experimentrun.id}"/>
+			<sysproperty key="protocol.id" value="${protocol.id}"/>
+			<sysproperty key="protocolapplication.id" value="${protocolapplication.id}"/>
+			<sysproperty key="inputoutputobject.id" value="${inputoutputobject.id}"/>
+			<sysproperty key="contactperson.id" value="${contactperson.id}"/>
+			<classpath>
+				<pathelement path="${classes.dir}"/>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar"/>
+					<include name="**/*.wsdd"/>
+				</fileset>
+			</classpath>
+			<formatter type="plain"/>
+			<batchtest todir="${out.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/Grid*.java"/>
+					<exclude name="**/Abstract*.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>
