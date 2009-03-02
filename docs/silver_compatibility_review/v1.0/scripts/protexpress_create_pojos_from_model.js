@@ -1,9 +1,9 @@
 // Modify the following two values before running the script.
-var GENERATED_JAVA_DIR = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\silver_compatibility_review\\1.0\\temp\\generated_java";
+var GENERATED_JAVA_DIR = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\silver_compatibility_review\\v1.0\\scripts\\generated_java";
 var eaFilePath = "C:\\ncicb_svn\\gpsxar\\trunk\\docs\\analysis_and_design\\models\\protExpressGrid.eap";
 
 
-// Other variables. No need to modify. 
+// Other variables. No need to modify.
 var DOCUMENTATION_TAG = "documentation";
 var DESCRIPTION_TAG = "description";
 var logFileName = GENERATED_JAVA_DIR + "\\log.txt";
@@ -320,7 +320,7 @@ function getDirectoryPath(package) {
     else if (package.Name == packageNameProtocol) {
         packageName = packageProtocol;
     }
-    
+
     return packageName.replace(/\./g, "\\");
 }
 
