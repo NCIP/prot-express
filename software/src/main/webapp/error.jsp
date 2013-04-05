@@ -1,3 +1,10 @@
+<%--L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L--%>
+
 <%@ page isErrorPage="true" contentType="text/html"%>
 <%@ page import="java.io.PrintWriter,java.io.StringWriter,gov.nih.nci.protexpress.ProtExpressRegistry"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>

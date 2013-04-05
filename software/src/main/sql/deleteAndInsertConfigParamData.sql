@@ -1,3 +1,10 @@
+/*L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L*/
+
 delete from config_parameter;
 
 insert into config_parameter (param, raw_value) values ('SYS_ADMIN_EMAIL', 'NCINCICBGpsXarDevTeam@mail.nih.gov');

@@ -1,3 +1,10 @@
+/*L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L*/
+
 DROP TABLE IF EXISTS CSM_FILTER_CLAUSE CASCADE;
 
 DROP TABLE IF EXISTS CSM_APPLICATION CASCADE;

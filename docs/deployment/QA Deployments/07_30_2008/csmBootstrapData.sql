@@ -1,3 +1,10 @@
+/*L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L*/
+
 INSERT INTO CSM_APPLICATION(APPLICATION_NAME, APPLICATION_DESCRIPTION) VALUES ('csmupt', 'CSM UPT Super Admin Application');
 INSERT INTO CSM_USER(LOGIN_NAME, FIRST_NAME, LAST_NAME, PASSWORD) VALUES ( 'csmadmin', 'CSM', 'Admin','zJPWCwDeSgG8j2uyHEABIQ==');
 

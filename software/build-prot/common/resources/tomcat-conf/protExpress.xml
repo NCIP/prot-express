@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L-->
+
 <Context path="/protExpress" docBase="C:\dev\gps-xar\trunk\software\target/protExpress" debug="5" reloadable="true" crossContext="true">
     <Resource name="jdbc/ProtExpressDb"
         auth="Container"

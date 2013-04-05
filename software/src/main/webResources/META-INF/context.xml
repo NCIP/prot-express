@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L-->
+
 <Context path="/protExpress" debug="5" reloadable="true" crossContext="true" >
 	<Resource name="jdbc/ProtExpressDb" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory" maxActive="20" maxIdle="10" maxWait="10000" username="${jdbc.username}" password="${jdbc.password}" driverClassName="${jdbc.driverClassName}" url="${jdbc.url}" removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" validationQuery="select 1"/>
 	<Resource name="mail/ProtExpressMail" auth="Container" type="javax.mail.Session" mail.smtp.host="mailfwd.nih.gov" mail.smtp.port="25" mail.transport.protocol="smtp" mail.smtp.auth="false"/>

@@ -1,3 +1,9 @@
+/*L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L*/
 
 INSERT INTO CSM_USER (login_name, first_name, last_name, organization, department, title, phone_number, password, email_id, start_date, end_date, update_date) VALUES ('kanchink', 'Krishna', 'Kanchinadam', '', '', '', '', '', 'kanchink@mail.nih.gov', NULL, NULL, '2008-06-23');
 INSERT INTO CSM_USER_PE(PROTECTION_ELEMENT_ID, USER_ID) VALUES ((select protection_element_id from csm_protection_element where protection_element_name = 'protExpress'), (select user_id from csm_user where login_name = 'kanchink'));

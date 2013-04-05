@@ -1,3 +1,10 @@
+/*L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L*/
+
 insert into protocol
 	(id, name, description, creator, creation_date, modification_date) values
 	(nextval('hibernate_sequence'), 'Marelli_protocol (LCMS2)', 'Prepare and run LCMS, producing one mzXml file per input sample.', 'user1', current_date, current_date);

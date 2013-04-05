@@ -1,3 +1,10 @@
+/*L
+ * Copyright 5AM Solutions, Inc.
+ *
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/prot-express/LICENSE.txt for details.
+ */
+
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.client.util.xml.Marshaller;

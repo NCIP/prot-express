@@ -1,3 +1,10 @@
+<%--L
+  Copyright 5AM Solutions, Inc.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/prot-express/LICENSE.txt for details.
+L--%>
+
 <%@ taglib uri="http://struts-menu.sf.net/tag-el" prefix="menu"%>
 <menu:useMenuDisplayer name="ListMenu">
     <% if (request.isUserInRole("protExpressUser")) { %>
