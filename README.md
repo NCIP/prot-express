@@ -12,4 +12,4 @@ You will find more details about ProtExpress in the following links:
  * [Issue Tracker](https://gforge.nci.nih.gov/tracker/?atid=1316&group_id=327&func=browse)
  * [Documentation](https://wiki.nci.nih.gov/display/CommonProjects/protExpress+Documentation+Index)
  
- Please join us in further developing and improving ProtExpress.
+Please join us in further developing and improving ProtExpress.
