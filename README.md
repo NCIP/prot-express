@@ -2,6 +2,7 @@ Welcome to the ProtExpress Project!
 ====================================
 
 ProtExpress supports proteomics experiment and protocol data management as well as eXperimental Archive (XAR) file creation.
+It is developed in Java and requires Maven for building.
 
 ProtExpress is distributed under the BSD 3-Clause License. Please see the NOTICE and LICENSE files for details.
 
